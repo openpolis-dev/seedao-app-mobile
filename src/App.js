@@ -1,6 +1,6 @@
 import TabBar from "./components/layout/tabBar";
 import RouterLink from "./router/router";
-import {HashRouter as Router} from "react-router-dom";
+import {BrowserRouter as Router} from "react-router-dom";
 import { Provider } from "react-redux";
 import {PersistGate} from "redux-persist/integration/react";
 import store,{persistor} from "./store";
