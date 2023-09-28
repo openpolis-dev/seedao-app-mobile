@@ -11,8 +11,8 @@ const OuterBox = styled.div`
 `
 const InnerBox = styled.div`
   flex-grow: 1;
-  padding-top: {$props => props.noHeader ? 0 : 50px};
-  padding-bottom: {$props => props.noTab ? 0 : 80px};
+  padding-top: ${props => props.noheader };
+  padding-bottom: ${props => props.notab };
   
 `
 export default function Layout({children,noHeader,title,noTab}){
@@ -20,7 +20,7 @@ export default function Layout({children,noHeader,title,noTab}){
         {
             !noHeader && <Header title={title} />
         }
-        <InnerBox noTab noHeader >
+        <InnerBox notab={noTab? 0 : '80px'} noheader={noHeader? 0 : '50px'} >
             {children}
         </InnerBox>
         {

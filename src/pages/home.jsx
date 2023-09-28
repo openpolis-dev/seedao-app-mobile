@@ -48,7 +48,7 @@ export default function Home(){
         navigate(url)
     }
 
-    return <Layout noHeader={true}>
+    return <Layout noHeader>
         {/*<BoxInner>Home,{account}</BoxInner>*/}
         <BoxInner>
             <Top>on boarding</Top>
