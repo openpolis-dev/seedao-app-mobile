@@ -1,9 +1,10 @@
-import TabBar from "./components/tabBar";
+import TabBar from "./components/layout/tabBar";
 import RouterLink from "./router/router";
 import {HashRouter as Router} from "react-router-dom";
 import { Provider } from "react-redux";
 import {PersistGate} from "redux-persist/integration/react";
 import store,{persistor} from "./store";
+import "./assets/styles/custom.scss"
 
 import GlobalStyle from "./utils/GlobalStyle";
 function App() {
@@ -11,10 +12,10 @@ function App() {
     <div >
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor} >
-        <Router>
-            <TabBar />
-            <RouterLink />
-        </Router>
+                <Router>
+                    <TabBar />
+                    <RouterLink />
+                </Router>
             </PersistGate>
         </Provider>
         <GlobalStyle />
