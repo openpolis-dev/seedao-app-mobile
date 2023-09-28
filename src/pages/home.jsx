@@ -3,6 +3,9 @@ import Layout from "components/layout/layout";
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
 import { useTranslation } from 'react-i18next';
+import {Box2Heart, PieChart, People, CashCoin} from "react-bootstrap-icons";
+import LogoImg from "../assets/images/logo.png";
+import {Button} from "react-bootstrap"
 
 const BoxInner = styled.div`
     display: flex;
@@ -11,6 +14,15 @@ const BoxInner = styled.div`
 `
 
 const Top = styled.div`
+    margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+  button{
+    border-radius: 40px;
+    font-size: 11px;
+    padding-inline:20px;
+  }
 `
 
 const BBox = styled.div`
@@ -19,7 +31,7 @@ const BBox = styled.div`
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-
+  flex-direction: column;
   .inner{
     display: flex;
     flex-wrap: wrap;
@@ -28,15 +40,35 @@ const BBox = styled.div`
   }
   dl{
     background: #fff;
-    width: 48%;
+    width: 47%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 10px;
+    padding: 25px 0;
     border-radius: 8px;
+    margin-bottom: 20px;
     box-shadow: 0 5px 10px rgba(0,0,0,0.05);
   }
+  dt{
+    font-size: 26px;
+    padding-bottom: 10px;
+  }
+  dd{
+    font-size: 14px;
+  }
+`
+
+const LogoBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 60px;
+  img{
+    width: 70%;
+    margin: 0 auto;
+  }
+
 `
 
 export default function Home(){
@@ -51,24 +83,37 @@ export default function Home(){
     return <Layout noHeader>
         {/*<BoxInner>Home,{account}</BoxInner>*/}
         <BoxInner>
-            <Top>on boarding</Top>
+            <Top>
+                <Button size="sm">{t('mobile.my.onBoard')}</Button>
+            </Top>
             <BBox>
+                <LogoBox>
+                    <img src={LogoImg} alt=""/>
+                </LogoBox>
                 <div className="inner">
                     <dl onClick={()=>toGo("/proposal")}>
-                        <dt></dt>
+                        <dt>
+                            <Box2Heart />
+                        </dt>
                         <dd>{t('menus.Proposal')}</dd>
                     </dl>
                     <dl>
-                        <dt></dt>
-                        <dd>Project</dd>
+                        <dt>
+                            <PieChart />
+                        </dt>
+                        <dd>{t('menus.Project')}</dd>
                     </dl>
                     <dl>
-                        <dt></dt>
-                        <dd>Guild</dd>
+                        <dt>
+                            <People />
+                        </dt>
+                        <dd>{t('menus.Guild')}</dd>
                     </dl>
                     <dl>
-                        <dt></dt>
-                        <dd>Vault</dd>
+                        <dt>
+                            <CashCoin />
+                        </dt>
+                        <dd>{t('menus.assets')}</dd>
                     </dl>
                 </div>
             </BBox>

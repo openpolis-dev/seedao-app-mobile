@@ -18,7 +18,17 @@ const GlobalStyle = createGlobalStyle`
   }
   a{
     text-decoration: none;
-
+  }
+  .btn-primary{
+    color:#fff;
+    &:hover, &:focus-visible, &:active {
+      color:#fff !important;
+    }
+    &:disabled{
+      background-color: rgb(230, 228, 235);
+      border-color: transparent;
+      color: rgba(143, 155, 179, 0.48);
+    }
   }
 `;
 
