@@ -11,12 +11,11 @@ const Box = styled.div`
   background: #fff;
   box-sizing: border-box;
  width: 100vw;
-  padding: 10px 0;
+  padding: 10px;
 `
 
 const Rht = styled(Col)`
   text-align: right;
-  padding-right: 20px;
 `
 
 const Mid = styled(Col)`
