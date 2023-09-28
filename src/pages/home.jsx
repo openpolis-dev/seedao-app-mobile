@@ -2,6 +2,7 @@ import {useSelector} from "react-redux";
 import Layout from "components/layout/layout";
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const BoxInner = styled.div`
     display: flex;
@@ -41,6 +42,7 @@ const BBox = styled.div`
 export default function Home(){
     const account = useSelector(state=> state.account);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const toGo = (url) =>{
         navigate(url)
@@ -54,7 +56,7 @@ export default function Home(){
                 <div className="inner">
                     <dl onClick={()=>toGo("/proposal")}>
                         <dt></dt>
-                        <dd>Proposal</dd>
+                        <dd>{t('menus.Proposal')}</dd>
                     </dl>
                     <dl>
                         <dt></dt>
