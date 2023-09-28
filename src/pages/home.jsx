@@ -1,5 +1,5 @@
 import {useSelector} from "react-redux";
-import Layout from "./components/layout/layout";
+import Layout from "components/layout/layout";
 
 export default function Home(){
     const account = useSelector(state=> state.account)

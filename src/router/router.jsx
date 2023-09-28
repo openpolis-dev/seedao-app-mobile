@@ -4,8 +4,8 @@ import {
     Routes,
     Navigate
 } from "react-router-dom";
-import Home from "../home";
-import Login from "../Login";
+import Home from "pages/home";
+import Login from "pages/Login";
 // import MessagePage from "./message";
 // import EventHandler from "./components/eventHandler";
 // import InstallCheck from "./components/install";
