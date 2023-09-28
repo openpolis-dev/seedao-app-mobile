@@ -8,6 +8,11 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
   }
+  dl,dt,ul,li{
+    padding: 0;
+    margin: 0;
+    
+  }
   * {
     font-family: "Inter-Regular",-apple-system,BlinkMacSystemFont,
     "Segoe UI",Roboto,"Helvetica Neue",
@@ -18,6 +23,7 @@ const GlobalStyle = createGlobalStyle`
   }
   a{
     text-decoration: none;
+    color: #000;
   }
   .btn-primary{
     color:#fff;

@@ -84,7 +84,7 @@ export default function Home(){
         {/*<BoxInner>Home,{account}</BoxInner>*/}
         <BoxInner>
             <Top>
-                <Button size="sm">{t('mobile.my.onBoard')}</Button>
+                <Button onClick={()=>toGo("/board")} size="sm">{t('mobile.my.onBoard')}</Button>
             </Top>
             <BBox>
                 <LogoBox>
@@ -97,19 +97,19 @@ export default function Home(){
                         </dt>
                         <dd>{t('menus.Proposal')}</dd>
                     </dl>
-                    <dl>
+                    <dl onClick={()=>toGo("/project")}>
                         <dt>
                             <PieChart />
                         </dt>
                         <dd>{t('menus.Project')}</dd>
                     </dl>
-                    <dl>
+                    <dl onClick={()=>toGo("/guild")}>
                         <dt>
                             <People />
                         </dt>
                         <dd>{t('menus.Guild')}</dd>
                     </dl>
-                    <dl>
+                    <dl onClick={()=>toGo("/assets")}>
                         <dt>
                             <CashCoin />
                         </dt>
