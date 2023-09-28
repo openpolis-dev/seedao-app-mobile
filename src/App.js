@@ -1,4 +1,3 @@
-import TabBar from "./components/layout/tabBar";
 import RouterLink from "./router/router";
 import {BrowserRouter as Router} from "react-router-dom";
 import { Provider } from "react-redux";
@@ -13,7 +12,6 @@ function App() {
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor} >
                 <Router>
-                    <TabBar />
                     <RouterLink />
                 </Router>
             </PersistGate>

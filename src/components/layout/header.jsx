@@ -22,11 +22,11 @@ const Rht = styled(Col)`
 const Mid = styled(Col)`
     text-align: center;
 `
-export default function Header(){
+export default function Header({title}){
     return <Box>
         <Row>
             <Col xs={2}><ChevronLeft /></Col>
-            <Mid xs={8}>Inner</Mid>
+            <Mid xs={8}>{title}</Mid>
             <Rht xs={2}>
                 <Loading/>
             </Rht>

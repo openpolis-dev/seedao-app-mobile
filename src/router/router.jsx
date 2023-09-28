@@ -4,8 +4,9 @@ import {
     Routes,
     Navigate
 } from "react-router-dom";
-import Home from "pages/home";
-import Login from "pages/Login";
+import Home from "../pages/home";
+import Login from "../pages/login";
+import Project from "../pages/project";
 // import MessagePage from "./message";
 // import EventHandler from "./components/eventHandler";
 // import InstallCheck from "./components/install";
@@ -35,6 +36,7 @@ function RouterLink() {
                 <Route path="/" element={<Navigate to="/home" />}  />
                 <Route path="/home" element={<Home />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/project" element={<Project />} />
                 {/*<Route path="/message" element={<MessagePage />} />*/}
             </Routes>
             {/*<EventHandler />*/}
