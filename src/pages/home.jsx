@@ -34,7 +34,7 @@ export default function Home(){
         <BoxInner>
             <Top>on boarding</Top>
             <BBox>
-                <dl>
+                <dl onClick={()=>toGo("/proposal")}>
                     <dt></dt>
                     <dd>Proposal</dd>
                 </dl>

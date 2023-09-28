@@ -7,6 +7,7 @@ import {
 import Home from "../pages/home";
 import Login from "../pages/login";
 import Project from "../pages/project";
+import Proposal from "../pages/proposal";
 // import MessagePage from "./message";
 // import EventHandler from "./components/eventHandler";
 // import InstallCheck from "./components/install";
@@ -37,6 +38,7 @@ function RouterLink() {
                 <Route path="/home" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/project" element={<Project />} />
+                <Route path="/proposal" element={<Proposal />} />
                 {/*<Route path="/message" element={<MessagePage />} />*/}
             </Routes>
             {/*<EventHandler />*/}
