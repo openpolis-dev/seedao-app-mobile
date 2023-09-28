@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-// import "../assets/scss/fonts.scss";
+import "../assets/styles/font.css";
 
 const GlobalStyle = createGlobalStyle`
   body,html{
@@ -7,11 +7,15 @@ const GlobalStyle = createGlobalStyle`
     color: #000;
     padding: 0;
     margin: 0;
-  
   }
-  //*{
-  //  font-family: "fonts";
-  //}
+  * {
+    font-family: "Inter-Regular",-apple-system,BlinkMacSystemFont,
+    "Segoe UI",Roboto,"Helvetica Neue",
+    Arial,sans-serif,"Apple Color Emoji",
+    "Segoe UI Emoji","Segoe UI Symbol" ;
+    padding: 0;
+    margin: 0;
+  }
   a{
     text-decoration: none;
 
