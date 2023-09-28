@@ -2,38 +2,39 @@ import React, { useEffect, useState } from "react";
 import {
     Route,
     Routes,
+    Navigate
 } from "react-router-dom";
 import Home from "../home";
-// import Login from "./login";
+import Login from "../Login";
 // import MessagePage from "./message";
 // import EventHandler from "./components/eventHandler";
 // import InstallCheck from "./components/install";
 
 function RouterLink() {
-    const [isInstalled, setIsInstalled] = useState(true);
-
-    useEffect(() => {
-        if (
-            window.navigator?.standalone === true ||
-            window.matchMedia("(display-mode: standalone)").matches
-        ) {
-            console.log("isInstalled: true. Already in standalone mode");
-            setIsInstalled(true);
-        } else {
-            console.log("isInstalled: false");
-            setIsInstalled(false);
-        }
-
-    }, []);
+    // const [isInstalled, setIsInstalled] = useState(true);
+    //
+    // useEffect(() => {
+    //     if (
+    //         window.navigator?.standalone === true ||
+    //         window.matchMedia("(display-mode: standalone)").matches
+    //     ) {
+    //         console.log("isInstalled: true. Already in standalone mode");
+    //         setIsInstalled(true);
+    //     } else {
+    //         console.log("isInstalled: false");
+    //         setIsInstalled(false);
+    //     }
+    //
+    // }, []);
 
     return (
         <>
             {/*{!isInstalled && <InstallCheck />}*/}
 
             <Routes>
-                <Route path="/" element={<Home />} index />
+                <Route path="/" element={<Navigate to="/home" />}  />
                 <Route path="/home" element={<Home />} />
-                {/*<Route path="/login/:id" element={<Login />} />*/}
+                <Route path="/login" element={<Login />} />
                 {/*<Route path="/message" element={<MessagePage />} />*/}
             </Routes>
             {/*<EventHandler />*/}
