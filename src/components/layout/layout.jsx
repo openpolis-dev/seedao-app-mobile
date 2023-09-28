@@ -7,8 +7,10 @@ const OuterBox = styled.div`
   min-height: calc(100vh - 50px);
   box-sizing: border-box;
   background: #f0f3f8;
+  display: flex;
 `
 const InnerBox = styled.div`
+  flex-grow: 1;
   padding-top: {$props => props.noHeader ? 0 : 50px};
   padding-bottom: {$props => props.noTab ? 0 : 80px};
   
