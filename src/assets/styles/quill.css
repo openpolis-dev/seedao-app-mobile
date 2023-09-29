@@ -76,4 +76,15 @@
 
 .ql-snow .ql-editor h3 {
   font-size: 16px;
+  margin-block: 10px;
+}
+
+.ql-snow .ql-editor h4 {
+  font-size: 14px;
+  margin-block: 10px;
+}
+
+.ql-snow .ql-editor h5 {
+  font-size: 12px;
+  margin-block: 10px;
 }
