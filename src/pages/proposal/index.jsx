@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import ProposalSubNav from "components/poposal/proposalSubNav";
 import ProposalCard from "components/poposal/proposalCard";
 import { getAllProposals } from "api/proposal";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function Proposal() {
   const { t } = useTranslation();
@@ -71,11 +72,15 @@ export default function Proposal() {
         {activeTab === 1 && (
           <ProposalListContent>
             <ProposalSubNav onSelect={handleChangeOrder} value={orderType === "latest" ? 0 : 1} />
-            <ProposalBox>
-              {proposals.map((proposal) => (
-                <ProposalCard key={proposal.id} data={proposal} />
-              ))}
-            </ProposalBox>
+            <ProposalList>
+              <InfiniteScroll dataLength={proposals.length} next={getProposals} hasMore={hasMore} loader={<></>}>
+                <ProposalBox>
+                  {proposals.map((proposal) => (
+                    <ProposalCard key={proposal.id} data={proposal} />
+                  ))}
+                </ProposalBox>
+              </InfiniteScroll>
+            </ProposalList>
           </ProposalListContent>
         )}
       </Content>
@@ -111,6 +116,10 @@ const CategoryContent = styled.ul`
 `;
 
 const ProposalListContent = styled.div``;
+const ProposalList = styled.div`
+  height: calc(100vh - 150px);
+  overflow-y: auto;
+`
 
 const ProposalBox = styled.div`
   padding: 0 15px 15px;
