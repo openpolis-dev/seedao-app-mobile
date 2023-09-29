@@ -13,7 +13,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 export default function Proposal() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [pageSize] = useState(10);
   const [proposals, setProposals] = useState([]);
   const [orderType, setOrderType] = useState("latest");
