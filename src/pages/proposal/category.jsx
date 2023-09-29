@@ -5,6 +5,7 @@ import Layout from "components/layout/layout";
 import ProposalCard from "components/poposal/proposalCard";
 import { getProposalsBySubCategory } from "api/proposal";
 import { PROPOSAL_CATEGORIES } from "utils/constant";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function ProposalCategory() {
   const { id } = useParams();
@@ -52,12 +53,20 @@ export default function ProposalCategory() {
   }, [category, id, orderType]);
   return (
     <Layout title={category?.name} noTab={true}>
-      <ProposalBox>
-        {proposals.map((p) => (
-          <ProposalCard key={p.id} data={p} />
-        ))}
-        {/* <ProposalCard /> */}
-      </ProposalBox>
+      <InfiniteScroll
+        dataLength={proposals.length}
+        next={getProposals}
+        hasMore={hasMore}
+        loader={<></>}
+        height={400}
+        style={{ height: "calc(100vh - 50px)" }}
+      >
+        <ProposalBox>
+          {proposals.map((p) => (
+            <ProposalCard key={p.id} data={p} />
+          ))}
+        </ProposalBox>
+      </InfiniteScroll>
     </Layout>
   );
 }
