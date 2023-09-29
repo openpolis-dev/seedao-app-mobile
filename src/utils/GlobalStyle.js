@@ -13,6 +13,9 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     
   }
+  li {
+    list-style: none;
+  }
   * {
     font-family: "Inter-Regular",-apple-system,BlinkMacSystemFont,
     "Segoe UI",Roboto,"Helvetica Neue",
