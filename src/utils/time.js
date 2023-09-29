@@ -5,14 +5,14 @@ export const getUTC = () => {
   return `UTC+${offset / 60}`;
 };
 
-export const formatTime = (time: number, formatter?: '-' | '.') => {
+export const formatTime = (time, formatter) => {
   if (formatter === '-') {
     return dayjs(time).format('YYYY-MM-DD HH:mm');
   }
   return dayjs(time).format('YYYY.MM.DD HH:mm');
 };
 
-export const formatLeftTime = (targetTime: number) => {
+export const formatLeftTime = (targetTime) => {
   const now = Date.now();
   const leftTime = targetTime - now;
   if (leftTime <= 0) {
@@ -23,6 +23,6 @@ export const formatLeftTime = (targetTime: number) => {
   return days + (left > 0 ? 1 : 0);
 };
 
-export const formatDate = (date: Date, formatter?: '-' | '.') => {
+export const formatDate = (date, formatter) => {
   return dayjs(date).format(['YYYY', 'MM', 'DD'].join(formatter || '-'));
 };

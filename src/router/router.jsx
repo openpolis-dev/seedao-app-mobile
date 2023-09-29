@@ -8,7 +8,7 @@ import Home from "../pages/home";
 import Login from "../pages/login";
 import Project from "../pages/project";
 import Proposal from "../pages/proposal";
-import ProposalList from "pages/proposal/category";
+import ProposalCategory from "pages/proposal/category";
 import ProposalThread from "pages/proposal/thread";
 
 import My from "../pages/my";
@@ -47,7 +47,7 @@ function RouterLink() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/project" element={<Project />} />
                 <Route path="/proposal" element={<Proposal />} />
-                <Route path="/proposal/category/:id" element={<ProposalList />} />
+                <Route path="/proposal/category/:id" element={<ProposalCategory />} />
                 <Route path="/proposal/thread/:id" element={<ProposalThread />} />
                 <Route path="/guild" element={<Guild />} />
                 <Route path="/assets" element={<Assets />} />
