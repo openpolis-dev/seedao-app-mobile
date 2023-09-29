@@ -5,17 +5,16 @@ import zh from './i18n/zh.json';
 import {initReactI18next} from 'react-i18next';
 import AppConfig from '../AppConfig';
 import {saveLang} from '../store/reducer';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 async function getStoreLang() {
-  let defaultLan = await AsyncStorage.getItem('lang');
+  const defaultLan = localStorage.getItem('lang');
   await i18n.changeLanguage(defaultLan);
   // return defaultLan;
 }
 
 function saveStoreLang(lang) {
   // store.dispatch(saveLang(lang));
-  AsyncStorage.setItem('lang', lang);
+  localStorage.setItem("lang", lang);
 }
 
 i18n.use(initReactI18next).init({
