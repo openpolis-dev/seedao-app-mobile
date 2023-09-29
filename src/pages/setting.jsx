@@ -97,7 +97,7 @@ export default function Setting() {
                 <div>{t('mobile.my.privacy')}</div>
                 <ChevronRight />
             </Item>
-            <Item>
+            <Item onClick={()=>toGo()}>
                 <div>{t('mobile.my.version')}</div>
                 <ChevronRight />
             </Item>

@@ -4,7 +4,7 @@ import TabBar from "./tabBar";
 
 const OuterBox = styled.div`
   width: 100%;
-  min-height: calc(100vh - 50px);
+  min-height: 100vh;
   box-sizing: border-box;
   background: #f0f3f8;
   display: flex;
