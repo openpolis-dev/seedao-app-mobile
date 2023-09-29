@@ -14,6 +14,8 @@ export default function Tab({ data, onChangeTab, value, ...rest }) {
 }
 
 const TabMenu = styled.ul`
+  width: 100%;
+  overflow-x: auto;
   display: flex;
   height: 40px;
   line-height: 40px;
