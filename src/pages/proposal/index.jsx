@@ -104,6 +104,7 @@ const TabMenu = styled.ul`
   li {
     flex: 1;
     text-align: center;
+    color: var(--bs-primary);
     &.selected {
       border-bottom: 3px solid var(--bs-primary);
     }
