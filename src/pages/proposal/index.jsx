@@ -9,6 +9,7 @@ import ProposalSubNav from "components/poposal/proposalSubNav";
 import ProposalCard from "components/poposal/proposalCard";
 import { getAllProposals } from "api/proposal";
 import InfiniteScroll from "react-infinite-scroll-component";
+import MsgIcon from "assets/images/proposal/message.png";
 
 export default function Proposal() {
   const { t } = useTranslation();
@@ -61,7 +62,10 @@ export default function Proposal() {
           <CategoryContent>
             {PROPOSAL_CATEGORIES[0].children.map((item) => (
               <li key={item.id} onClick={() => navigate(`/proposal/category/${item.category_id}`)}>
-                <span>{item.name}</span>
+                <div>
+                  <img src={MsgIcon} alt="" className="msg" />
+                  <span>{item.name}</span>
+                </div>
                 <span>
                   <ChevronRight />
                 </span>
@@ -117,6 +121,10 @@ const CategoryContent = styled.ul`
     height: 60px;
     margin-bottom: 10px;
     line-height: 60px;
+    img.msg {
+      width: 30px;
+      margin-right: 6px;
+    }
   }
 `;
 
