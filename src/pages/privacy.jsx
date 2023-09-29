@@ -8,6 +8,6 @@ export default function Privacy(){
 
 
     return <Layout noTab title={t('mobile.my.privacy')}>
-        <iframe src={privacyUrl} frameborder="0" width="100%" height="100%"></iframe>
+        <iframe src={privacyUrl} frameBorder="0" width="100%" height="100%"></iframe>
     </Layout>
 }

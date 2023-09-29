@@ -8,16 +8,69 @@ import { saveLoading } from "../store/reducer";
 import {formatTime} from "../utils/time";
 import {getUser} from "../api/user";
 import {getProjectApplications} from "../api/applications";
+import PublicJs from "../utils/publicJs";
+import NoItem from "../components/noItem";
 
 const Box = styled.div`
     padding: 20px;
+  font-size: 14px;
 `
 
 const TopBox = styled.div`
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
     dl{
       margin-bottom: 20px;
     }
+  .flex{
+    display: flex;
+    align-items: center;
+  }
+  .tit{
+    margin-right: 10px;
+  }
 `
+
+const Num = styled.div`
+  color: var(--bs-primary);
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 2px;
+`
+
+const Tit = styled.div`
+    font-weight: bold;
+`
+
+const BtmBox = styled.ul`
+   padding-top: 20px;
+    li{
+      background: #fff;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+  .line{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &:first-child{
+      margin-bottom: 10px;
+    }
+  }
+`
+
+const StatusBox = styled.div`
+    font-weight: bold;
+  color: var(--bs-primary);
+  font-size: 16px;
+`
+
+const TimeBox = styled.div`
+    font-size: 12px;
+`
+
 export default function Vault(){
     const {t,i18n} = useTranslation();
     const account = useSelector(state=> state.account);
@@ -119,19 +172,42 @@ export default function Vault(){
             <TopBox>
                 <dl>
                     <dt>Token</dt>
-                    <dd>
-                        <div>{t('My.Assets')}</div>
-                        <div>{token?.total_amount || 0}</div>
+                    <dd className="flex">
+                        <div className="tit">{t('My.Assets')}</div>
+                        <Num>{token?.total_amount || 0}</Num>
                     </dd>
                 </dl>
                 <dl>
                     <dt>{t('My.Points')}</dt>
                     <dd>
                         <div>{t('My.Points2')}</div>
-                        <div>{credit?.total_amount || 0}</div>
+                        <Num>{credit?.total_amount || 0}</Num>
                     </dd>
                 </dl>
             </TopBox>
+            <div>
+                <Tit>{t('Project.Record')}</Tit>
+                <BtmBox>
+
+                    {
+                        !!list.length && list.map((item,index)=>(
+                            <li key={index}>
+                                <div className="line">
+                                    <div>{PublicJs.AddressToShow(item.target_user_wallet)}</div>
+                                    <div>{item.credit_amount ? `${t('My.Points')} ${item.credit_amount}`:''}</div>
+                                </div>
+                                <div className="line">
+                                    <TimeBox>{item.created_date}</TimeBox>
+                                    <StatusBox>{item.status}</StatusBox>
+                                </div>
+                            </li>
+                        ))
+                    }
+                    {
+                        !list.length && !loading && <NoItem />
+                    }
+                </BtmBox>
+            </div>
         </Box>
     </Layout>
 }
