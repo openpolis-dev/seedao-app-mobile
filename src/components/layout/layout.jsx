@@ -11,6 +11,7 @@ const OuterBox = styled.div`
 `
 const InnerBox = styled.div`
   flex-grow: 1;
+  width: 100%;
   padding-top: ${props => props.noheader };
   padding-bottom: ${props => props.notab };
   

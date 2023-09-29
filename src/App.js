@@ -5,6 +5,7 @@ import {PersistGate} from "redux-persist/integration/react";
 import store,{persistor} from "./store";
 import "./locales"
 import "./assets/styles/custom.scss"
+import "./assets/styles/quill.css";
 
 import GlobalStyle from "./utils/GlobalStyle";
 function App() {
