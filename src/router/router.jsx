@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import Home from "../pages/home";
 import Login from "../pages/login";
-import Project from "../pages/project";
+import Project from "pages/project";
 import Proposal from "../pages/proposal";
 import ProposalCategory from "pages/proposal/category";
 import ProposalThread from "pages/proposal/thread";
