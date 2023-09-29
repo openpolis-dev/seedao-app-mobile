@@ -4,25 +4,80 @@ import styled from "styled-components";
 import { ChevronRight } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { PROPOSAL_CATEGORIES } from "utils/constant";
+import { useState, useEffect } from "react";
+import ProposalSubNav from "components/poposal/proposalSubNav";
+import ProposalCard from "components/poposal/proposalCard";
+import { getAllProposals } from "api/proposal";
 
 export default function Proposal() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(10);
+  const [proposals, setProposals] = useState([]);
+  const [orderType, setOrderType] = useState("latest");
+  const [activeTab, setActiveTab] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleChangeOrder = (index) => {
+    setPage(1);
+    setProposals([]);
+    setOrderType(index === 0 ? "latest" : "old");
+  };
+
+  const getProposals = async () => {
+    setLoading(true);
+    try {
+      const resp = await getAllProposals({ page, per_page: pageSize, sort: orderType });
+      setProposals([...proposals, ...resp.data.threads]);
+      setPage(page + 1);
+      setHasMore(resp.data.threads.length >= pageSize);
+    } catch (error) {
+      console.error("getAllProposals failed", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 1) {
+      getProposals();
+    }
+  }, [activeTab, orderType]);
   return (
-    <Layout title="Proposal">
+    <Layout title="Proposal" noTab>
       <TabMenu>
-        <li>{t("Proposal.AllCategories")}</li>
-        <li>{t("Proposal.TheNeweset")}</li>
+        <li onClick={() => setActiveTab(0)} className={activeTab === 0 ? "selected" : ""}>
+          {t("Proposal.AllCategories")}
+        </li>
+        <li onClick={() => setActiveTab(1)} className={activeTab === 1 ? "selected" : ""}>
+          {t("Proposal.TheNeweset")}
+        </li>
       </TabMenu>
       <Content>
-        {PROPOSAL_CATEGORIES[0].children.map((item) => (
-          <li key={item.id} onClick={() => navigate(`/proposal/category/${item.category_id}`)}>
-            <span>{item.name}</span>
-            <span>
-              <ChevronRight />
-            </span>
-          </li>
-        ))}
+        {activeTab === 0 && (
+          <CategoryContent>
+            {PROPOSAL_CATEGORIES[0].children.map((item) => (
+              <li key={item.id} onClick={() => navigate(`/proposal/category/${item.category_id}`)}>
+                <span>{item.name}</span>
+                <span>
+                  <ChevronRight />
+                </span>
+              </li>
+            ))}
+          </CategoryContent>
+        )}
+        {activeTab === 1 && (
+          <ProposalListContent>
+            <ProposalSubNav onSelect={handleChangeOrder} value={orderType === "latest" ? 0 : 1} />
+            <ProposalBox>
+              {proposals.map((proposal) => (
+                <ProposalCard key={proposal.id} data={proposal} />
+              ))}
+            </ProposalBox>
+          </ProposalListContent>
+        )}
       </Content>
     </Layout>
   );
@@ -35,10 +90,15 @@ const TabMenu = styled.ul`
   li {
     flex: 1;
     text-align: center;
+    &.selected {
+      border-bottom: 3px solid var(--bs-primary);
+    }
   }
 `;
 
-const Content = styled.ul`
+const Content = styled.div``;
+
+const CategoryContent = styled.ul`
   li {
     padding-inline: 20px;
     background-color: #fff;
@@ -48,4 +108,10 @@ const Content = styled.ul`
     margin-bottom: 10px;
     line-height: 60px;
   }
+`;
+
+const ProposalListContent = styled.div``;
+
+const ProposalBox = styled.div`
+  padding: 0 15px 15px;
 `;
