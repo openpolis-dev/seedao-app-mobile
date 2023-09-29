@@ -16,6 +16,10 @@ import Board from "../pages/board";
 import Setting from "../pages/setting";
 import Guild from "../pages/guild";
 import Assets from "../pages/assets";
+import Profile from "../pages/profile";
+import Vault from "../pages/vault";
+import Privacy from "../pages/privacy";
+
 // import MessagePage from "./message";
 // import EventHandler from "./components/eventHandler";
 // import InstallCheck from "./components/install";
@@ -56,6 +60,9 @@ function RouterLink() {
                 <Route path="/my" element={<My />} />
                 <Route path="/setting" element={<Setting />} />
                 <Route path="/board" element={<Board />} />
+                <Route path="/user/profile" element={<Profile />} />
+                <Route path="/user/value" element={<Vault />} />
+                <Route path="/privacy" element={<Privacy />} />
 
                 {/*<Route path="/message" element={<MessagePage />} />*/}
             </Routes>
