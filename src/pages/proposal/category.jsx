@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Layout from "components/layout/layout";
 import ProposalCard from "components/poposal/proposalCard";
 import { getProposalsBySubCategory } from "api/proposal";
+import { PROPOSAL_CATEGORIES } from "utils/constant";
 
 export default function ProposalCategory() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
   const [proposals, setProposals] = useState([]);
@@ -38,11 +40,18 @@ export default function ProposalCategory() {
     }
   };
 
+  const category = useMemo(() => {
+    return PROPOSAL_CATEGORIES[0].children.find((item) => item.category_id === Number(id));
+  }, [id]);
+
   useEffect(() => {
+    if (!category) {
+      navigate("/proposal");
+    }
     id && getProposals();
-  }, [id, orderType]);
+  }, [category, id, orderType]);
   return (
-    <Layout>
+    <Layout title={category?.name} noTab={true}>
       <ProposalBox>
         {proposals.map((p) => (
           <ProposalCard key={p.id} data={p} />
