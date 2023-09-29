@@ -1,7 +1,8 @@
 import { useTranslation } from "react-i18next";
-import Layout from "../components/layout/layout";
+import Layout from "../../components/layout/layout";
 import styled from "styled-components";
 import { ChevronRight } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
 
 const PROPOSAL_CATEGORIES = [
   {
@@ -22,6 +23,7 @@ const PROPOSAL_CATEGORIES = [
 
 export default function Proposal() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   return (
     <Layout title="Proposal">
       <TabMenu>
@@ -30,7 +32,7 @@ export default function Proposal() {
       </TabMenu>
       <Content>
         {PROPOSAL_CATEGORIES[0].children.map((item) => (
-          <li key={item.id}>
+          <li key={item.id} onClick={() => navigate(`/proposal/category/${item.category_id}`)}>
             <span>{item.name}</span>
             <span>
               <ChevronRight />
