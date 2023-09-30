@@ -21,6 +21,7 @@ import Assets from "../pages/assets";
 import Profile from "../pages/profile";
 import Vault from "../pages/vault";
 import Privacy from "../pages/privacy";
+import VaultBalance from "../pages/vaultBalance";
 
 // import MessagePage from "./message";
 // import EventHandler from "./components/eventHandler";
@@ -58,6 +59,7 @@ function RouterLink() {
                 <Route path="/proposal/thread/:id" element={<ProposalThread />} />
                 <Route path="/guild" element={<Guild />} />
                 <Route path="/assets" element={<Assets />} />
+                <Route path="/vault" element={<VaultBalance />} />
 
 
                 <Route path="/my" element={<My />} />
