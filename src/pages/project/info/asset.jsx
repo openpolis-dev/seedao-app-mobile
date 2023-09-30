@@ -26,8 +26,8 @@ export default function ProjectAssets() {
     if (!data) {
       return;
     }
-    const _token = data?.budgets.find((b) => b.type === "USDT");
-    const _point = data?.budgets.find((b) => b.type === "SCR");
+    const _token = data?.budgets.find((b) => b.type === "token");
+    const _point = data?.budgets.find((b) => b.type === "credit");
     setToken(_token);
     setPoint(_point);
   }, [data]);
@@ -99,7 +99,7 @@ export default function ProjectAssets() {
         <p className="record-title">{t("Project.Record")}</p>
         <ApplicantList>
           {list.map((item) => (
-            <ApplicantCard key={item.id} data={item} />
+            <ApplicantCard key={item.application_id} data={item} />
           ))}
         </ApplicantList>
       </InfiniteScroll>
