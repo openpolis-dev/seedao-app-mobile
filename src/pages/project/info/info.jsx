@@ -5,34 +5,45 @@ import Tab from "components/common/tab";
 import { useState, useMemo, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getProjectById } from "api/project";
-import { useProjectContext, PROJECT_ACTIONS } from "../provider";
+import { useProjectContext, PROJECT_ACTIONS } from "./provider";
 import store from "store";
 import { saveLoading } from "store/reducer";
+import ProjectMember from "./member";
+
+const TABS_VALUE = {
+  INFOMATION: 0,
+  MEMBER: 1,
+  ASSET: 2,
+  PROPOSAL: 3,
+};
 
 export default function ProjectInfo() {
   const { t } = useTranslation();
   const { id } = useParams();
-  const { dispatch } = useProjectContext();
+  const {
+    state: { data },
+    dispatch,
+  } = useProjectContext();
 
-  const [activeTab, setActiveTab] = useState([]);
+  const [activeTab, setActiveTab] = useState(TABS_VALUE.INFOMATION);
 
   const tabs = useMemo(() => {
     return [
       {
         label: t("Project.ProjectInformation"),
-        value: 0,
+        value: TABS_VALUE.INFOMATION,
       },
       {
         label: t("Project.Members"),
-        value: 1,
+        value: TABS_VALUE.MEMBER,
       },
       {
         label: t("Project.Asset"),
-        value: 2,
+        value: TABS_VALUE.ASSET,
       },
       {
         label: t("Project.ProjectProposal"),
-        value: 3,
+        value: TABS_VALUE.PROPOSAL,
       },
     ];
   }, [t]);
@@ -56,9 +67,22 @@ export default function ProjectInfo() {
     };
     id && getProjectData();
   }, [id, dispatch]);
+  const getTabContent = () => {
+    switch (activeTab) {
+      case TABS_VALUE.MEMBER:
+        return <ProjectMember />;
+      default:
+        return <></>;
+    }
+  };
   return (
-    <Layout noTab title={t("mobile.projectDetail")}>
+    <Layout noTab title={data?.name || t("mobile.projectDetail")}>
       <Tab data={tabs} value={activeTab} onChangeTab={handleTabChange} />
+      <TabContent>{getTabContent()}</TabContent>
     </Layout>
   );
 }
+
+const TabContent = styled.div`
+  padding: 15px 20px;
+`;

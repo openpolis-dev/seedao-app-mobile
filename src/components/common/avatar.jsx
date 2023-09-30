@@ -17,8 +17,8 @@ export default function Avatar({ src, size, ...rest }) {
 }
 
 const AvatarStyle = styled.div`
-  width: ${(props) => props.size || "56px"};
-  height: ${(props) => props.size || "56px"};
+  width: ${(props) => props.size || "58px"};
+  height: ${(props) => props.size || "58px"};
   border-radius: 50%;
   overflow: hidden;
   img {

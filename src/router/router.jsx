@@ -7,7 +7,7 @@ import {
 import Home from "../pages/home";
 import Login from "../pages/login";
 import Project from "pages/project";
-import ProjectInfoRoot from "pages/project/info/infoRoot";
+import ProjectInfoRoot from "pages/project/info";
 
 import Proposal from "../pages/proposal";
 import ProposalCategory from "pages/proposal/category";
