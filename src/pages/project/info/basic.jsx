@@ -97,6 +97,7 @@ const ContentBlock = styled(Block)`
   border-radius: 4px;
   display: flex;
   gap: 10px;
+  font-size: 14px;
 
   .name {
     padding: 5px;
