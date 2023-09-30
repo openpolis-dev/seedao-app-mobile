@@ -37,8 +37,8 @@ export default function ApplicantCard({ data }) {
       <Line>
         <span>{publicJs.AddressToShow(data.target_user_wallet)}</span>
         <div className="token">
-          {!!data.token_amount && <span>USDT {formatNumber(data.token_amount)}</span>}
-          {!!data.credit_amount && (
+          {!!data.token_amount && data.token_amount !== "0" && <span>USDT {formatNumber(data.token_amount)}</span>}
+          {!!data.credit_amount && data.credit_amount !== "0" && (
             <span>
               {t("Project.Points")} {formatNumber(data.credit_amount)}
             </span>

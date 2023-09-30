@@ -68,7 +68,10 @@ export default function ProjectInfo() {
         store.dispatch(saveLoading(false));
       }
     };
-    id && getProjectData();
+    if (id) {
+      getProjectData();
+      dispatch({ type: PROJECT_ACTIONS.SET_ID, payload: Number(id) });
+    }
   }, [id, dispatch]);
   const getTabContent = () => {
     switch (activeTab) {
