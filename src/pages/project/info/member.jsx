@@ -51,7 +51,7 @@ export default function ProjectMember() {
     getUsersInfo(Array.from(new Set([...members, ...sponsors])));
   }, [data]);
   return (
-    <>
+    <MemberContent>
       <Block>
         <SectionTitle>{t("Project.Dominator")}</SectionTitle>
         <UserList data={memberUsers} />
@@ -60,9 +60,13 @@ export default function ProjectMember() {
         <SectionTitle>{t("Project.Members")}</SectionTitle>
         <UserList data={sponsorUsers} />
       </Block>
-    </>
+    </MemberContent>
   );
 }
+
+const MemberContent = styled.div`
+  padding-inline: 20px;
+`
 
 const Block = styled.section`
   &:first-child {
