@@ -39,17 +39,21 @@ export default function ProposalThread() {
   return (
     <Layout title={t("mobile.proposalDetail")}>
       <ProposalContainer>
-        <ProposalTitle>{data?.title}</ProposalTitle>
-        <User>
-          <div className="left">
-            <UserAvatar src={data?.user.photo_url} alt="" />
-          </div>
-          <div className="right">
-            <div className="name">{data?.user.username}</div>
-            <div className="date">{formatTime(new Date(data?.updated_at || ""))}</div>
-          </div>
-        </User>
-        {enableQuill && data?.first_post.content && <QuillViewer content={data?.first_post.content} />}
+        {data && (
+          <>
+            <ProposalTitle>{data?.title}</ProposalTitle>
+            <User>
+              <div className="left">
+                <UserAvatar src={data?.user.photo_url} alt="" />
+              </div>
+              <div className="right">
+                <div className="name">{data?.user.username}</div>
+                <div className="date">{formatTime(new Date(data?.updated_at || ""))}</div>
+              </div>
+            </User>
+            {enableQuill && data?.first_post.content && <QuillViewer content={data?.first_post.content} />}
+          </>
+        )}
       </ProposalContainer>
     </Layout>
   );
