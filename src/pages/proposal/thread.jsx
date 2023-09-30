@@ -60,7 +60,7 @@ export default function ProposalThread() {
 }
 
 const ProposalContainer = styled.div`
-  background: #fff;
+  //background: #fff;
   padding: 20px;
   min-height: 100%;
   position: relative;
