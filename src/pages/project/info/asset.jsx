@@ -6,6 +6,8 @@ import { formatNumber } from "utils/number";
 import { useProjectContext } from "./provider";
 import { getProjectApplications } from "api/applications";
 import ApplicantCard from "components/applicant";
+import store from "store";
+import { saveLoading } from "store/reducer";
 
 const PAGE_SIZE = 10;
 
@@ -32,6 +34,7 @@ export default function ProjectAssets() {
 
   const getRecords = async () => {
     try {
+      store.dispatch(saveLoading(true));
       const res = await getProjectApplications(
         {
           entity: "project",
@@ -51,6 +54,8 @@ export default function ProjectAssets() {
       setPage(page + 1);
     } catch (error) {
       console.error(error);
+    } finally {
+      store.dispatch(saveLoading(false));
     }
   };
 
