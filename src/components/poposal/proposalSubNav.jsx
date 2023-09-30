@@ -24,11 +24,12 @@ const SubNav = styled.ul`
   gap: 20px;
   li {
     padding-inline: 20px;
-    height: 30px;
-    line-height: 30px;
+    height: 26px;
+    line-height: 26px;
     background-color: #ddd;
     border-radius: 20px;
     color: #444;
+    font-size: 12px;
     &.selected {
       background-color: var(--bs-primary);
       color: #fff;
