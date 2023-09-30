@@ -7,7 +7,7 @@ import {
 import Home from "../pages/home";
 import Login from "../pages/login";
 import Project from "pages/project";
-import ProjectInfo from "pages/project/info";
+import ProjectInfoRoot from "pages/project/info/infoRoot";
 
 import Proposal from "../pages/proposal";
 import ProposalCategory from "pages/proposal/category";
@@ -52,7 +52,7 @@ function RouterLink() {
                 <Route path="/home" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/project" element={<Project />} />
-                <Route path="/project/info/:id" element={<ProjectInfo />} />
+                <Route path="/project/info/:id" element={<ProjectInfoRoot />} />
                 <Route path="/proposal" element={<Proposal />} />
                 <Route path="/proposal/category/:id" element={<ProposalCategory />} />
                 <Route path="/proposal/thread/:id" element={<ProposalThread />} />
