@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import Tab from "components/common/tab";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ProjectOrGuildItem from "components/projectOrGuild/projectOrGuildItem";
+import store from "store";
+import { saveLoading } from "store/reducer";
 
 export default function Project() {
   const { t } = useTranslation();
@@ -17,7 +19,6 @@ export default function Project() {
   const [pageCur, setPageCur] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [total, setTotal] = useState(1);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const _list = [
@@ -54,7 +55,7 @@ export default function Project() {
   const getList = async () => {
     if (activeTab > 2) return;
     const stt = activeTab === 1 ? "closed" : "";
-    setLoading(true);
+    store.dispatch(saveLoading(true));
     const obj = {
       status: stt,
       page: pageCur,
@@ -63,7 +64,7 @@ export default function Project() {
       sort_field: "created_at",
     };
     const rt = await getProjects(obj);
-    setLoading(false);
+    store.dispatch(saveLoading(false));
     const { rows, page, size, total } = rt.data;
     setProList([...proList, ...rows]);
     setPageSize(size);
@@ -72,7 +73,7 @@ export default function Project() {
   };
 
   const getMyList = async () => {
-    setLoading(true);
+    store.dispatch(saveLoading(true));
     const obj = {
       page: pageCur,
       size: pageSize,
@@ -80,7 +81,8 @@ export default function Project() {
       sort_field: "created_at",
     };
     const rt = await getMyProjects(obj);
-    setLoading(false);
+    store.dispatch(saveLoading(false));
+
     const { rows, page, size, total } = rt.data;
     setProList([...proList, ...rows]);
     setPageSize(size);
