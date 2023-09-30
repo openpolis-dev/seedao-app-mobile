@@ -6,7 +6,7 @@ import { getMyProjects, getProjects } from "api/project";
 import { useNavigate } from "react-router-dom";
 import Tab from "components/common/tab";
 import InfiniteScroll from "react-infinite-scroll-component";
-import ProjectOrGuildItem from "components/projectOrGuildItem";
+import ProjectOrGuildItem from "components/projectOrGuild/projectOrGuildItem";
 
 export default function Project() {
   const { t } = useTranslation();
