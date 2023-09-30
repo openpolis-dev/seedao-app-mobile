@@ -37,7 +37,7 @@ export default function ProposalThread() {
   }, [qid]);
 
   return (
-    <Layout title={t("mobile.proposalDetail")}>
+    <Layout title={t("mobile.proposalDetail")} noTab>
       <ProposalContainer>
         {data && (
           <>
