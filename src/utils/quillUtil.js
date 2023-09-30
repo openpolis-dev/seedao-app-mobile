@@ -1,5 +1,3 @@
-import { StringMap } from 'quill';
-
 export const quillModules = () => {
   return {
     clipboard: {

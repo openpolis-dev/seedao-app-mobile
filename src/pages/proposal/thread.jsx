@@ -7,6 +7,8 @@ import QuillViewer from "components/poposal/quillViewer";
 import useLoadQuill from "hooks/useLoadQuill";
 import { getProposalDetail } from "api/proposal";
 import { formatTime } from "utils/time";
+import store from "store";
+import { saveLoading } from "store/reducer";
 
 export default function ProposalThread() {
   const { t } = useTranslation();
@@ -14,7 +16,6 @@ export default function ProposalThread() {
   const enableQuill = useLoadQuill();
 
   const [data, setData] = useState();
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getProposalInfo = async () => {
@@ -22,14 +23,14 @@ export default function ProposalThread() {
       if (!id) {
         return;
       }
-      setLoading(true);
+      store.dispatch(saveLoading(true));
       try {
         const res = await getProposalDetail(id);
         setData(res.data.thread);
       } catch (error) {
         console.error("get proposal detail error:", error);
       } finally {
-        setLoading(false);
+        store.dispatch(saveLoading(false));
       }
     };
     qid && getProposalInfo();

@@ -6,6 +6,8 @@ import ProposalCard from "components/poposal/proposalCard";
 import { getProposalsBySubCategory } from "api/proposal";
 import { PROPOSAL_CATEGORIES } from "utils/constant";
 import InfiniteScroll from "react-infinite-scroll-component";
+import store from "store";
+import { saveLoading } from "store/reducer";
 
 export default function ProposalCategory() {
   const { id } = useParams();
@@ -15,14 +17,13 @@ export default function ProposalCategory() {
   const [proposals, setProposals] = useState([]);
   const [orderType, setOrderType] = useState("new");
   const [hasMore, setHasMore] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const getProposals = async () => {
     const _id = Number(id);
     if (!_id) {
       return;
     }
-    setLoading(true);
+    store.dispatch(saveLoading(true));
     try {
       const res = await getProposalsBySubCategory({
         page,
@@ -37,7 +38,7 @@ export default function ProposalCategory() {
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
+      store.dispatch(saveLoading(false));
     }
   };
 

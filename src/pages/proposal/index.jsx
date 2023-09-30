@@ -10,6 +10,8 @@ import ProposalCard from "components/poposal/proposalCard";
 import { getAllProposals } from "api/proposal";
 import InfiniteScroll from "react-infinite-scroll-component";
 import MsgIcon from "assets/images/proposal/message.png";
+import store from "store";
+import { saveLoading } from "store/reducer";
 
 export default function Proposal() {
   const { t } = useTranslation();
@@ -20,7 +22,6 @@ export default function Proposal() {
   const [orderType, setOrderType] = useState("latest");
   const [activeTab, setActiveTab] = useState(1);
   const [hasMore, setHasMore] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const handleChangeOrder = (index) => {
     setPage(1);
@@ -29,7 +30,7 @@ export default function Proposal() {
   };
 
   const getProposals = async () => {
-    setLoading(true);
+    store.dispatch(saveLoading(true));
     try {
       const resp = await getAllProposals({ page, per_page: pageSize, sort: orderType });
       setProposals([...proposals, ...resp.data.threads]);
@@ -38,7 +39,7 @@ export default function Proposal() {
     } catch (error) {
       console.error("getAllProposals failed", error);
     } finally {
-      setLoading(false);
+      store.dispatch(saveLoading(false));
     }
   };
 
