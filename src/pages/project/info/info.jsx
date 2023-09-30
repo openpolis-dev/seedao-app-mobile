@@ -10,6 +10,7 @@ import store from "store";
 import { saveLoading } from "store/reducer";
 import ProjectMember from "./member";
 import ProjectBasic from "./basic";
+import ProjectProposal from "./proposal";
 
 const TABS_VALUE = {
   INFOMATION: 0,
@@ -74,6 +75,8 @@ export default function ProjectInfo() {
         return <ProjectBasic />;
       case TABS_VALUE.MEMBER:
         return <ProjectMember />;
+      case TABS_VALUE.PROPOSAL:
+        return <ProjectProposal />;
       default:
         return <></>;
     }
