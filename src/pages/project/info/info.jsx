@@ -9,6 +9,7 @@ import { useProjectContext, PROJECT_ACTIONS } from "./provider";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import ProjectMember from "./member";
+import ProjectBasic from "./basic";
 
 const TABS_VALUE = {
   INFOMATION: 0,
@@ -69,6 +70,8 @@ export default function ProjectInfo() {
   }, [id, dispatch]);
   const getTabContent = () => {
     switch (activeTab) {
+      case TABS_VALUE.INFOMATION:
+        return <ProjectBasic />;
       case TABS_VALUE.MEMBER:
         return <ProjectMember />;
       default:
@@ -84,5 +87,5 @@ export default function ProjectInfo() {
 }
 
 const TabContent = styled.div`
-  padding: 15px 20px;
+  padding-block: 15px;
 `;
