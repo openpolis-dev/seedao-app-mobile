@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 
 export default function ProgressBar({ percent }) {
   const { t } = useTranslation();
-  console.log("????", percent, percent < 30);
   return (
     <ProgressBarBox percent={percent} left={percent < 30}>
       <div className="progress">
