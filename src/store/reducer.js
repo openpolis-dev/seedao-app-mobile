@@ -11,8 +11,17 @@ const mainSlice = createSlice({
         saveLoading(state, action) {
             state.loading = action.payload;
         },
-        saveContract(state, action) {
-            state.mainContract = action.payload;
+        // saveContract(state, action) {
+        //     state.mainContract = action.payload;
+        // },
+        saveUserToken(state, action) {
+            state.userToken = action.payload;
+        },
+        saveWalletType(state, action) {
+            state.walletType = action.payload;
+        },
+        saveSigner(state, action) {
+            state.signer = action.payload;
         }
     },
 });
@@ -20,6 +29,9 @@ const mainSlice = createSlice({
 export const {
     saveAccount,
     saveLoading,
-    saveContract,
+    // saveContract,
+    saveSigner,
+    saveWalletType,
+    saveUserToken,
 } = mainSlice.actions;
 export default mainSlice.reducer;

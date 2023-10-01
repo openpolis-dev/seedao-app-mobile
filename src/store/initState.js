@@ -1,5 +1,8 @@
 export default {
   account: null,
   loading: null,
-  mainContract:null
+  mainContract:null,
+  signer:null,
+  userToken: null,
+  walletType: null,
 };

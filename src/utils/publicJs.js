@@ -1,3 +1,6 @@
+import {SiweMessage} from 'siwe';
+import AppConfig from '../AppConfig';
+
 const AddressToShow = (address) => {
   if (!address) {
     return "...";
@@ -13,6 +16,21 @@ const AddressToShow = (address) => {
   return `${frontStr}...${afterStr}`;
 };
 
+export const createSiweMessage = (address, chainId, nonce, statement) => {
+  const {host, origin} = AppConfig;
+  const siweMessage = new SiweMessage({
+    domain: host,
+    address,
+    statement,
+    uri: origin,
+    version: '1',
+    chainId: chainId,
+    nonce,
+  });
+  return siweMessage.prepareMessage();
+};
+
 export default {
   AddressToShow,
+  createSiweMessage,
 };

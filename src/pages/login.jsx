@@ -7,7 +7,7 @@ import Metamask from "../components/login/metamask";
 import {useNavigate} from "react-router-dom";
 import Loading from "../components/layout/loading";
 import Joyid from "../components/login/joyid";
-// import Unipass from "../components/login/unipass";
+import Unipass from "../components/login/unipass";
 
 const Box = styled.div`
     display: flex;
@@ -75,7 +75,7 @@ export default function Login() {
                     <Metamask />
                 </li>
                 <li>
-                    {/*<Unipass />*/}
+                    <Unipass />
                 </li>
                 <li>
                     <Joyid />
