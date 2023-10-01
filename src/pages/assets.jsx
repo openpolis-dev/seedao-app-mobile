@@ -12,6 +12,7 @@ import {getProjectApplications} from "../api/applications";
 import {formatTime} from "../utils/time";
 import {useNavigate} from "react-router-dom";
 import BgImg from '../assets/images/homebg.png';
+import ApplicantCard from "components/applicant";
 
 const Box = styled.div`
     padding: 20px;
@@ -108,34 +109,11 @@ const TitBox = styled.div`
 const ListBox = styled.div`
 `
 
-const BtmBox = styled.ul`
+const BtmBox = styled.div`
    padding-top: 20px;
-    li{
-      background: #fff;
-      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
-  .line{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    &:first-child{
-      margin-bottom: 10px;
-    }
-  }
-`
-
-
-const StatusBox = styled.div`
-    font-weight: bold;
-  color: var(--bs-primary);
-  font-size: 16px;
-`
-
-const TimeBox = styled.div`
-    font-size: 12px;
+   & > div {
+      margin-bottom: 15px;
+   }
 `
 
 export default function Assets(){
@@ -243,23 +221,10 @@ export default function Assets(){
             <ListBox>
                 <TitBox>{t('Project.Record')}</TitBox>
                 <BtmBox>
-
                     {
-                        !!list.length && list.map((item,index)=>(
-                            <li key={index}>
-                                <div className="line">
-                                    <div>{PublicJs.AddressToShow(item.target_user_wallet)}</div>
-                                    <div>{item.credit_amount ? `${t('My.Points')} ${item.credit_amount}`:''}</div>
-                                </div>
-                                <div className="line">
-                                    <TimeBox>{item.created_date}</TimeBox>
-                                    <StatusBox>{item.status}</StatusBox>
-                                </div>
-                            </li>
-                        ))
-                    }
-                    {
-                        !list.length && !loading && <NoItem />
+                        list.length ? list.map((item) => (
+                            <ApplicantCard data={item} key={item.applicant_id} />
+                        )) : <NoItem />
                     }
                 </BtmBox>
             </ListBox>

@@ -10,6 +10,7 @@ import {getUser} from "../api/user";
 import {getProjectApplications} from "../api/applications";
 import PublicJs from "../utils/publicJs";
 import NoItem from "../components/noItem";
+import ApplicantCard from "components/applicant";
 
 const Box = styled.div`
     padding: 20px;
@@ -43,33 +44,11 @@ const Tit = styled.div`
 `
 
 const BtmBox = styled.ul`
-   padding-top: 20px;
-    li{
-      background: #fff;
-      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
-  .line{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    &:first-child{
-      margin-bottom: 10px;
-    }
+  padding-top: 20px;
+  & > div {
+    margin-bottom: 15px;
   }
-`
-
-const StatusBox = styled.div`
-    font-weight: bold;
-  color: var(--bs-primary);
-  font-size: 16px;
-`
-
-const TimeBox = styled.div`
-    font-size: 12px;
-`
+`;
 
 export default function Vault(){
     const {t,i18n} = useTranslation();
@@ -188,23 +167,10 @@ export default function Vault(){
             <div>
                 <Tit>{t('Project.Record')}</Tit>
                 <BtmBox>
-
-                    {
-                        !!list.length && list.map((item,index)=>(
-                            <li key={index}>
-                                <div className="line">
-                                    <div>{PublicJs.AddressToShow(item.target_user_wallet)}</div>
-                                    <div>{item.credit_amount ? `${t('My.Points')} ${item.credit_amount}`:''}</div>
-                                </div>
-                                <div className="line">
-                                    <TimeBox>{item.created_date}</TimeBox>
-                                    <StatusBox>{item.status}</StatusBox>
-                                </div>
-                            </li>
-                        ))
-                    }
-                    {
-                        !list.length && !loading && <NoItem />
+                     {
+                        list.length ? list.map((item) => (
+                            <ApplicantCard data={item} key={item.applicant_id} />
+                        )) : <NoItem />
                     }
                 </BtmBox>
             </div>
