@@ -11,4 +11,5 @@ export default function Loading() {
 
 const LoadingBox = styled.div`
   text-align: center;
+  padding-block: 10px;
 `;
