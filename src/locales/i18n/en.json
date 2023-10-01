@@ -210,13 +210,11 @@
       "my": "My",
       "onBoard": "On Boarding",
       "connect": "Connect Wallet",
-      "setting":"Setting",
+      "setting": "Setting",
       "language": "Language",
       "privacy": "Privacy Policy",
       "logout": "LogOut",
       "become": "Become a member of SeeDAO",
-      "proof": "Get proof of membership for SeeDAO",
-      "Enter": "Enter",
       "version": "Version",
       "chat": "Chat",
       "wallet": "Wallet"
@@ -225,6 +223,11 @@
       "mmTips1": "Connect To {{type}}",
       "mmTips2": "Sign Message",
       "mmTips3": "Login to SeeDAO"
+    },
+    "onBoard": {
+      "join": "Join us",
+      "enter": "Enter Deschool",
+      "tip": "Get proof of membership for SeeDAO"
     },
     "copied": "Copied!",
     "proposalDetail": "Proposal Detail",

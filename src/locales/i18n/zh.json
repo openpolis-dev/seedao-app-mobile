@@ -215,8 +215,6 @@
       "privacy": "隐私政策",
       "logout": "退出登录",
       "become": "成为SEEDAO成员",
-      "proof": "获取SeeDAO的成员证明",
-      "Enter": "进入",
       "version": "版本",
       "chat": "聊天",
       "wallet": "钱包"
@@ -225,6 +223,11 @@
       "mmTips1": "连接到{{type}}",
       "mmTips2": "签名",
       "mmTips3": "登录到SeeDAO"
+    },
+    "onBoard": {
+      "join": "加入我们",
+      "enter": "进入 Deschool",
+      "tip": "获取SeeDAO的成员证明"
     },
     "copied": "已复制!",
     "proposalDetail": "提案详情",
