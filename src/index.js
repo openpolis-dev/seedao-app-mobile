@@ -5,6 +5,10 @@ import VConsole from "vconsole";
 
 process.env.NODE_ENV === 'development' && new VConsole();
 
+const appHeight = () => document.documentElement.style.setProperty("--app-height", `${window.innerHeight}px`);
+window.addEventListener("resize", appHeight);
+appHeight();
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <App />
