@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { formatNumber } from "utils/number";
@@ -9,6 +9,7 @@ import ApplicantCard from "components/applicant";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import NoItem from "components/noItem";
+import ProgressBar from "components/projectOrGuild/progressBar";
 
 const PAGE_SIZE = 10;
 
@@ -63,6 +64,25 @@ export default function GuildAssets() {
   useEffect(() => {
     id && getRecords();
   }, [id]);
+
+  const UsdPercent = useMemo(() => {
+    const remain = token?.remain_amount || 0;
+    const total = token?.total_amount || 0;
+    if (total === 0) {
+      return 100;
+    }
+    return ((total - remain) * 100) / total;
+  }, [token]);
+
+  const CreditPercent = useMemo(() => {
+    const remain = point?.remain_amount || 0;
+    const total = point?.total_amount || 0;
+    if (Number(total) === 0) {
+      return 100;
+    }
+    return ((total - remain) * 100) / total;
+  }, [point]);
+
   return (
     <GuildAssetsPage>
       <InfiniteScroll
@@ -75,25 +95,31 @@ export default function GuildAssets() {
       >
         <AssetsContent>
           <AssetItem>
-            <div className="title">Token</div>
+            <div className="title">{t("Project.USDBudget")}</div>
+            <ProgressBar percent={UsdPercent} />
             <div className="line">
-              <span className="label">{t("Guild.RemainingUSDBudget")}</span>
-              <span className="num">{formatNumber(token?.remain_amount || 0)}</span>
-            </div>
-            <div className="line">
-              <span className="label">{t("Guild.USDBudget")}</span>
-              <span className="num">{formatNumber(token?.total_amount || 0)}</span>
+              <div>
+                <span className="label">{t("Guild.Remain")}</span>
+                <span className="num">{formatNumber(token?.remain_amount || 0)}</span>
+              </div>
+              <div>
+                <span className="label">{t("Guild.Total")}</span>
+                <span className="num">{formatNumber(token?.total_amount || 0)}</span>
+              </div>
             </div>
           </AssetItem>
           <AssetItem>
-            <div className="title">{t("Guild.Points")}</div>
+            <div className="title">{t("Guild.PointsBudget")}</div>
+            <ProgressBar percent={CreditPercent} />
             <div className="line">
-              <span className="label">{t("Guild.RemainingPointsBudget")}</span>
-              <span className="num">{formatNumber(point?.remain_amount || 0)}</span>
-            </div>
-            <div className="line">
-              <span className="label">{t("Guild.PointsBudget")}</span>
-              <span className="num">{formatNumber(point?.total_amount || 0)}</span>
+              <div>
+                <span className="label">{t("Guild.Remain")}</span>
+                <span className="num">{formatNumber(point?.remain_amount || 0)}</span>
+              </div>
+              <div>
+                <span className="label">{t("Guild.Total")}</span>
+                <span className="num">{formatNumber(point?.total_amount || 0)}</span>
+              </div>
             </div>
           </AssetItem>
         </AssetsContent>
@@ -121,15 +147,18 @@ const AssetItem = styled.div`
   margin-bottom: 15px;
   .title {
     font-weight: 600;
+    margin-bottom: 10px;
   }
   .line {
+    margin-top: 10px;
     display: flex;
-    & > span {
+    & > div {
       flex: 1;
     }
     .num {
       color: var(--bs-primary);
       font-weight: 600;
+      margin-left: 6px;
     }
   }
 `;
