@@ -10,6 +10,7 @@ import store from "store";
 import { saveLoading } from "store/reducer";
 import NoItem from "components/noItem";
 import ProgressBar from "components/projectOrGuild/progressBar";
+import Loading from "components/common/loading";
 
 const PAGE_SIZE = 10;
 
@@ -34,9 +35,9 @@ export default function GuildAssets() {
     setPoint(_point);
   }, [data]);
 
-  const getRecords = async () => {
+  const getRecords = async (useGlobalLoading) => {
     try {
-      store.dispatch(saveLoading(true));
+      useGlobalLoading && store.dispatch(saveLoading(true));
       const res = await getProjectApplications(
         {
           entity: "guild",
@@ -57,12 +58,12 @@ export default function GuildAssets() {
     } catch (error) {
       console.error(error);
     } finally {
-      store.dispatch(saveLoading(false));
+      useGlobalLoading && store.dispatch(saveLoading(false));
     }
   };
 
   useEffect(() => {
-    id && getRecords();
+    id && getRecords(true);
   }, [id]);
 
   const UsdPercent = useMemo(() => {
@@ -89,7 +90,7 @@ export default function GuildAssets() {
         dataLength={list.length}
         next={getRecords}
         hasMore={list.length < total}
-        loader={<></>}
+        loader={<Loading />}
         height={400}
         style={{ height: "calc(100vh - 120px)" }}
       >

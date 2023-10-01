@@ -10,6 +10,7 @@ import store from "store";
 import { saveLoading } from "store/reducer";
 import NoItem from "components/noItem";
 import ProgressBar from "components/projectOrGuild/progressBar";
+import Loading from "components/common/loading";
 
 const PAGE_SIZE = 10;
 
@@ -34,9 +35,9 @@ export default function ProjectAssets() {
     setPoint(_point);
   }, [data]);
 
-  const getRecords = async () => {
+  const getRecords = async (useGlobalLoading) => {
     try {
-      store.dispatch(saveLoading(true));
+      useGlobalLoading && store.dispatch(saveLoading(true));
       const res = await getProjectApplications(
         {
           entity: "project",
@@ -57,12 +58,12 @@ export default function ProjectAssets() {
     } catch (error) {
       console.error(error);
     } finally {
-      store.dispatch(saveLoading(false));
+      useGlobalLoading && store.dispatch(saveLoading(false));
     }
   };
 
   useEffect(() => {
-    id && getRecords();
+    id && getRecords(true);
   }, [id]);
 
   const UsdPercent = useMemo(() => {
@@ -89,7 +90,7 @@ export default function ProjectAssets() {
         dataLength={list.length}
         next={getRecords}
         hasMore={list.length < total}
-        loader={<></>}
+        loader={<Loading />}
         height={400}
         style={{ height: "calc(100vh - 120px)" }}
       >
@@ -125,8 +126,8 @@ export default function ProjectAssets() {
         </AssetsContent>
         <p className="record-title">{t("Project.Record")}</p>
         <ApplicantList>
-          {list.map((item) => (
-            <ApplicantCard key={item.application_id} data={item} />
+          {list.map((item, i) => (
+            <ApplicantCard key={i} data={item} />
           ))}
           {!list.length && <NoItem />}
         </ApplicantList>
