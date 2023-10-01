@@ -37,11 +37,15 @@ export default function ApplicantCard({ data }) {
       <Line>
         <span>{publicJs.AddressToShow(data.target_user_wallet)}</span>
         <div className="token">
-          {!!data.token_amount && data.token_amount !== "0" && <span>USDT {formatNumber(data.token_amount)}</span>}
+          {!!data.token_amount && data.token_amount !== "0" && (
+            <ValueItem long={formatNumber(data.token_amount).length > 6}>
+              USDT {formatNumber(data.token_amount)}
+            </ValueItem>
+          )}
           {!!data.credit_amount && data.credit_amount !== "0" && (
-            <span>
+            <ValueItem long={formatNumber(data.token_amount).length > 6}>
               {t("Project.Points")} {formatNumber(data.credit_amount)}
-            </span>
+            </ValueItem>
           )}
         </div>
       </Line>
@@ -61,6 +65,7 @@ const ApplicantCardBox = styled.div`
   border-radius: 8px;
   overflow: hidden;
   padding: 15px;
+  font-size: 16px;
 `;
 
 const Line = styled.div`
@@ -77,10 +82,19 @@ const Line = styled.div`
   .time {
     font-size: 12px;
   }
-  .token span {
+  /* .token span {
     margin-left: 6px;
     &:first-child {
       margin-left: 0;
     }
+  } */
+`;
+
+const ValueItem = styled.span`
+  text-align: right;
+  display: ${(props) => (props.long ? "block" : "unset")};
+  margin-left: 6px;
+  &:first-child {
+    margin-left: 0;
   }
 `;
