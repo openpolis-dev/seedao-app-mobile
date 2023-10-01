@@ -8,7 +8,8 @@ import { saveLoading } from "../store/reducer";
 import {getUser} from "../api/user";
 import {Clipboard2Check} from "react-bootstrap-icons";
 import DefaultImg from "../assets/images/avatar.jpg";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import Avatar from "components/common/avatar";
 
 const Box = styled.div`
     padding: 20px;
@@ -38,17 +39,12 @@ const RhtBox = styled.div`
   padding-top: 5px;
 `
 
-const Avatar = styled.div`
-    display: flex;
+const AvatarBox = styled.div`
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   margin-bottom: 40px;
-  img{
-    border-radius: 100%;
-    width: 100px;
-    height: 100px;
-  }
 `
 
 const TipsBox = styled.div`
@@ -108,68 +104,60 @@ export default function Profile(){
         },1000)
     }
 
-    return <Layout noTab title={t('My.MyProfile')}>
-        {
-            showCopid &&  <TipsBox>
-                <InnerBox>
-                    {t('mobile.my.wallet')} {t('mobile.copied')}
-                </InnerBox>
-            </TipsBox>
-        }
-
+    return (
+      <Layout noTab title={t("My.MyProfile")}>
+        {showCopid && (
+          <TipsBox>
+            <InnerBox>
+              {t("mobile.my.wallet")} {t("mobile.copied")}
+            </InnerBox>
+          </TipsBox>
+        )}
 
         <Box>
-            <Avatar>
-                {!!detail?.avatar && (
-                    <img src={detail.avatar} alt=""/>
-                )}
-                {!detail?.avatar && (
-                    <img src={DefaultImg} alt=""/>
-                )}
-            </Avatar>
-            <LineBox>
-                <dl>
-                    <dt>{t('My.Name')}</dt>
-                    <dd>{detail?.name}</dd>
-                </dl>
-                <dl>
-                    <dt>{t('mobile.my.wallet')}</dt>
-                    <dd>
-                        {detail?.wallet}
-                    </dd>
-                    <RhtBox>
-                        <CopyToClipboard text={detail?.wallet}
-                                         onCopy={() => copyTo(detail?.wallet)}>
-                            <Clipboard2Check />
-                        </CopyToClipboard>
-
-                    </RhtBox>
-                </dl>
-                <dl>
-                    <dt>{t('My.Email')}</dt>
-                    <dd>{detail?.email}</dd>
-                </dl>
-                <dl>
-                    <dt>{t('My.Discord')}</dt>
-                    <dd>{detail?.discord_profile}</dd>
-                </dl>
-                <dl>
-                    <dt>{t('My.Twitter')}</dt>
-                    <dd>{detail?.twitter_profile}</dd>
-                </dl>
-                <dl>
-                    <dt>{t('My.WeChat')}</dt>
-                    <dd>{detail?.wechat}</dd>
-                </dl>
-                <dl>
-                    <dt>{t('My.Mirror')}</dt>
-                    <dd>{detail?.mirror}</dd>
-                </dl>
-                <dl>
-                    <dt>{t('My.Google')}</dt>
-                    <dd>{detail?.google_profile}</dd>
-                </dl>
-            </LineBox>
+          <AvatarBox>
+            <Avatar size="100px" src={detail?.avatar} />
+          </AvatarBox>
+          <LineBox>
+            <dl>
+              <dt>{t("My.Name")}</dt>
+              <dd>{detail?.name}</dd>
+            </dl>
+            <dl>
+              <dt>{t("mobile.my.wallet")}</dt>
+              <dd>{detail?.wallet}</dd>
+              <RhtBox>
+                <CopyToClipboard text={detail?.wallet} onCopy={() => copyTo(detail?.wallet)}>
+                  <Clipboard2Check />
+                </CopyToClipboard>
+              </RhtBox>
+            </dl>
+            <dl>
+              <dt>{t("My.Email")}</dt>
+              <dd>{detail?.email}</dd>
+            </dl>
+            <dl>
+              <dt>{t("My.Discord")}</dt>
+              <dd>{detail?.discord_profile}</dd>
+            </dl>
+            <dl>
+              <dt>{t("My.Twitter")}</dt>
+              <dd>{detail?.twitter_profile}</dd>
+            </dl>
+            <dl>
+              <dt>{t("My.WeChat")}</dt>
+              <dd>{detail?.wechat}</dd>
+            </dl>
+            <dl>
+              <dt>{t("My.Mirror")}</dt>
+              <dd>{detail?.mirror}</dd>
+            </dl>
+            <dl>
+              <dt>{t("My.Google")}</dt>
+              <dd>{detail?.google_profile}</dd>
+            </dl>
+          </LineBox>
         </Box>
-    </Layout>
+      </Layout>
+    );
 }
