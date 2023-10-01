@@ -33,8 +33,4 @@ const TabMenu = styled.div`
       border-bottom: 3px solid var(--bs-primary);
     }
   }
-  &::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
 `;

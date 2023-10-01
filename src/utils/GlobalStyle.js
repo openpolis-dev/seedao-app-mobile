@@ -23,6 +23,10 @@ const GlobalStyle = createGlobalStyle`
     "Segoe UI Emoji","Segoe UI Symbol" ;
     padding: 0;
     margin: 0;
+    &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
   }
   a{
     text-decoration: none;
