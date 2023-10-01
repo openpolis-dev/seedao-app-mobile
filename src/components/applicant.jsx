@@ -46,7 +46,7 @@ export default function ApplicantCard({ data }) {
         </div>
       </Line>
       <Line>
-        <span>{formatTime(data.created_at)}</span>
+        <span className="time">{formatTime(data.created_at)}</span>
         <span className="status">{t(formatApplicationStatus(data.status))}</span>
       </Line>
     </ApplicantCardBox>
@@ -61,7 +61,6 @@ const ApplicantCardBox = styled.div`
   border-radius: 8px;
   overflow: hidden;
   padding: 15px;
-  font-size: 14px;
 `;
 
 const Line = styled.div`
@@ -73,7 +72,10 @@ const Line = styled.div`
   }
   .status {
     color: var(--bs-primary);
-    font-weight: 600;
+    font-weight: bold;
+  }
+  .time {
+    font-size: 12px;
   }
   .token span {
     margin-left: 6px;

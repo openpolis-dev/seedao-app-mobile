@@ -110,7 +110,6 @@ export default function ProjectAssets() {
 }
 const ProjectAssetsPage = styled.div`
   padding-inline: 20px;
-  font-size: 14px;
   .record-title {
     font-weight: 600;
     margin-block: 15px;
