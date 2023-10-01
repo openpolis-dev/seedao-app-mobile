@@ -8,6 +8,7 @@ import { getProjectApplications } from "api/applications";
 import ApplicantCard from "components/applicant";
 import store from "store";
 import { saveLoading } from "store/reducer";
+import NoItem from "components/noItem";
 
 const PAGE_SIZE = 10;
 
@@ -101,6 +102,7 @@ export default function GuildAssets() {
           {list.map((item) => (
             <ApplicantCard key={item.application_id} data={item} />
           ))}
+          {!list.length && <NoItem />}
         </ApplicantList>
       </InfiniteScroll>
     </GuildAssetsPage>
