@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 export default function ProgressBar({ percent }) {
   const { t } = useTranslation();
   return (
-    <ProgressBarBox percent={percent} left={percent < 30}>
+    <ProgressBarBox percent={percent} left={percent < 30 ? 1 : 0}>
       <div className="progress">
         <span>
           {t("mobile.used")} {percent?.toFixed(2) || 0}%
