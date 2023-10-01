@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import { ChevronDoubleRight } from "react-bootstrap-icons"
 import PublicJs from "../utils/publicJs";
 import NoItem from "../components/noItem";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useSelector} from "react-redux";
 import store from "../store";
 import { saveLoading } from "../store/reducer";
@@ -13,6 +13,10 @@ import {formatTime} from "../utils/time";
 import {useNavigate} from "react-router-dom";
 import BgImg from '../assets/images/homebg.png';
 import ApplicantCard from "components/applicant";
+import AppConfig from "../AppConfig";
+import axios from "axios";
+import {getTreasury} from "../api/treasury";
+import { ethers } from 'ethers';
 
 const Box = styled.div`
     padding: 20px;
@@ -43,12 +47,13 @@ const CardBox = styled.div`
   }
 `
 const Num = styled.div`
-  font-size: 26px;
+  font-size: 20px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 `
 const Tit = styled.div`
     font-size: 12px;
+  text-align: center;
 `
 
 const DetailBox = styled.div`
@@ -57,10 +62,11 @@ const DetailBox = styled.div`
   align-items: center;
   width: 100%;
   font-size: 12px;
+  margin-top: -20px;
 `
 const FlexBox = styled.div`
     display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
   margin-top: 20px;
   flex-wrap: wrap;
@@ -70,9 +76,13 @@ const FlexBox = styled.div`
 const CardItem = styled(CardBox)`
     width: 48%;
   margin-bottom: 20px;
-  padding: 30px;
+  padding:20px 10px;
   color: #fff;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   &:first-child {
     background: linear-gradient(to right, #9d72fa, #6961fa);
   }
@@ -116,6 +126,13 @@ const BtmBox = styled.div`
    }
 `
 
+const BtmLine = styled.div`
+    display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  align-items: center;
+`
+
 export default function Assets(){
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -125,6 +142,108 @@ export default function Assets(){
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(5);
     const [total, setTotal] = useState(0);
+    const [totalBalance, setTotalBalance] = useState('0.00');
+    const [totalSigner, setTotalSigner] = useState(0);
+    const [vaultsMap, setVaultsMap] = useState({});
+    const [nftData, setNftData] = useState({
+        floorPrice: 0,
+        totalSupply: 0,
+    });
+
+    const [asset, setAsset] = useState({
+        token_remain_amount: 0,
+        token_total_amount: 0,
+        credit_remain_amount: 0,
+        credit_total_amount: 0,
+    });
+
+    const [totalSCR, setTotalSCR] = useState('0');
+    const { SCR_CONTRACT } = AppConfig;
+    const SCR_PRICE = 3;
+
+    const SCRValue = useMemo(() => {
+        return Number(totalSCR) * SCR_PRICE;
+    }, [totalSCR]);
+
+
+    const { VAULTS } = AppConfig;
+
+    const getVaultBalance = async ({ chainId, address }) => {
+        return axios.get(`https://safe-client.safe.global/v1/chains/${chainId}/safes/${address}/balances/usd?trusted=true`);
+    };
+
+    const getVaultInfo = async ({ chainId, address }) => {
+        return axios.get(`https://safe-client.safe.global/v1/chains/${chainId}/safes/${address}`);
+    };
+
+    useEffect(() => {
+        getAssets();
+        getVaultsInfo();
+        getFloorPrice();
+        getSCR();
+    }, []);
+
+
+    const getAssets = async () => {
+        store.dispatch(saveLoading(true));
+        try {
+            const res = await getTreasury();
+            setAsset({
+                token_remain_amount: res.data.token_remain_amount,
+                token_total_amount: res.data.token_total_amount,
+                credit_remain_amount: res.data.credit_remain_amount,
+                credit_total_amount: res.data.credit_total_amount,
+            });
+        } catch (error) {
+            console.error('getTreasury error', error);
+        }finally {
+            store.dispatch(saveLoading(false));
+        }
+    };
+
+    const getVaultsInfo = async () => {
+        const vaults_map = {};
+        const users= [];
+        let _total = 0;
+        store.dispatch(saveLoading(true));
+        try {
+            const reqs = VAULTS.map((item) => getVaultBalance(item));
+            const results = await Promise.allSettled(reqs);
+            results.forEach((res, index) => {
+                if (res.status === 'fulfilled') {
+                    const _v = Number(res.value.data?.fiatTotal || 0);
+                    vaults_map[VAULTS[index].id] = {
+                        balance: _v.toFixed(2),
+                    };
+                    _total += _v;
+                }
+            });
+        } catch (error) {
+            console.error('getVaultBalance error', error);
+        }
+        try {
+            const reqs = VAULTS.map((item) => getVaultInfo(item));
+            const results = await Promise.allSettled(reqs);
+            results.forEach((res, index) => {
+                if (res.status === 'fulfilled') {
+                    const _id = VAULTS[index].id;
+                    if (!vaults_map[_id]) {
+                        vaults_map[_id] = {};
+                    }
+                    vaults_map[_id].total = res.value.data?.owners.length || 0;
+                    vaults_map[_id].threshold = res.value.data?.threshold || 0;
+                    users.push(...res.value.data?.owners.map((item) => item.value));
+                }
+            });
+        } catch (error) {
+            console.error('getVaultInfo error', error);
+        }finally {
+            store.dispatch(saveLoading(false));
+        }
+        setTotalSigner([...new Set(users)].length);
+        setTotalBalance(_total.toFixed(2));
+        setVaultsMap(vaults_map);
+    };
 
 
     useEffect(() => {
@@ -159,6 +278,60 @@ export default function Assets(){
         }
     };
 
+
+    const getFloorPrice = async () => {
+        try {
+            const url = 'https://restapi.nftscan.com/api/v2/statistics/collection/0x23fda8a873e9e46dbe51c78754dddccfbc41cfe1';
+            const {XAPIKEY} = AppConfig;
+            const res = await axios.get(url, {
+                headers: {
+                    'X-API-KEY': XAPIKEY,
+                },
+            });
+            setNftData({
+                floorPrice: res.data?.data?.floor_price || 0,
+                totalSupply: res.data?.data?.items_total || 0,
+            });
+        } catch (error) {
+            console.error('getFloorPrice error', error);
+        }
+    };
+
+
+    const getSCR = async () => {
+        const provider = new ethers.providers.StaticJsonRpcProvider(
+            'https://eth-mainnet.g.alchemy.com/v2/YuNeXto27ejHnOIGOwxl2N_cHCfyLyLE',
+        );
+        // setLoading1(true)
+        try {
+            const contract = new ethers.Contract(
+                SCR_CONTRACT,
+                [
+                    {
+                        inputs: [],
+                        name: 'totalSupply',
+                        outputs: [
+                            {
+                                internalType: 'uint256',
+                                name: '',
+                                type: 'uint256',
+                            },
+                        ],
+                        stateMutability: 'view',
+                        type: 'function',
+                    },
+                ],
+                provider,
+            );
+            const supply = await contract.totalSupply();
+            setTotalSCR(ethers.utils.formatEther(supply));
+        } catch (error) {
+            console.error('getSCR error', error);
+        }finally {
+            // setLoading1(false)
+        }
+    };
+
     const handlePage = (num) => {
         setPage(num + 1);
     };
@@ -172,49 +345,53 @@ export default function Assets(){
             <CardBox className="total">
                 <div className="vaultInner">
                     <Tit>{t('Assets.TotalBalance')}</Tit>
-                    <Num>0</Num>
+                    <Num>${totalBalance}</Num>
                     <DetailBox onClick={()=>toGo()}>
                         <div>{t('Assets.Detail')}</div>
                         <ChevronDoubleRight />
                     </DetailBox>
                 </div>
-
             </CardBox>
             <FlexBox>
                 <CardItem>
                     <Tit>{t('Assets.SupplySCR')}</Tit>
-                    <Num>0</Num>
-                    <DetailBox>
-                        <div>{t('Assets.Detail')}</div>
-                        <ChevronDoubleRight />
-                    </DetailBox>
+                    <Num>{totalSCR}</Num>
+                    <BtmLine>
+                        <div>≈ {SCRValue.toFixed(2)} U</div>
+                        <div>(1SCR ≈ {SCR_PRICE} U)</div>
+                    </BtmLine>
                     <div className="decorBg">SEE</div>
                 </CardItem>
                 <CardItem>
-                    <Tit>{t('Assets.TotalBalance')}</Tit>
-                    <Num>0</Num>
-                    <DetailBox>
-                        <div>{t('Assets.Detail')}</div>
-                        <ChevronDoubleRight />
-                    </DetailBox>
+                    <Tit>{t('Assets.SupplySGN')}</Tit>
+                    <Num>{nftData.totalSupply}</Num>
+                    <BtmLine>
+                        <div>{t('Assets.FloorPrice')}</div>
+                        <div>{nftData.floorPrice} ETH</div>
+                    </BtmLine>
                     <div className="decorBg">DAO</div>
                 </CardItem>
                 <CardItem>
-                    <Tit>{t('Assets.TotalBalance')}</Tit>
-                    <Num>0</Num>
-                    <DetailBox>
-                        <div>{t('Assets.Detail')}</div>
-                        <ChevronDoubleRight />
-                    </DetailBox>
+                    <Tit>{t('Assets.SeasonUseUSD')}</Tit>
+                    <Num>{(asset.token_total_amount || 0) - (asset.token_remain_amount||0)}</Num>
+                    <BtmLine>
+                        <div>{t('Assets.SeasonBudget')}</div>
+                        <div>{asset.token_total_amount}</div>
+                    </BtmLine>
                     <div className="decorBg">SEE</div>
                 </CardItem>
                 <CardItem>
-                    <Tit>{t('Assets.TotalBalance')}</Tit>
-                    <Num>0</Num>
-                    <DetailBox>
-                        <div>{t('Assets.Detail')}</div>
-                        <ChevronDoubleRight />
-                    </DetailBox>
+                    <Tit>
+                        <div>
+                            {t('Assets.SeasonUsedSCR')}
+                        </div>
+                        <div>{t('Assets.SCRTip')}</div>
+                    </Tit>
+                    <Num>{(asset.credit_total_amount || 0) - (asset.credit_remain_amount || 0)}</Num>
+                    <BtmLine>
+                        <div>{t('Assets.SeasonBudget')}</div>
+                        <div>{asset.credit_total_amount}</div>
+                    </BtmLine>
                     <div className="decorBg">DAO</div>
                 </CardItem>
             </FlexBox>

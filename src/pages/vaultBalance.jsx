@@ -45,11 +45,16 @@ const FlexBox = styled.ul`
   justify-content: space-between;
   width: 100%;
   border-top: 1px solid #eee;
-  margin-top: 20px;
-  padding-top: 20px;
+  margin-top: 10px;
+  padding-top: 15px;
     li{
       width: 33%;
       text-align: center;
+      border-right: 1px solid #ccc;
+      font-size: 12px;
+      &:last-child{
+        border-right: 0;
+      }
     }
 `
 
@@ -70,6 +75,10 @@ const LineBox = styled.div`
 const FirstLine = styled.div`
   display: flex;
   align-items: center;
+  .iconBox{
+    margin-right: 20px;
+    font-size: 18px;
+  }
 `
 
 const Num = styled.div`
@@ -93,6 +102,39 @@ const InnerBox = styled.div`
     background: #fff;
   padding: 10px 20px;
   box-shadow: 0 5px 10px rgba(0,0,0,0.08);
+`
+
+const TopBox = styled.div`
+    width: 100%;
+`
+
+const Tit = styled.div`
+    font-size: 12px;
+`
+
+const NumBal = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+`
+
+const Tag = styled.div`
+    background: var(--bs-primary);
+    margin-left: 10px;
+    font-size: 12px;
+    color: #fff;
+    padding: 0 10px;
+    border-radius: 10px;
+`
+
+const Addr = styled.div`
+    font-size: 12px;
+  margin-right: 20px;
+`
+
+const TitTop = styled.div`
+    font-size: 14px;
+    font-weight: bold;
 `
 export default function VaultBalance(){
     const { t } = useTranslation();
@@ -137,10 +179,10 @@ export default function VaultBalance(){
         <Box>
             <CardBox>
                 <div className="vaultInner">
-                    <div>
-                        <div>{t('Assets.TotalBalance')}</div>
-                        <div>${totalBalance}</div>
-                    </div>
+                    <TopBox>
+                        <Tit>{t('Assets.TotalBalance')}</Tit>
+                        <NumBal>${totalBalance}</NumBal>
+                    </TopBox>
                     <FlexBox>
                         <li>
                             <div>{t('Assets.Wallet')}</div>
@@ -161,16 +203,16 @@ export default function VaultBalance(){
                 {
                     VAULTS.map((v,index)=>(<li key={index}>
                         <FirstLine>
-                            <div>{t(v.name)}</div>
-                            <div>{SAFE_CHAIN[v.chainId].name}  {vaultsMap[v.id]?.threshold || 0}/{vaultsMap[v.id]?.total || 0}</div>
+                            <TitTop>{t(v.name)}</TitTop>
+                            <Tag>{SAFE_CHAIN[v.chainId].name}  {vaultsMap[v.id]?.threshold || 0}/{vaultsMap[v.id]?.total || 0}</Tag>
                         </FirstLine>
                         <LineBox>
                             <FirstLine>
-                                <div>{PublicJs.AddressToShow(v.address)}</div>
+                                <Addr>{PublicJs.AddressToShow(v.address)}</Addr>
                                 <CopyToClipboard text="123" onCopy={() => copyTo("123")}>
-                                    <Clipboard2Check />
+                                    <Clipboard2Check className="iconBox" />
                                 </CopyToClipboard>
-                                <Share onClick={()=>linkTo(v)}/>
+                                <Share onClick={()=>linkTo(v)} className="iconBox" />
                             </FirstLine>
                             <Num>
                                 ${vaultsMap[v.id]?.balance || 0.0}
