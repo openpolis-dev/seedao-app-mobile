@@ -17,7 +17,7 @@ import { mainnet } from 'wagmi/chains';
 
 
 const chains = [mainnet]
-const projectId = '53f15e1877196c3d22e0d1a3dea1e8e6'
+const projectId = 'da76ddd6c7d31632ed7fc9b88e28a410'
 
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
 const wagmiConfig = createConfig({

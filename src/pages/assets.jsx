@@ -222,8 +222,8 @@ export default function Assets(){
                 <TitBox>{t('Project.Record')}</TitBox>
                 <BtmBox>
                     {
-                        list.length ? list.map((item) => (
-                            <ApplicantCard data={item} key={item.applicant_id} />
+                        list.length ? list.map((item,index) => (
+                            <ApplicantCard data={item} key={item.applicant_id} key={index}/>
                         )) : <NoItem />
                     }
                 </BtmBox>
