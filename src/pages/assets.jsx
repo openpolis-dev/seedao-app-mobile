@@ -30,10 +30,12 @@ const CardBox = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
   &.total{
     background: url(${BgImg}) top no-repeat;
     background-size: 100%;
     background-attachment: fixed;
+    
   }
   .vaultInner {
     display: flex;
@@ -83,6 +85,7 @@ const CardItem = styled(CardBox)`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
   &:first-child {
     background: linear-gradient(to right, #9d72fa, #6961fa);
   }
@@ -282,10 +285,10 @@ export default function Assets(){
     const getFloorPrice = async () => {
         try {
             const url = 'https://restapi.nftscan.com/api/v2/statistics/collection/0x23fda8a873e9e46dbe51c78754dddccfbc41cfe1';
-            const {XAPIKEY} = AppConfig;
+            // const {XAPIKEY} = AppConfig;
             const res = await axios.get(url, {
                 headers: {
-                    'X-API-KEY': XAPIKEY,
+                    'X-API-KEY': 'laP3Go52WW4oBXdt7zhJ7aoj'
                 },
             });
             setNftData({

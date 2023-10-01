@@ -71,6 +71,7 @@ const ApplicantCardBox = styled.div`
 const Line = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 14px;
   &:first-child {
     margin-bottom: 8px;

@@ -16,11 +16,14 @@ export default function Board() {
         <X />
       </CloseBox>
       <ContentBox>
-        <JoinUs>{t("mobile.onBoard.join")}</JoinUs>
-        <TextBox>
-          <p>{t("mobile.onBoard.enter")}</p>
-          <p>{t("mobile.onBoard.tip")}</p>
-        </TextBox>
+        <div>
+          <JoinUs>{t("mobile.onBoard.join")}</JoinUs>
+          <TextBox>
+            <div>{t("mobile.onBoard.enter")}</div>
+            <div>{t("mobile.onBoard.tip")}</div>
+          </TextBox>
+
+        </div>
         <ArrowBox>
           <img src={ArrowIcon} alt="" />
         </ArrowBox>
@@ -55,10 +58,10 @@ const ContentBox = styled.div`
 `;
 
 const JoinUs = styled.div`
-  width: 70%;
-  height: 76px;
-  line-height: 76px;
-  font-size: 46px;
+  width: 60%;
+  height: 1.8em;
+  line-height: 1.8em;
+  font-size: 28px;
   text-align: center;
   background-color: #9163fe;
   color: #fff;
@@ -66,24 +69,26 @@ const JoinUs = styled.div`
   text-transform: uppercase;
   font-weight: 800;
   letter-spacing: 2px;
+  margin-bottom: 20px;
 `;
 
 const ArrowBox = styled.div`
   img {
-    transform: scale(1.7);
+    transform: scale(1.5);
     height: 100px;
     margin-inline: auto;
   }
 `;
 
-const TextBox = styled.div``;
+const TextBox = styled.div`
+`;
 
 const DeschoolLink = styled.a`
   border-radius: 8px;
   border: 2px solid #9163fe;
-  height: 76px;
-  line-height: 76px;
-  font-size: 36px;
+  height: 2.4em;
+  line-height: 2.4em;
+  font-size: 20px;
   display: inline-block;
   width: 50%;
   color: #9163fe;

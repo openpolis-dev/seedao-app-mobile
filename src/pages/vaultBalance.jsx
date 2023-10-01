@@ -20,7 +20,7 @@ const CardBox = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
-
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
   background: url(${BgImg}) top no-repeat;
   background-size: 100%;
   background-attachment: fixed;

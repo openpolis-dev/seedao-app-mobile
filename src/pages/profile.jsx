@@ -26,6 +26,7 @@ const LineBox = styled.div`
     width: 80px;
     font-size: 14px;
     font-weight: normal;
+    flex-shrink: 0;
   }
   dd{
     word-break: break-all;
