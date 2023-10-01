@@ -7,7 +7,6 @@ import store from "../store";
 import { saveLoading } from "../store/reducer";
 import {getUser} from "../api/user";
 import {Clipboard2Check} from "react-bootstrap-icons";
-import DefaultImg from "../assets/images/avatar.jpg";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Avatar from "components/common/avatar";
 
