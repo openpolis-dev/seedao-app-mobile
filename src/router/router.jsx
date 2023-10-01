@@ -1,9 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-    Route,
-    Routes,
-    Navigate
-} from "react-router-dom";
+import React from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Home from "../pages/home";
 import Login from "../pages/login";
 import Project from "pages/project";
@@ -30,53 +26,52 @@ import VaultBalance from "../pages/vaultBalance";
 // import InstallCheck from "./components/install";
 
 function RouterLink() {
-    // const [isInstalled, setIsInstalled] = useState(true);
-    //
-    // useEffect(() => {
-    //     if (
-    //         window.navigator?.standalone === true ||
-    //         window.matchMedia("(display-mode: standalone)").matches
-    //     ) {
-    //         console.log("isInstalled: true. Already in standalone mode");
-    //         setIsInstalled(true);
-    //     } else {
-    //         console.log("isInstalled: false");
-    //         setIsInstalled(false);
-    //     }
-    //
-    // }, []);
+  // const [isInstalled, setIsInstalled] = useState(true);
+  //
+  // useEffect(() => {
+  //     if (
+  //         window.navigator?.standalone === true ||
+  //         window.matchMedia("(display-mode: standalone)").matches
+  //     ) {
+  //         console.log("isInstalled: true. Already in standalone mode");
+  //         setIsInstalled(true);
+  //     } else {
+  //         console.log("isInstalled: false");
+  //         setIsInstalled(false);
+  //     }
+  //
+  // }, []);
 
-    return (
-        <>
-            {/*{!isInstalled && <InstallCheck />}*/}
+  return (
+    <>
+      {/*{!isInstalled && <InstallCheck />}*/}
 
-            <Routes>
-                <Route path="/" element={<Navigate to="/home" />}  />
-                <Route path="/home" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/project" element={<Project />} />
-                <Route path="/project/info/:id" element={<ProjectInfoRoot />} />
-                <Route path="/guild" element={<Guild />} />
-                <Route path="/guild/info/:id" element={<GuildInfoRoot />} />
-                <Route path="/proposal" element={<Proposal />} />
-                <Route path="/proposal/category/:id" element={<ProposalCategory />} />
-                <Route path="/proposal/thread/:id" element={<ProposalThread />} />
-                <Route path="/assets" element={<Assets />} />
-                <Route path="/vault" element={<VaultBalance />} />
+      <Routes>
+        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/project" element={<Project />} />
+        <Route path="/project/info/:id" element={<ProjectInfoRoot />} />
+        <Route path="/guild" element={<Guild />} />
+        <Route path="/guild/info/:id" element={<GuildInfoRoot />} />
+        <Route path="/proposal" element={<Proposal />} />
+        <Route path="/proposal/category/:id" element={<ProposalCategory />} />
+        <Route path="/proposal/thread/:id" element={<ProposalThread />} />
+        <Route path="/assets" element={<Assets />} />
+        <Route path="/vault" element={<VaultBalance />} />
 
+        <Route path="/my" element={<My />} />
+        <Route path="/setting" element={<Setting />} />
+        <Route path="/board" element={<Board />} />
+        <Route path="/user/profile" element={<Profile />} />
+        <Route path="/user/value" element={<Vault />} />
+        <Route path="/privacy" element={<Privacy />} />
 
-                <Route path="/my" element={<My />} />
-                <Route path="/setting" element={<Setting />} />
-                <Route path="/board" element={<Board />} />
-                <Route path="/user/profile" element={<Profile />} />
-                <Route path="/user/value" element={<Vault />} />
-                <Route path="/privacy" element={<Privacy />} />
-
-                {/*<Route path="/message" element={<MessagePage />} />*/}
-            </Routes>
-            {/*<EventHandler />*/}
-        </>
-    );
+        {/*<Route path="/message" element={<MessagePage />} />*/}
+      </Routes>
+      {/*<EventHandler />*/}
+    </>
+  );
 }
 
 export default RouterLink;
