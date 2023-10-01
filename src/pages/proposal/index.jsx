@@ -12,6 +12,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import MsgIcon from "assets/images/proposal/message.png";
 import store from "store";
 import { saveLoading } from "store/reducer";
+import Loading from "components/common/loading";
 
 export default function Proposal() {
   const { t } = useTranslation();
@@ -20,7 +21,7 @@ export default function Proposal() {
   const [pageSize] = useState(10);
   const [proposals, setProposals] = useState([]);
   const [orderType, setOrderType] = useState("latest");
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(0);
   const [hasMore, setHasMore] = useState(false);
 
   const handleChangeOrder = (index) => {
@@ -29,8 +30,8 @@ export default function Proposal() {
     setOrderType(index === 0 ? "latest" : "old");
   };
 
-  const getProposals = async () => {
-    store.dispatch(saveLoading(true));
+  const getProposals = async (useGlobalLoading) => {
+    useGlobalLoading && store.dispatch(saveLoading(true));
     try {
       const resp = await getAllProposals({ page, per_page: pageSize, sort: orderType });
       setProposals([...proposals, ...resp.data.threads]);
@@ -39,13 +40,13 @@ export default function Proposal() {
     } catch (error) {
       console.error("getAllProposals failed", error);
     } finally {
-      store.dispatch(saveLoading(false));
+      useGlobalLoading && store.dispatch(saveLoading(false));
     }
   };
 
   useEffect(() => {
     if (activeTab === 1) {
-      getProposals();
+      getProposals(true);
     }
   }, [activeTab, orderType]);
   return (
@@ -81,8 +82,7 @@ export default function Proposal() {
               dataLength={proposals.length}
               next={getProposals}
               hasMore={hasMore}
-              loader={<></>}
-              height={400}
+              loader={<Loading />}
               style={{ height: "calc(var(--app-height) - 150px)" }}
             >
               <ProposalBox>
@@ -133,5 +133,5 @@ const CategoryContent = styled.ul`
 const ProposalListContent = styled.div``;
 
 const ProposalBox = styled.div`
-  padding: 0 15px 15px;
+  padding: 0 15px;
 `;

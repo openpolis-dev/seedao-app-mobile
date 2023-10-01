@@ -9,6 +9,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import ProjectOrGuildItem from "components/projectOrGuild/projectOrGuildItem";
 import store from "store";
 import { saveLoading } from "store/reducer";
+import Loading from "components/common/loading";
 
 export default function Guild() {
   const { t } = useTranslation();
@@ -25,10 +26,6 @@ export default function Guild() {
       {
         label: t("Guild.AllProjects"),
         value: 0,
-      },
-      {
-        label: t("Guild.Closed"),
-        value: 1,
       },
     ];
     // TODO chech login
@@ -52,10 +49,10 @@ export default function Guild() {
     return proList.length < total;
   }, [total, proList]);
 
-  const getList = async () => {
+  const getList = async (useGlobalLoading) => {
     if (activeTab > 2) return;
     const stt = activeTab === 1 ? "closed" : "";
-    store.dispatch(saveLoading(true));
+    useGlobalLoading && store.dispatch(saveLoading(true));
     const obj = {
       status: stt,
       page: pageCur,
@@ -63,47 +60,57 @@ export default function Guild() {
       sort_order: "desc",
       sort_field: "created_at",
     };
-    const rt = await getProjects(obj);
-    store.dispatch(saveLoading(false));
-    const { rows, page, size, total } = rt.data;
-    setProList([...proList, ...rows]);
-    setPageSize(size);
-    setTotal(total);
-    setPageCur(page);
+    try {
+      const rt = await getProjects(obj);
+      const { rows, page, size, total } = rt.data;
+      setProList([...proList, ...rows]);
+      setPageSize(size);
+      setTotal(total);
+      setPageCur(page);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      useGlobalLoading && store.dispatch(saveLoading(false));
+    }
   };
 
-  const getMyList = async () => {
-    store.dispatch(saveLoading(true));
+  const getMyList = async (useGlobalLoading) => {
+    useGlobalLoading && store.dispatch(saveLoading(true));
     const obj = {
       page: pageCur,
       size: pageSize,
       sort_order: "desc",
       sort_field: "created_at",
     };
-    const rt = await getMyProjects(obj);
-    store.dispatch(saveLoading(false));
-
-    const { rows, page, size, total } = rt.data;
-    setProList([...proList, ...rows]);
-    setPageSize(size);
-    setTotal(total);
-    setPageCur(page);
+    try {
+      const rt = await getMyProjects(obj);
+      const { rows, page, size, total } = rt.data;
+      setProList([...proList, ...rows]);
+      setPageSize(size);
+      setTotal(total);
+      setPageCur(page);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      useGlobalLoading && store.dispatch(saveLoading(false));
+    }
   };
 
   const openDetail = (id) => {
     navigate(`/guild/info/${id}`);
   };
 
-  const getCurrentList = () => {
+  const getCurrentList = (useGlobalLoading) => {
+    console.log("useGlobalLoading", useGlobalLoading);
     if (activeTab < 2) {
-      getList();
+      getList(useGlobalLoading);
     } else {
-      getMyList();
+      getMyList(useGlobalLoading);
     }
   };
 
   useEffect(() => {
-    getCurrentList();
+    getCurrentList(true);
   }, [activeTab]);
 
   return (
@@ -113,7 +120,7 @@ export default function Guild() {
         dataLength={proList.length}
         next={getCurrentList}
         hasMore={hasMore}
-        loader={<></>}
+        loader={<Loading />}
         style={{ height: "calc(100vh - 90px)" }}
       >
         <ProjectList>

@@ -8,6 +8,7 @@ import { PROPOSAL_CATEGORIES } from "utils/constant";
 import InfiniteScroll from "react-infinite-scroll-component";
 import store from "store";
 import { saveLoading } from "store/reducer";
+import Loading from "components/common/loading";
 
 export default function ProposalCategory() {
   const { id } = useParams();
@@ -15,15 +16,16 @@ export default function ProposalCategory() {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
   const [proposals, setProposals] = useState([]);
-  const [orderType, setOrderType] = useState("new");
+  const [orderType] = useState("new");
   const [hasMore, setHasMore] = useState(false);
 
-  const getProposals = async () => {
+  const getProposals = async (useGlobalLoading) => {
     const _id = Number(id);
+    console.log("_id", _id);
     if (!_id) {
       return;
     }
-    store.dispatch(saveLoading(true));
+    useGlobalLoading && store.dispatch(saveLoading(true));
     try {
       const res = await getProposalsBySubCategory({
         page,
@@ -31,14 +33,13 @@ export default function ProposalCategory() {
         category_index_id: _id,
         sort: orderType,
       });
-      console.log("res:", res);
       setProposals([...proposals, ...res.data.threads]);
       setHasMore(res.data.threads.length >= pageSize);
       setPage(page + 1);
     } catch (error) {
       console.error(error);
     } finally {
-      store.dispatch(saveLoading(false));
+      useGlobalLoading && store.dispatch(saveLoading(false));
     }
   };
 
@@ -50,7 +51,7 @@ export default function ProposalCategory() {
     if (!category) {
       navigate("/proposal");
     }
-    id && getProposals();
+    id && getProposals(true);
   }, [category, id, orderType]);
   return (
     <Layout title={category?.name} noTab={true}>
@@ -58,8 +59,7 @@ export default function ProposalCategory() {
         dataLength={proposals.length}
         next={getProposals}
         hasMore={hasMore}
-        loader={<></>}
-        height={400}
+        loader={<Loading />}
         style={{ height: "calc(var(--app-height) - 50px)" }}
       >
         <ProposalBox>
@@ -73,9 +73,5 @@ export default function ProposalCategory() {
 }
 
 const ProposalBox = styled.div`
-  padding: 15px;
-  & > div {
-    //margin-inline: 20px;
-    /* margin: 20px; */
-  }
+  padding: 15px 15px 0;
 `;
