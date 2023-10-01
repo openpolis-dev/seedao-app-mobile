@@ -9,6 +9,9 @@ import Login from "../pages/login";
 import Project from "pages/project";
 import ProjectInfoRoot from "pages/project/info";
 
+import Guild from "pages/guild";
+import GuildInfoRoot from "pages/guild/info";
+
 import Proposal from "../pages/proposal";
 import ProposalCategory from "pages/proposal/category";
 import ProposalThread from "pages/proposal/thread";
@@ -16,7 +19,6 @@ import ProposalThread from "pages/proposal/thread";
 import My from "../pages/my";
 import Board from "../pages/board";
 import Setting from "../pages/setting";
-import Guild from "../pages/guild";
 import Assets from "../pages/assets";
 import Profile from "../pages/profile";
 import Vault from "../pages/vault";
@@ -54,10 +56,11 @@ function RouterLink() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/project" element={<Project />} />
                 <Route path="/project/info/:id" element={<ProjectInfoRoot />} />
+                <Route path="/guild" element={<Guild />} />
+                <Route path="/guild/info/:id" element={<GuildInfoRoot />} />
                 <Route path="/proposal" element={<Proposal />} />
                 <Route path="/proposal/category/:id" element={<ProposalCategory />} />
                 <Route path="/proposal/thread/:id" element={<ProposalThread />} />
-                <Route path="/guild" element={<Guild />} />
                 <Route path="/assets" element={<Assets />} />
                 <Route path="/vault" element={<VaultBalance />} />
 
