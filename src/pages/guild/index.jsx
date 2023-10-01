@@ -121,6 +121,7 @@ export default function Guild() {
         next={getCurrentList}
         hasMore={hasMore}
         loader={<Loading />}
+        height={400}
         style={{ height: "calc(100vh - 90px)" }}
       >
         <ProjectList>

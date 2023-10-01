@@ -83,6 +83,7 @@ export default function Proposal() {
               next={getProposals}
               hasMore={hasMore}
               loader={<Loading />}
+              height={400}
               style={{ height: "calc(var(--app-height) - 150px)" }}
             >
               <ProposalBox>
