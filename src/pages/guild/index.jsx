@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useState } from "react";
-import { getMyProjects, getProjects } from "api/guild";
+import { getMyGuilds, getGuilds } from "api/guild";
 import { useNavigate } from "react-router-dom";
 import Tab from "components/common/tab";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -61,7 +61,7 @@ export default function Guild() {
       sort_field: "created_at",
     };
     try {
-      const rt = await getProjects(obj);
+      const rt = await getGuilds(obj);
       const { rows, page, size, total } = rt.data;
       setProList([...proList, ...rows]);
       setPageSize(size);
@@ -83,7 +83,7 @@ export default function Guild() {
       sort_field: "created_at",
     };
     try {
-      const rt = await getMyProjects(obj);
+      const rt = await getMyGuilds(obj);
       const { rows, page, size, total } = rt.data;
       setProList([...proList, ...rows]);
       setPageSize(size);

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import Tab from "components/common/tab";
 import { useState, useMemo, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getProjectById } from "api/guild";
+import { getGuildById } from "api/guild";
 import { useGuildContext, GUILD_ACTIONS } from "./provider";
 import store from "store";
 import { saveLoading } from "store/reducer";
@@ -59,7 +59,7 @@ export default function GuildInfo() {
     const getProjectData = async () => {
       store.dispatch(saveLoading(true));
       try {
-        const data = await getProjectById(id);
+        const data = await getGuildById(id);
         console.log(`[pro-${id}]`, data);
         dispatch({ type: GUILD_ACTIONS.SET_DATA, payload: data.data });
       } catch (error) {

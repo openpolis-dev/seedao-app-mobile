@@ -67,8 +67,8 @@ export default function ProjectAssets() {
   }, [id]);
 
   const UsdPercent = useMemo(() => {
-    const remain = token?.remain_amount || 0;
-    const total = token?.total_amount || 0;
+    const remain = Number(token?.remain_amount || 0);
+    const total = Number(token?.total_amount || 0);
     if (total === 0) {
       return 100;
     }
@@ -76,9 +76,9 @@ export default function ProjectAssets() {
   }, [token]);
 
   const CreditPercent = useMemo(() => {
-    const remain = point?.remain_amount || 0;
-    const total = point?.total_amount || 0;
-    if (Number(total) === 0) {
+    const remain = Number(point?.remain_amount || 0);
+    const total = Number(point?.total_amount || 0);
+    if (total === 0) {
       return 100;
     }
     return ((total - remain) * 100) / total;
