@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ArrowIcon from "assets/images/arrow.svg";
+import Layout from "../components/layout/layout";
 
 export default function Board() {
   const { t } = useTranslation();
@@ -11,35 +12,38 @@ export default function Board() {
     navigate(url);
   };
   return (
-    <Box>
-      <CloseBox onClick={() => toGo("/")}>
-        <X />
-      </CloseBox>
-      <ContentBox>
-        <div>
-          <JoinUs>{t("mobile.onBoard.join")}</JoinUs>
-          <TextBox>
-            <div>{t("mobile.onBoard.enter")}</div>
-            <div>{t("mobile.onBoard.tip")}</div>
-          </TextBox>
+      <Layout noHeader noTab>
+        <Box>
+          <CloseBox onClick={() => toGo("/")}>
+            <X />
+          </CloseBox>
+          <ContentBox>
+            <div>
+              <JoinUs>{t("mobile.onBoard.join")}</JoinUs>
+              <TextBox>
+                <div>{t("mobile.onBoard.enter")}</div>
+                <div>{t("mobile.onBoard.tip")}</div>
+              </TextBox>
 
-        </div>
-        <ArrowBox>
-          <img src={ArrowIcon} alt="" />
-        </ArrowBox>
-        <DeschoolLink href="https://deschool.app/origin/learn" target="_blank">
-          Deschool
-        </DeschoolLink>
-      </ContentBox>
-    </Box>
+            </div>
+            <ArrowBox>
+              <img src={ArrowIcon} alt="" />
+            </ArrowBox>
+            <DeschoolLink href="https://deschool.app/origin/learn" target="_blank">
+              Deschool
+            </DeschoolLink>
+          </ContentBox>
+        </Box>
+      </Layout>
+
   );
 }
 
 const Box = styled.div`
   width: 100%;
   height: 100vh;
-  background-color: #f9c5d1;
-  background-image: linear-gradient(315deg, #f9c5d1 0%, #9795ef 74%);
+  //background-color: #f9c5d1; 
+  background: linear-gradient(315deg, #f9c5d1 0%, #9795ef 74%);
   text-align: center;
   color: #fff;
 `;

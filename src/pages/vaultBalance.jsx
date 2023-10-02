@@ -1,12 +1,15 @@
 import Layout from "../components/layout/layout";
 import {useTranslation} from "react-i18next";
 import styled from "styled-components";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import AppConfig from "../AppConfig";
 import PublicJs from "../utils/publicJs";
 import { Share } from "react-bootstrap-icons";
 import BgImg from '../assets/images/homebg.png';
 import CopyBox from "components/common/copy";
+import store from "../store";
+import axios from "axios";
+import { saveLoading } from "../store/reducer";
 
 const Box = styled.div`
     padding: 20px;
@@ -124,6 +127,7 @@ export default function VaultBalance(){
     const { VAULTS } = AppConfig;
     const [vaultsMap, setVaultsMap] = useState({});
 
+
     const SAFE_CHAIN = {
         [1]: {
             short: 'eth',
@@ -134,10 +138,64 @@ export default function VaultBalance(){
             name: 'Polygon',
         },
     };
-    
+
     const linkTo = (v) =>{
         window.open(`https://app.safe.global/balances?safe=${SAFE_CHAIN[v.chainId].short}:${v.address}`)
     }
+
+    const getVaultBalance = async ({ chainId, address }) => {
+        return axios.get(`https://safe-client.safe.global/v1/chains/${chainId}/safes/${address}/balances/usd?trusted=true`);
+    };
+    const getVaultInfo = async ({ chainId, address }) => {
+        return axios.get(`https://safe-client.safe.global/v1/chains/${chainId}/safes/${address}`);
+    };
+
+    useEffect(() => {
+        getVaultsInfo();
+    }, []);
+    const getVaultsInfo = async () => {
+        const vaults_map = {};
+        const users= [];
+        let _total = 0;
+        store.dispatch(saveLoading(true));
+        try {
+            const reqs = VAULTS.map((item) => getVaultBalance(item));
+            const results = await Promise.allSettled(reqs);
+            results.forEach((res, index) => {
+                if (res.status === 'fulfilled') {
+                    const _v = Number(res.value.data?.fiatTotal || 0);
+                    vaults_map[VAULTS[index].id] = {
+                        balance: _v.toFixed(2),
+                    };
+                    _total += _v;
+                }
+            });
+        } catch (error) {
+            console.error('getVaultBalance error', error);
+        }
+        try {
+            const reqs = VAULTS.map((item) => getVaultInfo(item));
+            const results = await Promise.allSettled(reqs);
+            results.forEach((res, index) => {
+                if (res.status === 'fulfilled') {
+                    const _id = VAULTS[index].id;
+                    if (!vaults_map[_id]) {
+                        vaults_map[_id] = {};
+                    }
+                    vaults_map[_id].total = res.value.data?.owners.length || 0;
+                    vaults_map[_id].threshold = res.value.data?.threshold || 0;
+                    users.push(...res.value.data?.owners.map((item) => item.value));
+                }
+            });
+        } catch (error) {
+            console.error('getVaultInfo error', error);
+        }finally {
+            store.dispatch(saveLoading(false));
+        }
+        setTotalSigner([...new Set(users)].length);
+        setTotalBalance(_total.toFixed(2));
+        setVaultsMap(vaults_map);
+    };
 
 
     return <Layout noTab title={t('menus.assets')}>

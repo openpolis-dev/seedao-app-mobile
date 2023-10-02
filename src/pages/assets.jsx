@@ -17,6 +17,7 @@ import axios from "axios";
 import {getTreasury} from "../api/treasury";
 import { ethers } from 'ethers';
 import InfiniteScroll from "react-infinite-scroll-component";
+import {formatNumber} from "../utils/number";
 
 const Box = styled.div`
     padding: 20px;
@@ -355,7 +356,7 @@ export default function Assets(){
             <CardBox className="total">
                 <div className="vaultInner">
                     <Tit>{t('Assets.TotalBalance')}</Tit>
-                    <Num>${totalBalance}</Num>
+                    <Num>${formatNumber(totalBalance)}</Num>
                     <DetailBox onClick={()=>toGo()}>
                         <div>{t('Assets.Detail')}</div>
                         <ChevronDoubleRight />
@@ -365,16 +366,16 @@ export default function Assets(){
             <FlexBox>
                 <CardItem>
                     <Tit>{t('Assets.SupplySCR')}</Tit>
-                    <Num>{totalSCR}</Num>
+                    <Num>{formatNumber(totalSCR)}</Num>
                     <BtmLine>
-                        <div>≈ {SCRValue.toFixed(2)} U</div>
+                        <div>≈ {formatNumber(SCRValue.toFixed(2))} U</div>
                         <div>(1SCR ≈ {SCR_PRICE} U)</div>
                     </BtmLine>
                     <div className="decorBg">SEE</div>
                 </CardItem>
                 <CardItem>
                     <Tit>{t('Assets.SupplySGN')}</Tit>
-                    <Num>{nftData.totalSupply}</Num>
+                    <Num>{formatNumber(nftData.totalSupply)}</Num>
                     <BtmLine>
                         <div>{t('Assets.FloorPrice')}</div>
                         <div>{nftData.floorPrice} ETH</div>

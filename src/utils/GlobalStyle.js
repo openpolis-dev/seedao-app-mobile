@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
     color: #000;
     padding: 0;
     margin: 0;
-    font-size: 14px;
+    //font-size: 14px;
   }
   dl,dt,ul,li{
     padding: 0;
