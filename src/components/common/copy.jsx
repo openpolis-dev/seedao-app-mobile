@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import styled, { css } from "styled-components";
-import CopyIcon from "assets/images/copy.svg"
+import CopyIcon from "assets/images/copy.svg";
 
 const CopyBox = ({ children, text, dir }) => {
   const { t } = useTranslation();
@@ -13,7 +13,7 @@ const CopyBox = ({ children, text, dir }) => {
       setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);
-      }, 800);
+      }, 1000);
     }
   };
 
@@ -21,10 +21,15 @@ const CopyBox = ({ children, text, dir }) => {
     <>
       <CopyToClipboard text={text} onCopy={handleCopy}>
         <CopyContent className="copy-content" dir={dir || "right"}>
-          {children || <img src={CopyIcon} alt="" />}
-          {isCopied && <span className="tooltip-content">{t("mobile.copied")}</span>}
+          {children || <img src={CopyIcon} className="copy-icon" alt="" />}
+          {/* {isCopied && <span className="tooltip-content">{t("mobile.copied")}</span>} */}
         </CopyContent>
       </CopyToClipboard>
+      {isCopied && (
+        <TipsBox>
+          <InnerBox>{t("mobile.copied")}</InnerBox>
+        </TipsBox>
+      )}
     </>
   );
 };
@@ -45,6 +50,9 @@ const rightStyle = css`
 const CopyContent = styled.div`
   cursor: pointer;
   position: relative;
+  .copy-icon {
+    display: block;
+  }
   .tooltip-content {
     position: absolute;
     padding: 5px 12px;
@@ -68,4 +76,23 @@ const CopyContent = styled.div`
     transform: translateX(50%) rotate(90deg);
   }
   ${({ dir }) => dir === "right" && rightStyle}
+`;
+
+const TipsBox = styled.div`
+  background: rgba(0, 0, 0, 0.2);
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const InnerBox = styled.div`
+  background: #fff;
+  padding: 10px 20px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
 `;

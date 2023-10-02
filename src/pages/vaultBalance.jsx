@@ -4,10 +4,9 @@ import styled from "styled-components";
 import {useState} from "react";
 import AppConfig from "../AppConfig";
 import PublicJs from "../utils/publicJs";
-import {CopyToClipboard} from "react-copy-to-clipboard";
 import { Share } from "react-bootstrap-icons";
 import BgImg from '../assets/images/homebg.png';
-import CopyIcon from "assets/images/copy.svg";
+import CopyBox from "components/common/copy";
 
 const Box = styled.div`
     padding: 20px;
@@ -76,7 +75,7 @@ const FirstLine = styled.div`
   display: flex;
   align-items: center;
   .iconBox{
-    margin-right: 20px;
+    margin-inline: 20px;
     font-size: 18px;
   }
 `
@@ -84,24 +83,6 @@ const FirstLine = styled.div`
 const Num = styled.div`
     font-weight: bold;
   font-size: 16px;
-`
-
-const TipsBox = styled.div`
-  background: rgba(0,0,0,0.2);
-  width: 100vw;
-  height: 100vh;
-  left: 0;
-  top: 0;
-  z-index: 999;
-  position: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-const InnerBox = styled.div`
-    background: #fff;
-  padding: 10px 20px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.08);
 `
 
 const TopBox = styled.div`
@@ -142,7 +123,6 @@ export default function VaultBalance(){
     const [totalSigner, setTotalSigner] = useState(0);
     const { VAULTS } = AppConfig;
     const [vaultsMap, setVaultsMap] = useState({});
-    const [showCopid,setShowCopid] = useState(false);
 
     const SAFE_CHAIN = {
         [1]: {
@@ -154,28 +134,13 @@ export default function VaultBalance(){
             name: 'Polygon',
         },
     };
-    const copyTo = () =>{
-        setShowCopid(true)
-        // PublicJs.copyToClipboard(wallet)
-        setTimeout(()=>{
-            setShowCopid(false)
-        },1000)
-
-    }
-
+    
     const linkTo = (v) =>{
         window.open(`https://app.safe.global/balances?safe=${SAFE_CHAIN[v.chainId].short}:${v.address}`)
     }
 
 
     return <Layout noTab title={t('menus.assets')}>
-        {
-            showCopid &&  <TipsBox>
-                <InnerBox>
-                    {t('mobile.my.wallet')} {t('mobile.copied')}
-                </InnerBox>
-            </TipsBox>
-        }
         <Box>
             <CardBox>
                 <div className="vaultInner">
@@ -209,9 +174,7 @@ export default function VaultBalance(){
                         <LineBox>
                             <FirstLine>
                                 <Addr>{PublicJs.AddressToShow(v.address)}</Addr>
-                                <CopyToClipboard text="123" onCopy={() => copyTo("123")}>
-                                    <img src={CopyIcon} alt="" className="iconBox"/>
-                                </CopyToClipboard>
+                                <CopyBox text="123"/>
                                 <Share onClick={()=>linkTo(v)} className="iconBox" />
                             </FirstLine>
                             <Num>

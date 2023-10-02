@@ -6,9 +6,8 @@ import {useSelector} from "react-redux";
 import store from "../store";
 import { saveLoading } from "../store/reducer";
 import {getUser} from "../api/user";
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Avatar from "components/common/avatar";
-import CopyIcon from "assets/images/copy.svg";
+import CopyBox from "components/common/copy";
 
 const Box = styled.div`
     padding: 20px;
@@ -36,6 +35,7 @@ const LineBox = styled.div`
 `
 const RhtBox = styled.div`
   font-size: 20px;
+  padding-top: 7px;
 `
 
 const AvatarBox = styled.div`
@@ -46,29 +46,10 @@ const AvatarBox = styled.div`
   margin-bottom: 40px;
 `
 
-const TipsBox = styled.div`
-  background: rgba(0,0,0,0.2);
-  width: 100vw;
-  height: 100vh;
-  left: 0;
-  top: 0;
-  z-index: 999;
-  position: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-const InnerBox = styled.div`
-    background: #fff;
-  padding: 10px 20px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.08);
-`
-
 export default function Profile(){
     const {t,i18n} = useTranslation();
 
     const [detail,setDetail] = useState();
-    const [showCopid,setShowCopid] = useState(false);
 
     const account = useSelector(state=> state.account);
     useEffect(()=>{
@@ -95,24 +76,8 @@ export default function Profile(){
         }
     }
 
-    const copyTo = () =>{
-        setShowCopid(true)
-        // PublicJs.copyToClipboard(wallet)
-        setTimeout(()=>{
-            setShowCopid(false)
-        },1000)
-    }
-
     return (
       <Layout noTab title={t("My.MyProfile")}>
-        {showCopid && (
-          <TipsBox>
-            <InnerBox>
-              {t("mobile.my.wallet")} {t("mobile.copied")}
-            </InnerBox>
-          </TipsBox>
-        )}
-
         <Box>
           <AvatarBox>
             <Avatar size="100px" src={detail?.avatar} />
@@ -126,9 +91,7 @@ export default function Profile(){
               <dt>{t("mobile.my.wallet")}</dt>
               <dd>{detail?.wallet}</dd>
               <RhtBox>
-                <CopyToClipboard text={detail?.wallet} onCopy={() => copyTo(detail?.wallet)}>
-                  <img src={CopyIcon} alt="" />
-                </CopyToClipboard>
+                <CopyBox text={detail?.wallet} />
               </RhtBox>
             </dl>
             <dl>
