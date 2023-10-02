@@ -5,9 +5,9 @@ import {useState} from "react";
 import AppConfig from "../AppConfig";
 import PublicJs from "../utils/publicJs";
 import {CopyToClipboard} from "react-copy-to-clipboard";
-import {Clipboard2Check, Share} from "react-bootstrap-icons";
+import { Share } from "react-bootstrap-icons";
 import BgImg from '../assets/images/homebg.png';
-
+import CopyIcon from "assets/images/copy.svg";
 
 const Box = styled.div`
     padding: 20px;
@@ -210,7 +210,7 @@ export default function VaultBalance(){
                             <FirstLine>
                                 <Addr>{PublicJs.AddressToShow(v.address)}</Addr>
                                 <CopyToClipboard text="123" onCopy={() => copyTo("123")}>
-                                    <Clipboard2Check className="iconBox" />
+                                    <img src={CopyIcon} alt="" className="iconBox"/>
                                 </CopyToClipboard>
                                 <Share onClick={()=>linkTo(v)} className="iconBox" />
                             </FirstLine>

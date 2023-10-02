@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { Clipboard2Check } from "react-bootstrap-icons";
 import styled, { css } from "styled-components";
+import CopyIcon from "assets/images/copy.svg"
 
 const CopyBox = ({ children, text, dir }) => {
   const { t } = useTranslation();
@@ -21,7 +21,7 @@ const CopyBox = ({ children, text, dir }) => {
     <>
       <CopyToClipboard text={text} onCopy={handleCopy}>
         <CopyContent className="copy-content" dir={dir || "right"}>
-          {children || <Clipboard2Check />}
+          {children || <img src={CopyIcon} alt="" />}
           {isCopied && <span className="tooltip-content">{t("mobile.copied")}</span>}
         </CopyContent>
       </CopyToClipboard>

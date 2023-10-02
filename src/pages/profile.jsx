@@ -6,9 +6,9 @@ import {useSelector} from "react-redux";
 import store from "../store";
 import { saveLoading } from "../store/reducer";
 import {getUser} from "../api/user";
-import {Clipboard2Check} from "react-bootstrap-icons";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Avatar from "components/common/avatar";
+import CopyIcon from "assets/images/copy.svg";
 
 const Box = styled.div`
     padding: 20px;
@@ -35,8 +35,7 @@ const LineBox = styled.div`
   }
 `
 const RhtBox = styled.div`
-    font-size: 20px;
-  padding-top: 5px;
+  font-size: 20px;
 `
 
 const AvatarBox = styled.div`
@@ -128,7 +127,7 @@ export default function Profile(){
               <dd>{detail?.wallet}</dd>
               <RhtBox>
                 <CopyToClipboard text={detail?.wallet} onCopy={() => copyTo(detail?.wallet)}>
-                  <Clipboard2Check />
+                  <img src={CopyIcon} alt="" />
                 </CopyToClipboard>
               </RhtBox>
             </dl>
