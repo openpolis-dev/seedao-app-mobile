@@ -24,7 +24,7 @@ const LabelStyle = css`
 
 const ProgressBarBox = styled.div`
   width: 100%;
-  height: 12px;
+  height: 15px;
   border-radius: 20px;
   background-color: #e7e7e7;
   position: relative;

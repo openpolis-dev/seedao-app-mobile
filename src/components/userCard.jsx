@@ -77,6 +77,8 @@ const UserCardBox = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+  margin-bottom: 20px;
+  
 `;
 
 const EmptyAvatar = styled.div`
