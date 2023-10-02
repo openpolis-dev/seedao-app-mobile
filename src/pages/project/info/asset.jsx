@@ -136,10 +136,11 @@ export default function ProjectAssets() {
   );
 }
 const ProjectAssetsPage = styled.div`
-  padding-inline: 20px;
+
   .record-title {
     font-weight: 600;
     margin-block: 15px;
+    padding-inline: 20px;
   }
 `;
 
@@ -165,10 +166,11 @@ const AssetItem = styled.div`
 
 const AssetsContent = styled.section`
   border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
+  padding: 0 20px 10px;
 `;
 
 const ApplicantList = styled.div`
+  padding: 0 20px;
   & > div {
     margin-bottom: 15px;
   }

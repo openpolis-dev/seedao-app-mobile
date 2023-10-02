@@ -79,11 +79,14 @@ const ImgBlock = styled(Block)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   div {
     width: 150px;
     height: 150px;
     background-color: #fff;
     border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.05);
     img {
       width: 100%;
     }
@@ -92,6 +95,7 @@ const ImgBlock = styled(Block)`
 
 const ContentBlock = styled(Block)`
   background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.05);
   margin-inline: 10px;
   padding: 10px;
   border-radius: 4px;

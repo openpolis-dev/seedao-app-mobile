@@ -2,7 +2,7 @@ import {Button} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import { useWeb3Modal } from "@web3modal/react";
 import { useAccount, useDisconnect, useNetwork } from "wagmi";
-import { useEthersProvider,useEthersSigner } from '../../utils/ethersNew';
+import {useEthersSigner } from '../../utils/ethersNew';
 import store from "../../store";
 import {saveLoading,saveAccount,saveSigner,saveUserToken,saveWalletType} from "../../store/reducer";
 import {ethers} from "ethers";
@@ -20,6 +20,7 @@ export default function  Metamask(){
     const [msg,setMsg] = useState();
     const [signInfo,setSignInfo] = useState();
     const [result,setResult] = useState(null);
+    const [connectWallet,setConnectWallet] = useState(false);
 
     const signer = useEthersSigner({chainId:chain});
 
@@ -30,22 +31,24 @@ export default function  Metamask(){
     },[signInfo])
 
     useEffect(()=>{
-        console.log()
-        if(!signer) return;
+        console.log(signer,address)
+        if(!signer || !connectWallet || !address) return;
         sign()
-    },[signer])
+    },[signer,connectWallet])
 
     const onOpen = async() =>{
         store.dispatch(saveLoading(true));
         await open();
+
         store.dispatch(saveAccount(address))
         store.dispatch(saveLoading(false));
     }
 
     const onClick = async () =>{
         if (!isConnected) {
-            // disconnect();
+            disconnect();
             await onOpen();
+            setConnectWallet(true);
         }
     }
 
@@ -55,9 +58,9 @@ export default function  Metamask(){
     }
 
     const sign = async() =>{
-
-        console.log(signer.provider)
-
+        if(!isConnected || !signer.provider)return;
+        console.error("===provider=",signer.provider)
+        setConnectWallet(false);
         const eip55Addr = ethers.utils.getAddress(address);
 
         // const chainId = await  signer.getChainId();

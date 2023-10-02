@@ -24,7 +24,7 @@ const LabelStyle = css`
 
 const ProgressBarBox = styled.div`
   width: 100%;
-  height: 20px;
+  height: 12px;
   border-radius: 20px;
   background-color: #e7e7e7;
   position: relative;
@@ -43,6 +43,7 @@ const ProgressBarBox = styled.div`
       right: 10px;
       display: block;
       width: 100px;
+      margin-top: -2px;
     }
   }
   ${(props) => (props.left ? LabelStyle : "")}
