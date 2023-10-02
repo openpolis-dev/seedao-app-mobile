@@ -115,7 +115,6 @@ export default function Vault(){
                     size: pageSize,
                     sort_field: 'created_at',
                     sort_order: 'desc',
-                    entity: 'project',
                     type:"new_reward",
                     user_wallet: account,
                 }

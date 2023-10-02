@@ -40,8 +40,6 @@ export default function  Metamask(){
         store.dispatch(saveLoading(true));
         await open();
 
-        store.dispatch(saveAccount(address))
-        store.dispatch(saveLoading(false));
     }
 
     const onClick = async () =>{
@@ -113,6 +111,8 @@ export default function  Metamask(){
             setResult(rt.data)
             store.dispatch(saveUserToken(rt.data));
             store.dispatch(saveWalletType("metamask"));
+            store.dispatch(saveAccount(address))
+            store.dispatch(saveLoading(false));
             // store.dispatch(saveSigner(signer));
 
         }catch (e){
