@@ -8,9 +8,9 @@ import { saveLoading } from "../store/reducer";
 import {formatTime} from "../utils/time";
 import {getUser} from "../api/user";
 import {getProjectApplications} from "../api/applications";
-import PublicJs from "../utils/publicJs";
 import NoItem from "../components/noItem";
 import ApplicantCard from "components/applicant";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Box = styled.div`
     padding: 20px;
@@ -166,13 +166,20 @@ export default function Vault(){
             </TopBox>
             <div>
                 <Tit>{t('Project.Record')}</Tit>
-                <BtmBox>
-                     {
-                        list.length ? list.map((item,index) => (
-                            <ApplicantCard data={item} key={item.applicant_id} key={index} />
-                        )) : <NoItem />
-                    }
-                </BtmBox>
+                <InfiniteScroll
+                    dataLength={list.length}
+                    next={contentViewScroll}
+                    hasMore={total>page*pageSize}
+                    loader={<></>}
+                >
+                    <BtmBox>
+                         {
+                            list.length ? list.map((item,index) => (
+                                <ApplicantCard data={item} key={item.applicant_id} key={index} />
+                            )) : <NoItem />
+                        }
+                    </BtmBox>
+                </InfiniteScroll>
             </div>
         </Box>
     </Layout>

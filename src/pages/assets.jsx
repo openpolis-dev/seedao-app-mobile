@@ -2,7 +2,6 @@ import Layout from "../components/layout/layout";
 import styled from "styled-components";
 import {useTranslation} from "react-i18next";
 import { ChevronDoubleRight } from "react-bootstrap-icons"
-import PublicJs from "../utils/publicJs";
 import NoItem from "../components/noItem";
 import {useEffect, useMemo, useState} from "react";
 import {useSelector} from "react-redux";
@@ -17,6 +16,7 @@ import AppConfig from "../AppConfig";
 import axios from "axios";
 import {getTreasury} from "../api/treasury";
 import { ethers } from 'ethers';
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Box = styled.div`
     padding: 20px;
@@ -74,6 +74,7 @@ const FlexBox = styled.div`
   flex-wrap: wrap;
   border-bottom: 1px solid #ddd;
   margin-bottom: 20px;
+  padding-bottom: 10px;
 `
 const CardItem = styled(CardBox)`
     width: 48%;
@@ -335,6 +336,12 @@ export default function Assets(){
         }
     };
 
+    const contentViewScroll=(e)=>{
+        if(total>page*pageSize){
+            handlePage(page)
+        }
+    }
+
     const handlePage = (num) => {
         setPage(num + 1);
     };
@@ -400,6 +407,12 @@ export default function Assets(){
             </FlexBox>
             <ListBox>
                 <TitBox>{t('Project.Record')}</TitBox>
+                <InfiniteScroll
+                    dataLength={list.length}
+                    next={contentViewScroll}
+                    hasMore={total>page*pageSize}
+                    loader={<></>}
+                >
                 <BtmBox>
                     {
                         list.length ? list.map((item,index) => (
@@ -407,6 +420,7 @@ export default function Assets(){
                         )) : <NoItem />
                     }
                 </BtmBox>
+                </InfiniteScroll>
             </ListBox>
         </Box>
     </Layout>
