@@ -5,6 +5,9 @@ import {useTranslation} from "react-i18next";
 import {ChevronRight} from "react-bootstrap-icons";
 import {Offcanvas} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+import store from "../store";
+import {saveAccount,saveUserToken,saveWalletType} from "../store/reducer";
 
 const Box = styled.div`
     padding: 0 20px;
@@ -38,6 +41,8 @@ const LastBox = styled.ul`
 `
 export default function Setting() {
     const navigate = useNavigate();
+    const userToken = useSelector(state=> state.userToken);
+
     const toGo = (url) =>{
         navigate(url)
     }
@@ -71,6 +76,14 @@ export default function Setting() {
         setShow(false)
     }
 
+    const logout = () =>{
+        store.dispatch(saveAccount(null));
+        store.dispatch(saveUserToken(null));
+        store.dispatch(saveWalletType(null));
+        // store.dispatch(saveLogout(true));
+        navigate("/login");
+    }
+
     return <Layout noTab title={t('mobile.my.setting')}>
         <Box>
             <LanBox show={show} onHide={handleClose} placement="bottom">
@@ -101,10 +114,13 @@ export default function Setting() {
                 <div>{t('mobile.my.version')}</div>
                 <ChevronRight />
             </Item>
-            <Item>
-                <div>{t('mobile.my.logout')}</div>
-                <ChevronRight />
-            </Item>
+            {
+                !!userToken?.token &&  <Item onClick={()=>logout()}>
+                    <div>{t('mobile.my.logout')}</div>
+                    <ChevronRight />
+                </Item>
+            }
+
 
         </Box>
     </Layout>

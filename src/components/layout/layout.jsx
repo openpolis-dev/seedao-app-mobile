@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import Header from "./header";
 import TabBar from "./tabBar";
+import {useSelector} from "react-redux";
+import {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 
 const OuterBox = styled.div`
   width: 100%;
@@ -17,6 +20,18 @@ const InnerBox = styled.div`
   
 `
 export default function Layout({children,noHeader,title,noTab}){
+
+
+    const navigate = useNavigate();
+    const userToken = useSelector(state=> state.userToken);
+
+    useEffect(()=>{
+        if(!userToken?.token){
+            navigate("/login")
+        }
+    },[userToken])
+
+
     return <OuterBox>
         {
             !noHeader && <Header title={title} />

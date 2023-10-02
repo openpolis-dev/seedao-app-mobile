@@ -22,6 +22,7 @@ export default function Joyid(){
     const [msg,setMsg] = useState();
     const [result,setResult] = useState(null);
 
+
     useEffect(() => {
         const redirectHome = () => {
             const _address = localStorage.getItem("joyid-address");
@@ -32,15 +33,15 @@ export default function Joyid(){
             let state;
             try {
                 state = connectCallback();
-                console.log("-------state:", state);
                 if (state?.address) {
                     setAccount(state.address);
                     store.dispatch(saveAccount(state.address))
-                    // localStorage.setItem("joyid-address", state.address);
+                    localStorage.setItem("joyid-address", state.address);
                     return true;
                 }
             } catch (error) {
-                console.error("-------callback:", error);
+                console.error("callback:", error);
+                localStorage.removeItem("joyid-status")
             }
         };
 
@@ -49,10 +50,10 @@ export default function Joyid(){
             try {
                 state = signMessageCallback();
                 setSig(state.signature);
-                console.log("-------state sign:", state);
                 return true;
             } catch (error) {
-                console.error("-------callback sign:", error);
+                console.error("callback sign:", error);
+                localStorage.removeItem("joyid-status")
             }
         };
         redirectHome();
@@ -66,14 +67,15 @@ export default function Joyid(){
     }
 
     useEffect(()=>{
-        if(!account) return;
+        let action = localStorage.getItem("joyid-status")
+        if(!account || action !== "login" ) return;
         onSignMessageRedirect()
     },[account])
 
     useEffect(()=>{
-        if(!sig) return;
+        if(!sig || !account) return;
         LoginTo()
-    },[sig])
+    },[sig,account])
 
 
     const getMyNonce = async(wallet) =>{
@@ -82,18 +84,13 @@ export default function Joyid(){
     }
 
     const onSignMessageRedirect = async() => {
-
-
+        localStorage.setItem("joyid-status","sign")
         let nonce = await getMyNonce(account);
-        console.log('nonce: ', nonce)
-
         const eip55Addr = ethers.utils.getAddress(account);
-        console.log('eip55Addr: ', eip55Addr)
-
 
         const siweMessage = createSiweMessage(eip55Addr, 1, nonce, 'Welcome to SeeDAO!');
         setMsg(siweMessage)
-        console.log("===siweMessage==",siweMessage)
+        localStorage.setItem("joyid-msg",siweMessage)
 
         const url = buildRedirectUrl("sign-message");
         signMessageWithRedirect(url, siweMessage, account, {
@@ -103,6 +100,7 @@ export default function Joyid(){
 
 
     const onConnectRedirect = () => {
+        localStorage.setItem("joyid-status","login")
         const url = buildRedirectUrl("connect");
         connectWithRedirect(url, {
             rpcURL: "https://eth.llamarpc.com",
@@ -111,26 +109,26 @@ export default function Joyid(){
                 name: "Ethereum Mainnet",
             },
         });
+
     };
 
 
     const LoginTo = async () =>{
-
-
+        localStorage.setItem("joyid-status",null)
         const { host} = AppConfig;
+        let ms =  localStorage.getItem("joyid-msg")
         let obj = {
             wallet: account,
-            message: msg,
+            message: ms,
             signature: sig,
             domain: host,
-            wallet_type: 'AA',
-            is_eip191_prefix: false
+            wallet_type: 'EOA',
+            is_eip191_prefix: true
         };
         try{
             let rt = await login(obj);
-            console.log('RESULT', rt.data);
             store.dispatch(saveUserToken(rt.data));
-            store.dispatch(saveWalletType("unipass"));
+            store.dispatch(saveWalletType("joyid"));
 
             setResult(rt.data)
         }catch (e){
@@ -141,12 +139,13 @@ export default function Joyid(){
 
     useEffect(()=>{
         if(!result)return;
-        console.log("==result==",result)
         navigate('/board');
 
     },[result])
 
     return <div>
-        <Button onClick={onConnectRedirect}>Joyid</Button>
+        <Button onClick={()=>onConnectRedirect()}>Joyid</Button>
     </div>
 }
+
+

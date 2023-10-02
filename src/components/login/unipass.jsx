@@ -4,10 +4,24 @@ import {ethers} from "ethers";
 import {useEffect, useState} from "react";
 import store from "../../store";
 import { createSiweMessage } from "../../utils/publicJs";
-import {saveLoading,saveAccount,saveSigner,saveUserToken,saveWalletType} from "../../store/reducer";
+import {saveAccount,saveUserToken,saveWalletType} from "../../store/reducer";
 import {useNavigate} from "react-router-dom";
 import { getNonce, login } from "../../api/user";
 import AppConfig from "../../AppConfig";
+
+const upProvider = new UniPassProvider({
+    chainId: 1,
+    returnEmail: false,
+    appSetting: {
+        appName: 'test dapp',
+        appIcon: 'your icon url',
+    },
+    rpcUrls: {
+        mainnet: "https://eth.llamarpc.com",
+        // polygon: "https://polygon.llamarpc.com",
+        // bscTestnet:"https://data-seed-prebsc-1-s1.binance.org:8545"
+    },
+});
 
 export default function Unipass(){
     const navigate = useNavigate();
@@ -17,23 +31,18 @@ export default function Unipass(){
     const [signInfo,setSignInfo] = useState();
     const [result,setResult] = useState(null);
 
+
+
     const getP = async() =>{
-        const upProvider = new UniPassProvider({
-            chainId: 1,
-            returnEmail: false,
-            appSetting: {
-                appName: 'test dapp',
-                appIcon: 'your icon url',
-            },
-            rpcUrls: {
-                mainnet: "https://eth.llamarpc.com",
-                // polygon: "https://polygon.llamarpc.com",
-                // bscTestnet:"https://data-seed-prebsc-1-s1.binance.org:8545"
-            },
-        });
-        await upProvider.connect();
-        const provider = new ethers.providers.Web3Provider(upProvider, "any");
-        setProvider(provider);
+        try{
+
+            await upProvider.connect();
+            const provider = new ethers.providers.Web3Provider(upProvider, "any");
+            setProvider(provider);
+        }catch (e){
+            console.error(e)
+        }
+
 
     }
 
@@ -48,9 +57,7 @@ export default function Unipass(){
             const signer = provider.getSigner();
             const address = await signer.getAddress();
             setAddr(address)
-            console.log(address)
             store.dispatch(saveAccount(address))
-
         }catch (e) {
             console.error(e)
         }
@@ -58,6 +65,7 @@ export default function Unipass(){
 
 
     useEffect(()=>{
+
         if(!addr) return;
         signMessage()
     },[addr])
@@ -69,21 +77,12 @@ export default function Unipass(){
     }
 
     const signMessage = async() =>{
-
-        let nonce = await getMyNonce(addr);
-        console.log('nonce: ', nonce)
-
-        const eip55Addr = ethers.utils.getAddress(addr);
-        console.log('eip55Addr: ', eip55Addr)
-
-
-        const siweMessage = createSiweMessage(eip55Addr, 1, nonce, 'Welcome to SeeDAO!');
-        setMsg(siweMessage)
-        console.log("===siweMessage==",siweMessage)
-
-
-
         try{
+            let nonce = await getMyNonce(addr);
+            const eip55Addr = ethers.utils.getAddress(addr);
+
+            const siweMessage = createSiweMessage(eip55Addr, 1, nonce, 'Welcome to SeeDAO!');
+            setMsg(siweMessage)
             const signer = provider.getSigner();
             let res = await signer.signMessage(siweMessage);
             setSignInfo(res)
@@ -91,6 +90,9 @@ export default function Unipass(){
 
         }catch (e) {
             console.error(e)
+            store.dispatch(saveAccount(null))
+            setAddr(null)
+            await upProvider.disconnect();
         }
 
     }
@@ -111,14 +113,12 @@ export default function Unipass(){
             signature: signInfo,
             domain: host,
             wallet_type: 'AA',
-            is_eip191_prefix: false
+            is_eip191_prefix: true
         };
         try{
             let rt = await login(obj);
-            console.log('RESULT', rt.data);
             store.dispatch(saveUserToken(rt.data));
             store.dispatch(saveWalletType("unipass"));
-
             setResult(rt.data)
         }catch (e){
             console.error(e)
@@ -128,7 +128,6 @@ export default function Unipass(){
 
     useEffect(()=>{
         if(!result)return;
-        console.log("==result==",result)
         navigate('/board');
 
     },[result])

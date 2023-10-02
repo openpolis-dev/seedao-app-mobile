@@ -4,7 +4,7 @@ import { useWeb3Modal } from "@web3modal/react";
 import { useAccount, useDisconnect, useNetwork } from "wagmi";
 import {useEthersSigner } from '../../utils/ethersNew';
 import store from "../../store";
-import {saveLoading,saveAccount,saveSigner,saveUserToken,saveWalletType} from "../../store/reducer";
+import {saveLoading,saveAccount,saveUserToken,saveWalletType} from "../../store/reducer";
 import {ethers} from "ethers";
 import {getNonce,login} from "../../api/user";
 import {createSiweMessage} from "../../utils/publicJs";
@@ -24,14 +24,12 @@ export default function  Metamask(){
 
     const signer = useEthersSigner({chainId:chain});
 
-
     useEffect(()=>{
         if(!signInfo) return;
         LoginTo()
     },[signInfo])
 
     useEffect(()=>{
-        console.log(signer,address)
         if(!signer || !connectWallet || !address) return;
         sign()
     },[signer,connectWallet])
@@ -43,11 +41,13 @@ export default function  Metamask(){
     }
 
     const onClick = async () =>{
-        if (!isConnected) {
-            disconnect();
-            await onOpen();
-            setConnectWallet(true);
-        }
+        // if (!isConnected) {
+        //
+        // }
+
+        disconnect();
+        await onOpen();
+        setConnectWallet(true);
     }
 
     const getMyNonce = async(wallet) =>{
@@ -57,37 +57,28 @@ export default function  Metamask(){
 
     const sign = async() =>{
         if(!isConnected || !signer.provider)return;
-        console.error("===provider=",signer.provider)
-        setConnectWallet(false);
+
         const eip55Addr = ethers.utils.getAddress(address);
-
-        // const chainId = await  signer.getChainId();
         const {chainId} =  await signer.provider.getNetwork();
-
 
         let nonce = await getMyNonce(address);
         const siweMessage = createSiweMessage(eip55Addr, chainId, nonce, 'Welcome to SeeDAO!');
         setMsg(siweMessage)
-        console.log("{=====siweMessage====",siweMessage)
         try{
 
             let signData = await signer.signMessage(siweMessage);
             setSignInfo(signData)
-            // const signData = await ethereum.request({
-            //     method: 'personal_sign',
-            //     params: [siweMessage, eip55Addr],
-            // });
-            console.log("{=====signData====",signData)
-            // setSignInfo(signData)
+            setConnectWallet(false);
         }catch (e) {
-            console.log("=====error",JSON.stringify(e))
+            setConnectWallet(true);
+            disconnect();
+            console.error("error",JSON.stringify(e))
         }
 
     }
 
     useEffect(()=>{
         if(!result)return;
-        console.log("==result==",result)
         navigate('/board');
 
     },[result])
@@ -107,14 +98,11 @@ export default function  Metamask(){
         };
         try{
             let rt = await login(obj);
-            console.error('RESULT', rt.data);
             setResult(rt.data)
             store.dispatch(saveUserToken(rt.data));
             store.dispatch(saveWalletType("metamask"));
             store.dispatch(saveAccount(address))
             store.dispatch(saveLoading(false));
-            // store.dispatch(saveSigner(signer));
-
         }catch (e){
             console.error(e)
         }
@@ -122,7 +110,5 @@ export default function  Metamask(){
 
     return <div>
         <Button  onClick={()=>onClick()}>Metamask</Button>
-
-        {/*<Button onClick={()=>sign()}>Sign</Button>*/}
     </div>
 }
