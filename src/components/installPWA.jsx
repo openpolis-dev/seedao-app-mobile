@@ -120,8 +120,7 @@ const IOSBox = styled.div`
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: rgba(215, 215, 215, 0.5);
-  backdrop-filter: blur(10px);
+  background-color: rgba(215, 215, 215);
   border-radius: 10px 10px 0 0;
   .header {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
