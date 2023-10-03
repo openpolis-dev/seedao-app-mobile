@@ -120,7 +120,7 @@ const IOSBox = styled.div`
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: rgba(250, 250, 250, 0.8);
+  background-color: rgba(215, 215, 215, 0.5);
   backdrop-filter: blur(10px);
   border-radius: 10px 10px 0 0;
   .header {
@@ -142,6 +142,7 @@ const Step = styled.div`
   gap: 20px;
   align-items: center;
   padding-inline: 16px;
+  font-size: 13px;
   &:first-child {
     margin-bottom: 16px;
   }
