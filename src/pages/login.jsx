@@ -46,11 +46,15 @@ const BtnList = styled.ul`
 `
 
 const FlexBox = styled.div`
-    display: flex;
+  display: flex;
   align-items: center;
   justify-content: space-between;
   padding:20px;
   min-height: 40px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
 `
 
 export default function Login() {
