@@ -13,6 +13,7 @@ import {ethers} from "ethers";
 import {createSiweMessage} from "../../utils/publicJs";
 import AppConfig from "../../AppConfig";
 import {useNavigate} from "react-router-dom";
+import ReactGA from "react-ga4";
 
 export default function Joyid(){
 
@@ -129,10 +130,14 @@ export default function Joyid(){
             let rt = await login(obj);
             store.dispatch(saveUserToken(rt.data));
             store.dispatch(saveWalletType("joyid"));
-
+            ReactGA.event("login_success",{
+                type: "joyid",
+                account:"account:"+account
+            });
             setResult(rt.data)
         }catch (e){
             console.error(e)
+            ReactGA.event("login_failed",{type: "joyid"});
         }
 
     }

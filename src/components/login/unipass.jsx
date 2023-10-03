@@ -8,6 +8,7 @@ import {saveAccount,saveUserToken,saveWalletType} from "../../store/reducer";
 import {useNavigate} from "react-router-dom";
 import { getNonce, login } from "../../api/user";
 import AppConfig from "../../AppConfig";
+import ReactGA from "react-ga4";
 
 const upProvider = new UniPassProvider({
     chainId: 1,
@@ -120,8 +121,13 @@ export default function Unipass(){
             store.dispatch(saveUserToken(rt.data));
             store.dispatch(saveWalletType("unipass"));
             setResult(rt.data)
+            ReactGA.event("login_success",{
+                type: "unipass",
+                account:"account:"+addr
+            });
         }catch (e){
             console.error(e)
+            ReactGA.event("login_failed",{type: "unipass"});
         }
 
     }

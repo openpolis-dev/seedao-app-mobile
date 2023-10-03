@@ -14,6 +14,7 @@ import { Web3Modal } from '@web3modal/react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import InstallCheck from "components/installPWA";
+import RouterChecker from "./components/routerChecker";
 
 
 const chains = [mainnet]
@@ -37,6 +38,7 @@ function App() {
                 <PersistGate loading={null} persistor={persistor} >
                     <Router>
                         <RouterLink />
+                        <RouterChecker />
                     </Router>
                 </PersistGate>
             </Provider>

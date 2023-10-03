@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import store from "../store";
 import {saveAccount,saveUserToken,saveWalletType} from "../store/reducer";
+import {useDisconnect} from "wagmi";
 
 const Box = styled.div`
     padding: 0 20px;
@@ -42,8 +43,8 @@ const LastBox = styled.ul`
 export default function Setting() {
     const navigate = useNavigate();
     const userToken = useSelector(state=> state.userToken);
-
-
+    const walletType = useSelector(state => state.walletType);
+    const { disconnect } = useDisconnect();
     const toGo = (url) =>{
         navigate(url)
     }
@@ -81,6 +82,9 @@ export default function Setting() {
         store.dispatch(saveAccount(null));
         store.dispatch(saveUserToken(null));
         store.dispatch(saveWalletType(null));
+        if(walletType ==="metamask"){
+            disconnect();
+        }
         // store.dispatch(saveLogout(true));
         navigate("/login");
     }

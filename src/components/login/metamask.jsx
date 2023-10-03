@@ -10,6 +10,7 @@ import {getNonce,login} from "../../api/user";
 import {createSiweMessage} from "../../utils/publicJs";
 import {useNavigate} from "react-router-dom";
 import AppConfig from "../../AppConfig";
+import ReactGA from "react-ga4";
 
 export default function  Metamask(){
     const navigate = useNavigate();
@@ -65,7 +66,6 @@ export default function  Metamask(){
         const siweMessage = createSiweMessage(eip55Addr, chainId, nonce, 'Welcome to SeeDAO!');
         setMsg(siweMessage)
         try{
-
             let signData = await signer.signMessage(siweMessage);
             setSignInfo(signData)
             setConnectWallet(false);
@@ -103,8 +103,15 @@ export default function  Metamask(){
             store.dispatch(saveWalletType("metamask"));
             store.dispatch(saveAccount(address))
             store.dispatch(saveLoading(false));
+
+            ReactGA.event("login_success",{
+                type: "metamask",
+                account:"account:"+address
+            });
+
         }catch (e){
             console.error(e)
+            ReactGA.event("login_failed",{type: "metamask"});
         }
     }
 
