@@ -144,7 +144,7 @@ export default function Joyid(){
     },[result])
 
     return <div>
-        <Button onClick={()=>onConnectRedirect()}>Joyid</Button>
+        <Button onClick={()=>onConnectRedirect()}>JoyID</Button>
     </div>
 }
 
