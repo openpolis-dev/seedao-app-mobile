@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import RouterLink from "./router/router";
 import {BrowserRouter as Router} from "react-router-dom";
 import { Provider } from "react-redux";
@@ -31,21 +30,6 @@ const ethereumClient = new EthereumClient(wagmiConfig, chains);
 
 
 function App() {
-  const [isInstalled, setIsInstalled] = useState(true);
-  
-  useEffect(() => {
-      if (
-          window.navigator?.standalone === true ||
-          window.matchMedia("(display-mode: standalone)").matches
-      ) {
-          console.log("isInstalled: true. Already in standalone mode");
-          setIsInstalled(true);
-      } else {
-          console.log("isInstalled: false");
-          setIsInstalled(false);
-      }
-  
-  }, []);
   return (
     <div >
         <WagmiConfig config={wagmiConfig}>
@@ -67,7 +51,7 @@ function App() {
                        explorerExcludedWalletIds="ALL"
             />
         </WagmiConfig>
-        {!isInstalled && <InstallCheck />}
+        <InstallCheck />
     </div>
   );
 }
