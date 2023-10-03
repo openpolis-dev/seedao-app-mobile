@@ -229,6 +229,12 @@
       "enter": "进入 Deschool",
       "tip": "获取SeeDAO的成员证明"
     },
+    "install": {
+      "iosTitle": "添加到主屏幕",
+      "iosStep1": "1) 点击 菜单栏上的'分享' 按钮",
+      "iosStep2": "2) 点击 '添加到主屏幕'",
+      "androidInstall": "安装"
+    },
     "used": "已使用",
     "copied": "已复制!",
     "proposalDetail": "提案详情",

@@ -4,11 +4,13 @@ import { isAndroid, isIOS, isMobile } from "utils/userAgent";
 import AppIcon from "assets/images/app.png";
 import ShareIcon from "assets/images/install/share.svg";
 import AddIcon from "assets/images/install/add.svg";
+import { useTranslation } from "react-i18next";
 
 console.log("[isAndroid]:", isAndroid);
 console.log("[isiOS]:", isIOS);
 
 export default function InstallCheck() {
+  const { t } = useTranslation();
   const [isInstalled, setIsInstalled] = useState(true);
 
   useEffect(() => {
@@ -63,7 +65,7 @@ export default function InstallCheck() {
         </div>
         <div>
           <div className="btn-button" onClick={installApp}>
-            Install
+            {t("mobile.install.androidInstall")}
           </div>
         </div>
       </AndroidBox>
@@ -72,15 +74,15 @@ export default function InstallCheck() {
   if (isIOS) {
     return (
       <IOSBox>
-        <div className="header">Add to Home Screen</div>
+        <div className="header">{t("mobile.install.iosTitle")}</div>
         <div className="bottom">
           <Step>
             <img src={ShareIcon} alt="" />
-            <span>{`1) Press the 'Share' button on the menu bar below.`}</span>
+            <span>{t("mobile.install.iosStep1")}</span>
           </Step>
           <Step>
             <img src={AddIcon} alt="" />
-            <span>{`2) Press 'Add to Home Screen'.`}</span>
+            <span>{t("mobile.install.iosStep2")}</span>
           </Step>
         </div>
       </IOSBox>

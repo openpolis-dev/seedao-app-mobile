@@ -229,6 +229,12 @@
       "enter": "Enter Deschool",
       "tip": "Get proof of membership for SeeDAO"
     },
+    "install": {
+      "iosTitle": "Add to Home Screen",
+      "iosStep1": "1) Press the 'Share' button on the menu bar below.",
+      "iosStep2": "2) Press 'Add to Home Screen'.",
+      "androidInstall": "Install"
+    },
     "used": "used",
     "copied": "Copied!",
     "proposalDetail": "Proposal Detail",
