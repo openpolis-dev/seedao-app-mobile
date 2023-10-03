@@ -30,14 +30,11 @@ export default function Project() {
         label: t("Project.Closed"),
         value: 1,
       },
-    ];
-    // TODO chech login
-    if (true) {
-      _list.push({
-        name: t("Project.Joined"),
+      {
+        label: t("Project.Joined"),
         id: 2,
-      });
-    }
+      },
+    ];
     setList(_list);
   }, [t]);
 

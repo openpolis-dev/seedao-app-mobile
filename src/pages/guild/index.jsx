@@ -27,14 +27,11 @@ export default function Guild() {
         label: t("Guild.AllProjects"),
         value: 0,
       },
-    ];
-    // TODO chech login
-    if (true) {
-      _list.push({
-        name: t("Guild.Joined"),
+      {
+        label: t("Guild.Joined"),
         id: 2,
-      });
-    }
+      },
+    ];
     setList(_list);
   }, [t]);
 
