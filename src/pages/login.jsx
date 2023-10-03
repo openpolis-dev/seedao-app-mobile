@@ -41,7 +41,8 @@ const BtnList = styled.ul`
   .btn{
     border-radius: 30px;
     width: 200px;
-    font-size: 12px;
+    height: 36px;
+    font-size: 14px;
   }
 `
 
