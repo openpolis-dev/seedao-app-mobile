@@ -43,6 +43,7 @@ export default function Setting() {
     const navigate = useNavigate();
     const userToken = useSelector(state=> state.userToken);
 
+
     const toGo = (url) =>{
         navigate(url)
     }
@@ -112,7 +113,12 @@ export default function Setting() {
             </Item>
             <Item onClick={()=>toGo()}>
                 <div>{t('mobile.my.version')}</div>
-                <ChevronRight />
+                <div>
+                    <span>  {process.env.REACT_APP_APP_VERSION} Build {process.env.REACT_APP_BUILD_ID?.slice(0, 6)}.
+                        {process.env.REACT_APP_COMMIT_RE?.slice(0, 6)}</span>
+                    <ChevronRight />
+                </div>
+
             </Item>
             {
                 !!userToken?.token &&  <Item onClick={()=>logout()}>

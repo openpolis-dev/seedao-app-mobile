@@ -21,7 +21,7 @@ export default function ProposalCategory() {
 
   const getProposals = async (useGlobalLoading) => {
     const _id = Number(id);
-    console.log("_id", _id);
+    // console.log("_id", _id);
     if (!_id) {
       return;
     }
