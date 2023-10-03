@@ -109,6 +109,6 @@ export default function  Metamask(){
     }
 
     return <div>
-        <Button  onClick={()=>onClick()}>Metamask</Button>
+        <Button  onClick={()=>onClick()}>MetaMask</Button>
     </div>
 }
