@@ -10,6 +10,7 @@ import ProjectOrGuildItem from "components/projectOrGuild/projectOrGuildItem";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import Loading from "components/common/loading";
+import NoItem from "components/noItem";
 
 export default function Guild() {
   const { t } = useTranslation();
@@ -121,6 +122,7 @@ export default function Guild() {
         height={400}
         style={{ height: "calc(100vh - 90px)" }}
       >
+        {proList.length === 0 && <NoItem />}
         <ProjectList>
           {proList.map((item) => (
             <ProjectOrGuildItem key={item.id} data={item} onClickItem={openDetail} />
