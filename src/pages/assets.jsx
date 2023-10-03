@@ -160,6 +160,8 @@ export default function Assets(){
         token_total_amount: 0,
         credit_remain_amount: 0,
         credit_total_amount: 0,
+        credit_used_amount: 0,
+        token_used_amount:0,
     });
 
     const [totalSCR, setTotalSCR] = useState('0');
@@ -194,10 +196,12 @@ export default function Assets(){
         try {
             const res = await getTreasury();
             setAsset({
-                token_remain_amount: res.data.token_remain_amount,
-                token_total_amount: res.data.token_total_amount,
-                credit_remain_amount: res.data.credit_remain_amount,
-                credit_total_amount: res.data.credit_total_amount,
+                token_remain_amount: Number(res.data.token_remain_amount),
+                token_total_amount: Number(res.data.token_total_amount),
+                credit_remain_amount: Number(res.data.credit_remain_amount),
+                credit_used_amount: Number(res.data.credit_used_amount),
+                credit_total_amount: Number(res.data.credit_total_amount),
+                token_used_amount: Number(res.data.token_used_amount),
             });
         } catch (error) {
             console.error('getTreasury error', error);
@@ -384,10 +388,11 @@ export default function Assets(){
                 </CardItem>
                 <CardItem>
                     <Tit>{t('Assets.SeasonUseUSD')}</Tit>
-                    <Num>{(asset.token_total_amount || 0) - (asset.token_remain_amount||0)}</Num>
+                    {/*<Num>{(asset.token_total_amount || 0) - (asset.token_remain_amount||0)}</Num>*/}
+                    <Num>{formatNumber(asset.token_used_amount)}</Num>
                     <BtmLine>
                         <div>{t('Assets.SeasonBudget')}</div>
-                        <div>{asset.token_total_amount}</div>
+                        <div>{formatNumber(asset.token_total_amount)}</div>
                     </BtmLine>
                     <div className="decorBg">SEE</div>
                 </CardItem>
@@ -398,7 +403,8 @@ export default function Assets(){
                         </div>
                         <div>{t('Assets.SCRTip')}</div>
                     </Tit>
-                    <Num>{(asset.credit_total_amount || 0) - (asset.credit_remain_amount || 0)}</Num>
+                    {/*<Num>{(asset.credit_total_amount || 0) - (asset.credit_remain_amount || 0)}</Num>*/}
+                    <Num>{formatNumber(asset.credit_used_amount)}</Num>
                     <BtmLine>
                         <div>{t('Assets.SeasonBudget')}</div>
                         <div>{asset.credit_total_amount}</div>
