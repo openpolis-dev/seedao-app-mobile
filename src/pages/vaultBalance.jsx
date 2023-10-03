@@ -10,6 +10,7 @@ import CopyBox from "components/common/copy";
 import store from "../store";
 import axios from "axios";
 import { saveLoading } from "../store/reducer";
+import { formatNumber } from "utils/number";
 
 const Box = styled.div`
     padding: 20px;
@@ -236,7 +237,7 @@ export default function VaultBalance(){
                                 <Share onClick={()=>linkTo(v)} className="iconBox" />
                             </FirstLine>
                             <Num>
-                                ${vaultsMap[v.id]?.balance || 0.0}
+                                ${formatNumber(vaultsMap[v.id]?.balance || 0.0)}
                             </Num>
                         </LineBox>
                     </li>))
