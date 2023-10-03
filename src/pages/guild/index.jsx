@@ -99,7 +99,6 @@ export default function Guild() {
   };
 
   const getCurrentList = (useGlobalLoading) => {
-    console.log("useGlobalLoading", useGlobalLoading);
     if (activeTab < 2) {
       getList(useGlobalLoading);
     } else {
