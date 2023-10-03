@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { isAndroid, isIOS, isMobile } from "utils/userAgent";
+import AppIcon from "assets/images/app.png";
+import ShareIcon from "assets/images/install/share.svg";
+import AddIcon from "assets/images/install/add.svg";
 
 console.log("[isAndroid]:", isAndroid);
 console.log("[isiOS]:", isIOS);
@@ -51,19 +54,42 @@ export default function InstallCheck() {
   if (isInstalled || !isMobile) {
     return <></>;
   }
-  return (
-    <InstallBox>
-      {isAndroid && (
-        <div>
-          <button onClick={installApp}>Install</button>
+  if (isAndroid) {
+    return (
+      <AndroidBox>
+        <div className="left">
+          <img src={AppIcon} alt="" />
+          <span>SeeDAO</span>
         </div>
-      )}
-      {isIOS && "Install: Add to Homescreen"}
-    </InstallBox>
-  );
+        <div>
+          <div className="btn-button" onClick={installApp}>
+            Install
+          </div>
+        </div>
+      </AndroidBox>
+    );
+  }
+  if (isIOS) {
+    return (
+      <IOSBox>
+        <div className="header">Add to Home Screen</div>
+        <div className="bottom">
+          <Step>
+            <img src={ShareIcon} alt="" />
+            <span>{`1) Press the 'Share' button on the menu bar below.`}</span>
+          </Step>
+          <Step>
+            <img src={AddIcon} alt="" />
+            <span>{`2) Press 'Add to Home Screen'.`}</span>
+          </Step>
+        </div>
+      </IOSBox>
+    );
+  }
+  return <></>;
 }
 
-const InstallBox = styled.div`
+const AndroidBox = styled.div`
   position: fixed;
   top: 0;
   width: 100%;
@@ -71,4 +97,55 @@ const InstallBox = styled.div`
   line-height: 60px;
   background-color: #fff;
   text-align: center;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 20px;
+  align-items: center;
+  img {
+    width: 36px;
+    margin-right: 10px;
+  }
+  .btn-button {
+    cursor: pointer;
+    line-height: 36px;
+    padding-inline: 15px;
+    border-radius: 4px;
+    background-color: var(--bs-primary);
+    color: #fff;
+  }
+`;
+
+const IOSBox = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(250, 250, 250, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 10px 10px 0 0;
+  .header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 18px;
+    color: #333;
+    padding: 13px 16px;
+    font-weight: 500;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  .bottom {
+    padding-block: 20px;
+  }
+`;
+
+const Step = styled.div`
+  color: #7b7b7a;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding-inline: 16px;
+  &:first-child {
+    margin-bottom: 16px;
+  }
+  img {
+    width: 24px;
+  }
 `;
