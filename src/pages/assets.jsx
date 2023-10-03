@@ -423,7 +423,7 @@ export default function Assets(){
                 <BtmBox>
                     {
                         list.length ? list.map((item,index) => (
-                            <ApplicantCard data={item} key={item.applicant_id} key={index}/>
+                            <ApplicantCard data={item} key={index}/>
                         )) : <NoItem />
                     }
                 </BtmBox>
