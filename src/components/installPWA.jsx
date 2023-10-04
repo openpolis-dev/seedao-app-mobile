@@ -13,7 +13,7 @@ console.log("[isiOS]:", isIOS);
 export default function InstallCheck() {
   const { t } = useTranslation();
   const [isInstalled, setIsInstalled] = useState(true);
-
+  const [show, setShow] = useState(true);
 
   useEffect(() => {
     if (window.navigator?.standalone === true || window.matchMedia("(display-mode: standalone)").matches) {
@@ -38,6 +38,17 @@ export default function InstallCheck() {
     };
   }, []);
 
+  useEffect(() => {
+    const intallTips = sessionStorage.getItem("install-tips");
+    if(intallTips == null) return;
+    setShow(JSON.parse(intallTips))
+  }, []);
+
+  const handleClose = () =>{
+    setShow(false);
+    sessionStorage.setItem("install-tips",false);
+  }
+
   const installApp = async () => {
     const current = deferredPrompt.current;
     console.log("[installApp] deferredPrompt:", current);
@@ -60,39 +71,49 @@ export default function InstallCheck() {
   }
   if (isAndroid) {
     return (
-      <AndroidBox>
-        <div className="left">
-          <img src={AppIcon} alt="" />
-          <span>SeeDAO</span>
-        </div>
-        <div>
-          <div className="btn-button" onClick={installApp}>
-            {t("mobile.install.androidInstall")}
-          </div>
-        </div>
-      </AndroidBox>
+        <>
+          {
+            show &&<AndroidBox>
+                <div className="left">
+                  <img src={AppIcon} alt="" />
+                  <span>SeeDAO</span>
+                </div>
+                <div>
+                  <div className="btn-button" onClick={installApp}>
+                    {t("mobile.install.androidInstall")}
+                  </div>
+                </div>
+              </AndroidBox>
+          }
+        </>
     );
   }
   if (isIOS) {
     return (
-      <IOSBox>
-        <div className="header">
-          {t("mobile.install.iosTitle")}
-          {/*<div className="close">*/}
-          {/*  <X />*/}
-          {/*</div>*/}
-        </div>
-        <div className="bottom">
-          <Step>
-            <img src={ShareIcon} alt="" />
-            <span>{t("mobile.install.iosStep1")}</span>
-          </Step>
-          <Step>
-            <img src={AddIcon} alt="" />
-            <span>{t("mobile.install.iosStep2")}</span>
-          </Step>
-        </div>
-      </IOSBox>
+        <>
+          {
+            show && <IOSBox>
+              <div className="header">
+                {t("mobile.install.iosTitle")}
+                <div className="close" onClick={()=>handleClose()}>
+                  <X />
+                </div>
+              </div>
+              <div className="bottom">
+                <Step>
+                  <img src={ShareIcon} alt="" />
+                  <span>{t("mobile.install.iosStep1")}</span>
+                </Step>
+                <Step>
+                  <img src={AddIcon} alt="" />
+                  <span>{t("mobile.install.iosStep2")}</span>
+                </Step>
+              </div>
+            </IOSBox>
+          }
+
+        </>
+
     );
   }
   return <></>;
