@@ -90,8 +90,7 @@ const TextBox = styled.div`
 const DeschoolLink = styled.a`
   border-radius: 8px;
   border: 2px solid #9163fe;
-  height: 2.4em;
-  line-height: 2.4em;
+  line-height: 2.2em;
   font-size: 20px;
   display: inline-block;
   width: 50%;
