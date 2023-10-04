@@ -5,6 +5,7 @@ import AppIcon from "assets/images/app.png";
 import ShareIcon from "assets/images/install/share.svg";
 import AddIcon from "assets/images/install/add.svg";
 import { useTranslation } from "react-i18next";
+import {X} from "react-bootstrap-icons";
 
 console.log("[isAndroid]:", isAndroid);
 console.log("[isiOS]:", isIOS);
@@ -12,6 +13,7 @@ console.log("[isiOS]:", isIOS);
 export default function InstallCheck() {
   const { t } = useTranslation();
   const [isInstalled, setIsInstalled] = useState(true);
+
 
   useEffect(() => {
     if (window.navigator?.standalone === true || window.matchMedia("(display-mode: standalone)").matches) {
@@ -74,7 +76,12 @@ export default function InstallCheck() {
   if (isIOS) {
     return (
       <IOSBox>
-        <div className="header">{t("mobile.install.iosTitle")}</div>
+        <div className="header">
+          {t("mobile.install.iosTitle")}
+          {/*<div className="close">*/}
+          {/*  <X />*/}
+          {/*</div>*/}
+        </div>
         <div className="bottom">
           <Step>
             <img src={ShareIcon} alt="" />
@@ -124,6 +131,7 @@ const IOSBox = styled.div`
   width: 100%;
   background-color: rgba(215, 215, 215);
   border-radius: 10px 10px 0 0;
+  z-index: 999;
   .header {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     font-size: 18px;
@@ -131,6 +139,12 @@ const IOSBox = styled.div`
     padding: 13px 16px;
     font-weight: 500;
     font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .close{
+    font-size: 24px;
   }
   .bottom {
     padding-block: 20px;
