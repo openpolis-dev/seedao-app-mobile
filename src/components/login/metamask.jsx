@@ -12,6 +12,10 @@ import {useNavigate} from "react-router-dom";
 import AppConfig from "../../AppConfig";
 import ReactGA from "react-ga4";
 
+
+// https://github.com/MetaMask/metamask-sdk/issues/381
+// https://github.com/WalletConnect/web3modal/issues/1369
+
 export default function  Metamask(){
     const navigate = useNavigate();
     const { open } = useWeb3Modal();
@@ -42,10 +46,6 @@ export default function  Metamask(){
     }
 
     const onClick = async () =>{
-        // if (!isConnected) {
-        //
-        // }
-
         disconnect();
         await onOpen();
         setConnectWallet(true);
