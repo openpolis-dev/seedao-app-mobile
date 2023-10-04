@@ -14,6 +14,7 @@ import ReactGA from "react-ga4";
 
 
 // https://github.com/MetaMask/metamask-sdk/issues/381
+// https://github.com/MetaMask/metamask-mobile/issues/7165
 // https://github.com/WalletConnect/web3modal/issues/1369
 
 export default function  Metamask(){
