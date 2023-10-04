@@ -37,6 +37,7 @@ const CardBox = styled.div`
     background: rgba(161, 110, 255, 0.2);
     padding: 20px;
     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter:blur(5px);
   }
 `
 
