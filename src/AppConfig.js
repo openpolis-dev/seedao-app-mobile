@@ -42,6 +42,16 @@ const AppConfig = {
       id: 4,
     },
   ],
+  Lan:[
+    {
+      name: "中文",
+      value: "zh"
+    },
+    {
+      name: "English",
+      value: "en"
+    }
+  ]
 };
 
 export default AppConfig;

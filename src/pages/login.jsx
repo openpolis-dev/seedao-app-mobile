@@ -4,10 +4,13 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import { Button } from "react-bootstrap";
 import Metamask from "../components/login/metamask";
-import { useNavigate } from "react-router-dom";
 import Loading from "../components/layout/loading";
 import Joyid from "../components/login/joyid";
 import Unipass from "../components/login/unipass";
+import {useState} from "react";
+import { CaretDownFill } from "react-bootstrap-icons"
+import SwitchLan from "../components/common/switchLan";
+import AppConfig from "../AppConfig";
 
 const Box = styled.div`
   display: flex;
@@ -57,13 +60,39 @@ const FlexBox = styled.div`
   left: 0;
 `;
 
+const LanguageBox = styled.div`
+  font-size: 14px;
+  span{
+    margin-right: 5px;
+  }
+`
+
 export default function Login() {
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
+  const[show,setShow]= useState(false);
+
+
+
+  const returnLan = () =>{
+    const arr = AppConfig.Lan.filter(item=>item.value === i18n.language )
+    return arr[0].name
+  };
+  const showBtm = () =>{
+    setShow(true)
+  }
+  const handleClose = () =>{
+    setShow(false)
+  }
+
 
   return (
     <Layout noHeader noTab>
+      <SwitchLan show={show} handleClose={handleClose} />
       <FlexBox>
-        <div />
+        <LanguageBox onClick={()=>showBtm()}>
+          <span>{returnLan()}</span>
+          <CaretDownFill />
+        </LanguageBox>
         <Loading />
       </FlexBox>
 
