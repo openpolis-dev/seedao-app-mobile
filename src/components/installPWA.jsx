@@ -78,9 +78,12 @@ export default function InstallCheck() {
                   <img src={AppIcon} alt="" />
                   <span>SeeDAO</span>
                 </div>
-                <div>
+                <div className="lineRht">
                   <div className="btn-button" onClick={installApp}>
                     {t("mobile.install.androidInstall")}
+                  </div>
+                  <div className="btn-cancel" onClick={()=>handleClose()}>
+                    {t("general.cancel")}
                   </div>
                 </div>
               </AndroidBox>
@@ -121,7 +124,7 @@ export default function InstallCheck() {
 
 const AndroidBox = styled.div`
   position: fixed;
-  top: 0;
+  bottom: 0;
   width: 100%;
   height: 60px;
   line-height: 60px;
@@ -143,6 +146,22 @@ const AndroidBox = styled.div`
     border-radius: 4px;
     background-color: var(--bs-primary);
     color: #fff;
+    font-size: 14px;
+  }
+  .lineRht{
+    display: flex;
+    align-items: center;
+    
+  }
+  .btn-cancel {
+    cursor: pointer;
+    line-height: 36px;
+    padding-inline: 15px;
+    border-radius: 4px;
+    border: 1px solid var(--bs-primary);
+    color: var(--bs-primary);
+    margin-left: 10px;
+    font-size: 14px;
   }
 `;
 
