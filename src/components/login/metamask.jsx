@@ -28,6 +28,8 @@ export default function  Metamask(){
     const [result,setResult] = useState(null);
     const [connectWallet,setConnectWallet] = useState(false);
 
+
+
     const signer = useEthersSigner({chainId:chain});
 
     useEffect(()=>{
@@ -59,14 +61,13 @@ export default function  Metamask(){
 
     const sign = async() =>{
         if(!isConnected || !signer.provider)return;
-
-        const eip55Addr = ethers.utils.getAddress(address);
-        const {chainId} =  await signer.provider.getNetwork();
-
-        let nonce = await getMyNonce(address);
-        const siweMessage = createSiweMessage(eip55Addr, chainId, nonce, 'Welcome to SeeDAO!');
-        setMsg(siweMessage)
         try{
+            const eip55Addr = ethers.utils.getAddress(address);
+            const {chainId} =  await signer.provider.getNetwork();
+
+            let nonce = await getMyNonce(address);
+            const siweMessage = createSiweMessage(eip55Addr, chainId, nonce, 'Welcome to SeeDAO!');
+            setMsg(siweMessage)
             let signData = await signer.signMessage(siweMessage);
             setSignInfo(signData)
             setConnectWallet(false);
