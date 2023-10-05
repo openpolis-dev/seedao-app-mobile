@@ -64,7 +64,6 @@ export default function  Metamask(){
         try{
             const eip55Addr = ethers.utils.getAddress(address);
             const {chainId} =  await signer.provider.getNetwork();
-
             let nonce = await getMyNonce(address);
             const siweMessage = createSiweMessage(eip55Addr, chainId, nonce, 'Welcome to SeeDAO!');
             setMsg(siweMessage)

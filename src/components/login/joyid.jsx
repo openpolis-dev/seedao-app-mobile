@@ -86,17 +86,22 @@ export default function Joyid(){
 
     const onSignMessageRedirect = async() => {
         localStorage.setItem("joyid-status","sign")
-        let nonce = await getMyNonce(account);
-        const eip55Addr = ethers.utils.getAddress(account);
+        try{
+            let nonce = await getMyNonce(account);
+            const eip55Addr = ethers.utils.getAddress(account);
 
-        const siweMessage = createSiweMessage(eip55Addr, 1, nonce, 'Welcome to SeeDAO!');
-        setMsg(siweMessage)
-        localStorage.setItem("joyid-msg",siweMessage)
+            const siweMessage = createSiweMessage(eip55Addr, 1, nonce, 'Welcome to SeeDAO!');
+            setMsg(siweMessage)
+            localStorage.setItem("joyid-msg",siweMessage)
 
-        const url = buildRedirectUrl("sign-message");
-        signMessageWithRedirect(url, siweMessage, account, {
-            state: msg,
-        });
+            const url = buildRedirectUrl("sign-message");
+            signMessageWithRedirect(url, siweMessage, account, {
+                state: msg,
+            });
+        }catch (e){
+            console.error("onSignMessageRedirect",e)
+        }
+
     };
 
 
