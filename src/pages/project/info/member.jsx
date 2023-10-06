@@ -6,6 +6,7 @@ import { saveLoading } from "store/reducer";
 import { useEffect, useMemo, useState } from "react";
 import { getUsers } from "api/user";
 import UserList from "components/userList";
+import { useParseSNSList } from "hooks/useParseSNS";
 
 export default function ProjectMember() {
   const { t } = useTranslation();
@@ -15,6 +16,12 @@ export default function ProjectMember() {
   const [userMap, setUserMap] = useState({});
   const [members, setMembers] = useState([]);
   const [sponsors, setSponsors] = useState([]);
+
+  const uniqueUsers = useMemo(() => {
+    return Array.from(new Set([...members, ...sponsors]));
+  }, [members, sponsors]);
+
+  const nameMap = useParseSNSList(uniqueUsers);
 
   const getUsersInfo = async (wallets) => {
     if (!wallets.length) {
@@ -54,11 +61,11 @@ export default function ProjectMember() {
     <MemberContent>
       <Block>
         <SectionTitle>{t("Project.Dominator")}</SectionTitle>
-        <UserList data={memberUsers} />
+        <UserList data={memberUsers} nameMap={nameMap} />
       </Block>
       <Block>
         <SectionTitle>{t("Project.Members")}</SectionTitle>
-        <UserList data={sponsorUsers} />
+        <UserList data={sponsorUsers} nameMap={nameMap} />
       </Block>
     </MemberContent>
   );

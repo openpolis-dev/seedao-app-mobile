@@ -23,7 +23,7 @@ const EmptyUserCard = () => {
   );
 };
 
-export default function UserCard({ user }) {
+export default function UserCard({ user, sns }) {
   if (!user) {
     return <EmptyUserCard />;
   }
@@ -35,7 +35,7 @@ export default function UserCard({ user }) {
       <UserRight className="right">
         <div className="user-container">
           {/* name */}
-          {user.name && <div className="name">{user.name}</div>}
+          {(user.name || sns) && <div className="name">{sns || user.name}</div>}
           {/* social */}
           <SocialBox>
             {user.twitter_profile && (
@@ -78,7 +78,6 @@ const UserCardBox = styled.div`
   align-items: center;
   gap: 20px;
   margin-bottom: 20px;
-  
 `;
 
 const EmptyAvatar = styled.div`
@@ -124,5 +123,4 @@ const WalletBox = styled.div`
     word-wrap: break-word;
     line-height: 20px;
   }
- 
 `;
