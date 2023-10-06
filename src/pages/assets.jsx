@@ -167,7 +167,7 @@ export default function Assets(){
 
     const [totalSCR, setTotalSCR] = useState('0');
     const { SCR_CONTRACT } = AppConfig;
-    const SCR_PRICE = 3;
+    const SCR_PRICE = 0.3;
 
     const SCRValue = useMemo(() => {
         return Number(totalSCR) * SCR_PRICE;
