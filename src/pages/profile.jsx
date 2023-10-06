@@ -2,12 +2,12 @@ import Layout from "../components/layout/layout";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import store from "../store";
 import { saveLoading } from "../store/reducer";
 import { getUser } from "../api/user";
 import Avatar from "components/common/avatar";
 import CopyBox from "components/common/copy";
+import useParseSNS from "hooks/useParseSNS";
 
 const Box = styled.div`
   padding: 20px;
@@ -50,6 +50,7 @@ export default function Profile() {
   const { t } = useTranslation();
 
   const [detail, setDetail] = useState();
+  const sns = useParseSNS(detail?.wallet);
 
   useEffect(() => {
     toGA();
@@ -81,6 +82,10 @@ export default function Profile() {
           <Avatar size="100px" src={detail?.avatar} />
         </AvatarBox>
         <LineBox>
+          <dl>
+            <dt>SNS</dt>
+            <dd>{sns}</dd>
+          </dl>
           <dl>
             <dt>{t("My.Name")}</dt>
             <dd>{detail?.name}</dd>
