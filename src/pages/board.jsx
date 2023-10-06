@@ -29,7 +29,7 @@ export default function Board() {
             <ArrowBox>
               <img src={ArrowIcon} alt="" />
             </ArrowBox>
-            <DeschoolLink href="https://deschool.app/origin/learn" target="_blank">
+            <DeschoolLink href="https://deschool.app/origin/series/62f0adc68b90ee1aa913a965/learning?courseId=62f0adc68b90ee1aa913a966" target="_blank">
               Deschool
             </DeschoolLink>
           </ContentBox>
