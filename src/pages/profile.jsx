@@ -117,10 +117,6 @@ export default function Profile() {
             <dt>{t("My.Mirror")}</dt>
             <dd>{detail?.mirror}</dd>
           </dl>
-          <dl>
-            <dt>{t("My.Google")}</dt>
-            <dd>{detail?.google_profile}</dd>
-          </dl>
         </LineBox>
       </Box>
     </Layout>
