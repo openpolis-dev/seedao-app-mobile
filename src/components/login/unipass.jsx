@@ -35,6 +35,7 @@ export default function Unipass(){
     const [result,setResult] = useState(null);
     const handlePermission = usePushPermission();
 
+
     const getP = async () => {
         handlePermission(async () => {
             try {
@@ -45,6 +46,7 @@ export default function Unipass(){
               console.error(e);
             }
         });
+
     }
 
     useEffect(()=>{

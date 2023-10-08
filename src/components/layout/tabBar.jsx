@@ -64,6 +64,15 @@ export default function TabBar(){
                     <dd>{t('mobile.my.home')}</dd>
                 </dl>
             </NavLink>
+
+            <NavLink className={({ isActive }) => isActive ?"active":""} to="/online-event">
+                <dl>
+                    <dt>
+                        <Person />
+                    </dt>
+                    <dd>{t('menus.event')}</dd>
+                </dl>
+            </NavLink>
             <NavLink className={({ isActive }) => isActive ?"active":""} to="/my">
                 <dl>
                     <dt>
