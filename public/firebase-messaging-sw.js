@@ -20,11 +20,12 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 const MESSAGE_TYPE = {
-  PROJECT_ADD: 'proj_staff_add',
-  PROJECT_REMOVE: 'proj_staff_remove',
-  GUILD_ADD: 'guid_staff_add',
-  GUILD_REMOVE: 'guild_staff_remove',
-  ASSET_NEW: 'receive_assert',
+  PROJECT_ADD: "proj_staff_add",
+  PROJECT_REMOVE: "proj_staff_remove",
+  GUILD_ADD: "guid_staff_add",
+  GUILD_REMOVE: "guild_staff_remove",
+  ASSET_NEW: "receive_assert",
+  CUSTOM: "custom",
 };
 
 messaging.onBackgroundMessage(function (payload) {
@@ -43,7 +44,10 @@ messaging.onBackgroundMessage(function (payload) {
       route_path = `/guild/${payload.data.guild_id}`;
       break;
     case MESSAGE_TYPE.ASSET_NEW:
-      route_path = '/user/vault';
+      route_path = "/user/vault";
+      break;
+    case MESSAGE_TYPE.CUSTOM:
+      route_path = payload.data.jump_url;
       break;
     default:
       break;

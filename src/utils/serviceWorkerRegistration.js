@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage, isSupported } from 'firebase/messaging';
-import { registerDevice, getPushDevice } from 'requests/push';
+import { registerDevice, getPushDevice } from 'api/push';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -15,7 +15,7 @@ const firebaseConfig = {
 
 let messaging;
 
-const version = 'v1';
+const version = 'v2';
 
 export function register(config) {
   if ('serviceWorker' in navigator) {

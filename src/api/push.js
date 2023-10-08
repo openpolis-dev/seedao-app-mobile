@@ -1,19 +1,15 @@
 import axios from "axios";
-import { SEEDAO_USER } from "utils/constant";
-import { parseToken } from "utils/auth";
 import { isMobile } from "utils/userAgent";
+import store from "../store";
 
 const TEMP_ENDPPOINT = "https://test-push-api.seedao.tech/v1";
 const PATH_PREFIX = "/push";
 
 const getHeaders = () => {
-  const tokenstr = localStorage.getItem(SEEDAO_USER);
-  if (!tokenstr) {
-    return;
-  }
-  const tokenData = parseToken(tokenstr);
+ 
+  const tokenstr = store.getState().userToken;
   return {
-    Authorization: `Bearer ${tokenData?.token || ""}`,
+    Authorization: `Bearer ${tokenstr?.token || ""}`,
   };
 };
 
