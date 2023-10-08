@@ -1,4 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+
+const checkNotificationSupport = () => {
+  if (!window.Notification) {
+    console.error("not support navigator");
+    return;
+  }
+  return true;
+};
 
 const askPermission = () => {
   return new Promise(function (resolve, reject) {
@@ -16,13 +24,11 @@ const askPermission = () => {
   });
 };
 
-
-export default function usePermisson() {
+export default function usePushPermission() {
   const [permission, setPermission] = useState("default");
 
   useEffect(() => {
-    if (!window.Notification) {
-      console.error("not support navigator");
+    if (!checkNotificationSupport()) {
       return;
     }
 
@@ -35,7 +41,14 @@ export default function usePermisson() {
       .catch((err) => console.error("permission failed", err));
   }, []);
 
-  const handlePermission = () => {
+  const handlePermission = (callback) => {
+    if (permission === "granted") {
+      callback && callback();
+    }
+    if (!checkNotificationSupport()) {
+      callback && callback();
+      return Promise.reject("not support navigator");
+    }
     return askPermission()
       .then((res) => {
         console.log("you agreed permission");
@@ -43,10 +56,11 @@ export default function usePermisson() {
       })
       .catch((err) => {
         console.error("you denied permission");
+      })
+      .finally(() => {
+        callback && callback();
       });
   };
 
-  
-
-  return { handlePermission, permission };
+  return handlePermission;
 }

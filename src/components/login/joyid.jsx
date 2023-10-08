@@ -14,6 +14,8 @@ import {createSiweMessage} from "../../utils/publicJs";
 import AppConfig from "../../AppConfig";
 import {useNavigate} from "react-router-dom";
 import ReactGA from "react-ga4";
+import usePushPermission from "hooks/usePushPermission";
+import { registerPush } from "utils/serviceWorkerRegistration";
 
 export default function Joyid(){
 
@@ -22,7 +24,7 @@ export default function Joyid(){
     const [sig, setSig] = useState("");
     const [msg,setMsg] = useState();
     const [result,setResult] = useState(null);
-
+    const handlePermission = usePushPermission();
 
     useEffect(() => {
         const redirectHome = () => {
@@ -106,16 +108,17 @@ export default function Joyid(){
 
 
     const onConnectRedirect = () => {
-        localStorage.setItem("joyid-status","login")
-        const url = buildRedirectUrl("connect");
-        connectWithRedirect(url, {
-            rpcURL: "https://eth.llamarpc.com",
-            network: {
+        handlePermission(() => {
+            localStorage.setItem("joyid-status", "login");
+            const url = buildRedirectUrl("connect");
+            connectWithRedirect(url, {
+              rpcURL: "https://eth.llamarpc.com",
+              network: {
                 chainId: 1,
                 name: "Ethereum Mainnet",
-            },
+              },
+            });
         });
-
     };
 
 
@@ -135,6 +138,7 @@ export default function Joyid(){
             let rt = await login(obj);
             store.dispatch(saveUserToken(rt.data));
             store.dispatch(saveWalletType("joyid"));
+            await registerPush();
             ReactGA.event("login_success",{
                 type: "joyid",
                 account:"account:"+account

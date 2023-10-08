@@ -11,7 +11,8 @@ import {createSiweMessage} from "../../utils/publicJs";
 import {useNavigate} from "react-router-dom";
 import AppConfig from "../../AppConfig";
 import ReactGA from "react-ga4";
-
+import usePushPermission from "hooks/usePushPermission";
+import { registerPush } from "utils/serviceWorkerRegistration";
 
 // https://github.com/MetaMask/metamask-sdk/issues/381
 // https://github.com/MetaMask/metamask-mobile/issues/7165
@@ -29,7 +30,7 @@ export default function  Metamask(){
     const [connectWallet,setConnectWallet] = useState(false);
 
 
-
+    const handlePermission = usePushPermission();
     const signer = useEthersSigner({chainId:chain});
 
     useEffect(()=>{
@@ -48,10 +49,12 @@ export default function  Metamask(){
 
     }
 
-    const onClick = async () =>{
-        disconnect();
-        await onOpen();
-        setConnectWallet(true);
+    const onClick = async () => {
+        handlePermission(async () => {
+            disconnect();
+            await onOpen();
+            setConnectWallet(true);
+        });
     }
 
     const getMyNonce = async(wallet) =>{
@@ -104,6 +107,8 @@ export default function  Metamask(){
             store.dispatch(saveWalletType("metamask"));
             store.dispatch(saveAccount(address))
             store.dispatch(saveLoading(false));
+
+            await registerPush();
 
             ReactGA.event("login_success",{
                 type: "metamask",
