@@ -2,6 +2,8 @@ import styled from "styled-components";
 import {Offcanvas} from "react-bootstrap";
 import {useTranslation} from "react-i18next";
 import AppConfig from "../../AppConfig";
+import { requestSetDeviceLanguage, getPushDevice } from "api/push";
+import {useSelector} from "react-redux";
 
 const LanBox = styled(Offcanvas)`
   display: flex;
@@ -24,11 +26,20 @@ const LastBox = styled.ul`
 export default function SwitchLan(props){
     const {show,handleClose} = props;
 
-    const {i18n} = useTranslation();
-    const changeLan = (index) =>{
-        i18n.changeLanguage(AppConfig.Lan[index].value);
-        handleClose()
-
+    const { i18n } = useTranslation();
+    const userToken = useSelector(state=> state.userToken);
+  
+    const changeLan = (index) => {
+      const v = AppConfig.Lan[index].value;
+      i18n.changeLanguage(v);
+      if (userToken) {
+        try {
+          requestSetDeviceLanguage({ device: getPushDevice(), language: v });
+        } catch (error) {
+          console.error("Set Device Language Failed", error);
+        }
+      }
+      handleClose()
     }
 
     return <div>

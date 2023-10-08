@@ -9,6 +9,8 @@ import {useNavigate} from "react-router-dom";
 import { getNonce, login } from "../../api/user";
 import AppConfig from "../../AppConfig";
 import ReactGA from "react-ga4";
+import usePushPermission from "hooks/usePushPermission";
+import { registerPush } from "utils/serviceWorkerRegistration";
 
 const upProvider = new UniPassProvider({
     chainId: 1,
@@ -31,20 +33,18 @@ export default function Unipass(){
     const [msg,setMsg] = useState(null);
     const [signInfo,setSignInfo] = useState();
     const [result,setResult] = useState(null);
+    const handlePermission = usePushPermission();
 
-
-
-    const getP = async() =>{
-        try{
-
-            await upProvider.connect();
-            const provider = new ethers.providers.Web3Provider(upProvider, "any");
-            setProvider(provider);
-        }catch (e){
-            console.error(e)
-        }
-
-
+    const getP = async () => {
+        handlePermission(async () => {
+            try {
+              await upProvider.connect();
+              const provider = new ethers.providers.Web3Provider(upProvider, "any");
+              setProvider(provider);
+            } catch (e) {
+              console.error(e);
+            }
+        });
     }
 
     useEffect(()=>{
@@ -121,6 +121,7 @@ export default function Unipass(){
             store.dispatch(saveUserToken(rt.data));
             store.dispatch(saveWalletType("unipass"));
             setResult(rt.data)
+            await registerPush();
             ReactGA.event("login_success",{
                 type: "unipass",
                 account:"account:"+addr
