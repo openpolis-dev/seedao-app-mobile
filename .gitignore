@@ -24,3 +24,4 @@ yarn-error.log*
 .idea
 
 public/firebase-env.js
+src/firebase-env.js

@@ -1,10 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage, isSupported } from 'firebase/messaging';
 import { registerDevice, getPushDevice } from 'api/push';
-import { firebaseConfigDevelopment, firebaseConfigProduction } from "../firebase";
-
-const firebaseConfig =
-  process.env.REACT_APP_ENV_VERSION === "prod" ? firebaseConfigProduction : firebaseConfigDevelopment;
+import { firebaseConfig } from "../firebase-env";
 
 let messaging;
 
