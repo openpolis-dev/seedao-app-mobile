@@ -44,7 +44,9 @@ function App() {
             </Provider>
             <GlobalStyle />
 
-            <Web3Modal projectId={projectId} ethereumClient={ethereumClient}
+            <Web3Modal
+                defaultChain={mainnet}
+                projectId={projectId} ethereumClient={ethereumClient}
                        explorerRecommendedWalletIds={[
                            'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96',
                            // '80c7742837ad9455049270303bccd55bae39a9e639b70d931191269d3a76320a',
