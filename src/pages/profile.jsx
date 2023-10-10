@@ -98,6 +98,10 @@ export default function Profile() {
             </RhtBox>
           </dl>
           <dl>
+            <dt>{t("My.Bio")}</dt>
+            <dd>{detail?.bio}</dd>
+          </dl>
+          <dl>
             <dt>{t("My.Email")}</dt>
             <dd>{detail?.email}</dd>
           </dl>
