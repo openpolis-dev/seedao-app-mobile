@@ -2,6 +2,7 @@
   "name": "osapp-new",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@emotion/react": "^11.11.1",
@@ -50,11 +51,17 @@
     "wagmi": "^1.4.2",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "fs": "0.0.1-security",
+    "react-app-rewired": "^2.2.1"
+  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "config": "node firebase-config.js",
+    "dev": "npm run config && react-app-rewired start",
+    "start": "REACT_APP_ENV_VERSION=dev npm run dev",
+    "build": "npm run config && react-app-rewired build",
+    "build:dev": "REACT_APP_ENV_VERSION=dev npm run build",
+    "build:prod": "REACT_APP_ENV_VERSION=prod npm run build"
   },
   "eslintConfig": {
     "extends": [
