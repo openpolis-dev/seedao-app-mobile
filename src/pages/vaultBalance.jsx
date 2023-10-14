@@ -206,7 +206,7 @@ export default function VaultBalance(){
                 <div className="vaultInner">
                     <TopBox>
                         <Tit>{t('Assets.TotalBalance')}</Tit>
-                        <NumBal>${totalBalance}</NumBal>
+                        <NumBal>${formatNumber(Number(totalBalance))}</NumBal>
                     </TopBox>
                     <FlexBox>
                         <li>

@@ -361,7 +361,7 @@ export default function Assets(){
             <CardBox className="total">
                 <div className="vaultInner">
                     <Tit>{t('Assets.TotalBalance')}</Tit>
-                    <Num>${formatNumber(totalBalance)}</Num>
+                    <Num>${formatNumber(Number(totalBalance))}</Num>
                     <DetailBox onClick={()=>toGo()}>
                         <div>{t('Assets.Detail')}</div>
                         <ChevronDoubleRight />
