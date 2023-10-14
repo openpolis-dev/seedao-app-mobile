@@ -5,7 +5,7 @@ import { firebaseConfig } from "../firebase-env";
 
 let messaging;
 
-const version = 'v1.0.1';
+const version = 'v1.0.2';
 
 export function register(config) {
   if ('serviceWorker' in navigator) {
