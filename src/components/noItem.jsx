@@ -21,7 +21,7 @@ export default function NoItem() {
         <div>
           <Calendar3Range className="sizeTop" />
         </div>
-        <div>{t("Mobile.NoData")}</div>
+        <div>{t("mobile.NoData")}</div>
       </Box>
     );
 }
