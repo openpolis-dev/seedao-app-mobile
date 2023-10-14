@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {Calendar3Range} from "react-bootstrap-icons";
+import { useTranslation } from "react-i18next";
 
 const Box = styled.div`
     flex: 1;
@@ -13,11 +14,14 @@ const Box = styled.div`
     margin-bottom: 10px;
   }
 `
-export default function NoItem(){
-    return <Box>
+export default function NoItem() {
+  const { t } = useTranslation();
+    return (
+      <Box>
         <div>
-            <Calendar3Range className="sizeTop" />
+          <Calendar3Range className="sizeTop" />
         </div>
-        <div>No data</div>
-    </Box>
+        <div>{t("Mobile.NoData")}</div>
+      </Box>
+    );
 }

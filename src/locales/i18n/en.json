@@ -241,6 +241,7 @@
     "copied": "Copied!",
     "proposalDetail": "Proposal Detail",
     "projectDetail": "Project Detail",
-    "vault": "Vault"
+    "vault": "Vault",
+    "NoData": "No Data"
   }
 }
