@@ -234,7 +234,7 @@ export default function VaultBalance(){
                         <LineBox>
                             <FirstLine>
                                 <Addr>{PublicJs.AddressToShow(v.address)}</Addr>
-                                <CopyBox text="123"/>
+                                <CopyBox text={v.address} />
                                 <Share onClick={()=>linkTo(v)} className="iconBox" />
                             </FirstLine>
                             <Num>
