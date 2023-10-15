@@ -80,15 +80,22 @@ const ImgBlock = styled(Block)`
   justify-content: center;
   align-items: center;
 
-  div {
+  &>div {
     width: 150px;
     height: 150px;
     background-color: #fff;
     border-radius: 6px;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     box-shadow: 0 5px 10px rgba(0,0,0,0.05);
     img {
       width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
     }
   }
 `;
