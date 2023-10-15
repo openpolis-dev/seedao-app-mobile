@@ -33,7 +33,7 @@ export default function My(){
                 </div>
                 <ChevronRight />
             </Item>
-            <Item onClick={()=>toGo('/user/value')}>
+            <Item onClick={()=>toGo('/user/vault')}>
                 <div>
                     {t('My.MyAccount')}
                 </div>

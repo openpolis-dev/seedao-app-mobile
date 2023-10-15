@@ -49,7 +49,7 @@ function RouterLink() {
         <Route path="/setting" element={<Setting />} />
         <Route path="/board" element={<Board />} />
         <Route path="/user/profile" element={<Profile />} />
-        <Route path="/user/value" element={<Vault />} />
+        <Route path="/user/vault" element={<Vault />} />
         <Route path="/privacy" element={<Privacy />} />
 
         {/*<Route path="/message" element={<MessagePage />} />*/}
