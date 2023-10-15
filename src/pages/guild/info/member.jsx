@@ -61,11 +61,11 @@ export default function GuildMember() {
     <MemberContent>
       <Block>
         <SectionTitle>{t("Guild.Dominator")}</SectionTitle>
-        <UserList data={memberUsers} nameMap={nameMap} />
+        <UserList data={sponsorUsers} nameMap={nameMap} />
       </Block>
       <Block>
         <SectionTitle>{t("Guild.Members")}</SectionTitle>
-        <UserList data={sponsorUsers} nameMap={nameMap} />
+        <UserList data={memberUsers} nameMap={nameMap} />
       </Block>
     </MemberContent>
   );

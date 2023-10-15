@@ -105,7 +105,7 @@ const UserRight = styled.div`
       font-weight: 600;
     }
     .icon {
-      width: 30px;
+      width: 25px;
     }
   }
 `;
