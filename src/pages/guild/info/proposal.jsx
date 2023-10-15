@@ -5,6 +5,7 @@ import { getProposalDetail } from "api/proposal";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import { useGuildContext } from "./provider";
+import NoItem from "components/noItem";
 
 export default function GuildProposal() {
   const {
@@ -42,6 +43,7 @@ export default function GuildProposal() {
       {list.map((item) => (
         <ProposalCard key={item.id} data={item} />
       ))}
+      {!list.length && <NoItem />}
     </ProposalList>
   );
 }
