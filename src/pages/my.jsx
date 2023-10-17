@@ -39,6 +39,15 @@ export default function My(){
                 </div>
                 <ChevronRight />
             </Item>
+            <a href="https://seedao.canny.io/" target="_blank" >
+            <Item>
+
+                <div>
+                    {t('mobile.my.feedback')}
+                </div>
+                <ChevronRight />
+            </Item>
+            </a>
             <Item onClick={()=>toGo('/setting')}>
                 <div>
                     {t('mobile.my.setting')}

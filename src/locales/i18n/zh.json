@@ -219,7 +219,8 @@
       "become": "成为SEEDAO成员",
       "version": "版本",
       "chat": "聊天",
-      "wallet": "钱包"
+      "wallet": "钱包",
+      "feedback": "意见反馈"
     },
     "login": {
       "mmTips1": "连接到{{type}}",
