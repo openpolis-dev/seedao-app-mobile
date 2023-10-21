@@ -5,7 +5,7 @@ import { firebaseConfig } from "../firebase-env";
 
 let messaging;
 
-const version = "v1.0.4-test";
+const version = "v1.0.4-beta";
 
 export function register(config) {
   if ("serviceWorker" in navigator) {
@@ -26,6 +26,7 @@ function registerValidSW(swUrl, config) {
       if (localStorage.getItem("sw_version") !== version) {
         registration.update().then(function () {
           localStorage.setItem("sw_version", version);
+          window.location.reload();
         });
       }
       registration.onupdatefound = () => {
