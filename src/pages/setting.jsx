@@ -58,6 +58,15 @@ export default function Setting() {
         // store.dispatch(saveLogout(true));
         navigate("/login");
     }
+    const upgradeSW = () => {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.getRegistrations().then(function (registrations) {
+            for (const registration of registrations) {
+              registration.update();
+            }
+          });
+        }
+    }
 
     return <Layout noTab title={t('mobile.my.setting')}>
         <Box>
@@ -91,6 +100,10 @@ export default function Setting() {
                     <ChevronRight />
                 </Item>
             }
+            <Item onClick={upgradeSW}>
+                <div>upgrade</div>
+                <ChevronRight />
+            </Item>
         </Box>
     </Layout>
 };
