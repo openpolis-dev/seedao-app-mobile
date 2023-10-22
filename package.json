@@ -45,6 +45,7 @@
     "sass": "^1.68.0",
     "siwe": "^2.1.4",
     "styled-components": "^6.0.8",
+    "swiper": "^10.3.1",
     "ua-parser-js": "^1.0.36",
     "vconsole": "^3.15.1",
     "wagmi": "^1.4.2",

@@ -70,7 +70,23 @@ export default function TabBar(){
                     <dt>
                         <Person />
                     </dt>
-                    <dd>{t('menus.event')}</dd>
+                    <dd>探索</dd>
+                </dl>
+            </NavLink>
+            <NavLink className={({ isActive }) => isActive ?"active":""} to="/online-event">
+                <dl>
+                    <dt>
+                        <Person />
+                    </dt>
+                    <dd>治理</dd>
+                </dl>
+            </NavLink>
+            <NavLink className={({ isActive }) => isActive ?"active":""} to="/online-event">
+                <dl>
+                    <dt>
+                        <Person />
+                    </dt>
+                    <dd>金库</dd>
                 </dl>
             </NavLink>
             <NavLink className={({ isActive }) => isActive ?"active":""} to="/my">
