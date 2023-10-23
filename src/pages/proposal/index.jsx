@@ -50,7 +50,7 @@ export default function Proposal() {
     }
   }, [activeTab, orderType]);
   return (
-    <Layout title={t("menus.Proposal")} noTab>
+    <Layout title={t("menus.Proposal")} >
       <TabMenu>
         <li onClick={() => setActiveTab(0)} className={activeTab === 0 ? "selected" : ""}>
           {t("Proposal.AllCategories")}

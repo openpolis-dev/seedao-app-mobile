@@ -8,6 +8,22 @@
     "city-hall": "City Hall",
     "assets": "Vault/Points"
   },
+  "Home": {
+    "Slogan": "SeeDAO is a network polis to connect millions of nomads in Web3.",
+    "SloganVison": "Our Vision",
+    "SloganDesc": "Creating an alternative human living space in cyberspace outside the region of the nation-states.",
+    "Events": "Events",
+    "AllEvents": "All Events",
+    "Publicity": "Publicity",
+    "CityHall": "City Hall",
+    "CityHallMembers": "City Hall Members",
+    "SGNHolder": "SEED Holder",
+    "SBTHolder": "SBT Holder",
+    "GovernNode": "Govern Node",
+    "Apps": "Apps",
+    "OnlineEvent": "Calendar",
+    "OfflineEvent": "Offline Events"
+  },
   "general": {
     "back": "Back",
     "cancel": "Cancel",

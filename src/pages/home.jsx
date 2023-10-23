@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import LogoImg from "../assets/images/logo.png";
 import {Row,Col,Card} from "react-bootstrap";
 import SwiperBanner from "../components/home/swiperBanner";
+import {useEffect, useMemo, useState} from "react";
+import axios from 'axios';
 
 
 const BoxInner = styled.div`
@@ -32,6 +34,19 @@ const BBox = styled.div`
   }
   .mb{
     margin-bottom: 20px;
+  }
+  .btmLine{
+    display: flex;
+    align-items: stretch;
+
+    .card{
+      padding: 20px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+    }
   }
 `
 
@@ -74,12 +89,76 @@ const SwOuter = styled.div`
 
 export default function Home(){
     const account = useSelector(state=> state.account);
-    const navigate = useNavigate();
-    const { t } = useTranslation();
 
-    const toGo = (url) =>{
-        navigate(url)
-    }
+    const { t } = useTranslation();
+    const [sgnHolders, setSgnHolders] = useState(0);
+    const [governNodes, setGovernNodes] = useState(0);
+    const [onboardingHolders, setOnboardingHolders] = useState(0);
+    const [onNewHolders, setNewHolders] = useState(0);
+
+    const SGN_CONTRACT = '0x23fda8a873e9e46dbe51c78754dddccfbc41cfe1';
+    const GOV_NODE_CONTRACT = '0x9d34D407D8586478b3e4c39BE633ED3D7be1c80c';
+    const CITY_HALL = 'https://seedao.notion.site/07c258913c5d4847b59271e2ae6f7c66';
+    const CITY_HALL_MEMBERS = 'https://www.notion.so/3913d631d7bc49e1a0334140e3cd84f5';
+
+    const getDatafromNftscan = (contract, base) => {
+        return axios.get(`${base || 'https://polygonapi.nftscan.com'}/api/v2/statistics/collection/${contract}`, {
+            headers: {
+                'X-API-KEY': process.env.REACT_APP_NFTSCAN_KEY,
+            },
+        });
+    };
+
+    useEffect(() => {
+        const getOnboardingHolders = async () => {
+            try {
+                const res = await getDatafromNftscan('0x0D9ea891B4C30e17437D00151399990ED7965F00');
+                setOnboardingHolders(res.data?.data?.owners_total || 0);
+            } catch (error) {
+                console.error('[SBT] get onboading holders failed', error);
+            }
+        };
+        const getNewHolders = async () => {
+            try {
+                const res = await getDatafromNftscan('0x2221F5d189c611B09D7f7382Ce557ec66365C8fc');
+                setNewHolders(res.data?.data?.owners_total || 0);
+            } catch (error) {
+                console.error('[SBT] get new-sbt holders failed', error);
+            }
+        };
+        getOnboardingHolders();
+        getNewHolders();
+    }, []);
+
+    useEffect(() => {
+        const handleSgnHolders = async () => {
+            try {
+                const res = await getDatafromNftscan(SGN_CONTRACT, 'https://restapi.nftscan.com');
+                setSgnHolders(res.data?.data?.items_total || 0);
+            } catch (error) {
+                console.error('[SBT] get sgn owners failed', error);
+            }
+        };
+        handleSgnHolders();
+    }, []);
+
+
+    useEffect(() => {
+        const handleGovNodes = async () => {
+            try {
+                const res = await getDatafromNftscan(GOV_NODE_CONTRACT, 'https://restapi.nftscan.com');
+                setGovernNodes(res.data?.data?.owners_total || 0);
+            } catch (error) {
+                console.error('[SBT] get gov nodes failed', error);
+            }
+        };
+       handleGovNodes();
+    }, []);
+
+    const sbtHolders = useMemo(() => {
+        const SBT_155 = 9;
+        return governNodes + onboardingHolders + onNewHolders + SBT_155;
+    }, [governNodes, onboardingHolders, onNewHolders]);
 
     return <Layout noHeader>
         {/*<BoxInner>Home,{account}</BoxInner>*/}
@@ -89,43 +168,46 @@ export default function Home(){
                     <img src={LogoImg} alt=""/>
                 </LogoBox>
                 <div>
-                    SeeDAO 是一个致力于连接 100 万 Web3 游民的数字城邦
-                    我们的愿景是：在基于地缘的民族国家之外，在赛博世界另建一片人类的生存空间
+                    <div>
+                        {t('Home.Slogan')}
+                    </div>
+                   <div>
+                       <span>{t('Home.SloganVison')}:</span>
+                       {t('Home.SloganDesc')}
+                   </div>
+
                 </div>
                 <LineBox>
                     <Row>
                         <Col xs={4}>
                             <dl>
-                                <dt>SGN持有者</dt>
-                                <dd>545</dd>
+                                <dt>{t('Home.SGNHolder')}</dt>
+                                <dd>{sgnHolders}</dd>
                             </dl>
                         </Col>
                         <Col xs={4}>
                             <dl>
-                                <dt>治理节点</dt>
-                                <dd>545</dd>
+                                <dt>{t('Home.GovernNode')}</dt>
+                                <dd>{governNodes}</dd>
                             </dl>
                         </Col>
                         <Col xs={4}>
                             <dl>
-                                <dt>SBT持有者</dt>
-                                <dd>545</dd>
+                                <dt>{t('Home.SBTHolder')}</dt>
+                                <dd>{sbtHolders}</dd>
                             </dl>
                         </Col>
                     </Row>
-
-
-
                 </LineBox>
                 <SwOuter>
                     <SwiperBanner />
                 </SwOuter>
                 <AllBox>
-                    <div className="btm">公示</div>
+                    <div className="btm">{t('Home.Publicity')}</div>
 
-                    <Row className="btm">
-                        <Col><Card body>市政厅</Card></Col>
-                        <Col><Card body>市政厅成员</Card></Col>
+                    <Row className="btm btmLine">
+                        <Col><div className="card"  onClick={() => window.open(CITY_HALL, '_blank')}>{t('Home.CityHall')}</div></Col>
+                        <Col><div className="card" onClick={() => window.open(CITY_HALL_MEMBERS, '_blank')}>{t('Home.CityHallMembers')}</div></Col>
                     </Row>
 
 
@@ -133,32 +215,6 @@ export default function Home(){
                     <Card body className="mb">上海线下活动</Card>
                 </AllBox>
 
-                {/*<div className="inner">*/}
-                {/*    <dl onClick={()=>toGo("/proposal")}>*/}
-                {/*        <dt>*/}
-                {/*            <Box2Heart />*/}
-                {/*        </dt>*/}
-                {/*        <dd>{t('menus.Proposal')}</dd>*/}
-                {/*    </dl>*/}
-                {/*    <dl onClick={()=>toGo("/project")}>*/}
-                {/*        <dt>*/}
-                {/*            <PieChart />*/}
-                {/*        </dt>*/}
-                {/*        <dd>{t('menus.Project')}</dd>*/}
-                {/*    </dl>*/}
-                {/*    <dl onClick={()=>toGo("/guild")}>*/}
-                {/*        <dt>*/}
-                {/*            <People />*/}
-                {/*        </dt>*/}
-                {/*        <dd>{t('menus.Guild')}</dd>*/}
-                {/*    </dl>*/}
-                {/*    <dl onClick={()=>toGo("/assets")}>*/}
-                {/*        <dt>*/}
-                {/*            <CashCoin />*/}
-                {/*        </dt>*/}
-                {/*        <dd>{t('menus.assets')}</dd>*/}
-                {/*    </dl>*/}
-                {/*</div>*/}
             </BBox>
         </BoxInner>
     </Layout>

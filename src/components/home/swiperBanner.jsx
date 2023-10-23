@@ -16,6 +16,7 @@ import Cascad3Icon from 'assets/images/apps/cascad3.svg';
 import Wormhole3Icon from 'assets/images/apps/wormhole3.svg';
 import Calendar from "assets/images/apps/calendar.png";
 import OffImg from "assets/images/apps/logo-dark.png";
+import {useNavigate} from "react-router-dom";
 
 
 const Box = styled.div`
@@ -49,6 +50,7 @@ const CenterBox = styled(Swiper)`
 
 export default function SwiperBanner(){
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const Links = [
         {
@@ -106,6 +108,15 @@ export default function SwiperBanner(){
         return Links.map((item) => ({ ...item, name: t(item.name) }));
     }, [t]);
 
+
+    const handleClickEvent = (id,link) => {
+        if (id === 'online') {
+            navigate('/online-event');
+        } else {
+            window.open(link, '_blank');
+        }
+    };
+
     return <Box>
         <CenterBox
             slidesPerView={3}
@@ -120,7 +131,7 @@ export default function SwiperBanner(){
             modules={[Grid, Pagination]}
         >
             {
-                events.map((item,index)=>(<SwiperSlide className="libox" key={index}>
+                events.map((item,index)=>(<SwiperSlide className="libox" key={index} onClick={()=>handleClickEvent(item.id,item.link)}>
                     <div>
                         <div>
                             <div className="imgBox">
