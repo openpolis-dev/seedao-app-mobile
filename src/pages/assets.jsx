@@ -1,30 +1,29 @@
 import Layout from "../components/layout/layout";
 import styled from "styled-components";
 import {useTranslation} from "react-i18next";
-import { ChevronDoubleRight } from "react-bootstrap-icons"
-import NoItem from "../components/noItem";
+import {Share} from "react-bootstrap-icons"
 import {useEffect, useMemo, useState} from "react";
-import {useSelector} from "react-redux";
 import store from "../store";
 import { saveLoading } from "../store/reducer";
 import {getProjectApplications} from "../api/applications";
 import {formatTime} from "../utils/time";
 import {useNavigate} from "react-router-dom";
 import BgImg from '../assets/images/homebg.png';
-import ApplicantCard from "components/applicant";
 import AppConfig from "../AppConfig";
 import axios from "axios";
 import {getTreasury} from "../api/treasury";
 import { ethers } from 'ethers';
-import InfiniteScroll from "react-infinite-scroll-component";
+
 import {formatNumber} from "../utils/number";
+import PublicJs from "../utils/publicJs";
+import CopyBox from "../components/common/copy";
 
 const Box = styled.div`
     padding: 20px;
 `
 
 const CardBox = styled.div`
-    background: #666;
+  background: #666;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -32,12 +31,10 @@ const CardBox = styled.div`
   align-items: center;
   overflow: hidden;
   box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-  &.total{
-    background: url(${BgImg}) top no-repeat;
-    background-size: 100%;
-    background-attachment: fixed;
-    
-  }
+  background: url(${BgImg}) top no-repeat;
+  background-size: 100%;
+  background-attachment: fixed;
+
   .vaultInner {
     display: flex;
     justify-content: space-between;
@@ -60,23 +57,33 @@ const Tit = styled.div`
   text-align: center;
 `
 
-const DetailBox = styled.div`
-    display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 100%;
-  font-size: 12px;
-  margin-top: -20px;
-`
 const FlexBox = styled.div`
     display: flex;
   align-items: stretch;
   justify-content: space-between;
   margin-top: 20px;
   flex-wrap: wrap;
-  border-bottom: 1px solid #ddd;
   margin-bottom: 20px;
   padding-bottom: 10px;
+`
+
+const FlexBox2 = styled.ul`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+  padding-top: 15px;
+    li{
+      width: 33%;
+      text-align: center;
+      border-right: 1px solid #ccc;
+      font-size: 12px;
+      &:last-child{
+        border-right: 0;
+      }
+    }
 `
 const CardItem = styled(CardBox)`
     width: 48%;
@@ -117,19 +124,15 @@ const CardItem = styled(CardBox)`
     letter-spacing: -5px;
   }
 `
-
-const TitBox = styled.div`
-    font-weight: bold;
+const TopBox = styled.div`
+  width: 100%;
 `
 
-const ListBox = styled.div`
-`
 
-const BtmBox = styled.div`
-   padding-top: 20px;
-   & > div {
-      margin-bottom: 15px;
-   }
+const NumBal = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
 `
 
 const BtmLine = styled.div`
@@ -139,14 +142,52 @@ const BtmLine = styled.div`
   align-items: center;
 `
 
+const UlBox = styled.ul`
+  margin-top: 20px;
+    li{
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+`
+
+const Tag = styled.div`
+    background: var(--bs-primary);
+    margin-left: 10px;
+    font-size: 12px;
+    color: #fff;
+    padding: 0 10px;
+    border-radius: 10px;
+`
+
+const Addr = styled.div`
+    font-size: 12px;
+  margin-right: 20px;
+`
+
+const FirstLine = styled.div`
+  display: flex;
+  align-items: center;
+  .iconBox{
+    margin-inline: 20px;
+    font-size: 18px;
+  }
+`
+
+const TitTop = styled.div`
+    font-size: 14px;
+    font-weight: bold;
+`
+
+const LineBox = styled.div`
+    display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+`
+
 export default function Assets(){
     const { t } = useTranslation();
-    const navigate = useNavigate();
 
-    const [list, setList] = useState([]);
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(5);
-    const [total, setTotal] = useState(0);
     const [totalBalance, setTotalBalance] = useState('0.00');
     const [totalSigner, setTotalSigner] = useState(0);
     const [vaultsMap, setVaultsMap] = useState({});
@@ -159,7 +200,6 @@ export default function Assets(){
     const[status2,setStatus2] = useState(false);
     const[status3,setStatus3] = useState(false);
     const[status4,setStatus4] = useState(false);
-    const[status5,setStatus5] = useState(false);
 
     const [asset, setAsset] = useState({
         token_remain_amount: 0,
@@ -177,6 +217,17 @@ export default function Assets(){
     const SCRValue = useMemo(() => {
         return Number(totalSCR) * SCR_PRICE;
     }, [totalSCR]);
+
+    const SAFE_CHAIN = {
+        [1]: {
+            short: 'eth',
+            name: 'Ethereum',
+        },
+        [137]: {
+            short: 'matic',
+            name: 'Polygon',
+        },
+    };
 
 
     const { VAULTS } = AppConfig;
@@ -197,8 +248,8 @@ export default function Assets(){
     }, []);
 
     useEffect(()=>{
-        store.dispatch(saveLoading(status1 || status2 || status3 || status4||status5));
-    },[status1,status2,status3,status4,status5])
+        store.dispatch(saveLoading(status1 || status2 || status3 || status4));
+    },[status1,status2,status3,status4])
 
 
     const getAssets = async () => {
@@ -269,41 +320,6 @@ export default function Assets(){
     };
 
 
-    useEffect(() => {
-        getRecords()
-    }, [page]);
-
-    const getRecords = async () => {
-        // store.dispatch(saveLoading(true));
-        setStatus5(true)
-        try {
-            const res = await getProjectApplications(
-                {
-                    page,
-                    size: pageSize,
-                    sort_field: 'created_at',
-                    sort_order: 'desc',
-                    entity: 'project',
-                    type:"new_reward",
-                }
-            );
-            setTotal(res.data.total);
-            const _list = res.data.rows.map((item) => ({
-                ...item,
-                created_date: formatTime(item.created_at),
-                transactions: item.transaction_ids.split(','),
-            }));
-            const arr = list.concat(_list);
-            setList(arr);
-        } catch (error) {
-            console.error('getRecords error', error);
-        } finally {
-            setStatus5(false)
-            // store.dispatch(saveLoading(false));
-        }
-    };
-
-
     const getFloorPrice = async () => {
         // store.dispatch(saveLoading(true));
         setStatus3(true)
@@ -364,32 +380,55 @@ export default function Assets(){
         }
     };
 
-    const contentViewScroll=(e)=>{
-        if(total>page*pageSize){
-            handlePage(page)
-        }
-    }
-
-    const handlePage = (num) => {
-        setPage(num + 1);
-    };
-
-    const toGo = () =>{
-        navigate("/vault")
+    const linkTo = (v) =>{
+        window.open(`https://app.safe.global/balances?safe=${SAFE_CHAIN[v.chainId].short}:${v.address}`)
     }
 
     return <Layout title={t('menus.assets')} noTab>
         <Box>
-            <CardBox className="total">
+            <CardBox>
                 <div className="vaultInner">
-                    <Tit>{t('Assets.TotalBalance')}</Tit>
-                    <Num>${formatNumber(Number(totalBalance))}</Num>
-                    <DetailBox onClick={()=>toGo()}>
-                        <div>{t('Assets.Detail')}</div>
-                        <ChevronDoubleRight />
-                    </DetailBox>
+                    <TopBox>
+                        <Tit>{t('Assets.TotalBalance')}</Tit>
+                        <NumBal>${formatNumber(Number(totalBalance))}</NumBal>
+                    </TopBox>
+                    <FlexBox2>
+                        <li>
+                            <div>{t('Assets.Wallet')}</div>
+                            <div>4</div>
+                        </li>
+                        <li>
+                            <div>{t('Assets.MultiSign')}</div>
+                            <div>{totalSigner}</div>
+                        </li>
+                        <li>
+                            <div>{t('Assets.Chain')}</div>
+                            <div>2</div>
+                        </li>
+                    </FlexBox2>
                 </div>
             </CardBox>
+            <UlBox>
+                {
+                    VAULTS.map((v,index)=>(<li key={index}>
+                        <FirstLine>
+                            <TitTop>{t(v.name)}</TitTop>
+                            <Tag>{SAFE_CHAIN[v.chainId].name}  {vaultsMap[v.id]?.threshold || 0}/{vaultsMap[v.id]?.total || 0}</Tag>
+                        </FirstLine>
+                        <LineBox>
+                            <FirstLine>
+                                <Addr>{PublicJs.AddressToShow(v.address)}</Addr>
+                                <CopyBox text={v.address} />
+                                <Share onClick={()=>linkTo(v)} className="iconBox" />
+                            </FirstLine>
+                            <Num>
+                                ${formatNumber(vaultsMap[v.id]?.balance || 0.0)}
+                            </Num>
+                        </LineBox>
+                    </li>))
+                }
+
+            </UlBox>
             <FlexBox>
                 <CardItem>
                     <Tit>{t('Assets.SupplySCR')}</Tit>
@@ -435,23 +474,7 @@ export default function Assets(){
                     <div className="decorBg">DAO</div>
                 </CardItem>
             </FlexBox>
-            <ListBox>
-                <TitBox>{t('Project.Record')}</TitBox>
-                <InfiniteScroll
-                    dataLength={list.length}
-                    next={contentViewScroll}
-                    hasMore={total>page*pageSize}
-                    loader={<></>}
-                >
-                <BtmBox>
-                    {
-                        list.length ? list.map((item,index) => (
-                            <ApplicantCard data={item} key={index}/>
-                        )) : <NoItem />
-                    }
-                </BtmBox>
-                </InfiniteScroll>
-            </ListBox>
+
         </Box>
     </Layout>
 }

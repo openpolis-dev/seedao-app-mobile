@@ -81,7 +81,7 @@ export default function TabBar(){
                     <dd>治理</dd>
                 </dl>
             </NavLink>
-            <NavLink className={({ isActive }) => isActive ?"active":""} to="/online-event">
+            <NavLink className={({ isActive }) => isActive ?"active":""} to="/assets">
                 <dl>
                     <dt>
                         <Person />

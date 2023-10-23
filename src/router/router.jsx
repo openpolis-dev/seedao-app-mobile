@@ -19,8 +19,8 @@ import Assets from "../pages/assets";
 import Profile from "../pages/profile";
 import Vault from "../pages/vault";
 import Privacy from "../pages/privacy";
-import VaultBalance from "../pages/vaultBalance";
 import Calendar from "../pages/calendar";
+import ProfileEdit from "../pages/profileEdit";
 
 
 // import MessagePage from "./message";
@@ -41,7 +41,7 @@ function RouterLink() {
         <Route path="/proposal/category/:id" element={<ProposalCategory />} />
         <Route path="/proposal/thread/:id" element={<ProposalThread />} />
         <Route path="/assets" element={<Assets />} />
-        <Route path="/vault" element={<VaultBalance />} />
+        <Route path="/user/edit" element={<ProfileEdit />} />
 
         <Route path="/online-event" element={<Calendar />} />
 
