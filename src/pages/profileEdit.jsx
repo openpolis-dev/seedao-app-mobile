@@ -2,7 +2,7 @@ import { InputGroup, Button, Form } from 'react-bootstrap';
 import Layout from "../components/layout/layout";
 import styled from 'styled-components';
 import React, { ChangeEvent, useEffect, useState, FormEvent } from 'react';
-import { updateUser } from "../api/user";
+import {getUser, updateUser} from "../api/user";
 // import { useAuthContext, AppActionType } from 'providers/authProvider';
 import { useTranslation } from 'react-i18next';
 // import useToast, { ToastType } from 'hooks/useToast';
@@ -11,6 +11,10 @@ import { Upload, X } from 'react-bootstrap-icons';
 // import useParseSNS from 'hooks/useParseSNS';
 // import CopyBox from 'components/copy';
 import copyIcon from 'assets/images/copy.svg';
+import {useSelector} from "react-redux";
+import store from "../store";
+import {saveLoading} from "../store/reducer";
+import Modal from "../components/modal";
 
 
 
@@ -88,6 +92,8 @@ export default function ProfileEdit() {
   //   dispatch,
   // } = useAuthContext();
   // const sns = useParseSNS(userData?.wallet);
+
+
   const { t } = useTranslation();
   // const { Toast, showToast } = useToast();
   const [userName, setUserName] = useState('');
@@ -98,6 +104,37 @@ export default function ProfileEdit() {
   const [mirror, setMirror] = useState('');
   const [avatar, setAvatar] = useState('');
   const [bio, setBio] = useState('');
+  const [wallet, setWallet] = useState('');
+
+  const[show,setShow] = useState(false);
+  const[tips,setTips] = useState("");
+
+
+
+  useEffect(()=>{
+    getMyDetail()
+  },[])
+  const getMyDetail = async () => {
+    store.dispatch(saveLoading(true));
+    try {
+      let rt = await getUser();
+      console.log(rt.data);
+      const {avatar,bio,email,discord_profile,twitter_profile,wechat,mirror,wallet,name} = rt.data;
+      setUserName(name)
+      setEmail(email)
+      setDiscord(discord_profile)
+      setTwitter(twitter_profile)
+      setWechat(wechat)
+      setMirror(mirror)
+      setBio(bio)
+      setAvatar(avatar)
+      setWallet(wallet)
+    } catch (e) {
+      console.error(e);
+    } finally {
+      store.dispatch(saveLoading(false));
+    }
+  };
 
   const handleInput = (e, type) => {
     const { value } = e.target;
@@ -125,55 +162,52 @@ export default function ProfileEdit() {
     }
   };
   const saveProfile = async () => {
-    // const reg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // if (email && !reg.test(email)) {
-    //   showToast(t('My.IncorrectEmail'), ToastType.Danger);
-    //   return;
-    // }
-    // if (mirror && mirror.indexOf('mirror.xyz') === -1) {
-    //   showToast(t('My.IncorrectMirror'), ToastType.Danger);
-    //   return;
-    // }
-    // if (twitter && !twitter.startsWith('https://twitter.com/')) {
-    //   showToast(t('My.IncorrectLink', { media: 'Twitter' }), ToastType.Danger);
-    //   return;
-    // }
-    //
-    // dispatch({ type: AppActionType.SET_LOADING, payload: true });
-    // try {
-    //   const data = {
-    //     name: userName,
-    //     avatar,
-    //     email,
-    //     discord_profile: discord,
-    //     twitter_profile: twitter,
-    //     wechat,
-    //     mirror,
-    //     bio,
-    //   };
-    //   await updateUser(data);
-    //   dispatch({ type: AppActionType.SET_USER_DATA, payload: { ...userData, ...data } });
-    //   showToast(t('My.ModifiedSuccess'), ToastType.Success);
-    // } catch (error) {
-    //   console.error('updateUser failed', error);
-    //   showToast(t('My.ModifiedFailed'), ToastType.Danger);
-    // } finally {
-    //   dispatch({ type: AppActionType.SET_LOADING, payload: false });
-    // }
-  };
+    const reg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email && !reg.test(email)) {
+      setTips(t('My.IncorrectEmail'));
+      setShow(true);
+      return;
+    }
+    if (mirror && mirror.indexOf('mirror.xyz') === -1) {
+      setTips(t('My.IncorrectMirror'));
+      setShow(true);
+      return;
+    }
+    if (twitter && !twitter.startsWith('https://twitter.com/')) {
+      setTips(t('My.IncorrectLink', { media: 'Twitter' }));
+      setShow(true);
+      return;
+    }
 
-  // useEffect(() => {
-  //   if (userData) {
-  //     setUserName(userData.name);
-  //     setAvatar(userData.avatar);
-  //     setEmail(userData.email || '');
-  //     setDiscord(userData.discord_profile);
-  //     setTwitter(userData.twitter_profile);
-  //     setWechat(userData.wechat);
-  //     setMirror(userData.mirror);
-  //     setBio(userData.bio);
-  //   }
-  // }, [userData]);
+    store.dispatch(saveLoading(true));
+    try {
+      const data = {
+        name: userName,
+        avatar,
+        email,
+        discord_profile: discord,
+        twitter_profile: twitter,
+        wechat,
+        mirror,
+        bio,
+      };
+      await updateUser(data);
+      // dispatch({ type: AppActionType.SET_USER_DATA, payload: { ...userData, ...data } });
+      setTips(t('My.ModifiedSuccess'));
+      setShow(true);
+      setTimeout(()=>{
+        setShow(false);
+        window.location.reload();
+      },1000)
+
+    } catch (error) {
+      console.error('updateUser failed', error);
+      setTips(t('My.ModifiedFailed'));
+      setShow(true);
+    } finally {
+      store.dispatch(saveLoading(false));
+    }
+  };
 
   const getBase64 = (imgUrl) => {
     window.URL = window.URL || window.webkitURL;
@@ -204,8 +238,13 @@ export default function ProfileEdit() {
     setAvatar('');
   };
 
+  const handleClose = () =>{
+    setShow(false);
+  }
+
   return (
     <Layout  noTab title={t("My.MyProfile")}>
+      <Modal tips={tips} show={show} handleClose={handleClose} />
       <CardBox>
         <HeadBox>
           <AvatarBox>

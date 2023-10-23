@@ -216,7 +216,11 @@
     "Google": "Google",
     "ModifiedSuccess": "Modified Successfully",
     "ModifiedFailed": "Modified Failed",
-    "IncorrectLink": "{media}：required the correct link"
+    "IncorrectLink": "{{media}}: required the correct link",
+    "IncorrectEmail": "Please enter the correct email information",
+    "IncorrectGoogle": "Please enter the correct Google email",
+    "IncorrectMirror": "Please enter the correct Mirror link",
+    "EmptySBT": "Not Owning SBT"
   },
   "Msg": {
     "ProposalLinkMsg": "Require correct proposal link",
