@@ -32,39 +32,12 @@ export default function ProjectBasic() {
         <div className="content">{data?.name}</div>
       </ContentBlock>
       <ContentBlock>
-        <div>
-          <div className="name">{t("Project.Budget")}</div>
-        </div>
-        <div className="content">
-          <div>
-            <p>
-              <strong>{t("Project.Points")}</strong>
-              <span className="value">{formatNumber(points?.total_amount)}</span>
-            </p>
-            <div>
-              (
-              {t("Project.HasBeenUsedAndRemains", {
-                used: formatNumber(points?.used_amount || 0),
-                remain: formatNumber(points?.remain_amount || 0),
-              })}
-              )
-            </div>
-          </div>
-          <div>
-            <p>
-              <strong>USDT</strong>
-              <span className="value">{formatNumber(token?.total_amount)}</span>
-            </p>
-            <div>
-              (
-              {t("Project.HasBeenUsedAndRemains", {
-                used: formatNumber(token?.used_amount || 0),
-                remain: formatNumber(token?.remain_amount || 0),
-              })}
-              )
-            </div>
-          </div>
-        </div>
+        描述
+        描述
+        描述
+        描述
+        描述
+        描述
       </ContentBlock>
     </>
   );

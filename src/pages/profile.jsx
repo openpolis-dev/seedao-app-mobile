@@ -186,7 +186,7 @@ export default function Profile() {
   }
 
   return (
-    <Layout noTab title={t("My.MyProfile")}>
+    <Layout title={t("My.MyProfile")}>
       <Box>
         <TopBtn onClick={()=>ToGo()}>
           编辑

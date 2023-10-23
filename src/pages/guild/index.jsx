@@ -111,7 +111,7 @@ export default function Guild() {
   }, [activeTab]);
 
   return (
-    <Layout title={t("menus.Guild")} noTab>
+    <div>
       <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
       <InfiniteScroll
         dataLength={proList.length}
@@ -128,7 +128,7 @@ export default function Guild() {
           ))}
         </ProjectList>
       </InfiniteScroll>
-    </Layout>
+    </div>
   );
 }
 

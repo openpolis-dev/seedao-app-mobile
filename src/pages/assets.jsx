@@ -384,7 +384,7 @@ export default function Assets(){
         window.open(`https://app.safe.global/balances?safe=${SAFE_CHAIN[v.chainId].short}:${v.address}`)
     }
 
-    return <Layout title={t('menus.assets')} noTab>
+    return <Layout title={t('menus.assets')}>
         <Box>
             <CardBox>
                 <div className="vaultInner">

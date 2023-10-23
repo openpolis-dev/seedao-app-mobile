@@ -27,10 +27,10 @@ export default function Project() {
         label: t("Project.AllProjects"),
         value: 0,
       },
-      {
-        label: t("Project.Closed"),
-        value: 1,
-      },
+      // {
+      //   label: t("Project.Closed"),
+      //   value: 1,
+      // },
       {
         label: t("Project.Joined"),
         id: 2,
@@ -93,7 +93,7 @@ export default function Project() {
   };
 
   const getCurrentList = () => {
-    if (activeTab < 2) {
+    if (activeTab === 0) {
       getList();
     } else {
       getMyList();
@@ -105,7 +105,7 @@ export default function Project() {
   }, [activeTab]);
 
   return (
-    <Layout title={t("menus.Project")} noTab>
+    <div>
       <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
       <InfiniteScroll
         dataLength={proList.length}
@@ -121,7 +121,7 @@ export default function Project() {
           ))}
         </ProjectList>
       </InfiniteScroll>
-    </Layout>
+    </div>
   );
 }
 
