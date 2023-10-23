@@ -137,7 +137,7 @@ export default function Unipass(){
 
     useEffect(()=>{
         if(!result)return;
-        navigate('/board');
+        navigate('/home');
 
     },[result])
 

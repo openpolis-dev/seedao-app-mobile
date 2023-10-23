@@ -70,7 +70,7 @@ export default function TabBar(){
                     <dt>
                         <Person />
                     </dt>
-                    <dd>探索</dd>
+                    <dd>{t('menus.explore')}</dd>
                 </dl>
             </NavLink>
             <NavLink className={({ isActive }) => isActive ?"active":""} to="/proposal">
@@ -78,7 +78,7 @@ export default function TabBar(){
                     <dt>
                         <Person />
                     </dt>
-                    <dd>治理</dd>
+                    <dd>{t('menus.govern')}</dd>
                 </dl>
             </NavLink>
             <NavLink className={({ isActive }) => isActive ?"active":""} to="/assets">
@@ -86,7 +86,7 @@ export default function TabBar(){
                     <dt>
                         <Person />
                     </dt>
-                    <dd>金库</dd>
+                    <dd>{t('menus.assets')}</dd>
                 </dl>
             </NavLink>
             <NavLink className={({ isActive }) => isActive ?"active":""} to="/user/profile">

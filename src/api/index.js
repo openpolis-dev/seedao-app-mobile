@@ -1,5 +1,6 @@
 import axios from "axios";
 import store from "../store";
+import {parseToken,checkTokenValid,clearStorage} from "../utils/auth";
 
 export const BASE_URL = process.env.REACT_APP_BASE_ENDPOINT;
 export const API_VERSION = process.env.REACT_APP_API_VERSION;
@@ -21,11 +22,11 @@ instance.interceptors.request.use(function (config) {
     return config;
   }
 
-  // const tokenData = parseToken(tokenstr);
-  // if (!checkTokenValid(tokenData?.token, tokenData?.token_exp)) {
-  //   clearStorage();
-  //   return Promise.reject();
-  // }
+  const tokenData = parseToken(tokenstr);
+  if (!checkTokenValid(tokenData?.token, tokenData?.token_exp)) {
+    clearStorage();
+    return Promise.reject();
+  }
 
   if (!config.headers) {
     config.headers = {};

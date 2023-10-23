@@ -6,7 +6,9 @@
     "Chat": "聊天",
     "event": "线上会议",
     "city-hall": "市政厅",
-    "assets": "金库/积分"
+    "assets": "金库",
+    "explore": "探索",
+    "govern": "治理"
   },
   "Home": {
     "Slogan": "SeeDAO 是一个致力于连接 100 万 Web3 游民的数字城邦",

@@ -153,7 +153,7 @@ export default function Joyid(){
 
     useEffect(()=>{
         if(!result)return;
-        navigate('/board');
+        navigate('/home');
 
     },[result])
 

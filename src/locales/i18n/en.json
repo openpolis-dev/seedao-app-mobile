@@ -6,7 +6,9 @@
     "Chat": "Chat",
     "event": "Online Conference",
     "city-hall": "City Hall",
-    "assets": "Vault/Points"
+    "assets": "Vault",
+    "explore": "Explore",
+    "govern": "Govern"
   },
   "Home": {
     "Slogan": "SeeDAO is a network polis to connect millions of nomads in Web3.",

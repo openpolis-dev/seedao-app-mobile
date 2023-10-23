@@ -83,7 +83,7 @@ export default function  Metamask(){
 
     useEffect(()=>{
         if(!result)return;
-        navigate('/board');
+        navigate('/home');
 
     },[result])
 
