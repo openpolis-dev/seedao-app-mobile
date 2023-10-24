@@ -3,12 +3,15 @@ import { useProjectContext } from "./provider";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { formatNumber } from "utils/number";
+import {useNavigate} from "react-router-dom";
 
 export default function ProjectBasic() {
   const { t } = useTranslation();
   const {
     state: { data },
   } = useProjectContext();
+
+  const navigate = useNavigate();
 
   const [token, setToken] = useState();
   const [points, setPoints] = useState();
@@ -22,6 +25,11 @@ export default function ProjectBasic() {
     };
     data && getdata();
   }, [data]);
+
+  const toGo = (item) =>{
+    navigate(`/proposal/thread/${item}`)
+  }
+
   return (
     <>
       <ImgBlock>
@@ -31,6 +39,16 @@ export default function ProjectBasic() {
         <div className="name">{t("Project.ProjectName")}</div>
         <div className="content">{data?.name}</div>
       </ContentBlock>
+      <ProposalsBox>
+        <div>提案</div>
+        <div>
+          {
+            data?.proposals?.map((item,index)=>(<div key={`proposal_${index}`} onClick={()=>toGo(item)}>{`${window.location.origin}/${item}`}</div>))
+          }
+        </div>
+
+
+      </ProposalsBox>
       <ContentBlock>
         描述
         描述
@@ -102,3 +120,8 @@ const ContentBlock = styled(Block)`
     }
   }
 `;
+
+const ProposalsBox = styled(ContentBlock)`
+  display: flex;
+  
+`

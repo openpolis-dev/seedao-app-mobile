@@ -118,7 +118,6 @@ export default function ProfileEdit() {
     store.dispatch(saveLoading(true));
     try {
       let rt = await getUser();
-      console.log(rt.data);
       const {avatar,bio,email,discord_profile,twitter_profile,wechat,mirror,wallet,name} = rt.data;
       setUserName(name)
       setEmail(email)
