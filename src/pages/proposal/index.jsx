@@ -7,12 +7,13 @@ import { PROPOSAL_CATEGORIES } from "utils/constant";
 import { useState, useEffect } from "react";
 import ProposalSubNav from "components/poposal/proposalSubNav";
 import ProposalCard from "components/poposal/proposalCard";
-import { getAllProposals } from "api/proposal";
+import { getAllProposals,getCategories } from "api/proposal";
 import InfiniteScroll from "react-infinite-scroll-component";
 import MsgIcon from "assets/images/proposal/message.png";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import Loading from "components/common/loading";
+import { Link } from 'react-router-dom';
 
 export default function Proposal() {
   const { t } = useTranslation();
@@ -23,7 +24,31 @@ export default function Proposal() {
   const [orderType, setOrderType] = useState("latest");
   const [activeTab, setActiveTab] = useState(0);
   const [hasMore, setHasMore] = useState(false);
+  const [proposal_categories,setproposal_categories] = useState([])
 
+
+  useEffect(() => {
+    if (activeTab === 0) {
+      getCategoriesAPi();
+    }
+  }, [activeTab]);
+
+
+  const getCategoriesAPi = async () => {
+    // dispatch({ type: AppActionType.SET_LOADING, payload: true });
+    try {
+      const resp = await getCategories();
+      setproposal_categories(resp?.data.group.categories)
+      // dispatch({
+      //   type: AppActionType.SET_PROPOSAL_CATEGORIES,
+      //   payload: resp.data.group.categories,
+      // });
+    } catch (error) {
+      console.error('getCategories failed', error);
+    } finally {
+      // dispatch({ type: AppActionType.SET_LOADING, payload: false });
+    }
+  };
   const handleChangeOrder = (index) => {
     setPage(1);
     setProposals([]);
@@ -61,19 +86,32 @@ export default function Proposal() {
       </TabMenu>
       <Content>
         {activeTab === 0 && (
-          <CategoryContent>
-            {PROPOSAL_CATEGORIES[0].children.map((item) => (
-              <li key={item.id} onClick={() => navigate(`/proposal/category/${item.category_id}`)}>
-                <div>
-                  <img src={MsgIcon} alt="" className="msg" />
-                  <span>{item.name}</span>
-                </div>
-                <span>
-                  <ChevronRight />
-                </span>
-              </li>
-            ))}
-          </CategoryContent>
+            <div>
+              {proposal_categories.map((category, index) => (
+                  <CategoryCard key={index}>
+                    <div className="cate-name">
+                      <Link to={`/proposal/category/${category.category_id}`}>{category.name}</Link>
+                    </div>
+                    {!!category.children.length && (
+                        <SubCategoryCard>
+                          {category.children.map((subCategory) => (
+                              <a href={`/proposal/category/${subCategory.category_id}`} key={subCategory.category_id}>
+                                <SubCategoryItem>
+                                  <img src={MsgIcon} alt="" width="24px" height="24px" />
+                                  <div>
+                                    <div className="name">{subCategory.name}</div>
+                                    <div>
+                                      <span>{subCategory.thread_count} topics</span>
+                                    </div>
+                                  </div>
+                                </SubCategoryItem>
+                              </a>
+                          ))}
+                        </SubCategoryCard>
+                    )}
+                  </CategoryCard>
+              ))}
+            </div>
         )}
         {activeTab === 1 && (
           <ProposalListContent>
@@ -113,15 +151,51 @@ const TabMenu = styled.ul`
   }
 `;
 
-const Content = styled.div``;
+const Content = styled.div`
+  margin: 0 20px;
+`;
+
+
+
+const SubCategoryCard = styled.div`
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 10px;
+`;
+
+const SubCategoryItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  cursor: pointer;
+  .name {
+    color: var(--bs-primary);
+    font-weight: 600;
+  }
+`;
+
+const CategoryCard = styled.div`
+  border: 1px solid #eee;
+  border-radius: 16px;
+  margin-block: 16px;
+  background: #fff;
+  .cate-name {
+    padding-inline: 16px;
+    line-height: 40px;
+  }
+`;
+
 
 const CategoryContent = styled.ul`
+  
   li {
     padding-inline: 20px;
     background-color: #fff;
     display: flex;
-    justify-content: space-between;
-    height: 60px;
+    flex-direction: column;
     margin-bottom: 10px;
     line-height: 60px;
     img.msg {
