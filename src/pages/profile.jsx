@@ -3,13 +3,16 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import store from "../store";
-import { saveLoading } from "../store/reducer";
+import {saveAccount, saveLoading, saveUserToken, saveWalletType} from "../store/reducer";
 import { getUser } from "../api/user";
 import Avatar from "components/common/avatar";
 import CopyBox from "components/common/copy";
 import useParseSNS from "hooks/useParseSNS";
 import publicJs from "../utils/publicJs";
 import {useNavigate} from "react-router-dom";
+import {Button} from "react-bootstrap"
+import {useSelector} from "react-redux";
+import {useDisconnect} from "wagmi";
 
 const Box = styled.div`
   padding: 20px;
@@ -144,12 +147,24 @@ const TopBtn = styled.div`
   text-align: right;
 `
 
+const BtmBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  button{
+    width: 70vw;
+  }
+`
+
 export default function Profile() {
   const { t } = useTranslation();
   const navigate = useNavigate()
 
+  const userToken = useSelector(state=> state.userToken);
   const [detail, setDetail] = useState();
   const sns = useParseSNS(detail?.wallet);
+  const walletType = useSelector(state => state.walletType);
+  const { disconnect } = useDisconnect();
 
   // useEffect(() => {
   //   toGA();
@@ -183,6 +198,17 @@ export default function Profile() {
       return "0";
     }
     return Number(amount).toLocaleString("en-US");
+  }
+
+  const logout = () =>{
+    store.dispatch(saveAccount(null));
+    store.dispatch(saveUserToken(null));
+    store.dispatch(saveWalletType(null));
+    if(walletType ==="metamask"){
+      disconnect();
+    }
+    // store.dispatch(saveLogout(true));
+    navigate("/login");
   }
 
   return (
@@ -277,6 +303,12 @@ export default function Profile() {
             </dd>
           </dl>
       </NftBox>
+      <BtmBox>
+        {
+            !!userToken?.token && <Button onClick={()=>logout()}>{t('mobile.my.logout')}</Button>
+        }
+      </BtmBox>
+
     </Layout>
   );
 }
