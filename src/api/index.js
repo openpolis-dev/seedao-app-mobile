@@ -22,10 +22,10 @@ instance.interceptors.request.use(function (config) {
     return config;
   }
 
-  // if (!checkTokenValid(tokenstr?.token, tokenstr?.token_exp)) {
-  //   // clearStorage();
-  //   return Promise.reject();
-  // }
+  if (!checkTokenValid(tokenstr?.token, tokenstr?.token_exp)) {
+    clearStorage();
+    return Promise.reject();
+  }
 
   if (!config.headers) {
     config.headers = {};

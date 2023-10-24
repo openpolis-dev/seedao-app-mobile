@@ -103,6 +103,8 @@ export default function  Metamask(){
         try{
             let rt = await login(obj);
             setResult(rt.data)
+            const now = Date.now();
+            rt.data.token_exp = now + rt.data.token_exp * 1000;
             store.dispatch(saveUserToken(rt.data));
             store.dispatch(saveWalletType("metamask"));
             store.dispatch(saveAccount(address))

@@ -136,6 +136,8 @@ export default function Joyid(){
         };
         try{
             let rt = await login(obj);
+            const now = Date.now();
+            rt.data.token_exp = now + rt.data.token_exp * 1000;
             store.dispatch(saveUserToken(rt.data));
             store.dispatch(saveWalletType("joyid"));
             await registerPush();
