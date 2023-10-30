@@ -119,7 +119,7 @@ const TipsBox = styled.div`
 `
 
 const NftBox = styled.div`
-  margin: 0 20px;
+  margin: 0 20px 50px;
   dt{
     margin-bottom: 20px;
   }
@@ -132,13 +132,16 @@ const NftBox = styled.div`
   }
   li{
     height: 21vw;
-    background: #ddd;
     float: left;
     width: 21vw;
     margin-right: 1.8vw;
     margin-bottom: 10px;
     &:nth-child(4n){
       margin-right: 0;
+    }
+    img{
+      width: 100%;
+      border-radius: 16px;
     }
   }
 `
@@ -165,6 +168,10 @@ export default function Profile() {
   const sns = useParseSNS(detail?.wallet);
   const walletType = useSelector(state => state.walletType);
   const { disconnect } = useDisconnect();
+  const [discord, setDiscord] = useState('');
+  const [twitter, setTwitter] = useState('');
+  const [wechat, setWechat] = useState('');
+  const [mirror, setMirror] = useState('');
 
   // useEffect(() => {
   //   toGA();
@@ -185,7 +192,18 @@ export default function Profile() {
     store.dispatch(saveLoading(true));
     try {
       let rt = await getUser();
-      setDetail(rt.data);
+      setDetail(rt);
+
+      let mapArr = new Map();
+
+      rt.social_accounts.map((item) => {
+        mapArr.set(item.network, item.identity);
+      });
+      setTwitter(mapArr.get('twitter') ?? '');
+      setDiscord(mapArr.get('discord') ?? '');
+      setWechat(mapArr.get('wechat') ?? '');
+      setMirror(mapArr.get('mirror') ?? '');
+
     } catch (e) {
       console.error(e);
     } finally {
@@ -222,7 +240,7 @@ export default function Profile() {
             <Avatar size="80px" src={detail?.avatar} />
           </AvatarBox>
           <div className="rhtTop">
-              <div>{detail?.name}</div>
+              <div>{detail?.nickname}</div>
               <div>{sns}</div>
               <FlexLine>
                 <div>{publicJs.AddressToShow(detail?.wallet)}</div>
@@ -235,11 +253,11 @@ export default function Profile() {
         <ProgressOuter>
           <FstLine>
             <LevelBox>
-             level 2
+             level {detail?.level?.current_lv}
             </LevelBox>
-            <SCRBox>50000 SCR</SCRBox>
+            <SCRBox>{detail?.scr?.amount} SCR</SCRBox>
           </FstLine>
-          <ProgressBox width="60">
+          <ProgressBox width={detail?.level?.upgrade_percent}>
             <div className="inner" />
           </ProgressBox>
           <TipsBox>
@@ -263,19 +281,19 @@ export default function Profile() {
           </dl>
           <dl>
             <dt>{t("My.Discord")}</dt>
-            <dd>{detail?.discord_profile}</dd>
+            <dd>{discord}</dd>
           </dl>
           <dl>
             <dt>{t("My.Twitter")}</dt>
-            <dd>{detail?.twitter_profile}</dd>
+            <dd>{twitter}</dd>
           </dl>
           <dl>
             <dt>{t("My.WeChat")}</dt>
-            <dd>{detail?.wechat}</dd>
+            <dd>{wechat}</dd>
           </dl>
           <dl>
             <dt>{t("My.Mirror")}</dt>
-            <dd>{detail?.mirror}</dd>
+            <dd>{mirror}</dd>
           </dl>
         </LineBox>
       </Box>
@@ -285,7 +303,9 @@ export default function Profile() {
             <dd>
               <ul>
                 {
-                  [...Array(8)].map((item,index)=>(<li key={index}></li>))
+                  detail?.seed?.map((item,index)=>(<li key={index}>
+                    <img src={item.image_uri} alt=""/>
+                  </li>))
                 }
 
               </ul>
@@ -296,7 +316,9 @@ export default function Profile() {
             <dd>
               <ul>
                 {
-                  [...Array(8)].map((item,index)=>(<li key={index}></li>))
+                  detail?.sbt?.map((item,index)=>(<li key={index}>
+                    <img src={item.image_uri} alt=""/>
+                  </li>))
                 }
 
               </ul>

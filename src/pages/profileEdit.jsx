@@ -118,13 +118,18 @@ export default function ProfileEdit() {
     store.dispatch(saveLoading(true));
     try {
       let rt = await getUser();
-      const {avatar,bio,email,discord_profile,twitter_profile,wechat,mirror,wallet,name} = rt.data;
-      setUserName(name)
+      const {avatar,bio,email,discord_profile,twitter_profile,wechat,mirror,wallet,nickname} = rt;
+      setUserName(nickname)
       setEmail(email)
-      setDiscord(discord_profile)
-      setTwitter(twitter_profile)
-      setWechat(wechat)
-      setMirror(mirror)
+      let mapArr = new Map();
+
+      rt.social_accounts.map((item) => {
+        mapArr.set(item.network, item.identity);
+      });
+      setTwitter(mapArr.get('twitter') ?? '');
+      setDiscord(mapArr.get('discord') ?? '');
+      setWechat(mapArr.get('wechat') ?? '');
+      setMirror(mapArr.get('mirror') ?? '');
       setBio(bio)
       setAvatar(avatar)
       setWallet(wallet)
