@@ -279,14 +279,14 @@ export default function Profile() {
             <dt>{t("My.Email")}</dt>
             <dd>{detail?.email}</dd>
           </dl>
-          <dl>
-            <dt>{t("My.Discord")}</dt>
-            <dd>{discord}</dd>
-          </dl>
-          <dl>
-            <dt>{t("My.Twitter")}</dt>
-            <dd>{twitter}</dd>
-          </dl>
+          {/*<dl>*/}
+          {/*  <dt>{t("My.Discord")}</dt>*/}
+          {/*  <dd>{discord}</dd>*/}
+          {/*</dl>*/}
+          {/*<dl>*/}
+          {/*  <dt>{t("My.Twitter")}</dt>*/}
+          {/*  <dd>{twitter}</dd>*/}
+          {/*</dl>*/}
           <dl>
             <dt>{t("My.WeChat")}</dt>
             <dd>{wechat}</dd>

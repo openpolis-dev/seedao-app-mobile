@@ -102,9 +102,15 @@ export default function SwiperBanner(){
             icon: <img src={OffImg} />,
         },
         {
-            id: 'pub',
-            name: 'Home.pub',
-            link: '',
+            id: 'offline',
+            name: 'Home.OfflineEvent',
+            link: 'https://seeu.network/',
+            icon: <img src={OffImg} />,
+        },
+        {
+            id: 'seeu',
+            name: 'seeu',
+            link: 'https://seeu.network/',
             icon: <img src={OffImg} />,
         },
     ]
