@@ -23,6 +23,8 @@ import Calendar from "../pages/calendar";
 import ProfileEdit from "../pages/profileEdit";
 import Explore from "../pages/explore";
 
+import Pub from "../pages/Pub";
+import PubDetail from "../pages/PubDetail";
 
 // import MessagePage from "./message";
 // import EventHandler from "./components/eventHandler";
@@ -44,6 +46,9 @@ function RouterLink() {
         <Route path="/assets" element={<Assets />} />
         <Route path="/user/edit" element={<ProfileEdit />} />
         <Route path="/explore" element={<Explore />} />
+
+        <Route path="/pub" element={<Pub />} />
+        <Route path="/pubDetail/:id" element={<PubDetail />} />
 
         <Route path="/online-event" element={<Calendar />} />
 

@@ -101,6 +101,12 @@ export default function SwiperBanner(){
             link: 'https://seeu.network/',
             icon: <img src={OffImg} />,
         },
+        {
+            id: 'pub',
+            name: 'Home.pub',
+            link: '',
+            icon: <img src={OffImg} />,
+        },
     ]
 
     const events = useMemo(() => {
@@ -112,6 +118,8 @@ export default function SwiperBanner(){
     const handleClickEvent = (id,link) => {
         if (id === 'online') {
             navigate('/online-event');
+        } else  if (id === 'pub') {
+            navigate('/pub');
         } else {
             window.open(link, '_blank');
         }

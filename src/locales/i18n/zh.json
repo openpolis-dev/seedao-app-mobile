@@ -24,7 +24,8 @@
     "GovernNode": "治理节点",
     "Apps": "应用",
     "OnlineEvent": "日历",
-    "OfflineEvent": "线下活动"
+    "OfflineEvent": "线下活动",
+    "pub": "悬赏酒馆"
   },
   "general": {
     "back": "返回",

@@ -24,7 +24,8 @@
     "GovernNode": "Govern Node",
     "Apps": "Apps",
     "OnlineEvent": "Calendar",
-    "OfflineEvent": "Offline Events"
+    "OfflineEvent": "Offline Events",
+    "pub": "SeeDAO Pub"
   },
   "general": {
     "back": "Back",
