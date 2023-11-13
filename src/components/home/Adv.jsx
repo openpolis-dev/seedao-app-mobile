@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
 import {Swiper,SwiperSlide} from "swiper/react";
+import { Autoplay } from 'swiper/modules';
+import banner from "../../constant/banner";
 
 import 'swiper/css';
-import 'swiper/css/pagination';
+import {useTranslation} from "react-i18next";
 
 const BannerBox = styled.div`
     width: 100%;
@@ -55,29 +57,24 @@ const LinkBox = styled.div`
 `
 
 export default function Adv(){
+    const { t } = useTranslation();
     return <BannerBox>
-        <Swiper>
-            <SwiperSlide>
-                <BannerLi url="https://img0.baidu.com/it/u=741268616,1401664941&fm=253&fmt=auto&app=138&f=JPEG?w=748&h=500">
-                    <TitleBox>SeeDAO APP</TitleBox>
-                    <DescBox>正式v0.0.1开始发布！含测试奖励怎么领取奖励呢</DescBox>
-                    <LinkBox>查看内容 &gt;</LinkBox>
-                </BannerLi>
-            </SwiperSlide>
-            <SwiperSlide>
-                <BannerLi url="https://img2.baidu.com/it/u=2257799194,2566047008&fm=253&fmt=auto&app=120&f=JPEG?w=1200&h=800">
-                    <TitleBox>SeeDAO APP</TitleBox>
-                    <DescBox>正式v0.0.1开始发布！含测试奖励怎么领取奖励呢</DescBox>
-                    <LinkBox>查看内容 &gt;</LinkBox>
-                </BannerLi>
-            </SwiperSlide>
-            <SwiperSlide>
-                <BannerLi url="https://img2.baidu.com/it/u=3012806272,1276873993&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500">
-                    <TitleBox>SeeDAO APP</TitleBox>
-                    <DescBox>正式v0.0.1开始发布！含测试奖励怎么领取奖励呢</DescBox>
-                    <LinkBox>查看内容 &gt;</LinkBox>
-                </BannerLi>
-            </SwiperSlide>
+        <Swiper
+            modules={[Autoplay]}
+            autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+            }}
+        >
+            {
+                banner?.map((item,index)=>( <SwiperSlide key={`banner_${index}`}>
+                    <BannerLi url={item.img}>
+                        <TitleBox>{item.name}</TitleBox>
+                        <DescBox>{item.desc}</DescBox>
+                        <LinkBox>{t('home.more')} &gt;</LinkBox>
+                    </BannerLi>
+                </SwiperSlide>))
+            }
         </Swiper>
 
 

@@ -42,13 +42,13 @@
     "Incubator": "SeeDAO孵化器申请",
     "IncubatorDesc": "申请加入SeeDAO孵化器"
   },
-  "Calendar": {
+  "home": {
     "title": "城邦日历",
-    "tips": "看看今天有什么安排吧"
-  },
-  "apps": {
+    "tips": "看看今天有什么安排吧",
     "apps": "城邦应用",
     "appTips": "这里是所有的城邦应用啦",
-    "SeeU": "SeeU Network"
+    "SeeU": "SeeU Network",
+    "events": "城邦应用",
+    "more": "查看内容"
   }
 }

@@ -9,6 +9,7 @@ const Box = styled.div`
   margin: 24px 20px;
   border-radius: 16px;
   padding: 16px 3px;
+  box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.02);
 `
 
 
@@ -72,8 +73,8 @@ export default function AppList(){
 
     return <Box>
         <div>
-            <TitleBox>{t("apps.apps")}</TitleBox>
-            <TipsBox>{t("apps.appTips")}</TipsBox>
+            <TitleBox>{t("home.apps")}</TitleBox>
+            <TipsBox>{t("home.appTips")}</TipsBox>
         </div>
         <UlBox>
             {

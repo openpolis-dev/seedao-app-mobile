@@ -14,6 +14,7 @@ const TopBox = styled.div`
   width: 100vw;
   box-sizing: border-box;
   height: 70px;
+  z-index: 999;
   .AvatarBox{
     width: 36px;
     height: 36px;

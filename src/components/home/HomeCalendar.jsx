@@ -114,8 +114,8 @@ export default function HomeCalendar(){
     return <Box>
         <Flexbox>
             <div>
-                <TitleBox>{t("Calendar.title")}</TitleBox>
-                <TipsBox>{t("Calendar.tips")}</TipsBox>
+                <TitleBox>{t("home.title")}</TitleBox>
+                <TipsBox>{t("home.tips")}</TipsBox>
             </div>
             <DayBox>
                 <span className="num">{switchDay()}</span>
