@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import StickyHeader from "../components/layout/StickyHeader";
 import ExploreSection from "components/exploreSection";
 import styled from "styled-components";
+import ExploreProjectSection from "components/explore/project";
 
 export default function Explore() {
   const { t } = useTranslation();
@@ -11,11 +12,7 @@ export default function Explore() {
     <Layout noHeader>
       <StickyHeader title={t("Explore.Head")} bgcolor="var(--background-color-1)" />
       <LayoutContainer>
-        <ExploreSection
-          title={t("Explore.ProjectTitle")}
-          desc={t("Explore.ProjectDescription")}
-          moreLink="/projects"
-        ></ExploreSection>
+        <ExploreProjectSection />
         <ExploreSection
           title={t("Explore.GuildTitle")}
           desc={t("Explore.GuildDescription")}

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+import { RectangularSkeleton } from "components/common/skeleton";
 
 export default function ProjectOrGuildItem({ data, onClickItem }) {
   const { t } = useTranslation();
@@ -13,12 +14,26 @@ export default function ProjectOrGuildItem({ data, onClickItem }) {
           <DescBox>{data.desc}</DescBox>
         </div>
         <div>
-          <LookButton onClick={() => onClickItem(data.id)}>{t("mobile.checkButton")}</LookButton>
+          <LookButton onClick={() => onClickItem(data.id)}>{t("Buttons.Check")}</LookButton>
         </div>
       </RightBox>
     </Item>
   );
 }
+
+export const ProjectOrGuildItemSkeleton = () => {
+  return (
+    <Item>
+      <RectangularSkeleton width="62px" height="62px" radius="15px" />
+      <RightBox>
+        <div>
+          <RectangularSkeleton width="100px" height="22px" />
+          <RectangularSkeleton width="200px" height="34px" style={{ marginTop: "6px" }} />
+        </div>
+      </RightBox>
+    </Item>
+  );
+};
 
 const Item = styled.div`
   display: flex;
@@ -73,8 +88,10 @@ const LookButton = styled.span`
 const ImageBox = styled.div`
   border-radius: 15px;
   overflow: hidden;
+  width: 62px;
+  height: 62px;
   img {
-    width: 62px;
-    height: 62px;
+    width: 100%;
+    height: 100%;
   }
 `;
