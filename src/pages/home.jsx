@@ -7,6 +7,7 @@ import LogoImg from "../assets/images/logo.png";
 import SwiperBanner from "../components/home/swiperBanner";
 import {useEffect, useMemo, useState} from "react";
 import axios from 'axios';
+import StickyHeader from "../components/layout/StickyHeader";
 
 const Row = styled.div``
 const Col = styled.div``
@@ -169,7 +170,10 @@ export default function Home(){
     }, [governNodes, onboardingHolders, onNewHolders]);
 
     return <Layout noHeader>
-        {/*<BoxInner>Home,{account}</BoxInner>*/}
+        <StickyHeader>
+            广场
+        </StickyHeader>
+        <div>Home,{account}</div>
         <BoxInner>
             <BBox>
                 <LogoBox>
