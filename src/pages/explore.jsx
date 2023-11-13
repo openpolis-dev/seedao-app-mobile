@@ -5,6 +5,8 @@ import ExploreSection from "components/exploreSection";
 import styled from "styled-components";
 import ExploreProjectSection from "components/explore/project";
 import ExploreGuildSection from "components/explore/guild";
+import ExploreResourceSection from "components/explore/resource";
+import ExploreEventSection from "components/explore/event";
 
 export default function Explore() {
   const { t } = useTranslation();
@@ -15,16 +17,8 @@ export default function Explore() {
       <LayoutContainer>
         <ExploreProjectSection />
         <ExploreGuildSection />
-        <ExploreSection
-          title={t("Explore.ResourceApply")}
-          desc={t("Explore.ResourceApplyDesc")}
-          moreLink="/resources"
-        ></ExploreSection>
-        <ExploreSection
-          title={t("Explore.OfflineEvent")}
-          desc={t("Explore.OfflineEventDesc")}
-          moreLink="/events"
-        ></ExploreSection>
+        <ExploreResourceSection />
+        <ExploreEventSection />
       </LayoutContainer>
     </Layout>
   );
