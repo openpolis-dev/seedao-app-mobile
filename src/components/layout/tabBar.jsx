@@ -86,7 +86,7 @@ export default function TabBar(){
                         <img src={GoverImg} className="nor" alt=""/>
                         <img src={GoverHover} className="act" alt=""/>
                     </dt>
-                    <dd>{t('menus.govern')}</dd>
+                    <dd>{t('Menus.Governance')}</dd>
                 </dl>
             </NavLink>
             <NavLink className={({ isActive }) => isActive ?"active":""} to="/home">
@@ -95,7 +95,7 @@ export default function TabBar(){
                         <img src={HomeImg} className="nor" alt=""/>
                         <img src={HomeHover} className="act" alt=""/>
                     </dt>
-                    <dd>{t('mobile.my.home')}</dd>
+                    <dd>{t('Menus.Square')}</dd>
                 </dl>
             </NavLink>
 
@@ -105,7 +105,7 @@ export default function TabBar(){
                         <img src={ExploreImg} className="nor" alt=""/>
                         <img src={ExploreHover} className="act" alt=""/>
                     </dt>
-                    <dd>{t('menus.explore')}</dd>
+                    <dd>{t('Menus.Explore')}</dd>
                 </dl>
             </NavLink>
 
@@ -114,7 +114,7 @@ export default function TabBar(){
             {/*        <dt>*/}
             {/*            <Person />*/}
             {/*        </dt>*/}
-            {/*        <dd>{t('menus.assets')}</dd>*/}
+            {/*        <dd>{t('Menus.assets')}</dd>*/}
             {/*    </dl>*/}
             {/*</NavLink>*/}
             {/*<NavLink className={({ isActive }) => isActive ?"active":""} to="/user/profile">*/}

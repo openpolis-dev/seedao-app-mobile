@@ -1,4 +1,9 @@
 {
+  "Menus": {
+    "Explore": "探索",
+    "Square": "广场",
+    "Governance": "治理"
+  },
   "Buttons": {
     "Check": "查看",
     "CheckAll": "查看全部"

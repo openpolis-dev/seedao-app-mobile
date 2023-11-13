@@ -1,4 +1,9 @@
 {
+  "Menus": {
+    "Explore": "Explore",
+    "Square": "Square",
+    "Governance": "Governance"
+  },
   "Buttons": {
     "Check": "Check",
     "CheckAll": "Check All"
