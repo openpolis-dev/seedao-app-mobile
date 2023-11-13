@@ -1,10 +1,11 @@
 import { createGlobalStyle } from "styled-components";
 import "../assets/styles/font.css";
+import "../assets/styles/custom_variable.scss";
 
 const GlobalStyle = createGlobalStyle`
   body,html{
     background: #fff;
-    color: #1A1323;
+    color: var(--font-color);
     padding: 0;
     margin: 0;
     //font-size: 14px;

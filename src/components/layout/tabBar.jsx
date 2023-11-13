@@ -1,22 +1,30 @@
 import {useEffect} from "react";
-import store from "../../store";
-import {saveAccount} from "../../store/reducer";
 import styled from "styled-components";
 import {House,Person} from "react-bootstrap-icons";
 import {NavLink} from "react-router-dom"
 import {useTranslation} from "react-i18next";
 
+import HomeImg from "../../assets/Imgs/home.svg";
+import HomeHover from "../../assets/Imgs/home_active.png";
+
+import GoverImg from "../../assets/Imgs/govern.svg";
+import GoverHover from "../../assets/Imgs/govern_active.png";
+
+import ExploreImg from "../../assets/Imgs/explore.svg";
+import ExploreHover from "../../assets/Imgs/explore_active.png";
+
 const Box = styled.div`
-    background: #fff;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(10px);
   position: fixed;
-  padding: 5px 20px;
+  height: 90px;
   bottom: 0;
   left: 0;
   z-index: 9;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
   width: 100%;
   display: flex;
   align-items: center;
+  border-top:1px solid var(--border-color) ;
 `
 
 const ItemBox = styled.div`
@@ -24,12 +32,25 @@ const ItemBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  .nor{
+    display: block;
+  }
+  .act{
+    display: none;
+  }
 
   a{
     width: 50%;
+    color:#9A9A9A;
     display: inline-block;
     &.active{
-      color: var(--bs-primary);
+      color: var(--font-color);
+      .nor{
+        display: none;
+      }
+      .act{
+        display: block;
+      }
     }
   }
     dl{
@@ -40,10 +61,13 @@ const ItemBox = styled.div`
       justify-content: center;
     }
   dt{
-    font-size: 20px;
+    img{
+      width: 24px;
+      margin-bottom: 7px;
+    }
   }
  dd{
-    font-size: 10px;
+    font-size: 12px;
   }
 `
 
@@ -56,10 +80,20 @@ export default function TabBar(){
     // }, []);
     return <Box>
         <ItemBox >
+            <NavLink className={({ isActive }) => isActive ?"active":""} to="/proposal">
+                <dl>
+                    <dt>
+                        <img src={GoverImg} className="nor" alt=""/>
+                        <img src={GoverHover} className="act" alt=""/>
+                    </dt>
+                    <dd>{t('menus.govern')}</dd>
+                </dl>
+            </NavLink>
             <NavLink className={({ isActive }) => isActive ?"active":""} to="/home">
                 <dl>
                     <dt>
-                        <House />
+                        <img src={HomeImg} className="nor" alt=""/>
+                        <img src={HomeHover} className="act" alt=""/>
                     </dt>
                     <dd>{t('mobile.my.home')}</dd>
                 </dl>
@@ -68,35 +102,29 @@ export default function TabBar(){
             <NavLink className={({ isActive }) => isActive ?"active":""} to="/explore">
                 <dl>
                     <dt>
-                        <Person />
+                        <img src={ExploreImg} className="nor" alt=""/>
+                        <img src={ExploreHover} className="act" alt=""/>
                     </dt>
                     <dd>{t('menus.explore')}</dd>
                 </dl>
             </NavLink>
-            <NavLink className={({ isActive }) => isActive ?"active":""} to="/proposal">
-                <dl>
-                    <dt>
-                        <Person />
-                    </dt>
-                    <dd>{t('menus.govern')}</dd>
-                </dl>
-            </NavLink>
-            <NavLink className={({ isActive }) => isActive ?"active":""} to="/assets">
-                <dl>
-                    <dt>
-                        <Person />
-                    </dt>
-                    <dd>{t('menus.assets')}</dd>
-                </dl>
-            </NavLink>
-            <NavLink className={({ isActive }) => isActive ?"active":""} to="/user/profile">
-                <dl>
-                    <dt>
-                        <Person />
-                    </dt>
-                    <dd>{t('mobile.my.my')}</dd>
-                </dl>
-            </NavLink>
+
+            {/*<NavLink className={({ isActive }) => isActive ?"active":""} to="/assets">*/}
+            {/*    <dl>*/}
+            {/*        <dt>*/}
+            {/*            <Person />*/}
+            {/*        </dt>*/}
+            {/*        <dd>{t('menus.assets')}</dd>*/}
+            {/*    </dl>*/}
+            {/*</NavLink>*/}
+            {/*<NavLink className={({ isActive }) => isActive ?"active":""} to="/user/profile">*/}
+            {/*    <dl>*/}
+            {/*        <dt>*/}
+            {/*            <Person />*/}
+            {/*        </dt>*/}
+            {/*        <dd>{t('mobile.my.my')}</dd>*/}
+            {/*    </dl>*/}
+            {/*</NavLink>*/}
 
         </ItemBox>
     </Box>
