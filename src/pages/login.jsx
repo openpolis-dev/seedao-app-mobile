@@ -3,27 +3,23 @@ import LogoImg from "../assets/Imgs/loginLogo.png";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Metamask from "../components/login/metamask";
-import Loading from "../components/layout/loading";
 import Joyid from "../components/login/joyid";
 import Unipass from "../components/login/unipass";
 import {useState} from "react";
-import { CaretDownFill } from "react-bootstrap-icons"
 import SwitchLan from "../components/common/switchLan";
 import AppConfig from "../AppConfig";
 
 const Box = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
 `;
 
 const LogoBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 100px;
   img {
     width: 70%;
     margin: 0 auto;
@@ -31,18 +27,36 @@ const LogoBox = styled.div`
 `;
 
 const Tips = styled.div`
-  font-size: 14px;
+  font-size: 24px;
+  font-family: 'Poppins-SemiBold';
+  margin: 10% 24px 5%;
 `;
 const BtnList = styled.ul`
-  margin-top: 10px;
+  margin: 0 24px;
   li {
     margin-bottom: 20px;
-  }
-  .btn {
-    border-radius: 30px;
-    width: 200px;
-    height: 36px;
-    font-size: 14px;
+    background: #f7f7f9;
+    border-radius: 16px;
+    padding: 10px;
+
+    dl{
+      display: flex;
+      align-items: center;
+      justify-content: space-between; 
+    }
+    .logo{
+      margin-right: 12px;
+    }
+    dt{
+      display: flex;
+      align-items: center;
+      span{
+        font-size: 15px;
+        font-family: Poppins-SemiBold;
+        font-weight: 600;
+        line-height: 22px;
+      }
+    }
   }
 `;
 
@@ -89,9 +103,7 @@ export default function Login() {
       {/*<FlexBox>*/}
       {/*  <LanguageBox onClick={()=>showBtm()}>*/}
       {/*    <span>{returnLan()}</span>*/}
-      {/*    <CaretDownFill />*/}
       {/*  </LanguageBox>*/}
-      {/*  <Loading />*/}
       {/*</FlexBox>*/}
 
       <Box>

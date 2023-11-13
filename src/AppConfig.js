@@ -1,5 +1,5 @@
 const AppConfig = {
-  DEFAULT_LANGUAGE: 'en',
+  DEFAULT_LANGUAGE: 'zh',
   // BASE_URL: 'https://test-api.seedao.tech',
   BASE_URL: 'https://api.seedao.tech',
   API_VERSION: 'v1',

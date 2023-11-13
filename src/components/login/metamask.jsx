@@ -13,6 +13,8 @@ import AppConfig from "../../AppConfig";
 import ReactGA from "react-ga4";
 import usePushPermission from "hooks/usePushPermission";
 import { registerPush } from "utils/serviceWorkerRegistration";
+import MetamaskLogo from "../../assets/Imgs/METAmask.svg";
+import ArrImg from "../../assets/Imgs/arrow.svg";
 
 // https://github.com/MetaMask/metamask-sdk/issues/381
 // https://github.com/MetaMask/metamask-mobile/issues/7165
@@ -123,7 +125,11 @@ export default function  Metamask(){
         }
     }
 
-    return <div>
-        <button  onClick={()=>onClick()}>MetaMask</button>
-    </div>
+    return <dl onClick={()=>onClick()}>
+        <dt >
+            <img src={MetamaskLogo} alt="" className="logo"/>
+            <span>MetaMask</span>
+        </dt>
+        <img src={ArrImg} alt=""/>
+    </dl>
 }

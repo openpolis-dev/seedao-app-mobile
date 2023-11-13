@@ -4,7 +4,7 @@ import "../assets/styles/font.css";
 const GlobalStyle = createGlobalStyle`
   body,html{
     background: #fff;
-    color: #000;
+    color: #1A1323;
     padding: 0;
     margin: 0;
     //font-size: 14px;
