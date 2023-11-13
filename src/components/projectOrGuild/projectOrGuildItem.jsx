@@ -1,46 +1,80 @@
 import React from "react";
 import styled from "styled-components";
-import { ChevronRight } from "react-bootstrap-icons";
+import { useTranslation } from "react-i18next";
 
 export default function ProjectOrGuildItem({ data, onClickItem }) {
+  const { t } = useTranslation();
   return (
-    <Item onClick={() => onClickItem(data.id)}>
-      <ImageBox>
-        {data.logo && <img src={data.logo} alt="" />}
-        <span className="title">{data.name}</span>
-      </ImageBox>
-      <span>
-        <ChevronRight />
-      </span>
+    <Item>
+      <ImageBox>{data.logo && <img src={data.logo} alt="" />}</ImageBox>
+      <RightBox>
+        <div>
+          <Title>{data.name}</Title>
+          <DescBox>{data.desc}</DescBox>
+        </div>
+        <div>
+          <LookButton onClick={() => onClickItem(data.id)}>{t("mobile.checkButton")}</LookButton>
+        </div>
+      </RightBox>
     </Item>
   );
 }
 
 const Item = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
+  gap: 10px;
+  align-items: start;
   background-color: #fff;
-  padding: 10px 20px;
 `;
-const ImageBox = styled.div`
+
+const RightBox = styled.div`
+  height: 70px;
+  flex: 1;
   display: flex;
-  align-items: center;
+  border-bottom: 1px solid var(--project-border-color);
+  gap: 24px;
+  justify-content: space-between;
+`;
+
+const DescBox = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--font-light-color);
+  line-height: 18px;
+  margin-top: 3px;
+`;
+
+const Title = styled.div`
+  font-size: 16px;
+  font-family: Poppins-SemiBold, Poppins;
+  font-weight: 600;
+  color: var(--font-color);
+`;
+
+const LookButton = styled.span`
+  display: inline-block;
+  min-width: 72px;
+  line-height: 29px;
+  background-color: var(--background-color);
+  font-size: 13px;
+  color: var(--primary-color);
+  font-family: Poppins-SemiBold, Poppins;
+  border-radius: 22px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 18px;
+`;
+
+const ImageBox = styled.div`
+  border-radius: 15px;
+  overflow: hidden;
   img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
-  .title {
-    font-size: 14px;
-    line-height: 1.5em;
-    height: 20px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    margin: 15px;
+    width: 62px;
+    height: 62px;
   }
 `;

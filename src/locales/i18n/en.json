@@ -261,6 +261,7 @@
       "iosStep2": "2) Press 'Add to Home Screen'.",
       "androidInstall": "Install"
     },
+    "checkButton": "Check",
     "used": "used",
     "copied": "Copied!",
     "proposalDetail": "Proposal Detail",
