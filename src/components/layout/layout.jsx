@@ -9,7 +9,6 @@ const OuterBox = styled.div`
   width: 100%;
   min-height: 100vh;
   box-sizing: border-box;
-  background: #f0f3f8;
   display: flex;
 `
 const InnerBox = styled.div`
