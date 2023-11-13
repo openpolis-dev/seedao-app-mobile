@@ -18,5 +18,25 @@
     "ResourceApplyDesc": "薅羊毛专区",
     "OfflineEvent": "Events",
     "OfflineEventDesc": "面基面基网友面基"
+  },
+  "Resources": {
+    "Calendar": "Calendar",
+    "CalendarReviewDesc": "Add events in community calendar.",
+    "Community": "Community Conf Speech",
+    "CommunityDesc": "Share your idea in community weekly conf.",
+    "Pub": "Pub",
+    "PubDesc": "The events hub for SeeDAO community.",
+    "Seed": "SEED",
+    "SeedDesc": "To claim your SeeDAO SEED NFT",
+    "Media": "Media Resources",
+    "MediaDesc": "Request to use SeeDAO media resources.",
+    "App": "Polis Apps",
+    "AppDesc": "Request to add your app in SeeDAO Polis App.",
+    "Project": "Project",
+    "ProjectDesc": "Request to create a project in SeeDAO.",
+    "Guild": "Guilds",
+    "GuildDesc": "Request to create a guild in SeeDAO.",
+    "Incubator": "Incubator",
+    "IncubatorDesc": "Apply to join SeeDAO Incubator."
   }
 }

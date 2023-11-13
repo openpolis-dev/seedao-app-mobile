@@ -45,4 +45,8 @@ const List = styled.div`
   display: flex;
   flex-direction: column;
   gap: 22px;
+  > div:last-of-type ._right {
+    border-bottom: none;
+  }
+  padding-bottom: 26px;
 `;

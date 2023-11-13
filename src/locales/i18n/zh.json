@@ -18,5 +18,25 @@
     "ResourceApplyDesc": "薅羊毛专区",
     "OfflineEvent": "线下活动",
     "OfflineEventDesc": "面基面基网友面基"
+  },
+  "Resources": {
+    "Calendar": "社区日历申请",
+    "CalendarReviewDesc": "申请向社区日历添加日历信息",
+    "Community": "社区大会申请",
+    "CommunityDesc": "申请在社区大会分享想法和信息",
+    "Pub": "酒馆加入申请",
+    "PubDesc": "申请向酒馆添加需要发布的信息",
+    "Seed": "SEED获取申请",
+    "SeedDesc": "申请获取SeeDAO Seed NFT",
+    "Media": "媒体资源申请",
+    "MediaDesc": "申请使用SeeDAO媒体资源",
+    "App": "城邦应用申请",
+    "AppDesc": "申请添加新的城邦应用",
+    "Project": "项目创建申请",
+    "ProjectDesc": "申请创建新的项目",
+    "Guild": "公会创建申请",
+    "GuildDesc": "申请创建新的公会",
+    "Incubator": "SeeDAO孵化器申请",
+    "IncubatorDesc": "申请加入SeeDAO孵化器"
   }
 }

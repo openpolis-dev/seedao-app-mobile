@@ -8,7 +8,7 @@ export default function ProjectOrGuildItem({ data, onClickItem }) {
   return (
     <Item>
       <ImageBox>{data.logo && <img src={data.logo} alt="" />}</ImageBox>
-      <RightBox>
+      <RightBox className="_right">
         <div>
           <Title>{data.name}</Title>
           <DescBox>{data.desc}</DescBox>

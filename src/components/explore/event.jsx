@@ -33,7 +33,7 @@ export default function ExploreEventSection() {
             <EventCardSkeleton />
           </>
         ) : (
-          list.map((item) => <EventCard event={item} />)
+          list.map((item, index) => <EventCard event={item} key={index} />)
         )}
       </List>
     </ExploreSection>
