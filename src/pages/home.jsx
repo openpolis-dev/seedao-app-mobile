@@ -170,9 +170,7 @@ export default function Home(){
     }, [governNodes, onboardingHolders, onNewHolders]);
 
     return <Layout noHeader>
-        <StickyHeader>
-            广场
-        </StickyHeader>
+        <StickyHeader title="广场" bgcolor="var(--background-color)" />
         <div>Home,{account}</div>
         <BoxInner>
             <BBox>

@@ -11,7 +11,7 @@ import AppConfig from "../../AppConfig";
 import ReactGA from "react-ga4";
 import usePushPermission from "hooks/usePushPermission";
 import { registerPush } from "utils/serviceWorkerRegistration";
-import MetamaskLogo from "../../assets/Imgs/METAmask.svg";
+import UnipassLogo from "../../assets/Imgs/uinipass.png";
 import ArrImg from "../../assets/Imgs/arrow.svg";
 
 const upProvider = new UniPassProvider({
@@ -147,7 +147,9 @@ export default function Unipass(){
 
     return<dl onClick={()=>getP()}>
         <dt >
-            <img src={MetamaskLogo} alt="" className="logo"/>
+            <div className="logo">
+                <img src={UnipassLogo} alt="" />
+            </div>
             <span>Unipass</span>
         </dt>
         <img src={ArrImg} alt=""/>

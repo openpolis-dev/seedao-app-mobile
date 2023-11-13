@@ -43,9 +43,18 @@ const BtnList = styled.ul`
       display: flex;
       align-items: center;
       justify-content: space-between; 
+      padding: 6px;
     }
     .logo{
       margin-right: 12px;
+      background: #fff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img{
+        width: 56px;
+      }
     }
     dt{
       display: flex;

@@ -16,7 +16,7 @@ import {useNavigate} from "react-router-dom";
 import ReactGA from "react-ga4";
 import usePushPermission from "hooks/usePushPermission";
 import { registerPush } from "utils/serviceWorkerRegistration";
-import MetamaskLogo from "../../assets/Imgs/METAmask.svg";
+import JoyidImg from "../../assets/Imgs/joyid.png";
 import ArrImg from "../../assets/Imgs/arrow.svg";
 
 export default function Joyid(){
@@ -163,8 +163,10 @@ export default function Joyid(){
 
     return<dl onClick={()=>onConnectRedirect()}>
             <dt >
-                <img src={MetamaskLogo} alt="" className="logo"/>
-                    <span>JoyID</span>
+                <div className="logo">
+                    <img src={JoyidImg} alt="" />
+                </div>
+                <span>JoyID</span>
             </dt>
                 <img src={ArrImg} alt=""/>
         </dl>
