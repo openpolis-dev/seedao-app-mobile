@@ -17,11 +17,11 @@ const Box = styled.div`
   background: rgba(255,255,255,0.6);
   backdrop-filter: blur(10px);
   position: fixed;
-  height: 90px;
+  height: 70px;
   bottom: 0;
   left: 0;
   z-index: 9;
-  width: 100%;
+  width: 100vw;
   display: flex;
   align-items: center;
   border-top:1px solid var(--border-color) ;

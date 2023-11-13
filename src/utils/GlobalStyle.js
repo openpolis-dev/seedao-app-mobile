@@ -8,7 +8,6 @@ const GlobalStyle = createGlobalStyle`
     color: var(--font-color);
     padding: 0;
     margin: 0;
-    //font-size: 14px;
   }
   dl,dt,ul,li{
     padding: 0;
@@ -19,7 +18,7 @@ const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
   * {
-    font-family: "Inter-Regular",-apple-system,BlinkMacSystemFont,
+    font-family: "Poppins-Regular",-apple-system,BlinkMacSystemFont,
     "Segoe UI",Roboto,"Helvetica Neue",
     Arial,sans-serif,"Apple Color Emoji",
     "Segoe UI Emoji","Segoe UI Symbol" ;

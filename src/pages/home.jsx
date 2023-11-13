@@ -8,6 +8,8 @@ import SwiperBanner from "../components/home/swiperBanner";
 import {useEffect, useMemo, useState} from "react";
 import axios from 'axios';
 import StickyHeader from "../components/layout/StickyHeader";
+import Adv from "../components/home/Adv";
+import HomeCalendar from "../components/home/HomeCalendar";
 
 const Row = styled.div``
 const Col = styled.div``
@@ -15,13 +17,14 @@ const Card = styled.div``
 const BoxInner = styled.div`
     display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+  background: var( --background-color);
 `
 
 
 const BBox = styled.div`
   display: flex;
-  margin: 0 20px;
   flex-grow: 1;
   align-items: center;
   flex-direction: column;
@@ -171,47 +174,48 @@ export default function Home(){
 
     return <Layout noHeader>
         <StickyHeader title="广场" bgcolor="var(--background-color)" />
-        <div>Home,{account}</div>
         <BoxInner>
+            <Adv />
+            <HomeCalendar />
             <BBox>
-                <LogoBox>
-                    <img src={LogoImg} alt=""/>
-                </LogoBox>
-                <div>
-                    <div>
-                        {t('Home.Slogan')}
-                    </div>
-                   <div>
-                       <span>{t('Home.SloganVison')}:</span>
-                       {t('Home.SloganDesc')}
-                   </div>
+                {/*<LogoBox>*/}
+                {/*    <img src={LogoImg} alt=""/>*/}
+                {/*</LogoBox>*/}
+                {/*<div>*/}
+                {/*    <div>*/}
+                {/*        {t('Home.Slogan')}*/}
+                {/*    </div>*/}
+                {/*   <div>*/}
+                {/*       <span>{t('Home.SloganVison')}:</span>*/}
+                {/*       {t('Home.SloganDesc')}*/}
+                {/*   </div>*/}
 
-                </div>
-                <LineBox>
-                    <Row>
-                        <Col xs={4}>
-                            <dl>
-                                <dt>{t('Home.SGNHolder')}</dt>
-                                <dd>{sgnHolders}</dd>
-                            </dl>
-                        </Col>
-                        <Col xs={4}>
-                            <dl>
-                                <dt>{t('Home.GovernNode')}</dt>
-                                <dd>{governNodes}</dd>
-                            </dl>
-                        </Col>
-                        <Col xs={4}>
-                            <dl>
-                                <dt>{t('Home.SBTHolder')}</dt>
-                                <dd>{sbtHolders}</dd>
-                            </dl>
-                        </Col>
-                    </Row>
-                </LineBox>
-                <SwOuter>
-                    <SwiperBanner />
-                </SwOuter>
+                {/*</div>*/}
+                {/*<LineBox>*/}
+                {/*    <Row>*/}
+                {/*        <Col xs={4}>*/}
+                {/*            <dl>*/}
+                {/*                <dt>{t('Home.SGNHolder')}</dt>*/}
+                {/*                <dd>{sgnHolders}</dd>*/}
+                {/*            </dl>*/}
+                {/*        </Col>*/}
+                {/*        <Col xs={4}>*/}
+                {/*            <dl>*/}
+                {/*                <dt>{t('Home.GovernNode')}</dt>*/}
+                {/*                <dd>{governNodes}</dd>*/}
+                {/*            </dl>*/}
+                {/*        </Col>*/}
+                {/*        <Col xs={4}>*/}
+                {/*            <dl>*/}
+                {/*                <dt>{t('Home.SBTHolder')}</dt>*/}
+                {/*                <dd>{sbtHolders}</dd>*/}
+                {/*            </dl>*/}
+                {/*        </Col>*/}
+                {/*    </Row>*/}
+                {/*</LineBox>*/}
+                {/*<SwOuter>*/}
+                {/*    <SwiperBanner />*/}
+                {/*</SwOuter>*/}
                 <AllBox>
                     <div className="btm">{t('Home.Publicity')}</div>
 

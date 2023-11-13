@@ -4,6 +4,7 @@ import {Grid, Pagination} from "swiper/modules";
 import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/pagination';
+
 import styled from "styled-components";
 import {useMemo} from "react";
 import {useTranslation} from "react-i18next";
