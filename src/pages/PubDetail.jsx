@@ -2,11 +2,13 @@ import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Row, Col } from 'react-bootstrap';
 import { ChevronLeft } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 import Layout from "../components/layout/layout";
 
+
+const Row = styled.div``
+const Col = styled.div``
 const Box = styled.div`
   width: 90vw;
   color: var(--bs-body-color_active);

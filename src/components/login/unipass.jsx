@@ -1,4 +1,4 @@
-import {Button} from "react-bootstrap";
+
 import { UniPassProvider } from "@unipasswallet/ethereum-provider";
 import {ethers} from "ethers";
 import {useEffect, useState} from "react";
@@ -144,6 +144,6 @@ export default function Unipass(){
     },[result])
 
     return <div>
-        <Button  onClick={()=>getP()}>Unipass</Button>
+        <button  onClick={()=>getP()}>Unipass</button>
     </div>
 }

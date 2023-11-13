@@ -2,7 +2,6 @@ import Layout from "components/layout/layout";
 import LogoImg from "../assets/images/logo.png";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import { Button } from "react-bootstrap";
 import Metamask from "../components/login/metamask";
 import Loading from "../components/layout/loading";
 import Joyid from "../components/login/joyid";

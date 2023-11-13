@@ -1,6 +1,5 @@
 import Layout from "../components/layout/layout";
 import {useTranslation} from "react-i18next";
-import { Row, Col, Button } from 'react-bootstrap';
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -9,7 +8,8 @@ import styled from "styled-components";
 const Box = styled.div`
     margin: 0 20px;
 `
-
+const Row = styled.div``
+const Col = styled.div``
 
 const InnerBox = styled.ul`
   background: #fff;

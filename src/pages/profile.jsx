@@ -10,7 +10,6 @@ import CopyBox from "components/common/copy";
 import useParseSNS from "hooks/useParseSNS";
 import publicJs from "../utils/publicJs";
 import {useNavigate} from "react-router-dom";
-import {Button} from "react-bootstrap"
 import {useSelector} from "react-redux";
 import {useDisconnect} from "wagmi";
 
@@ -327,7 +326,7 @@ export default function Profile() {
       </NftBox>
       <BtmBox>
         {
-            !!userToken?.token && <Button onClick={()=>logout()}>{t('mobile.my.logout')}</Button>
+            !!userToken?.token && <button onClick={()=>logout()}>{t('mobile.my.logout')}</button>
         }
       </BtmBox>
 

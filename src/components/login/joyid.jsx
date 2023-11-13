@@ -1,4 +1,4 @@
-import {Button} from "react-bootstrap";
+
 import {
     connectWithRedirect,
     connectCallback,
@@ -160,7 +160,7 @@ export default function Joyid(){
     },[result])
 
     return <div>
-        <Button onClick={()=>onConnectRedirect()}>JoyID</Button>
+        <button onClick={()=>onConnectRedirect()}>JoyID</button>
     </div>
 }
 

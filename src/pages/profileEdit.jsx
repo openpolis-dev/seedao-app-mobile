@@ -1,4 +1,4 @@
-import { InputGroup, Button, Form } from 'react-bootstrap';
+
 import Layout from "../components/layout/layout";
 import styled from 'styled-components';
 import React, { ChangeEvent, useEffect, useState, FormEvent } from 'react';
@@ -16,7 +16,9 @@ import store from "../store";
 import {saveLoading} from "../store/reducer";
 import Modal from "../components/modal";
 
-
+const InputGroup = styled.div``
+const Button = styled.div``
+const Form = styled.div``
 
 const HeadBox = styled.div`
   display: flex;

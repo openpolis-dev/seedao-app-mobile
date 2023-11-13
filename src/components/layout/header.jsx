@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import {ChevronLeft} from "react-bootstrap-icons";
-import {Row,Col} from "react-bootstrap";
 import Loading from "./loading";
 import {useNavigate} from "react-router-dom";
 
 
+const Row = styled.div``
+const Col = styled.div``
 const Box = styled.div`
     position: fixed;
   left: 0;

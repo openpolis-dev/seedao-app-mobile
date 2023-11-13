@@ -4,12 +4,13 @@ import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import LogoImg from "../assets/images/logo.png";
-import {Row,Col,Card} from "react-bootstrap";
 import SwiperBanner from "../components/home/swiperBanner";
 import {useEffect, useMemo, useState} from "react";
 import axios from 'axios';
 
-
+const Row = styled.div``
+const Col = styled.div``
+const Card = styled.div``
 const BoxInner = styled.div`
     display: flex;
   flex-direction: column;

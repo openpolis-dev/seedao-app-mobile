@@ -1,11 +1,10 @@
 import styled from "styled-components";
-import {Offcanvas} from "react-bootstrap";
 import {useTranslation} from "react-i18next";
 import AppConfig from "../../AppConfig";
 import { requestSetDeviceLanguage, getPushDevice } from "api/push";
 import {useSelector} from "react-redux";
 
-const LanBox = styled(Offcanvas)`
+const LanBox = styled.div`
   display: flex;
   --bs-offcanvas-height:auto;
 `
@@ -28,7 +27,7 @@ export default function SwitchLan(props){
 
     const { i18n } = useTranslation();
     const userToken = useSelector(state=> state.userToken);
-  
+
     const changeLan = (index) => {
       const v = AppConfig.Lan[index].value;
       i18n.changeLanguage(v);

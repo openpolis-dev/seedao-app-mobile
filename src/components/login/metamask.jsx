@@ -1,4 +1,4 @@
-import {Button} from "react-bootstrap";
+
 import {useEffect, useState} from "react";
 import { useWeb3Modal } from "@web3modal/react";
 import { useAccount, useDisconnect, useNetwork } from "wagmi";
@@ -124,6 +124,6 @@ export default function  Metamask(){
     }
 
     return <div>
-        <Button  onClick={()=>onClick()}>MetaMask</Button>
+        <button  onClick={()=>onClick()}>MetaMask</button>
     </div>
 }

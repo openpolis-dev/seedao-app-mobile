@@ -1,10 +1,10 @@
-import Spinner from "react-bootstrap/Spinner";
+
 import styled from "styled-components";
 
 export default function Loading() {
   return (
     <LoadingBox>
-      <Spinner animation="border" variant="primary" size="sm" />
+        <div>loading</div>
     </LoadingBox>
   );
 }
