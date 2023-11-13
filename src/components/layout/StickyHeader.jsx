@@ -73,7 +73,7 @@ export default function StickyHeader({title,bgcolor}){
             {title}
         </div>
         <div className="AvatarBox">
-            <img src={userToken.user.avatar} alt=""/>
+            <img src={userToken?.user?.avatar} alt=""/>
         </div>
 
 </TopBox>
