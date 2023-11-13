@@ -31,7 +31,7 @@ const RightBox = styled.div`
   height: 70px;
   flex: 1;
   display: flex;
-  border-bottom: 1px solid var(--project-border-color);
+  border-bottom: 1px solid var(--border-color-1);
   gap: 24px;
   justify-content: space-between;
 `;
