@@ -4,6 +4,9 @@
     "Square": "Square",
     "Governance": "Governance"
   },
+  "General": {
+    "connect": "Connect Wallet"
+  },
   "Buttons": {
     "Check": "Check",
     "CheckAll": "Check All"
@@ -38,5 +41,9 @@
     "GuildDesc": "Request to create a guild in SeeDAO.",
     "Incubator": "Incubator",
     "IncubatorDesc": "Apply to join SeeDAO Incubator."
+  },
+  "Calendar": {
+    "title": "城邦日历",
+    "tips": "看看今天有什么安排吧"
   }
 }

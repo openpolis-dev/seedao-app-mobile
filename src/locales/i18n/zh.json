@@ -4,6 +4,9 @@
     "Square": "广场",
     "Governance": "治理"
   },
+  "General": {
+    "connect": "连接钱包"
+  },
   "Buttons": {
     "Check": "查看",
     "CheckAll": "查看全部"
@@ -38,5 +41,9 @@
     "GuildDesc": "申请创建新的公会",
     "Incubator": "SeeDAO孵化器申请",
     "IncubatorDesc": "申请加入SeeDAO孵化器"
+  },
+  "Calendar": {
+    "title": "城邦日历",
+    "tips": "看看今天有什么安排吧"
   }
 }

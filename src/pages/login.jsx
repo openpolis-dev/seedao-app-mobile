@@ -119,7 +119,7 @@ export default function Login() {
         <LogoBox>
           <img src={LogoImg} alt="" />
         </LogoBox>
-        <Tips>{t("mobile.my.connect")}</Tips>
+        <Tips>{t("General.connect")}</Tips>
         <BtnList>
           <li>
             <Metamask />
