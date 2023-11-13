@@ -1,5 +1,5 @@
 import Layout from "components/layout/layout";
-import LogoImg from "../assets/images/logo.png";
+import LogoImg from "../assets/Imgs/loginLogo.png";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Metamask from "../components/login/metamask";
@@ -24,9 +24,8 @@ const LogoBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 40px;
   img {
-    width: 50%;
+    width: 70%;
     margin: 0 auto;
   }
 `;
@@ -86,14 +85,14 @@ export default function Login() {
 
   return (
     <Layout noHeader noTab>
-      <SwitchLan show={show} handleClose={handleClose} />
-      <FlexBox>
-        <LanguageBox onClick={()=>showBtm()}>
-          <span>{returnLan()}</span>
-          <CaretDownFill />
-        </LanguageBox>
-        <Loading />
-      </FlexBox>
+      {/*<SwitchLan show={show} handleClose={handleClose} />*/}
+      {/*<FlexBox>*/}
+      {/*  <LanguageBox onClick={()=>showBtm()}>*/}
+      {/*    <span>{returnLan()}</span>*/}
+      {/*    <CaretDownFill />*/}
+      {/*  </LanguageBox>*/}
+      {/*  <Loading />*/}
+      {/*</FlexBox>*/}
 
       <Box>
         <LogoBox>
