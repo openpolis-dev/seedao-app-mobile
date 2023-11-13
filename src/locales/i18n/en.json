@@ -4,6 +4,14 @@
     "CheckAll": "Check All"
   },
   "Explore": {
-    "Head": "Explore"
+    "Head": "Explore",
+    "ProjectTitle": "Project",
+    "ProjectDescription": "看看小伙伴们整的活儿",
+    "GuildTitle": "Guild",
+    "GuildDescription": "来这里寻找小伙伴吧",
+    "ResourceApply": "Apply Now",
+    "ResourceApplyDesc": "薅羊毛专区",
+    "OfflineEvent": "Events",
+    "OfflineEventDesc": "面基面基网友面基"
   }
 }

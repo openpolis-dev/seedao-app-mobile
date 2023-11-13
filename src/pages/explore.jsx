@@ -1,41 +1,47 @@
 import Layout from "components/layout/layout";
-import Tab from "../components/common/tab";
-import {useEffect, useState} from "react";
-import {useTranslation} from "react-i18next";
-import Project from "./project";
-import Guild from "./guild";
-export default function Explore(){
-    const [list, setList] = useState([]);
-    const { t } = useTranslation();
-    const [activeTab, setActiveTab] = useState(0);
+import { useTranslation } from "react-i18next";
+import StickyHeader from "../components/layout/StickyHeader";
+import ExploreSection from "components/exploreSection";
+import styled from "styled-components";
 
-    useEffect(() => {
-        const _list = [
-            {
-                label: t("menus.Project"),
-                value: 0,
-            },
-            {
-                label: t("menus.Guild"),
-                value: 1,
-            }
-        ];
-        setList(_list);
-    }, [t]);
+export default function Explore() {
+  const { t } = useTranslation();
 
-    const handleTabChange = (v) => {
-        setActiveTab(v);
-    };
-
-
-    return <Layout title="Explore">
-        <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
-
-        {
-            activeTab === 0 && <Project />
-        }
-        {
-            activeTab === 1 && <Guild />
-        }
+  return (
+    <Layout noHeader>
+      <StickyHeader title={t("Explore.Head")} bgcolor="var(--background-color-1)" />
+      <LayoutContainer>
+        <ExploreSection
+          title={t("Explore.ProjectTitle")}
+          desc={t("Explore.ProjectDescription")}
+          moreLink="/projects"
+        ></ExploreSection>
+        <ExploreSection
+          title={t("Explore.GuildTitle")}
+          desc={t("Explore.GuildDescription")}
+          moreLink="/guilds"
+        ></ExploreSection>
+        <ExploreSection
+          title={t("Explore.ResourceApply")}
+          desc={t("Explore.ResourceApplyDesc")}
+          moreLink="/resources"
+        ></ExploreSection>
+        <ExploreSection
+          title={t("Explore.OfflineEvent")}
+          desc={t("Explore.OfflineEventDesc")}
+          moreLink="/events"
+        ></ExploreSection>
+      </LayoutContainer>
     </Layout>
+  );
 }
+
+const LayoutContainer = styled.div`
+  padding-inline: 20px;
+  section {
+    margin-top: 30px;
+    &:first-of-type {
+      margin-top: 14px;
+    }
+  }
+`;
