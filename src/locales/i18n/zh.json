@@ -45,5 +45,10 @@
   "Calendar": {
     "title": "城邦日历",
     "tips": "看看今天有什么安排吧"
+  },
+  "apps": {
+    "apps": "城邦应用",
+    "appTips": "这里是所有的城邦应用啦",
+    "SeeU": "SeeU Network"
   }
 }
