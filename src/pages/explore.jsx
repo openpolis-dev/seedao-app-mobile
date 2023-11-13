@@ -4,6 +4,7 @@ import StickyHeader from "../components/layout/StickyHeader";
 import ExploreSection from "components/exploreSection";
 import styled from "styled-components";
 import ExploreProjectSection from "components/explore/project";
+import ExploreGuildSection from "components/explore/guild";
 
 export default function Explore() {
   const { t } = useTranslation();
@@ -13,11 +14,7 @@ export default function Explore() {
       <StickyHeader title={t("Explore.Head")} bgcolor="var(--background-color-1)" />
       <LayoutContainer>
         <ExploreProjectSection />
-        <ExploreSection
-          title={t("Explore.GuildTitle")}
-          desc={t("Explore.GuildDescription")}
-          moreLink="/guilds"
-        ></ExploreSection>
+        <ExploreGuildSection />
         <ExploreSection
           title={t("Explore.ResourceApply")}
           desc={t("Explore.ResourceApplyDesc")}
