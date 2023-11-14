@@ -22,6 +22,13 @@
     "OfflineEvent": "线下活动",
     "OfflineEventDesc": "面基面基网友面基"
   },
+  "Governance": {
+    "Head": "治理",
+    "Vault": "金库",
+    "VaultDesc": "SeeDAO的荷包",
+    "Proposal": "提案",
+    "ProposalDesc": "一起投票把钱花出去"
+  },
   "Resources": {
     "Calendar": "社区日历申请",
     "CalendarReviewDesc": "申请向社区日历添加日历信息",

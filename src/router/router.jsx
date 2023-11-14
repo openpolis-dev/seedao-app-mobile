@@ -22,6 +22,7 @@ import Privacy from "../pages/privacy";
 import Calendar from "../pages/calendar";
 import ProfileEdit from "../pages/profileEdit";
 import Explore from "../pages/explore";
+import Governance from "pages/governance";
 
 import Pub from "../pages/Pub";
 import PubDetail from "../pages/PubDetail";
@@ -46,6 +47,7 @@ function RouterLink() {
         <Route path="/assets" element={<Assets />} />
         <Route path="/user/edit" element={<ProfileEdit />} />
         <Route path="/explore" element={<Explore />} />
+        <Route path="/governance" element={<Governance />} />
 
         <Route path="/pub" element={<Pub />} />
         <Route path="/pubDetail/:id" element={<PubDetail />} />

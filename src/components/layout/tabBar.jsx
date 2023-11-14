@@ -80,7 +80,7 @@ export default function TabBar(){
     // }, []);
     return <Box>
         <ItemBox >
-            <NavLink className={({ isActive }) => isActive ?"active":""} to="/proposal">
+            <NavLink className={({ isActive }) => isActive ?"active":""} to="/governance">
                 <dl>
                     <dt>
                         <img src={GoverImg} className="nor" alt=""/>
