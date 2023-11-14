@@ -20,7 +20,9 @@
     "ResourceApply": "Apply Now",
     "ResourceApplyDesc": "薅羊毛专区",
     "OfflineEvent": "Events",
-    "OfflineEventDesc": "面基面基网友面基"
+    "OfflineEventDesc": "面基面基网友面基",
+    "GovernanceRule": "Governance Rules",
+    "GovernanceRuleDesc": "Check out rules"
   },
   "Governance": {
     "Head": "Governance",

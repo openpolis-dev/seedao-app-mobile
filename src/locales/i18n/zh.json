@@ -27,7 +27,9 @@
     "Vault": "金库",
     "VaultDesc": "SeeDAO的荷包",
     "Proposal": "提案",
-    "ProposalDesc": "一起投票把钱花出去"
+    "ProposalDesc": "一起投票把钱花出去",
+    "GovernanceRule": "治理规则",
+    "GovernanceRuleDesc": "查看规则 参与治理"
   },
   "Resources": {
     "Calendar": "社区日历申请",
