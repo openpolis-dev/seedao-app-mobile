@@ -42,6 +42,10 @@
     "Incubator": "SeeDAO孵化器申请",
     "IncubatorDesc": "申请加入SeeDAO孵化器"
   },
+  "Project": {
+    "AllProjects": "所有项目",
+    "JoinedProjects": "已加入"
+  },
   "home": {
     "title": "城邦日历",
     "tips": "看看今天有什么安排吧",

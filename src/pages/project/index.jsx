@@ -32,7 +32,7 @@ export default function Project() {
       //   value: 1,
       // },
       {
-        label: t("Project.Joined"),
+        label: t("Project.JoinedProjects"),
         id: 2,
       },
     ];
@@ -105,23 +105,25 @@ export default function Project() {
   }, [activeTab]);
 
   return (
-    <div>
+    <Layout>
       <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
-      <InfiniteScroll
-        dataLength={proList.length}
-        next={getCurrentList}
-        hasMore={hasMore}
-        loader={<></>}
-        style={{ height: "calc(100vh - 90px)" }}
-      >
-        {proList.length === 0 && <NoItem />}
-        <ProjectList>
-          {proList.map((item) => (
-            <ProjectOrGuildItem key={item.id} data={item} onClickItem={openDetail} />
-          ))}
-        </ProjectList>
-      </InfiniteScroll>
-    </div>
+      <LayoutContainer>
+        <InfiniteScroll
+          dataLength={proList.length}
+          next={getCurrentList}
+          hasMore={hasMore}
+          loader={<></>}
+          style={{ height: "calc(100vh - 90px)" }}
+        >
+          {proList.length === 0 && <NoItem />}
+          <ProjectList>
+            {proList.map((item) => (
+              <ProjectOrGuildItem key={item.id} data={item} onClickItem={openDetail} />
+            ))}
+          </ProjectList>
+        </InfiniteScroll>
+      </LayoutContainer>
+    </Layout>
   );
 }
 
@@ -130,3 +132,9 @@ const ProjectList = styled.div`
     margin-bottom: 15px;
   }
 `;
+
+const LayoutContainer = styled.div`
+  padding-inline: 20px;
+  
+`;
+
