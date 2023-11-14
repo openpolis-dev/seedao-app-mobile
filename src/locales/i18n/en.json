@@ -72,5 +72,11 @@
     "SeeU": "SeeU Network",
     "events": "城邦应用",
     "more": "查看内容"
+  },
+  "Install": {
+    "IosTitle": "Add to Home Screen",
+    "IosStep1": "1) Press the 'Share' button on the menu bar below.",
+    "IosStep2": "2) Press 'Add to Home Screen'.",
+    "AndroidInstall": "Install"
   }
 }

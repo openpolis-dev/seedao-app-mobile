@@ -72,5 +72,11 @@
     "SeeU": "SeeU Network",
     "events": "城邦应用",
     "more": "查看内容"
+  },
+  "Install": {
+    "IosTitle": "添加到主屏幕",
+    "IosStep1": "1) 点击 菜单栏上的'分享' 按钮",
+    "IosStep2": "2) 点击 '添加到主屏幕'",
+    "AndroidInstall": "安装"
   }
 }

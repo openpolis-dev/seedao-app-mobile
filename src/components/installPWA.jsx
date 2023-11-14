@@ -80,7 +80,7 @@ export default function InstallCheck() {
                 </div>
                 <div className="lineRht">
                   <div className="btn-button" onClick={installApp}>
-                    {t("mobile.install.androidInstall")}
+                    {t("Install.AndroidInstall")}
                   </div>
                   <div className="btn-cancel" onClick={()=>handleClose()}>
                     {t("general.cancel")}
@@ -97,7 +97,7 @@ export default function InstallCheck() {
           {
             show && <IOSBox>
               <div className="header">
-                {t("mobile.install.iosTitle")}
+                {t("Install.IosTitle")}
                 <div className="close" onClick={()=>handleClose()}>
                   <X />
                 </div>
@@ -105,11 +105,11 @@ export default function InstallCheck() {
               <div className="bottom">
                 <Step>
                   <img src={ShareIcon} alt="" />
-                  <span>{t("mobile.install.iosStep1")}</span>
+                  <span>{t("Install.IosStep1")}</span>
                 </Step>
                 <Step>
                   <img src={AddIcon} alt="" />
-                  <span>{t("mobile.install.iosStep2")}</span>
+                  <span>{t("Install.IosStep2")}</span>
                 </Step>
               </div>
             </IOSBox>
