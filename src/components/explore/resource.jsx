@@ -13,8 +13,8 @@ export default function ExploreResourceSection() {
   return (
     <ExploreSection title={t("Explore.ResourceApply")} desc={t("Explore.ResourceApplyDesc")} moreLink="/resources">
       <LinkBox>
-        {list.map((item) => (
-          <ResourceCard data={item} />
+        {list.map((item, i) => (
+          <ResourceCard data={item} key={i} />
         ))}
       </LinkBox>
     </ExploreSection>
