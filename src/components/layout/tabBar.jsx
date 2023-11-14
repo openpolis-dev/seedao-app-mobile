@@ -16,6 +16,7 @@ import ExploreHover from "../../assets/Imgs/explore_active.png";
 const Box = styled.div`
   background: rgba(255,255,255,0.6);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   position: fixed;
   height: 70px;
   bottom: 0;
@@ -25,7 +26,7 @@ const Box = styled.div`
   display: flex;
   align-items: center;
   border-top:1px solid var(--border-color) ;
-`
+`;
 
 const ItemBox = styled.div`
   width: 100%;
