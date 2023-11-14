@@ -25,7 +25,7 @@ export default function ExploreGuildSection() {
     getList();
   }, []);
   return (
-    <ExploreSection title={t("Explore.GuildTitle")} desc={t("Explore.GuildDescription")} moreLink="/guilds">
+    <ExploreSection title={t("Explore.GuildTitle")} desc={t("Explore.GuildDescription")} moreLink="/guild">
       <List>
         {loading ? (
           <>

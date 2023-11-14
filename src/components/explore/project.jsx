@@ -25,7 +25,7 @@ export default function ExploreProjectSection() {
     getList();
   }, []);
   return (
-    <ExploreSection title={t("Explore.ProjectTitle")} desc={t("Explore.ProjectDescription")} moreLink="/projects">
+    <ExploreSection title={t("Explore.ProjectTitle")} desc={t("Explore.ProjectDescription")} moreLink="/project">
       <List>
         {loading ? (
           <>

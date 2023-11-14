@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export default function ExploreSection({ title, desc, children, moreLink }) {
   const { t } = useTranslation();
@@ -11,7 +12,9 @@ export default function ExploreSection({ title, desc, children, moreLink }) {
           <SectionDesc>{desc}</SectionDesc>
         </div>
         <div>
-          <CheckButton>{t("Buttons.CheckAll")}</CheckButton>
+          <LinkBox to={moreLink}>
+            <CheckButton>{t("Buttons.CheckAll")}</CheckButton>
+          </LinkBox>
         </div>
       </SectionHead>
       <SectionBody>{children}</SectionBody>
@@ -42,10 +45,13 @@ const SectionDesc = styled.div`
   margin-top: 8px;
 `;
 
+const LinkBox = styled(Link)`
+  margin-top: 10px;
+`;
+
 const CheckButton = styled.span`
   display: inline-block;
   padding: 6px 8px;
-  margin-top: 10px;
   font-size: 13px;
   font-family: Poppins-Regular, Poppins;
   font-weight: 400;
