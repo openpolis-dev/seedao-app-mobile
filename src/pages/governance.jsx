@@ -8,6 +8,7 @@ import ProposalIcon from "assets/Imgs/governance/proposal.svg";
 import GovernanceIcon from "assets/Imgs/governance/governance.svg";
 import BookIcon from "assets/Imgs/governance/book.svg";
 import { useMemo } from "react";
+import CityhallMembers from "components/governance/cityhallMembers";
 
 const BookRow = ({ name, link }) => {
   const { t } = useTranslation();
@@ -69,6 +70,7 @@ export default function Governance() {
             ))}
           </GovernanceContent>
         </GovernanceBox>
+        <CityhallMembers />
       </LayoutContainer>
     </Layout>
   );
@@ -76,6 +78,7 @@ export default function Governance() {
 
 const LayoutContainer = styled.div`
   padding-inline: 20px;
+  padding-bottom: 20px;
   background-color: var(--background-color);
 `;
 
@@ -137,6 +140,7 @@ const GovernanceBox = styled.div`
   border-radius: 16px;
   margin-top: 16px;
   overflow: hidden;
+  margin-bottom: 30px;
 `;
 
 const GovernanceBoxTop = styled.div`

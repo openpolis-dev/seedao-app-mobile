@@ -20,19 +20,23 @@
     "ResourceApply": "Apply Now",
     "ResourceApplyDesc": "薅羊毛专区",
     "OfflineEvent": "Events",
-    "OfflineEventDesc": "面基面基网友面基",
-    "GovernanceRule": "Governance Rules",
-    "GovernanceRuleDesc": "Check out rules",
-    "MetaRule": "Meta Rules",
-    "GovernanceBook": "Governance Book",
-    "NodesConferenceRule": "Nodes Conference Rules"
+    "OfflineEventDesc": "面基面基网友面基"
   },
   "Governance": {
     "Head": "Governance",
     "Vault": "Vault",
     "VaultDesc": "SeeDAO的荷包",
     "Proposal": "Proposal",
-    "ProposalDesc": "一起投票把钱花出去"
+    "ProposalDesc": "一起投票把钱花出去",
+    "GovernanceRule": "Governance Rules",
+    "GovernanceRuleDesc": "Check out rules",
+    "MetaRule": "Meta Rules",
+    "GovernanceBook": "Governance Book",
+    "NodesConferenceRule": "Nodes Conference Rules",
+    "Cityhall": "{{season}} Cityhall",
+    "CityhallGovernance": "Governance",
+    "CityhallBranding": "Branding",
+    "CityhallTech": "Tech"
   },
   "Resources": {
     "Calendar": "Calendar",

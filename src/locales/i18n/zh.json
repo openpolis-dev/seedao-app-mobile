@@ -32,7 +32,11 @@
     "GovernanceRuleDesc": "查看规则 参与治理",
     "MetaRule": "元规则",
     "GovernanceBook": "治理手册",
-    "NodesConferenceRule": "节点共识大会规则"
+    "NodesConferenceRule": "节点共识大会规则",
+    "Cityhall": "{{season}} 市政厅",
+    "CityhallGovernance": "内部治理小组",
+    "CityhallBranding": "品牌小组",
+    "CityhallTech": "技术小组"
   },
   "Resources": {
     "Calendar": "社区日历申请",

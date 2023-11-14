@@ -22,6 +22,9 @@ const mainSlice = createSlice({
         },
         saveSigner(state, action) {
             state.signer = action.payload;
+        },
+        updateSNSmap(state, action) {
+            state.snsMap = action.payload;
         }
     },
 });
@@ -33,5 +36,6 @@ export const {
     saveSigner,
     saveWalletType,
     saveUserToken,
+    updateSNSmap
 } = mainSlice.actions;
 export default mainSlice.reducer;
