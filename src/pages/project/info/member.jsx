@@ -60,12 +60,8 @@ export default function ProjectMember() {
   return (
     <MemberContent>
       <Block>
-        <SectionTitle>{t("Project.Dominator")}</SectionTitle>
-        <UserList data={memberUsers} nameMap={nameMap} />
-      </Block>
-      <Block>
         <SectionTitle>{t("Project.Members")}</SectionTitle>
-        <UserList data={sponsorUsers} nameMap={nameMap} />
+        <UserList data={[...sponsorUsers, ...memberUsers]} nameMap={nameMap} />
       </Block>
     </MemberContent>
   );

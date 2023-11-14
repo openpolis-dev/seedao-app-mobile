@@ -42,7 +42,7 @@ export default function ProjectInfo() {
     }
   }, [id, dispatch]);
   return (
-    <Layout noTab title={data?.name || t("mobile.projectDetail")}>
+    <Layout title={data?.name || t("mobile.projectDetail")}>
       <ProjectBasic />
       <ProjectMember />
     </Layout>

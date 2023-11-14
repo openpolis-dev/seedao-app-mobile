@@ -44,7 +44,9 @@
   },
   "Project": {
     "AllProjects": "All Projects",
-    "JoinedProjects": "Joined"
+    "JoinedProjects": "Joined",
+    "Members": "Members",
+    "Intro": "Introduction"
   },
   "home": {
     "title": "城邦日历",

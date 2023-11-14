@@ -44,7 +44,9 @@
   },
   "Project": {
     "AllProjects": "所有项目",
-    "JoinedProjects": "已加入"
+    "JoinedProjects": "已加入",
+    "Members": "项目成员",
+    "Intro": "项目介绍"
   },
   "home": {
     "title": "城邦日历",

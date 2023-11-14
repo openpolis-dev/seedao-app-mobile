@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import { useProjectContext } from "./provider";
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
-import { formatNumber } from "utils/number";
-import {useNavigate} from "react-router-dom";
+import SipTag from "components/sipTag";
+import { MdPreview } from "md-editor-rt";
 
 export default function ProjectBasic() {
   const { t } = useTranslation();
@@ -11,51 +10,22 @@ export default function ProjectBasic() {
     state: { data },
   } = useProjectContext();
 
-  const navigate = useNavigate();
-
-  const [token, setToken] = useState();
-  const [points, setPoints] = useState();
-
-  useEffect(() => {
-    const getdata = () => {
-      const _token = data?.budgets?.find((item) => item.name === "USDT");
-      setToken(_token);
-      const _point = data?.budgets?.find((item) => item.name === "SCR");
-      setPoints(_point);
-    };
-    data && getdata();
-  }, [data]);
-
-  const toGo = (item) =>{
-    navigate(`/proposal/thread/${item}`)
-  }
-
   return (
     <>
       <ImgBlock>
         <div>{data?.logo && <img src={data.logo} alt="" />}</div>
       </ImgBlock>
       <ContentBlock>
-        <div className="name">{t("Project.ProjectName")}</div>
-        <div className="content">{data?.name}</div>
+        <div className="content">{data?.desc}</div>
       </ContentBlock>
       <ProposalsBox>
-        <div>提案</div>
-        <div>
-          {
-            data?.proposals?.map((item,index)=>(<div key={`proposal_${index}`} onClick={()=>toGo(item)}>{`${window.location.origin}/${item}`}</div>))
-          }
-        </div>
-
-
+        {data?.proposals?.map((item, index) => (
+          <SipTag key={`proposal_${index}`} slug={item} />
+        ))}
       </ProposalsBox>
       <ContentBlock>
-        描述
-        描述
-        描述
-        描述
-        描述
-        描述
+        <div>{t("Project.Intro")}</div>
+        <MdPreview modelValue={data?.intro || ''} />
       </ContentBlock>
     </>
   );
@@ -70,7 +40,7 @@ const ImgBlock = styled(Block)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  &>div {
+  & > div {
     width: 150px;
     height: 150px;
     background-color: #fff;
@@ -80,7 +50,7 @@ const ImgBlock = styled(Block)`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
     img {
       width: 100%;
       height: 100%;
@@ -92,12 +62,10 @@ const ImgBlock = styled(Block)`
 
 const ContentBlock = styled(Block)`
   background-color: #fff;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
   margin-inline: 10px;
   padding: 10px;
   border-radius: 4px;
-  display: flex;
-  gap: 10px;
   font-size: 14px;
 
   .name {
@@ -123,5 +91,4 @@ const ContentBlock = styled(Block)`
 
 const ProposalsBox = styled(ContentBlock)`
   display: flex;
-  
-`
+`;
