@@ -14,6 +14,7 @@ import ReactGA from "react-ga4";
 import usePushPermission from "hooks/usePushPermission";
 import MetamaskLogo from "../../assets/Imgs/METAmask.svg";
 import ArrImg from "../../assets/Imgs/arrow.svg";
+import OneSignal from "react-onesignal";
 
 // https://github.com/MetaMask/metamask-sdk/issues/381
 // https://github.com/MetaMask/metamask-mobile/issues/7165
@@ -110,6 +111,12 @@ export default function  Metamask(){
             store.dispatch(saveWalletType("metamask"));
             store.dispatch(saveAccount(address))
             store.dispatch(saveLoading(false));
+
+            try {
+               await OneSignal.login(address.toLocaleLowerCase());
+            } catch (error) {
+               console.error("OneSignal login error", error);
+            }
 
             ReactGA.event("login_success",{
                 type: "metamask",

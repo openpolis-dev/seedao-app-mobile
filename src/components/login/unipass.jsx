@@ -12,6 +12,7 @@ import ReactGA from "react-ga4";
 import usePushPermission from "hooks/usePushPermission";
 import UnipassLogo from "../../assets/Imgs/uinipass.png";
 import ArrImg from "../../assets/Imgs/arrow.svg";
+import OneSignal from "react-onesignal";
 
 const upProvider = new UniPassProvider({
     chainId: 1,
@@ -126,6 +127,11 @@ export default function Unipass(){
             store.dispatch(saveUserToken(rt.data));
             store.dispatch(saveWalletType("unipass"));
             setResult(rt.data)
+            try {
+              await OneSignal.login(addr.toLocaleLowerCase());
+            } catch (error) {
+              console.error("OneSignal login error", error);
+            }
             ReactGA.event("login_success",{
                 type: "unipass",
                 account:"account:"+addr

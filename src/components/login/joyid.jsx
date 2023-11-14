@@ -17,6 +17,7 @@ import ReactGA from "react-ga4";
 import usePushPermission from "hooks/usePushPermission";
 import JoyidImg from "../../assets/Imgs/joyid.png";
 import ArrImg from "../../assets/Imgs/arrow.svg";
+import OneSignal from "react-onesignal";
 
 export default function Joyid(){
 
@@ -146,6 +147,11 @@ export default function Joyid(){
                 account:"account:"+account
             });
             setResult(rt.data)
+            try {
+              await OneSignal.login(account.toLocaleLowerCase());
+            } catch (error) {
+              console.error("OneSignal login error", error);
+            }
         }catch (e){
             console.error(e)
             ReactGA.event("login_failed",{type: "joyid"});
