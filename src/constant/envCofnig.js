@@ -14,8 +14,8 @@ const LOCAL = {
 };
 const DEVELOPMENT = {
   ...LOCAL,
-  REACT_APP_ENV: 'test',
-  REACT_APP_ONESIGNAL_ID: '',
+  REACT_APP_ENV: "test",
+  REACT_APP_ONESIGNAL_ID: "2889344b-788a-40d5-8949-1ff1adc71851",
 };
 
 const PREVIEW = {
@@ -32,7 +32,6 @@ const PRODUCTION = {
   REACT_APP_JOYID_ENABLE: false,
   REACT_APP_APP_VERSION: `B ${VERSION}`,
   REACT_APP_THEME_ENABLE: false,
-  REACT_APP_ONESIGNAL_ID: '',
 };
 
 export default function getConfig() {
