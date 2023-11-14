@@ -36,6 +36,7 @@
     "react-i18next": "^13.2.2",
     "react-infinite-scroll-component": "^6.1.0",
     "react-markdown": "^9.0.0",
+    "react-onesignal": "^3.0.1",
     "react-quill": "^2.0.0",
     "react-redux": "^8.1.2",
     "react-router-dom": "^6.16.0",
@@ -54,12 +55,13 @@
     "fs": "0.0.1-security"
   },
   "scripts": {
-    "config": "node firebase-config.js",
-    "dev": "npm run config && react-scripts start",
-    "start": "REACT_APP_ENV_VERSION=dev npm run dev",
-    "build": "npm run config && react-scripts build",
-    "build:dev": "REACT_APP_ENV_VERSION=dev npm run build",
-    "build:prod": "REACT_APP_ENV_VERSION=prod npm run build"
+    "dev": "react-scripts start",
+    "start": "npm run dev",
+    "build:online": "react-scripts build",
+    "build": "REACT_APP_ENV_VERSION=dev npm run build:online",
+    "build:dev": "npm run build",
+    "build:preview": "REACT_APP_ENV_VERSION=preview npm run build:online",
+    "build:prod": "REACT_APP_ENV_VERSION=prod npm run build:online"
   },
   "eslintConfig": {
     "extends": [

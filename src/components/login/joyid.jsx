@@ -15,7 +15,6 @@ import AppConfig from "../../AppConfig";
 import {useNavigate} from "react-router-dom";
 import ReactGA from "react-ga4";
 import usePushPermission from "hooks/usePushPermission";
-import { registerPush } from "utils/serviceWorkerRegistration";
 import JoyidImg from "../../assets/Imgs/joyid.png";
 import ArrImg from "../../assets/Imgs/arrow.svg";
 
@@ -142,7 +141,6 @@ export default function Joyid(){
             rt.data.token_exp = now + rt.data.token_exp * 1000;
             store.dispatch(saveUserToken(rt.data));
             store.dispatch(saveWalletType("joyid"));
-            await registerPush();
             ReactGA.event("login_success",{
                 type: "joyid",
                 account:"account:"+account

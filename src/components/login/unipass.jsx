@@ -10,7 +10,6 @@ import { getNonce, login } from "../../api/user";
 import AppConfig from "../../AppConfig";
 import ReactGA from "react-ga4";
 import usePushPermission from "hooks/usePushPermission";
-import { registerPush } from "utils/serviceWorkerRegistration";
 import UnipassLogo from "../../assets/Imgs/uinipass.png";
 import ArrImg from "../../assets/Imgs/arrow.svg";
 
@@ -127,7 +126,6 @@ export default function Unipass(){
             store.dispatch(saveUserToken(rt.data));
             store.dispatch(saveWalletType("unipass"));
             setResult(rt.data)
-            await registerPush();
             ReactGA.event("login_success",{
                 type: "unipass",
                 account:"account:"+addr

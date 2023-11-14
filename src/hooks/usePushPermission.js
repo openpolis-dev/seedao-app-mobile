@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
+import runOneSignal from "utils/onesignal";
 
 const checkNotificationSupport = () => {
   if (!window.Notification) {
@@ -43,6 +44,7 @@ export default function usePushPermission() {
 
   const handlePermission = (callback) => {
     if (permission === "granted") {
+      runOneSignal();
       callback && callback();
     }
     if (!checkNotificationSupport()) {
@@ -53,6 +55,7 @@ export default function usePushPermission() {
       .then((res) => {
         console.log("you agreed permission");
         setPermission("granted");
+        runOneSignal();
       })
       .catch((err) => {
         console.error("you denied permission");

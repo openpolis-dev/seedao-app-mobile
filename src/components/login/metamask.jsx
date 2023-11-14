@@ -12,7 +12,6 @@ import {useNavigate} from "react-router-dom";
 import AppConfig from "../../AppConfig";
 import ReactGA from "react-ga4";
 import usePushPermission from "hooks/usePushPermission";
-import { registerPush } from "utils/serviceWorkerRegistration";
 import MetamaskLogo from "../../assets/Imgs/METAmask.svg";
 import ArrImg from "../../assets/Imgs/arrow.svg";
 
@@ -111,8 +110,6 @@ export default function  Metamask(){
             store.dispatch(saveWalletType("metamask"));
             store.dispatch(saveAccount(address))
             store.dispatch(saveLoading(false));
-
-            await registerPush();
 
             ReactGA.event("login_success",{
                 type: "metamask",
