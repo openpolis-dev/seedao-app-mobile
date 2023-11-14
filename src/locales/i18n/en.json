@@ -22,7 +22,10 @@
     "OfflineEvent": "Events",
     "OfflineEventDesc": "面基面基网友面基",
     "GovernanceRule": "Governance Rules",
-    "GovernanceRuleDesc": "Check out rules"
+    "GovernanceRuleDesc": "Check out rules",
+    "MetaRule": "Meta Rules",
+    "GovernanceBook": "Governance Book",
+    "NodesConferenceRule": "Nodes Conference Rules"
   },
   "Governance": {
     "Head": "Governance",

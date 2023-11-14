@@ -6,9 +6,35 @@ import StickyHeader from "components/layout/StickyHeader";
 import VaultIcon from "assets/Imgs/governance/vault.svg";
 import ProposalIcon from "assets/Imgs/governance/proposal.svg";
 import GovernanceIcon from "assets/Imgs/governance/governance.svg";
+import BookIcon from "assets/Imgs/governance/book.svg";
+import { useMemo } from "react";
+
+const BookRow = ({ name, link }) => {
+  const { t } = useTranslation();
+
+  return (
+    <BookItem>
+      <div>
+        <img src={BookIcon} alt="" />
+        <BookName>{name}</BookName>
+      </div>
+      <CheckButton href={link} target="_blank">
+        {t("Buttons.Check")}
+      </CheckButton>
+    </BookItem>
+  );
+};
 
 export default function Governance() {
   const { t } = useTranslation();
+
+  const books = useMemo(() => {
+    return [
+      { name: t("Governance.MetaRule") },
+      { name: t("Governance.GovernanceBook") },
+      { name: t("Governance.NodesConferenceRule") },
+    ];
+  }, [t]);
   return (
     <Layout noHeader>
       <StickyHeader title={t("Governance.Head")} bgcolor="var(--background-color)" />
@@ -37,6 +63,11 @@ export default function Governance() {
               <div className="desc">{t("Governance.GovernanceRuleDesc")}</div>
             </GovernanceBoxTopLeft>
           </GovernanceBoxTop>
+          <GovernanceContent>
+            {books.map((item, index) => (
+              <BookRow key={index} name={item.name} link={item.link} />
+            ))}
+          </GovernanceContent>
         </GovernanceBox>
       </LayoutContainer>
     </Layout>
@@ -101,7 +132,7 @@ const FirstLineDesc = styled.div`
 const GovernanceBox = styled.div`
   width: 100%;
   height: 247px;
-  background: #ffffff;
+  background: var(--background-color-1);
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.02);
   border-radius: 16px;
   margin-top: 16px;
@@ -140,4 +171,40 @@ const GovernanceBoxTopLeft = styled.div`
     border: 1px solid rgba(255, 255, 255, 0.18);
     padding-inline: 15px;
   }
+`;
+
+const GovernanceContent = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 16px 20px 13px;
+`;
+
+const BookItem = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  & > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+`;
+
+const BookName = styled.span`
+  font-size: 15px;
+  font-family: Poppins-SemiBold, Poppins;
+  font-weight: 600;
+  line-height: 22px;
+`;
+
+const CheckButton = styled.a`
+  display: inline-block;
+  background: var(--background-color-2);
+  border-radius: 15px;
+  line-height: 24px;
+  text-align: center;
+  font-size: 13px;
+  padding-inline: 16px;
+  cursor: pointer;
 `;
