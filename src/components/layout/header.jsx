@@ -17,7 +17,7 @@ const Box = styled.div`
   left: 0;
   top: 0;
   z-index: 9;
-  background: #fff;
+  background: ${props=> props.bgColor || 'var(--background-color-1)'};
   box-sizing: border-box;
  width: 100vw;
   padding: 10px;
@@ -30,14 +30,14 @@ const Rht = styled(Col)`
 const Mid = styled(Col)`
     text-align: center;
 `
-export default function Header({title}){
+export default function Header({title, bgColor}){
     const navigate = useNavigate();
 
     const backTop = () =>{
         navigate(-1)
     }
 
-    return <Box>
+    return <Box bgColor={bgColor}>
         <Row>
             <Col xs={2} onClick={()=>backTop()}><ChevronLeft /></Col>
             <Mid xs={8}>{title}</Mid>

@@ -28,7 +28,7 @@ export default function Proposal() {
   };
 
   return (
-    <Layout title={t("Proposal.Governance")}>
+    <Layout title={t("Proposal.Governance")} headBgColor={`var(--background-color)`}>
       <Content>
         {proposalCategories.map((category, index) => (
           <CategoryCard key={index}>

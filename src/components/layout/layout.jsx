@@ -19,7 +19,7 @@ const InnerBox = styled.div`
 
   
 `
-export default function Layout({children,noHeader,title,noTab}){
+export default function Layout({children,noHeader,title,noTab, headBgColor}){
 
 
     const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function Layout({children,noHeader,title,noTab}){
 
     return <OuterBox>
         {
-            !noHeader && <Header title={title} />
+            !noHeader && <Header title={title} bgColor={headBgColor} />
         }
         <InnerBox notab={noTab? 0 : '90px'} noheader={noHeader? 0 : '60px'} >
             {children}
