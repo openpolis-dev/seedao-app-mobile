@@ -82,11 +82,13 @@
     "AndroidInstall": "Install"
   },
   "Proposal": {
+    "Governance": "Governance Proposal",
     "ProposalDetail": "Proposal Detail",
     "AllCategories": "All Categories",
     "TheNeweset": "Latest",
     "CreateProposal": "Create Proposal",
-    "TheOldest": "Oldest"
+    "TheOldest": "Oldest",
+    "Topics": "topics"
   },
   "My": {
     "MyProfile": "My Profile",

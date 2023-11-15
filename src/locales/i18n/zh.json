@@ -82,11 +82,13 @@
     "AndroidInstall": "安装"
   },
   "Proposal": {
+    "Governance": "治理提案",
     "ProposalDetail": "提案详情",
     "AllCategories": "分类",
     "TheNeweset": "最新的",
     "CreateProposal": "创建提案",
-    "TheOldest": "最早的"
+    "TheOldest": "最早的",
+    "Topics": "话题"
   },
   "My": {
     "MyProfile": "我的信息",
