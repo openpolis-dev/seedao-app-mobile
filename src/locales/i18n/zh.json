@@ -5,7 +5,8 @@
     "Governance": "治理"
   },
   "General": {
-    "connect": "连接钱包"
+    "connect": "连接钱包",
+    "confirm": "确定"
   },
   "Buttons": {
     "Check": "查看",
@@ -86,6 +87,7 @@
   "My": {
     "MyProfile": "我的信息",
     "MyAccount": "我的账户",
+    "logout": "退出",
     "Bio": "简介",
     "Exit": "退出",
     "Assets": "USD资产",

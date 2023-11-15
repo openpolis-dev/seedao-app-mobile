@@ -5,7 +5,8 @@
     "Governance": "Governance"
   },
   "General": {
-    "connect": "Connect Wallet"
+    "connect": "Connect Wallet",
+    "confirm": "Confirm"
   },
   "Buttons": {
     "Check": "Check",
@@ -86,6 +87,8 @@
   "My": {
     "MyProfile": "My Profile",
     "MyAccount": "My Account",
+    "logout": "Disconnect",
+
     "Bio": "Bio",
     "Exit": "Exit",
     "Assets": "Assets",

@@ -45,25 +45,16 @@ const UlBox = styled.ul`
   width: 100%;
   li {
     display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    margin-bottom: 20px;
-
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(217,217,217,0.5);
+    padding: 15px 0;
     .title {
-      margin-right: 20px;
-      line-height: 2.5em;
-      min-width: 70px;
-    }
-  }
-  @media (max-width: 750px) {
-    li {
-      flex-direction: column;
-      margin-bottom: 10px;
+      color: #9a9a9a;
     }
   }
 `;
 const InputBox = styled(InputGroup)`
-  max-width: 600px;
   .wallet {
     border: 1px solid #eee;
     width: 100%;
@@ -79,9 +70,10 @@ const InputBox = styled(InputGroup)`
     right: -30px;
     top: 8px;
   }
-  @media (max-width: 1024px) {
-    max-width: 100%;
-  } ;
+  input,textarea{
+    border: 0;
+    text-align: right;
+  }
 `;
 const MidBox = styled.div`
   display: flex;
@@ -89,6 +81,29 @@ const MidBox = styled.div`
   padding-bottom: 40px;
   gap: 60px;
 `;
+
+const ButtonBox = styled.div`
+    width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  button{
+    width: 89%;
+    height: 44px;
+    background: #EEEEF4;
+    border-radius: 16px;
+    border: 0;
+  }
+`
+
+const ConfirmBox = styled.div`
+  color: var(--primary-color);
+  display: inline-block;
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  z-index: 999999999;
+`
 
 export default function ProfileEdit() {
   // const {
@@ -136,12 +151,12 @@ export default function ProfileEdit() {
     store.dispatch(saveLoading(true));
     try {
       let rt = await getUser();
-      const {avatar,bio,email,discord_profile,twitter_profile,wechat,mirror,wallet,nickname} = rt;
+      const {avatar,bio,email,discord_profile,twitter_profile,wechat,mirror,wallet,nickname} = rt.data;
       setUserName(nickname)
       setEmail(email)
       let mapArr = new Map();
 
-      rt.social_accounts.map((item) => {
+      rt.data.social_accounts.map((item) => {
         mapArr.set(item.network, item.identity);
       });
       setTwitter(mapArr.get('twitter') ?? '');
@@ -265,28 +280,12 @@ export default function ProfileEdit() {
   }
 
   return (
-    <Layout noHeader noTab title={t("My.MyProfile")}>
+    <Layout noTab title={t("My.MyProfile")}>
+
       <Modal tips={tips} show={show} handleClose={handleClose} />
       <CardBox>
         <HeadBox>
-          <AvatarBox>
-            <UploadBox htmlFor="fileUpload" onChange={(e) => updateLogo(e)}>
-              {!avatar && (
-                <div>
-                  <input id="fileUpload" type="file" hidden accept=".jpg, .jpeg, .png" />
-                  {<Upload />}
-                </div>
-              )}
-              {!!avatar && (
-                <ImgBox onClick={() => removeUrl()}>
-                  <div className="del">
-                    <X className="iconTop" />
-                  </div>
-                  <img src={avatar} alt="" />
-                </ImgBox>
-              )}
-            </UploadBox>
-          </AvatarBox>
+
           <InfoBox>
             {/*<div className="wallet">{sns}</div>*/}
             <div className="wallet">
@@ -299,8 +298,31 @@ export default function ProfileEdit() {
             </div>
           </InfoBox>
         </HeadBox>
+
+        <ConfirmBox onClick={saveProfile}>{t('General.confirm')}</ConfirmBox>
         <MidBox>
           <UlBox>
+            <li>
+              <div className="title">头像</div>
+              <AvatarBox>
+                <UploadBox htmlFor="fileUpload" onChange={(e) => updateLogo(e)}>
+                  {!avatar && (
+                      <div>
+                        <input id="fileUpload" type="file" hidden accept=".jpg, .jpeg, .png" />
+                        {<Upload />}
+                      </div>
+                  )}
+                  {!!avatar && (
+                      <ImgBox onClick={() => removeUrl()}>
+                        <div className="del">
+                          <X className="iconTop" />
+                        </div>
+                        <img src={avatar} alt="" />
+                      </ImgBox>
+                  )}
+                </UploadBox>
+              </AvatarBox>
+            </li>
             <li>
               <div className="title">{t('My.Name')}</div>
               <InputBox>
@@ -317,7 +339,6 @@ export default function ProfileEdit() {
               <InputBox>
                 <textarea
                   placeholder=""
-                  rows={5}
                   value={bio}
                   onChange={(e) => handleInput(e, 'bio')}
                 />
@@ -361,16 +382,12 @@ export default function ProfileEdit() {
             </li>
           </UlBox>
         </MidBox>
-        <div style={{ textAlign: 'center' }}>
-          <button onClick={saveProfile}>{t('general.confirm')}</button>
-        </div>
+        <ButtonBox>
+          <button onClick={()=>logout()}>{t('My.logout')}</button></ButtonBox>
       </CardBox>
 
-      <div>
-        {
-            !!userToken?.token && <button onClick={()=>logout()}>{t('mobile.my.logout')}</button>
-        }
-      </div>
+
+
     </Layout>
   );
 }
