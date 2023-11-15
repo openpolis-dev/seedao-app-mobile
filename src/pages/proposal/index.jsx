@@ -108,7 +108,7 @@ const CategoryCard = styled.div`
   border-radius: 16px;
   background: var(--background-color-1);
   padding-inline: 14px;
-  margin-block: 17px;
+  margin-bottom: 17px;
   .cate-name {
     line-height: 44px;
     font-size: 16px;
