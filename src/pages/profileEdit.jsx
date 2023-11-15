@@ -117,7 +117,7 @@ export default function ProfileEdit() {
   const userToken = useSelector(state=> state.userToken);
   const walletType = useSelector(state => state.walletType);
   const navigate = useNavigate()
-  
+
   const logout = () =>{
     store.dispatch(saveAccount(null));
     store.dispatch(saveUserToken(null));
@@ -265,7 +265,7 @@ export default function ProfileEdit() {
   }
 
   return (
-    <Layout  noTab title={t("My.MyProfile")}>
+    <Layout noHeader noTab title={t("My.MyProfile")}>
       <Modal tips={tips} show={show} handleClose={handleClose} />
       <CardBox>
         <HeadBox>
@@ -304,7 +304,7 @@ export default function ProfileEdit() {
             <li>
               <div className="title">{t('My.Name')}</div>
               <InputBox>
-                <Form.Control
+                <input
                   type="text"
                   placeholder=""
                   value={userName}
@@ -315,9 +315,8 @@ export default function ProfileEdit() {
             <li>
               <div className="title">{t('My.Bio')}</div>
               <InputBox>
-                <Form.Control
+                <textarea
                   placeholder=""
-                  as="textarea"
                   rows={5}
                   value={bio}
                   onChange={(e) => handleInput(e, 'bio')}
@@ -327,7 +326,7 @@ export default function ProfileEdit() {
             <li>
               <div className="title">{t('My.Email')}</div>
               <InputBox>
-                <Form.Control type="text" placeholder="" value={email} onChange={(e) => handleInput(e, 'email')} />
+                <inputl type="text" placeholder="" value={email} onChange={(e) => handleInput(e, 'email')} />
               </InputBox>
             </li>
 
@@ -351,19 +350,19 @@ export default function ProfileEdit() {
             <li>
               <div className="title">{t('My.WeChat')}</div>
               <InputBox>
-                <Form.Control type="text" placeholder="" value={wechat} onChange={(e) => handleInput(e, 'wechat')} />
+                <input type="text" placeholder="" value={wechat} onChange={(e) => handleInput(e, 'wechat')} />
               </InputBox>
             </li>
             <li>
               <div className="title">{t('My.Mirror')}</div>
               <InputBox>
-                <Form.Control type="text" placeholder="" value={mirror} onChange={(e) => handleInput(e, 'mirror')} />
+                <input type="text" placeholder="" value={mirror} onChange={(e) => handleInput(e, 'mirror')} />
               </InputBox>
             </li>
           </UlBox>
         </MidBox>
         <div style={{ textAlign: 'center' }}>
-          <Button onClick={saveProfile}>{t('general.confirm')}</Button>
+          <button onClick={saveProfile}>{t('general.confirm')}</button>
         </div>
       </CardBox>
 

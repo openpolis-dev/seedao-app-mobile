@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 const TopBox = styled.div`
     background: ${props => props.bgcolor};
@@ -52,6 +53,7 @@ const TopBox = styled.div`
 export default function StickyHeader({title,bgcolor}){
     const userToken = useSelector(state=> state.userToken);
     const [show,setShow] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         window.addEventListener('scroll', ScrollHeight);
@@ -69,11 +71,15 @@ export default function StickyHeader({title,bgcolor}){
         }
     }
 
+    const toGo = () =>{
+        navigate("/user/profile")
+    }
+
     return <TopBox bgcolor={bgcolor} className={show?"act":""}>
         <div className="lft">
             {title}
         </div>
-        <div className="AvatarBox">
+        <div className="AvatarBox" onClick={()=>toGo()}>
             <img src={userToken?.user?.avatar} alt=""/>
         </div>
 

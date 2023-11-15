@@ -3,16 +3,14 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import store from "../store";
-import {saveAccount, saveLoading, saveUserToken, saveWalletType} from "../store/reducer";
+import {saveLoading} from "../store/reducer";
 import { getUser } from "../api/user";
 import Avatar from "components/common/avatar";
 import CopyBox from "components/common/copy";
 import useParseSNS from "hooks/useParseSNS";
 import publicJs from "../utils/publicJs";
 import {useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {useDisconnect} from "wagmi";
-
+import {ChevronLeft} from "react-bootstrap-icons";
 const Box = styled.div`
   padding: 20px;
 `;
@@ -97,14 +95,18 @@ const FstLine = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
+  .lft{
+    display: flex;
+    align-items: center;
+  }
 `
 
 const LevelBox = styled.div`
-  color: #fff;
-  padding: 2px 10px;
-  border-radius: 7px;
   text-transform: uppercase;
+  padding-right: 10px;
   font-size: 12px;
+  font-family: Poppins-ExtraBold;
+  font-weight: normal;
 `
 
 const SCRBox = styled.div`
@@ -169,6 +171,12 @@ const OuterBox = styled.div`
   opacity: 1;
 `
 
+const TopFlex = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
 export default function Profile() {
   const { t } = useTranslation();
   const navigate = useNavigate()
@@ -227,20 +235,26 @@ export default function Profile() {
     return Number(amount).toLocaleString("en-US");
   }
 
-
+  const backTop = () =>{
+    navigate(-1)
+  }
 
   return (
       <OuterBox>
 
 
-    <Layout title={t("My.MyProfile")}>
+    <Layout noHeader noTab>
       <Box>
-        <TopBtn onClick={()=>ToGo()}>
-          编辑
-        </TopBtn>
+        <TopFlex>
+          <div xs={2} onClick={()=>backTop()}><ChevronLeft /></div>
+          <TopBtn onClick={()=>ToGo()}>
+            编辑
+          </TopBtn>
+        </TopFlex>
+
         <FlexBox>
           <AvatarBox>
-            <Avatar size="80px" src={detail?.avatar} />
+            <Avatar size="56px" src={detail?.avatar} />
           </AvatarBox>
           <div className="rhtTop">
               <div>{detail?.nickname}</div>
@@ -255,49 +269,28 @@ export default function Profile() {
         </FlexBox>
         <ProgressOuter>
           <FstLine>
-            <LevelBox>
-             level {detail?.level?.current_lv}
-            </LevelBox>
-            <SCRBox>{detail?.scr?.amount} SCR</SCRBox>
+            <div className="lft">
+              <LevelBox>
+                LV {detail?.level?.current_lv}
+              </LevelBox>
+              <SCRBox>{detail?.scr?.amount} SCR</SCRBox>
+            </div>
+              <div>
+                <div>
+                  next level:
+                </div>
+                <div>
+                  {formatNumber(detail?.level?.scr_to_next_lv)} SCR
+                </div>
+              </div>
           </FstLine>
           <ProgressBox width={detail?.level?.upgrade_percent}>
             <div className="inner" />
           </ProgressBox>
-          <TipsBox>
-            <div>
-              next level:
-            </div>
-            <div>
-              {formatNumber(detail?.level?.scr_to_next_lv)} SCR
-            </div>
-
-          </TipsBox>
         </ProgressOuter>
 
       </Box>
-      <LineBox>
-        <div>{detail?.bio}</div>
-        <dl>
-          <dt>{t("My.Email")}</dt>
-          <dd>{detail?.email}</dd>
-        </dl>
-        {/*<dl>*/}
-        {/*  <dt>{t("My.Discord")}</dt>*/}
-        {/*  <dd>{discord}</dd>*/}
-        {/*</dl>*/}
-        <dl>
-          <dt>{t("My.Twitter")}</dt>
-          <dd>{twitter}</dd>
-        </dl>
-        {/*<dl>*/}
-        {/*  <dt>{t("My.WeChat")}</dt>*/}
-        {/*  <dd>{wechat}</dd>*/}
-        {/*</dl>*/}
-        <dl>
-          <dt>{t("My.Mirror")}</dt>
-          <dd>{mirror}</dd>
-        </dl>
-      </LineBox>
+
       <NftBox>
           <dl>
             <dt>SEED</dt>
@@ -327,7 +320,29 @@ export default function Profile() {
           </dl>
       </NftBox>
 
-
+      <LineBox>
+        <div>{detail?.bio}</div>
+        <dl>
+          <dt>{t("My.Email")}</dt>
+          <dd>{detail?.email}</dd>
+        </dl>
+        {/*<dl>*/}
+        {/*  <dt>{t("My.Discord")}</dt>*/}
+        {/*  <dd>{discord}</dd>*/}
+        {/*</dl>*/}
+        <dl>
+          <dt>{t("My.Twitter")}</dt>
+          <dd>{twitter}</dd>
+        </dl>
+        {/*<dl>*/}
+        {/*  <dt>{t("My.WeChat")}</dt>*/}
+        {/*  <dd>{wechat}</dd>*/}
+        {/*</dl>*/}
+        <dl>
+          <dt>{t("My.Mirror")}</dt>
+          <dd>{mirror}</dd>
+        </dl>
+      </LineBox>
 
     </Layout>
       </OuterBox>
