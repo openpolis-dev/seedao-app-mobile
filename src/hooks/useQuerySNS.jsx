@@ -6,7 +6,6 @@ import getConfig from "constant/envCofnig";
 
 export default function useQuerySNS() {
   const snsMap = useSelector((state) => state.snsMap);
-  console.log("snsMap:", snsMap);
 
   const querySNS = async (wallet) => {
     try {

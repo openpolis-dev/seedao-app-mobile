@@ -1,8 +1,9 @@
 import axios from "axios";
 import store from "../store";
 import {parseToken,checkTokenValid,clearStorage} from "../utils/auth";
+import getConfig from "constant/envCofnig";
 
-export const BASE_URL = process.env.REACT_APP_BASE_ENDPOINT;
+export const BASE_URL = getConfig().REACT_APP_BASE_ENDPOINT;
 export const API_VERSION = process.env.REACT_APP_API_VERSION;
 
 const instance = axios.create({
@@ -13,7 +14,13 @@ const instance = axios.create({
 
 instance.interceptors.request.use(function (config) {
   const method = config.method?.toLowerCase();
-  if (!["post", "put", "delete"].includes(method) && !config.url.includes("my") && !config.url.includes("user")) {
+  if (
+    !["post", "put", "delete"].includes(method) &&
+    !config.url.includes("my") &&
+    !config.url.includes("user") &&
+    !config.url.includes("push") &&
+    !config.url.includes("app_bundles")
+  ) {
     return config;
   }
   const tokenstr = store.getState().userToken;
