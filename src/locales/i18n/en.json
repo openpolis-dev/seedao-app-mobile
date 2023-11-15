@@ -59,6 +59,7 @@
     "IncubatorDesc": "Apply to join SeeDAO Incubator."
   },
   "Project": {
+    "projects": "项目",
     "AllProjects": "All Projects",
     "JoinedProjects": "Joined",
     "Members": "Members",
@@ -78,5 +79,8 @@
     "IosStep1": "1) Press the 'Share' button on the menu bar below.",
     "IosStep2": "2) Press 'Add to Home Screen'.",
     "AndroidInstall": "Install"
+  },
+  "Proposal": {
+    "proposalDetail": "Proposal Detail"
   }
 }

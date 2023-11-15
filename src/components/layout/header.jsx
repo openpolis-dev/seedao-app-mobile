@@ -4,7 +4,13 @@ import Loading from "./loading";
 import {useNavigate} from "react-router-dom";
 
 
-const Row = styled.div``
+const Row = styled.div`
+    display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Poppins-SemiBold';
+  padding: 5px 24px;
+`
 const Col = styled.div``
 const Box = styled.div`
     position: fixed;

@@ -9,7 +9,7 @@ import ProposalSubNav from "components/poposal/proposalSubNav";
 import ProposalCard from "components/poposal/proposalCard";
 import { getAllProposals,getCategories } from "api/proposal";
 import InfiniteScroll from "react-infinite-scroll-component";
-import MsgIcon from "assets/images/proposal/message.png";
+import MsgIcon from "assets/Imgs/msg.png";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import Loading from "components/common/loading";
@@ -76,14 +76,14 @@ export default function Proposal() {
   }, [activeTab, orderType]);
   return (
     <Layout title={t("menus.Proposal")} >
-      <TabMenu>
-        <li onClick={() => setActiveTab(0)} className={activeTab === 0 ? "selected" : ""}>
-          {t("Proposal.AllCategories")}
-        </li>
-        <li onClick={() => setActiveTab(1)} className={activeTab === 1 ? "selected" : ""}>
-          {t("Proposal.TheNeweset")}
-        </li>
-      </TabMenu>
+      {/*<TabMenu>*/}
+      {/*  <li onClick={() => setActiveTab(0)} className={activeTab === 0 ? "selected" : ""}>*/}
+      {/*    {t("Proposal.AllCategories")}*/}
+      {/*  </li>*/}
+      {/*  /!*<li onClick={() => setActiveTab(1)} className={activeTab === 1 ? "selected" : ""}>*!/*/}
+      {/*  /!*  {t("Proposal.TheNeweset")}*!/*/}
+      {/*  /!*</li>*!/*/}
+      {/*</TabMenu>*/}
       <Content>
         {activeTab === 0 && (
             <div>
@@ -97,10 +97,13 @@ export default function Proposal() {
                           {category.children.map((subCategory) => (
                               <a href={`/proposal/category/${subCategory.category_id}`} key={subCategory.category_id}>
                                 <SubCategoryItem>
-                                  <img src={MsgIcon} alt="" width="24px" height="24px" />
+                                  <ImgBox>
+                                    <img src={MsgIcon} alt="" width="24px" height="24px" />
+                                  </ImgBox>
+
                                   <div>
                                     <div className="name">{subCategory.name}</div>
-                                    <div>
+                                    <div className="tips">
                                       <span>{subCategory.thread_count} topics</span>
                                     </div>
                                   </div>
@@ -152,7 +155,8 @@ const TabMenu = styled.ul`
 `;
 
 const Content = styled.div`
-  margin: 0 20px;
+  padding: 0 24px 30px;
+  background: var(--background-color);
 `;
 
 
@@ -162,18 +166,32 @@ const SubCategoryCard = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  align-items: stretch;
   padding: 10px;
+  a{
+    display: block;
+    width: 50%;
+  }
 `;
 
 const SubCategoryItem = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
+  padding: 8px;
   cursor: pointer;
   .name {
-    color: var(--bs-primary);
+    font-size: 14px;
+    font-family: Poppins-SemiBold;
     font-weight: 600;
+    color: #424242;
+    line-height: 26px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .tips{
+    font-size: 12px;
+    font-weight: 400;
+    color: #9A9A9A;
   }
 `;
 
@@ -185,25 +203,31 @@ const CategoryCard = styled.div`
   .cate-name {
     padding-inline: 16px;
     line-height: 40px;
+    
+    font-size: 16px;
+    font-family: Poppins-SemiBold;
+    font-weight: 600;
+    color: #000000;
   }
 `;
 
-
-const CategoryContent = styled.ul`
-  
-  li {
-    padding-inline: 20px;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-    line-height: 60px;
-    img.msg {
-      width: 30px;
-      margin-right: 6px;
-    }
+const ImgBox = styled.div`
+  margin-right: 10px;
+  width: 24px;
+  height: 24px;
+  box-sizing: border-box;
+  background: #5200FF;
+  border-radius: 100%;
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img{
+    width: 14px;
+    height: 14px;
   }
-`;
+`
+
 
 const ProposalListContent = styled.div``;
 

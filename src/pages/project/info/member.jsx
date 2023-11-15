@@ -60,7 +60,6 @@ export default function ProjectMember() {
   return (
     <MemberContent>
       <Block>
-        <SectionTitle>{t("Project.Members")}</SectionTitle>
         <UserList data={[...sponsorUsers, ...memberUsers]} nameMap={nameMap} />
       </Block>
     </MemberContent>
@@ -68,17 +67,11 @@ export default function ProjectMember() {
 }
 
 const MemberContent = styled.div`
-  padding-inline: 20px;
+  background: #f00;
 `
 
 const Block = styled.section`
   &:first-child {
     margin-bottom: 15px;
   }
-`;
-
-const SectionTitle = styled.div`
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 10px;
 `;

@@ -37,21 +37,25 @@ export default function ProposalThread() {
   }, [qid]);
 
   return (
-    <Layout title={t("mobile.proposalDetail")} noTab>
+    <Layout title={t("Proposal.proposalDetail")} noTab>
       <ProposalContainer>
         {data && (
           <>
             <ProposalTitle>{data?.title}</ProposalTitle>
-            <User>
-              <div className="left">
-                <UserAvatar src={data?.user.photo_url} alt="" />
-              </div>
-              <div className="right">
-                <div className="name">{data?.user.username}</div>
-                <div className="date">{formatTime(new Date(data?.updated_at || ""))}</div>
-              </div>
-            </User>
-            {enableQuill && data?.first_post.content && <QuillViewer content={data?.first_post.content} />}
+
+              <User>
+                <div className="left">
+                  <UserAvatar src={data?.user.photo_url} alt="" />
+                  <div className="name">{data?.user.username}</div>
+                </div>
+                <div className="right">
+                  <div className="date">{formatTime(new Date(data?.updated_at || ""))}</div>
+                </div>
+              </User>
+            <BtmBox>
+              {enableQuill && data?.first_post.content && <QuillViewer content={data?.first_post.content} />}
+            </BtmBox>
+
           </>
         )}
       </ProposalContainer>
@@ -59,9 +63,13 @@ export default function ProposalThread() {
   );
 }
 
+const BtmBox = styled.div`
+  padding: 0 24px;
+`
+
 const ProposalContainer = styled.div`
   //background: #fff;
-  padding: 20px;
+  padding: 20px 0;
   min-height: 100%;
   position: relative;
 `;
@@ -69,13 +77,29 @@ const ProposalContainer = styled.div`
 const ProposalTitle = styled.div`
   font-size: 18px;
   font-weight: 600;
+  position: sticky;
+  background: #fff;
+  padding: 10px 20px;
+  left: 0;
+  top: 0;
+  z-index: 99999;
+  
 `;
 const User = styled.div`
   display: flex;
-  gap: 10px;
-  margin-block: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(217,217,217,0.5);
+  .left{
+    display: flex;
+    align-items: center;
+  }
   .name {
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: 400;
+    margin-left: 10px;
+    line-height: 16px;
   }
   .date {
     font-size: 13px;

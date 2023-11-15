@@ -68,8 +68,6 @@ export default function UserCard({ user, sns }) {
 const UserCardBox = styled.div`
   width: 100%;
   height: 140px;
-  background-color: #fff;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   border-radius: 8px;
   overflow: hidden;

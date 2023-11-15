@@ -6,7 +6,7 @@ import { getMyProjects, getProjects } from "api/project";
 import { useNavigate } from "react-router-dom";
 import Tab from "components/common/tab";
 import InfiniteScroll from "react-infinite-scroll-component";
-import ProjectOrGuildItem from "components/projectOrGuild/projectOrGuildItem";
+import ProjectOrGuildItemDetail from "components/projectOrGuild/projectOrGuildItemDetail";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import NoItem from "components/noItem";
@@ -105,7 +105,7 @@ export default function Project() {
   }, [activeTab]);
 
   return (
-    <Layout>
+    <Layout title={t('Project.projects')}>
       <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
       <LayoutContainer>
         <InfiniteScroll
@@ -118,7 +118,7 @@ export default function Project() {
           {proList.length === 0 && <NoItem />}
           <ProjectList>
             {proList.map((item) => (
-              <ProjectOrGuildItem key={item.id} data={item} onClickItem={openDetail} />
+              <ProjectOrGuildItemDetail key={item.id} data={item} onClickItem={openDetail} />
             ))}
           </ProjectList>
         </InfiniteScroll>

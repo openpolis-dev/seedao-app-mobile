@@ -16,6 +16,7 @@ const InnerBox = styled.div`
   width: 100%;
   padding-top: ${props => props.noheader };
   padding-bottom: ${props => props.notab };
+
   
 `
 export default function Layout({children,noHeader,title,noTab}){
@@ -35,7 +36,7 @@ export default function Layout({children,noHeader,title,noTab}){
         {
             !noHeader && <Header title={title} />
         }
-        <InnerBox notab={noTab? 0 : '80px'} noheader={noHeader? 0 : '50px'} >
+        <InnerBox notab={noTab? 0 : '90px'} noheader={noHeader? 0 : '60px'} >
             {children}
         </InnerBox>
         {

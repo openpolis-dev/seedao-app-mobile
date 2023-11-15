@@ -59,6 +59,7 @@
     "IncubatorDesc": "申请加入SeeDAO孵化器"
   },
   "Project": {
+    "projects": "项目",
     "AllProjects": "所有项目",
     "JoinedProjects": "已加入",
     "Members": "项目成员",
@@ -78,5 +79,8 @@
     "IosStep1": "1) 点击 菜单栏上的'分享' 按钮",
     "IosStep2": "2) 点击 '添加到主屏幕'",
     "AndroidInstall": "安装"
+  },
+  "Proposal": {
+    "proposalDetail": "提案详情"
   }
 }

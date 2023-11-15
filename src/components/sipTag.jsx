@@ -28,6 +28,7 @@ const SipTagStyle = styled.a`
   font-size: 12px;
   padding: 2px 12px;
   color: #0085ff;
+  margin-right: 10px;
   &:hover {
     color: #0085ff;
   }
