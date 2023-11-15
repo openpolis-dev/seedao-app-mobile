@@ -55,9 +55,15 @@ const FlexBox = styled.div`
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  margin-bottom: 40px;
+  margin: 16px 0;
   .rhtTop{
     flex-grow: 1;
+  }
+  .name{
+    font-size: 16px;
+    font-family: Poppins-SemiBold;
+    font-weight: 600;
+
   }
 `
 
@@ -69,13 +75,12 @@ const FlexLine = styled.div`
 const ProgressBox = styled.div`
   width: 100%;
   height: 6px;
-  background: #fff;
-  border:1px solid #000;
+  background: #EEEEF4;
   border-radius: 6px;
   overflow: hidden;
   .inner{
     height: 6px;
-    background: #000;
+    background: var(--primary-color);
     width: ${props => props.width +"%"};
     border-radius:8px;
   }
@@ -84,10 +89,11 @@ const ProgressBox = styled.div`
 const ProgressOuter = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 50px 0 20px;
+  margin-bottom: 20px;
   background: #fff;
   border-radius: 16px;
   padding:14px;
+  margin-top: 15px;
 `
 
 const FstLine = styled.div`
@@ -98,6 +104,12 @@ const FstLine = styled.div`
   .lft{
     display: flex;
     align-items: center;
+  }
+  .rht{
+    display: flex;
+    align-items: center;
+    color: #9a9a9a;
+    font-size: 11px;
   }
 `
 
@@ -124,29 +136,34 @@ const TipsBox = styled.div`
 `
 
 const NftBox = styled.div`
-  margin: 0 20px 50px;
+  margin:0 0 24px 24px;
   dt{
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   ul{
-    &:after {
-      content: '';
-      display: block;
-      clear: both;
-    }
+    display: flex;
+    align-items: center;
   }
   li{
-    height: 21vw;
-    float: left;
-    width: 21vw;
-    margin-right: 1.8vw;
-    margin-bottom: 10px;
-    &:nth-child(4n){
-      margin-right: 0;
-    }
+
+    flex-shrink: 0;
+    width: 60px;
+    background: #FFFFFF;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.02);
+    border-radius: 8px;
+    margin-right: 12px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 400;
+    color: #000000;
+    padding-bottom: 6px;
     img{
-      width: 100%;
-      border-radius: 16px;
+      border-top-right-radius: 8px;
+      border-top-left-radius: 8px;
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      object-position: center;
     }
   }
 `
@@ -167,7 +184,7 @@ const BtmBox = styled.div`
 const OuterBox = styled.div`
 
   background: linear-gradient(182deg, #EEE6FF 1%, rgba(225,242,249,0.72) 50%, rgba(255,255,255,0) 100%);
-  border-radius: 0px 0px 0px 0px;
+  border-radius: 0;
   opacity: 1;
 `
 
@@ -177,6 +194,60 @@ const TopFlex = styled.div`
   justify-content: space-between;
 `
 
+const TagBox = styled.ul`
+  font-size: 12px;
+  flex-wrap: wrap;
+  display: flex;
+  font-weight: 400;
+  margin-top: 10px;
+  li {
+    border-radius: 20px;
+    padding-inline: 10px;
+    line-height: 22px;
+    margin: 0 8px 8px 0;
+    color: #fff;
+    &:nth-child(13n + 1) {
+      background: #2DC45E;
+    }
+    &:nth-child(13n + 2) {
+      background: #FFA5BA ;
+    }
+    &:nth-child(13n + 3) {
+      background: #FA9600;
+    }
+    &:nth-child(13n + 4) {
+      background: #DDE106;
+    }
+    &:nth-child(13n + 5) {
+      background: #C972FF;
+    }
+    &:nth-child(13n + 6) {
+      background: #dde106;
+    }
+    &:nth-child(13n + 7) {
+      background: #1f9e14;
+    }
+    &:nth-child(13n + 8) {
+      background: #fa9600;
+    }
+    &:nth-child(13n + 9) {
+      background: #ffa5ba;
+    }
+    &:nth-child(13n + 10) {
+      background: #c972ff;
+    }
+    &:nth-child(13n + 11) {
+      background: #ff5ae5;
+    }
+    &:nth-child(13n + 12) {
+      background: #149e7d;
+    }
+    &:nth-child(13n) {
+      background: #ff3f3f;
+    }
+  }
+`;
+
 export default function Profile() {
   const { t } = useTranslation();
   const navigate = useNavigate()
@@ -184,7 +255,7 @@ export default function Profile() {
   const [detail, setDetail] = useState();
   const sns = useParseSNS(detail?.wallet);
 
-
+  const [roles, setRoles] = useState([]);
   const [discord, setDiscord] = useState('');
   const [twitter, setTwitter] = useState('');
   const [wechat, setWechat] = useState('');
@@ -209,8 +280,8 @@ export default function Profile() {
     store.dispatch(saveLoading(true));
     try {
       let rt = await getUser();
-      setDetail(rt);
-
+      setDetail(rt.data);
+      setRoles(rt.data.roles);
       let mapArr = new Map();
 
       rt.social_accounts.map((item) => {
@@ -239,6 +310,76 @@ export default function Profile() {
     navigate(-1)
   }
 
+  const switchRoles = (role) => {
+    let str = '';
+    switch (role) {
+      case 'SGN_HOLDER':
+        str = t('roles.SGN_HOLDER');
+        break;
+      case 'NODE_S1':
+        str = t('roles.NODE_S1');
+        break;
+      case 'NODE_S2':
+        str = t('roles.NODE_S2');
+        break;
+      case 'NODE_S3':
+        str = t('roles.NODE_S3');
+        break;
+      case 'NODE_S4':
+        str = t('roles.NODE_S4');
+        break;
+      case 'CITYHALL_S1':
+        str = t('roles.CITYHALL_S1');
+        break;
+      case 'CITYHALL_S2':
+        str = t('roles.CITYHALL_S2');
+        break;
+      case 'CITYHALL_S3':
+        str = t('roles.CITYHALL_S3');
+        break;
+      case 'CITYHALL_S4':
+        str = t('roles.CITYHALL_S4');
+        break;
+      case 'CONTRIBUTOR_L1':
+        str = t('roles.CONTRIBUTOR_L1');
+        break;
+      case 'CONTRIBUTOR_L2':
+        str = t('roles.CONTRIBUTOR_L2');
+        break;
+      case 'CONTRIBUTOR_L3':
+        str = t('roles.CONTRIBUTOR_L3');
+        break;
+      case 'CONTRIBUTOR_L4':
+        str = t('roles.CONTRIBUTOR_L4');
+        break;
+      case 'CONTRIBUTOR_L5':
+        str = t('roles.CONTRIBUTOR_L5');
+        break;
+      case 'CONTRIBUTOR_L6':
+        str = t('roles.CONTRIBUTOR_L6');
+        break;
+      case 'CONTRIBUTOR_L7':
+        str = t('roles.CONTRIBUTOR_L7');
+        break;
+      case 'CONTRIBUTOR_L8':
+        str = t('roles.CONTRIBUTOR_L8');
+        break;
+      case 'CONTRIBUTOR_L9':
+        str = t('roles.CONTRIBUTOR_L9');
+        break;
+      case 'SEEDAO_MEMBER':
+        str = t('roles.SEEDAO_MEMBER');
+        break;
+      case 'SEEDAO_ONBOARDING':
+        str = t('roles.SEEDAO_ONBOARDING');
+        break;
+      default:
+        str = role;
+        break;
+    }
+    return str;
+  };
+
   return (
       <OuterBox>
 
@@ -257,16 +398,24 @@ export default function Profile() {
             <Avatar size="56px" src={detail?.avatar} />
           </AvatarBox>
           <div className="rhtTop">
-              <div>{detail?.nickname}</div>
+              <div className="name">{detail?.nickname}</div>
               <div>{sns}</div>
               <FlexLine>
                 <div>{publicJs.AddressToShow(detail?.wallet)}</div>
-                <RhtBox>
-                  <CopyBox text={detail?.wallet} />
-                </RhtBox>
+                {/*<RhtBox>*/}
+                {/*  <CopyBox text={detail?.wallet} />*/}
+                {/*</RhtBox>*/}
               </FlexLine>
           </div>
         </FlexBox>
+        <div>{detail?.bio}</div>
+
+
+        <TagBox>
+          {roles?.map((item, index) => (
+              <li key={`tag_${index}`}>{switchRoles(item)}</li>
+          ))}
+        </TagBox>
         <ProgressOuter>
           <FstLine>
             <div className="lft">
@@ -275,7 +424,7 @@ export default function Profile() {
               </LevelBox>
               <SCRBox>{detail?.scr?.amount} SCR</SCRBox>
             </div>
-              <div>
+              <div className="rht">
                 <div>
                   next level:
                 </div>
@@ -298,13 +447,16 @@ export default function Profile() {
               <ul>
                 {
                   detail?.seed?.map((item,index)=>(<li key={index}>
-                    <img src={item.image_uri} alt=""/>
+                    <div><img src={item.image_uri} alt=""/></div>
+                    <div>ID {item.token_id}</div>
                   </li>))
                 }
 
               </ul>
             </dd>
           </dl>
+      </NftBox>
+      <NftBox>
         <dl>
             <dt>SBT</dt>
             <dd>
@@ -321,7 +473,7 @@ export default function Profile() {
       </NftBox>
 
       <LineBox>
-        <div>{detail?.bio}</div>
+
         <dl>
           <dt>{t("My.Email")}</dt>
           <dd>{detail?.email}</dd>
