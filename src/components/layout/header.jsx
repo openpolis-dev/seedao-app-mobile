@@ -7,19 +7,19 @@ const Row = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: "Poppins-SemiBold";
-  padding: 5px 24px;
 `;
 const Col = styled.div``;
 const Box = styled.div`
   position: fixed;
   left: 0;
   top: 0;
+  height: 60px;
+  line-height: 60px;
   z-index: 9;
   background: ${(props) => props.bgColor || "var(--background-color-1)"};
   box-sizing: border-box;
   width: 100vw;
-  padding: 10px;
+  padding-inline: 20px;
 `;
 
 const Rht = styled(Col)`
@@ -28,6 +28,9 @@ const Rht = styled(Col)`
 
 const Mid = styled(Col)`
   text-align: center;
+  font-family: "Poppins-SemiBold";
+  font-size: 17px;
+  font-weight: 600;
 `;
 export default function Header({ title, bgColor }) {
   const navigate = useNavigate();
