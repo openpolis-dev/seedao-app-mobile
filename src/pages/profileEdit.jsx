@@ -30,10 +30,7 @@ const HeadBox = styled.div`
 `;
 const CardBox = styled.div`
   min-height: 100%;
-  padding: 20px 40px;
-  @media (max-width: 1024px) {
-    padding: 20px;
-  }
+  padding: 0 20px;
 `;
 const AvatarBox = styled.div`
   display: flex;
@@ -284,20 +281,20 @@ export default function ProfileEdit() {
 
       <Modal tips={tips} show={show} handleClose={handleClose} />
       <CardBox>
-        <HeadBox>
+        {/*<HeadBox>*/}
 
-          <InfoBox>
-            {/*<div className="wallet">{sns}</div>*/}
-            <div className="wallet">
-              {/*<div>{userData?.wallet}</div>*/}
-              {/*{userData?.wallet && (*/}
-              {/*  <CopyBox text={userData?.wallet} dir="right">*/}
-              {/*    <img src={copyIcon} alt="" style={{ position: 'relative', top: '-2px' }} />*/}
-              {/*  </CopyBox>*/}
-              {/*)}*/}
-            </div>
-          </InfoBox>
-        </HeadBox>
+        {/*  <InfoBox>*/}
+        {/*    /!*<div className="wallet">{sns}</div>*!/*/}
+        {/*    <div className="wallet">*/}
+        {/*      /!*<div>{userData?.wallet}</div>*!/*/}
+        {/*      /!*{userData?.wallet && (*!/*/}
+        {/*      /!*  <CopyBox text={userData?.wallet} dir="right">*!/*/}
+        {/*      /!*    <img src={copyIcon} alt="" style={{ position: 'relative', top: '-2px' }} />*!/*/}
+        {/*      /!*  </CopyBox>*!/*/}
+        {/*      /!*)}*!/*/}
+        {/*    </div>*/}
+        {/*  </InfoBox>*/}
+        {/*</HeadBox>*/}
 
         <ConfirmBox onClick={saveProfile}>{t('General.confirm')}</ConfirmBox>
         <MidBox>
@@ -394,8 +391,8 @@ export default function ProfileEdit() {
 
 const UploadBox = styled.label`
   background: #f8f8f8;
-  height: 100px;
-  width: 100px;
+  height: 44px;
+  width: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
