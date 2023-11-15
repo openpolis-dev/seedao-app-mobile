@@ -105,7 +105,7 @@ export default function Project() {
   }, [activeTab]);
 
   return (
-    <Layout title={t('Project.projects')}>
+    <Layout title={t("Project.Projects")}>
       <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
       <LayoutContainer>
         <InfiniteScroll

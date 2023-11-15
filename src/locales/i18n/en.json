@@ -60,7 +60,7 @@
     "IncubatorDesc": "Apply to join SeeDAO Incubator."
   },
   "Project": {
-    "projects": "项目",
+    "Projects": "项目",
     "AllProjects": "All Projects",
     "JoinedProjects": "Joined",
     "Members": "Members",
@@ -82,7 +82,11 @@
     "AndroidInstall": "Install"
   },
   "Proposal": {
-    "ProposalDetail": "Proposal Detail"
+    "ProposalDetail": "Proposal Detail",
+    "AllCategories": "All Categories",
+    "TheNeweset": "Latest",
+    "CreateProposal": "Create Proposal",
+    "TheOldest": "Oldest"
   },
   "My": {
     "MyProfile": "My Profile",
