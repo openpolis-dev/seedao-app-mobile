@@ -158,6 +158,13 @@ const BtmBox = styled.div`
   }
 `
 
+const OuterBox = styled.div`
+
+  background: linear-gradient(182deg, #EEE6FF 1%, rgba(225,242,249,0.72) 50%, rgba(255,255,255,0) 100%);
+  border-radius: 0px 0px 0px 0px;
+  opacity: 1;
+`
+
 export default function Profile() {
   const { t } = useTranslation();
   const navigate = useNavigate()
@@ -229,6 +236,9 @@ export default function Profile() {
   }
 
   return (
+      <OuterBox>
+
+
     <Layout title={t("My.MyProfile")}>
       <Box>
         <TopBtn onClick={()=>ToGo()}>
@@ -269,32 +279,7 @@ export default function Profile() {
 
           </TipsBox>
         </ProgressOuter>
-        <LineBox>
-          <dl>
-            <dt>{t("My.Bio")}</dt>
-            <dd>{detail?.bio}</dd>
-          </dl>
-          <dl>
-            <dt>{t("My.Email")}</dt>
-            <dd>{detail?.email}</dd>
-          </dl>
-          {/*<dl>*/}
-          {/*  <dt>{t("My.Discord")}</dt>*/}
-          {/*  <dd>{discord}</dd>*/}
-          {/*</dl>*/}
-          {/*<dl>*/}
-          {/*  <dt>{t("My.Twitter")}</dt>*/}
-          {/*  <dd>{twitter}</dd>*/}
-          {/*</dl>*/}
-          <dl>
-            <dt>{t("My.WeChat")}</dt>
-            <dd>{wechat}</dd>
-          </dl>
-          <dl>
-            <dt>{t("My.Mirror")}</dt>
-            <dd>{mirror}</dd>
-          </dl>
-        </LineBox>
+
       </Box>
       <NftBox>
           <dl>
@@ -324,6 +309,34 @@ export default function Profile() {
             </dd>
           </dl>
       </NftBox>
+
+
+      <LineBox>
+        <dl>
+          <dt>{t("My.Bio")}</dt>
+          <dd>{detail?.bio}</dd>
+        </dl>
+        <dl>
+          <dt>{t("My.Email")}</dt>
+          <dd>{detail?.email}</dd>
+        </dl>
+        {/*<dl>*/}
+        {/*  <dt>{t("My.Discord")}</dt>*/}
+        {/*  <dd>{discord}</dd>*/}
+        {/*</dl>*/}
+        {/*<dl>*/}
+        {/*  <dt>{t("My.Twitter")}</dt>*/}
+        {/*  <dd>{twitter}</dd>*/}
+        {/*</dl>*/}
+        <dl>
+          <dt>{t("My.WeChat")}</dt>
+          <dd>{wechat}</dd>
+        </dl>
+        <dl>
+          <dt>{t("My.Mirror")}</dt>
+          <dd>{mirror}</dd>
+        </dl>
+      </LineBox>
       <BtmBox>
         {
             !!userToken?.token && <button onClick={()=>logout()}>{t('mobile.my.logout')}</button>
@@ -331,5 +344,6 @@ export default function Profile() {
       </BtmBox>
 
     </Layout>
+      </OuterBox>
   );
 }
