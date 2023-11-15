@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import styled, { css } from "styled-components";
-import CopyIcon from "assets/images/copy.svg";
+import CopyIcon from "assets/Imgs/copy.svg";
 
 const CopyBox = ({ children, text, dir }) => {
   const { t } = useTranslation();
