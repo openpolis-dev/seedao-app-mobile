@@ -7,24 +7,27 @@ import { getUsers } from "api/user";
 import publicJs from "utils/publicJs";
 import useQuerySNS from "hooks/useQuerySNS";
 import { useSelector } from "react-redux";
+import UserModal from "components/userModal";
 
-const MemberAvatar = ({ avatar, sns, name }) => {
+const MemberAvatar = ({ user, onSelect }) => {
   return (
     <MemberAvatarStyle line={1}>
-      <AvatarBox>{avatar && <img src={avatar} alt="" />}</AvatarBox>
-      <div className="sns">{sns}</div>
-      <div className="name">{name}</div>
+      <AvatarBox onClick={onSelect}>{user.avatar && <img src={user.avatar} alt="" />}</AvatarBox>
+      <div className="sns">{user.sns}</div>
+      <div className="name">{user.name}</div>
     </MemberAvatarStyle>
   );
 };
 
 const GroupItem = ({ name, members }) => {
+  const [user, setUser] = useState();
   return (
     <GroupItemStyle>
+      {user && <UserModal user={user} handleClose={() => setUser(undefined)} />}
       <GroupName>{name}</GroupName>
       <GroupMembers>
         {members.map((item, i) => (
-          <MemberAvatar key={i} {...item} />
+          <MemberAvatar key={i} user={item} onSelect={() => setUser(item)} />
         ))}
       </GroupMembers>
     </GroupItemStyle>
@@ -45,8 +48,7 @@ export default function CityhallMembers() {
       const user = userMap[w.toLowerCase()];
       if (user) {
         return {
-          avatar: user.avatar,
-          name: user.name,
+          ...user,
           sns: snsMap[w.toLowerCase()] || publicJs.AddressToShow(w.toLowerCase(), 6),
         };
       } else {
