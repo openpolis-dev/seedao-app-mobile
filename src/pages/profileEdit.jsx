@@ -13,8 +13,10 @@ import { Upload, X } from 'react-bootstrap-icons';
 import copyIcon from 'assets/images/copy.svg';
 import {useSelector} from "react-redux";
 import store from "../store";
-import {saveLoading} from "../store/reducer";
+import {saveAccount, saveLoading, saveUserToken, saveWalletType} from "../store/reducer";
 import Modal from "../components/modal";
+import {useDisconnect} from "wagmi";
+import {useNavigate} from "react-router-dom";
 
 const InputGroup = styled.div``
 const Button = styled.div``
@@ -107,11 +109,25 @@ export default function ProfileEdit() {
   const [avatar, setAvatar] = useState('');
   const [bio, setBio] = useState('');
   const [wallet, setWallet] = useState('');
+  const { disconnect } = useDisconnect();
 
   const[show,setShow] = useState(false);
   const[tips,setTips] = useState("");
 
-
+  const userToken = useSelector(state=> state.userToken);
+  const walletType = useSelector(state => state.walletType);
+  const navigate = useNavigate()
+  
+  const logout = () =>{
+    store.dispatch(saveAccount(null));
+    store.dispatch(saveUserToken(null));
+    store.dispatch(saveWalletType(null));
+    if(walletType ==="metamask"){
+      disconnect();
+    }
+    // store.dispatch(saveLogout(true));
+    navigate("/login");
+  }
 
   useEffect(()=>{
     getMyDetail()
@@ -350,6 +366,12 @@ export default function ProfileEdit() {
           <Button onClick={saveProfile}>{t('general.confirm')}</Button>
         </div>
       </CardBox>
+
+      <div>
+        {
+            !!userToken?.token && <button onClick={()=>logout()}>{t('mobile.my.logout')}</button>
+        }
+      </div>
     </Layout>
   );
 }

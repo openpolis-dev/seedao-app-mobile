@@ -18,15 +18,17 @@ const Box = styled.div`
 `;
 
 const LineBox = styled.div`
+  margin: 0 24px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px;
   dl {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 10px;
   }
   dt {
-    background: #fff;
-    padding: 5px 10px;
-    width: 80px;
     font-size: 14px;
     font-weight: normal;
     flex-shrink: 0;
@@ -68,13 +70,13 @@ const FlexLine = styled.div`
 
 const ProgressBox = styled.div`
   width: 100%;
-  height: 10px;
+  height: 6px;
   background: #fff;
-  border:2px solid #000;
-  border-radius: 10px;
+  border:1px solid #000;
+  border-radius: 6px;
   overflow: hidden;
   .inner{
-    height: 8px;
+    height: 6px;
     background: #000;
     width: ${props => props.width +"%"};
     border-radius:8px;
@@ -85,6 +87,9 @@ const ProgressOuter = styled.div`
   display: flex;
   flex-direction: column;
   margin: 50px 0 20px;
+  background: #fff;
+  border-radius: 16px;
+  padding:14px;
 `
 
 const FstLine = styled.div`
@@ -95,7 +100,6 @@ const FstLine = styled.div`
 `
 
 const LevelBox = styled.div`
-    background: #ff3231;
   color: #fff;
   padding: 2px 10px;
   border-radius: 7px;
@@ -169,11 +173,10 @@ export default function Profile() {
   const { t } = useTranslation();
   const navigate = useNavigate()
 
-  const userToken = useSelector(state=> state.userToken);
   const [detail, setDetail] = useState();
   const sns = useParseSNS(detail?.wallet);
-  const walletType = useSelector(state => state.walletType);
-  const { disconnect } = useDisconnect();
+
+
   const [discord, setDiscord] = useState('');
   const [twitter, setTwitter] = useState('');
   const [wechat, setWechat] = useState('');
@@ -224,16 +227,7 @@ export default function Profile() {
     return Number(amount).toLocaleString("en-US");
   }
 
-  const logout = () =>{
-    store.dispatch(saveAccount(null));
-    store.dispatch(saveUserToken(null));
-    store.dispatch(saveWalletType(null));
-    if(walletType ==="metamask"){
-      disconnect();
-    }
-    // store.dispatch(saveLogout(true));
-    navigate("/login");
-  }
+
 
   return (
       <OuterBox>
@@ -281,6 +275,29 @@ export default function Profile() {
         </ProgressOuter>
 
       </Box>
+      <LineBox>
+        <div>{detail?.bio}</div>
+        <dl>
+          <dt>{t("My.Email")}</dt>
+          <dd>{detail?.email}</dd>
+        </dl>
+        {/*<dl>*/}
+        {/*  <dt>{t("My.Discord")}</dt>*/}
+        {/*  <dd>{discord}</dd>*/}
+        {/*</dl>*/}
+        <dl>
+          <dt>{t("My.Twitter")}</dt>
+          <dd>{twitter}</dd>
+        </dl>
+        {/*<dl>*/}
+        {/*  <dt>{t("My.WeChat")}</dt>*/}
+        {/*  <dd>{wechat}</dd>*/}
+        {/*</dl>*/}
+        <dl>
+          <dt>{t("My.Mirror")}</dt>
+          <dd>{mirror}</dd>
+        </dl>
+      </LineBox>
       <NftBox>
           <dl>
             <dt>SEED</dt>
@@ -311,37 +328,6 @@ export default function Profile() {
       </NftBox>
 
 
-      <LineBox>
-        <dl>
-          <dt>{t("My.Bio")}</dt>
-          <dd>{detail?.bio}</dd>
-        </dl>
-        <dl>
-          <dt>{t("My.Email")}</dt>
-          <dd>{detail?.email}</dd>
-        </dl>
-        {/*<dl>*/}
-        {/*  <dt>{t("My.Discord")}</dt>*/}
-        {/*  <dd>{discord}</dd>*/}
-        {/*</dl>*/}
-        {/*<dl>*/}
-        {/*  <dt>{t("My.Twitter")}</dt>*/}
-        {/*  <dd>{twitter}</dd>*/}
-        {/*</dl>*/}
-        <dl>
-          <dt>{t("My.WeChat")}</dt>
-          <dd>{wechat}</dd>
-        </dl>
-        <dl>
-          <dt>{t("My.Mirror")}</dt>
-          <dd>{mirror}</dd>
-        </dl>
-      </LineBox>
-      <BtmBox>
-        {
-            !!userToken?.token && <button onClick={()=>logout()}>{t('mobile.my.logout')}</button>
-        }
-      </BtmBox>
 
     </Layout>
       </OuterBox>
