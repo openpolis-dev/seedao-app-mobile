@@ -6,4 +6,5 @@ export default {
   userToken: null,
   walletType: null,
   snsMap: {},
+  proposalCategories: [],
 };

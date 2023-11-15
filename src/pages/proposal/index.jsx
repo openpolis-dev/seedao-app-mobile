@@ -1,163 +1,81 @@
 import { useTranslation } from "react-i18next";
 import Layout from "../../components/layout/layout";
 import styled from "styled-components";
-import { ChevronRight } from "react-bootstrap-icons";
-import { useNavigate } from "react-router-dom";
-import { PROPOSAL_CATEGORIES } from "utils/constant";
-import { useState, useEffect } from "react";
-import ProposalSubNav from "components/poposal/proposalSubNav";
-import ProposalCard from "components/poposal/proposalCard";
-import { getAllProposals, getCategories } from "api/proposal";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { useEffect } from "react";
+import { getCategories } from "api/proposal";
 import MsgIcon from "assets/Imgs/msg.png";
 import store from "store";
-import { saveLoading } from "store/reducer";
-import Loading from "components/common/loading";
+import { saveProposalCategories } from "store/reducer";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Proposal() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [page, setPage] = useState(0);
-  const [pageSize] = useState(10);
-  const [proposals, setProposals] = useState([]);
-  const [orderType, setOrderType] = useState("latest");
-  const [activeTab, setActiveTab] = useState(0);
-  const [hasMore, setHasMore] = useState(false);
-  const [proposal_categories, setproposal_categories] = useState([]);
+  const proposalCategories = useSelector((state) => state.proposalCategories);
 
   useEffect(() => {
-    if (activeTab === 0) {
-      getCategoriesAPi();
-    }
-  }, [activeTab]);
+    getCategoriesAPi();
+  }, []);
 
   const getCategoriesAPi = async () => {
-    // dispatch({ type: AppActionType.SET_LOADING, payload: true });
     try {
       const resp = await getCategories();
-      setproposal_categories(resp?.data.group.categories);
-      // dispatch({
-      //   type: AppActionType.SET_PROPOSAL_CATEGORIES,
-      //   payload: resp.data.group.categories,
-      // });
+      store.dispatch(saveProposalCategories(resp?.data.group.categories));
     } catch (error) {
       console.error("getCategories failed", error);
     } finally {
-      // dispatch({ type: AppActionType.SET_LOADING, payload: false });
-    }
-  };
-  const handleChangeOrder = (index) => {
-    setPage(1);
-    setProposals([]);
-    setOrderType(index === 0 ? "latest" : "old");
-  };
-
-  const getProposals = async (useGlobalLoading) => {
-    useGlobalLoading && store.dispatch(saveLoading(true));
-    try {
-      const resp = await getAllProposals({ page, per_page: pageSize, sort: orderType });
-      setProposals([...proposals, ...resp.data.threads]);
-      setPage(page + 1);
-      setHasMore(resp.data.threads.length >= pageSize);
-    } catch (error) {
-      console.error("getAllProposals failed", error);
-    } finally {
-      useGlobalLoading && store.dispatch(saveLoading(false));
     }
   };
 
-  useEffect(() => {
-    if (activeTab === 1) {
-      getProposals(true);
-    }
-  }, [activeTab, orderType]);
   return (
     <Layout title={t("Proposal.Governance")}>
       <Content>
-        {activeTab === 0 && (
-          <div>
-            {proposal_categories.map((category, index) => (
-              <CategoryCard key={index}>
-                <div className="cate-name">
-                  <Link to={`/proposal/category/${category.category_id}`}>{category.name}</Link>
-                </div>
-                {!!category.children.length && (
-                  <SubCategoryCard>
-                    {category.children.map((subCategory) => (
-                      <a href={`/proposal/category/${subCategory.category_id}`} key={subCategory.category_id}>
-                        <SubCategoryItem>
-                          <ImgBox>
-                            <img src={MsgIcon} alt="" width="24px" height="24px" />
-                          </ImgBox>
+        {proposalCategories.map((category, index) => (
+          <CategoryCard key={index}>
+            <div className="cate-name">
+              <Link to={`/proposal/category/${category.category_id}`}>{category.name}</Link>
+            </div>
+            {!!category.children.length && (
+              <SubCategoryCard>
+                {category.children.map((subCategory) => (
+                  <a href={`/proposal/category/${subCategory.category_id}`} key={subCategory.category_id}>
+                    <SubCategoryItem>
+                      <ImgBox>
+                        <img src={MsgIcon} alt="" width="24px" height="24px" />
+                      </ImgBox>
 
-                          <div>
-                            <div className="name">{subCategory.name}</div>
-                            <div className="tips">
-                              <span>
-                                {subCategory.thread_count} {t("Proposal.Topics")}
-                              </span>
-                            </div>
-                          </div>
-                        </SubCategoryItem>
-                      </a>
-                    ))}
-                  </SubCategoryCard>
-                )}
-              </CategoryCard>
-            ))}
-          </div>
-        )}
-        {activeTab === 1 && (
-          <ProposalListContent>
-            <ProposalSubNav onSelect={handleChangeOrder} value={orderType === "latest" ? 0 : 1} />
-            <InfiniteScroll
-              dataLength={proposals.length}
-              next={getProposals}
-              hasMore={hasMore}
-              loader={<Loading />}
-              height={400}
-              style={{ height: "calc(var(--app-height) - 150px)" }}
-            >
-              <ProposalBox>
-                {proposals.map((proposal) => (
-                  <ProposalCard key={proposal.id} data={proposal} />
+                      <div>
+                        <div className="name">{subCategory.name}</div>
+                        <div className="tips">
+                          <span>
+                            {subCategory.thread_count} {t("Proposal.Topics")}
+                          </span>
+                        </div>
+                      </div>
+                    </SubCategoryItem>
+                  </a>
                 ))}
-              </ProposalBox>
-            </InfiniteScroll>
-          </ProposalListContent>
-        )}
+              </SubCategoryCard>
+            )}
+          </CategoryCard>
+        ))}
       </Content>
     </Layout>
   );
 }
 
-const TabMenu = styled.ul`
-  display: flex;
-  height: 40px;
-  line-height: 40px;
-  li {
-    flex: 1;
-    text-align: center;
-    color: var(--bs-primary);
-    &.selected {
-      border-bottom: 3px solid var(--bs-primary);
-    }
-  }
-`;
-
 const Content = styled.div`
-  padding: 0 24px 30px;
+  padding: 0 20px 14px;
   background: var(--background-color);
 `;
 
 const SubCategoryCard = styled.div`
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border-color-1);
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: stretch;
-  padding: 10px;
+  padding: 10px 8px;
   a {
     display: block;
     width: 50%;
@@ -180,20 +98,19 @@ const SubCategoryItem = styled.div`
   }
   .tips {
     font-size: 12px;
+    line-height: 16px;
     font-weight: 400;
-    color: #9a9a9a;
+    color: var(--font-light-color);
   }
 `;
 
 const CategoryCard = styled.div`
-  border: 1px solid #eee;
   border-radius: 16px;
-  margin-block: 16px;
-  background: #fff;
+  background: var(--background-color-1);
+  padding-inline: 14px;
+  margin-block: 17px;
   .cate-name {
-    padding-inline: 16px;
-    line-height: 40px;
-
+    line-height: 44px;
     font-size: 16px;
     font-family: Poppins-SemiBold;
     font-weight: 600;
@@ -216,10 +133,4 @@ const ImgBox = styled.div`
     width: 14px;
     height: 14px;
   }
-`;
-
-const ProposalListContent = styled.div``;
-
-const ProposalBox = styled.div`
-  padding: 0 15px;
 `;
