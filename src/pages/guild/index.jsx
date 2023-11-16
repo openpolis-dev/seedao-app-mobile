@@ -6,7 +6,7 @@ import { getMyGuilds, getGuilds } from "api/guild";
 import { useNavigate } from "react-router-dom";
 import Tab from "components/common/tab";
 import InfiniteScroll from "react-infinite-scroll-component";
-import ProjectOrGuildItem from "components/projectOrGuild/projectOrGuildItem";
+import ProjectOrGuildItemDetail from "components/projectOrGuild/projectOrGuildItemDetail";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import Loading from "components/common/loading";
@@ -111,24 +111,26 @@ export default function Guild() {
   }, [activeTab]);
 
   return (
-    <div>
+    <Layout title={t("Guild.Guild")}>
       <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
-      <InfiniteScroll
-        dataLength={proList.length}
-        next={getCurrentList}
-        hasMore={hasMore}
-        loader={<Loading />}
-        height={400}
-        style={{ height: "calc(100vh - 90px)" }}
-      >
-        {proList.length === 0 && <NoItem />}
-        <ProjectList>
-          {proList.map((item) => (
-            <ProjectOrGuildItem key={item.id} data={item} onClickItem={openDetail} />
-          ))}
-        </ProjectList>
-      </InfiniteScroll>
-    </div>
+      <LayoutContainer>
+        <InfiniteScroll
+            dataLength={proList.length}
+            next={getCurrentList}
+            hasMore={hasMore}
+            loader={<Loading />}
+            height={400}
+            style={{ height: "calc(100vh - 90px)" }}
+        >
+          {proList.length === 0 && <NoItem />}
+          <ProjectList>
+            {proList.map((item) => (
+                <ProjectOrGuildItemDetail key={item.id} data={item} onClickItem={openDetail} />
+            ))}
+          </ProjectList>
+        </InfiniteScroll>
+      </LayoutContainer>
+    </Layout>
   );
 }
 
@@ -136,4 +138,9 @@ const ProjectList = styled.div`
   & > div {
     margin-bottom: 15px;
   }
+`;
+
+const LayoutContainer = styled.div`
+  padding-inline: 20px;
+  
 `;

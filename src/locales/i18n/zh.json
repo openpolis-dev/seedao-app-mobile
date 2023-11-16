@@ -138,5 +138,13 @@
     "CONTRIBUTOR_L9": "L9 贡献者",
     "SEEDAO_MEMBER": "SeeDAO 成员",
     "SEEDAO_ONBOARDING": "SeeDAO Onboarding"
+  },
+  "Guild": {
+    "Moderator": "负责人",
+    "Guild": "公会",
+    "AllProjects": "所有公会",
+    "Joined": "已加入",
+    "Members": "成员",
+    "Intro": "公会介绍"
   }
 }

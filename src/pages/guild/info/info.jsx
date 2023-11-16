@@ -9,7 +9,67 @@ import store from "store";
 import { saveLoading } from "store/reducer";
 import GuildMember from "./member";
 import GuildBasic from "./basic";
+import SipTag from "../../../components/sipTag";
+import ProjectMember from "../../project/info/member";
+import {MdPreview} from "md-editor-rt";
 
+const FlexBox = styled.div`
+    display: flex;
+  align-items: center;
+  margin: 0 24px;
+`
+
+const ImgBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 15px;
+  }
+`;
+const TitleBox = styled.div`
+  font-size: 16px;
+  font-family: "Poppins-SemiBold";
+  font-weight: 600;
+  line-height: 24px;
+  flex-grow: 1;
+  padding-left: 15px;
+  
+`
+
+const ProposalsBox = styled.div`
+  display: flex;
+  margin: 0 14px 0 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(217,217,217,0.5);
+`;
+
+
+const DescBox = styled.div`
+  padding: 39px 24px 10px;
+  color: #9a9a9a;
+`
+
+const ContentBlock = styled.div`
+  border-top: 1px solid rgba(217,217,217,0.5);
+  padding: 30px 24px 0;
+`;
+
+const TitleAll = styled.div`
+  font-size: 20px;
+  font-family: Poppins-SemiBold;
+  font-weight: 600;
+  padding-bottom: 15px;
+`
+
+const MBox = styled.div`
+  padding: 30px 24px 0;
+`
 
 export default function GuildInfo() {
   const { t } = useTranslation();
@@ -41,8 +101,29 @@ export default function GuildInfo() {
 
   return (
     <Layout noTab title={data?.name || t("mobile.projectDetail")}>
-      <GuildBasic />
-      <GuildMember />
+      < >
+        <FlexBox>
+          <ImgBlock>{data?.logo && <img src={data.logo} alt="" />}</ImgBlock>
+          <TitleBox>{data?.name}</TitleBox>
+        </FlexBox>
+
+        <DescBox>{data?.desc}</DescBox>
+        <ProposalsBox>
+          {data?.proposals?.map((item, index) => (
+              <SipTag key={`proposal_${index}`} slug={item} />
+          ))}
+        </ProposalsBox>
+        <MBox>
+          <TitleAll>{t("Guild.Members")}</TitleAll>
+          <GuildMember />
+        </MBox>
+
+
+        <ContentBlock>
+          <TitleAll>{t("Guild.Intro")}</TitleAll>
+          <MdPreview modelValue={data?.intro || ''} />
+        </ContentBlock>
+      </>
     </Layout>
   );
 }

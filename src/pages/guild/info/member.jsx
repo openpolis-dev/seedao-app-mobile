@@ -35,6 +35,10 @@ export default function GuildMember() {
       res.data.forEach((r) => {
         userData[r.wallet || ""] = r;
       });
+
+      sponsors.map((item)=>{
+        userData[item].title= t("Guild.Moderator");
+      })
       setUserMap(userData);
       console.log("userData:", userData);
     } catch (error) {
@@ -58,31 +62,15 @@ export default function GuildMember() {
     getUsersInfo(Array.from(new Set([...members, ...sponsors])));
   }, [data]);
   return (
-    <MemberContent>
-      <Block>
-        <SectionTitle>{t("Guild.Dominator")}</SectionTitle>
-        <UserList data={sponsorUsers} nameMap={nameMap} />
-      </Block>
-      <Block>
-        <SectionTitle>{t("Guild.Members")}</SectionTitle>
-        <UserList data={memberUsers} nameMap={nameMap} />
-      </Block>
-    </MemberContent>
+      <MemberContent>
+        <UserList data={[...sponsorUsers, ...memberUsers]} nameMap={nameMap} />
+      </MemberContent>
   );
 }
 
+
 const MemberContent = styled.div`
-  padding-inline: 20px;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
 `
-
-const Block = styled.section`
-  &:first-child {
-    margin-bottom: 15px;
-  }
-`;
-
-const SectionTitle = styled.div`
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 10px;
-`;

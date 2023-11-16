@@ -35,6 +35,10 @@ export default function ProjectMember() {
       res.data.forEach((r) => {
         userData[r.wallet || ""] = r;
       });
+      sponsors.map((item)=>{
+        userData[item].title= t("Guild.Moderator");
+      })
+      console.log("=userData===",userData)
       setUserMap(userData);
       console.log("userData:", userData);
     } catch (error) {
@@ -56,22 +60,17 @@ export default function ProjectMember() {
     setMembers(members.map((m) => m.toLowerCase()));
     setSponsors(sponsors.map((m) => m.toLowerCase()));
     getUsersInfo(Array.from(new Set([...members, ...sponsors])));
+
   }, [data]);
   return (
     <MemberContent>
-      <Block>
         <UserList data={[...sponsorUsers, ...memberUsers]} nameMap={nameMap} />
-      </Block>
     </MemberContent>
   );
 }
 
 const MemberContent = styled.div`
-  background: #f00;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
 `
-
-const Block = styled.section`
-  &:first-child {
-    margin-bottom: 15px;
-  }
-`;
