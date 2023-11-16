@@ -11,6 +11,14 @@ import useParseSNS from "hooks/useParseSNS";
 import publicJs from "../utils/publicJs";
 import {useNavigate} from "react-router-dom";
 import {ChevronLeft} from "react-bootstrap-icons";
+import PublicJs from "../utils/publicJs";
+import SbtCatMobile from "../components/profile/sbtCatMobile";
+
+import EmailImg from "../assets/Imgs/social/email.svg";
+import Twitter from "../assets/Imgs/social/twitter.svg";
+import MirrorImg from "../assets/Imgs/social/mirror.svg";
+import GithubImg from "../assets/Imgs/social/github.svg"
+
 const Box = styled.div`
   padding: 20px;
 `;
@@ -26,15 +34,26 @@ const LineBox = styled.div`
     justify-content: space-between;
     margin-bottom: 10px;
   }
+  img{
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
   dt {
     font-size: 14px;
     font-weight: normal;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    
   }
   dd {
     word-break: break-all;
     padding: 5px 10px;
-    font-size: 14px;
+    font-size: 12px;
+    color: #9a9a9a;
+    margin-left: 20px;
+    text-align: right;
   }
 `;
 const RhtBox = styled.div`
@@ -136,13 +155,32 @@ const TipsBox = styled.div`
 `
 
 const NftBox = styled.div`
-  margin:0 0 24px 24px;
+  margin:0 0 24px 0;
   dt{
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    span{
+      font-size: 16px;
+      font-family: Poppins-SemiBold, Poppins;
+      font-weight: 600;
+      color: #000000;
+      line-height: 22px;
+    }
+    .more{
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--primary-color);
+      line-height: 17px;
+    }
   }
   ul{
     display: flex;
     align-items: center;
+    overflow-x: auto;
+    padding:0 10px 0 24px;
   }
   li{
 
@@ -183,7 +221,7 @@ const BtmBox = styled.div`
 
 const OuterBox = styled.div`
 
-  background: linear-gradient(182deg, #EEE6FF 1%, rgba(225,242,249,0.72) 50%, rgba(255,255,255,0) 100%);
+  background:#F2F2F6 linear-gradient(182deg, #EEE6FF 1%, rgba(225,242,249,0.72) 50%, rgba(255,255,255,0) 100%);
   border-radius: 0;
   opacity: 1;
 `
@@ -260,6 +298,11 @@ export default function Profile() {
   const [twitter, setTwitter] = useState('');
   const [wechat, setWechat] = useState('');
   const [mirror, setMirror] = useState('');
+  const [github, setGithub] = useState('');
+  const [seed, setSeed] = useState([]);
+  const [list, setList] = useState([]);
+  const [sbt, setSbt] = useState([]);
+  const [sbtList,setSbtList] =useState([]);
 
   // useEffect(() => {
   //   toGA();
@@ -291,6 +334,16 @@ export default function Profile() {
       setDiscord(mapArr.get('discord') ?? '');
       setWechat(mapArr.get('wechat') ?? '');
       setMirror(mapArr.get('mirror') ?? '');
+      setGithub(mapArr.get('github') ?? '');
+      setSeed(rt.data.seed);
+
+      let sbtArr = rt.data.sbt;
+      sbtArr?.map( async (seedItem)=>{
+        let url= await publicJs.getImage(seedItem.image_uri);
+        setSbtList((list)=>[...list,{...seedItem,url}])
+
+      });
+
 
     } catch (e) {
       console.error(e);
@@ -298,6 +351,40 @@ export default function Profile() {
       store.dispatch(saveLoading(false));
     }
   };
+
+  useEffect(() => {
+    if (!seed.length) return;
+    console.log(seed)
+    setList([]);
+    // setSbtList([]);
+    seed?.map(async (seedItem) => {
+      let url = await PublicJs.getImage(seedItem.image_uri);
+      setList((list) => [...list, { ...seedItem, url }]);
+    });
+
+  }, [seed]);
+
+
+  useEffect(() => {
+    if(!sbtList?.length)return;
+
+    setSbt([]);
+    const sbtFor = sbtList.filter((item)=>item.name && item.image_uri);
+
+    const groupedData = sbtFor.reduce((result, item) => {
+      const key = item?.metadata?.properties?.category? item?.metadata?.properties?.category:"others";
+      const group = result?.find((group) => group.category === key);
+
+      if (group) {
+        group.tokens.push(item);
+      } else {
+        result.push({ category: key, tokens: [item] });
+      }
+      return result;
+    }, []);
+    setSbt(groupedData)
+  }, [sbtList]);
+
 
   const formatNumber = (amount) => {
     if (!amount) {
@@ -442,29 +529,36 @@ export default function Profile() {
 
       <NftBox>
           <dl>
-            <dt>SEED</dt>
+            <dt>
+              <span>SEED</span>
+              <div className="more">查看全部</div>
+            </dt>
             <dd>
               <ul>
                 {
-                  detail?.seed?.map((item,index)=>(<li key={index}>
-                    <div><img src={item.image_uri} alt=""/></div>
+                  list?.map((item,index)=>(<li key={index}>
+                    <div><img src={item.url} alt=""/></div>
                     <div>ID {item.token_id}</div>
                   </li>))
                 }
-
               </ul>
             </dd>
           </dl>
       </NftBox>
+
+
       <NftBox>
         <dl>
-            <dt>SBT</dt>
+          <dt>
+            <span>SBT</span>
+            <div className="more">查看全部</div>
+          </dt>
             <dd>
               <ul>
                 {
-                  detail?.sbt?.map((item,index)=>(<li key={index}>
-                    <img src={item.image_uri} alt=""/>
-                  </li>))
+                  sbt?.map((item,index)=>(
+                      <SbtCatMobile key={`sbt_${index}`}  item={item}/>
+                  ))
                 }
 
               </ul>
@@ -475,7 +569,9 @@ export default function Profile() {
       <LineBox>
 
         <dl>
-          <dt>{t("My.Email")}</dt>
+          <dt>
+            <img src={EmailImg} alt=""/>
+            {t("My.Email")}</dt>
           <dd>{detail?.email}</dd>
         </dl>
         {/*<dl>*/}
@@ -483,7 +579,10 @@ export default function Profile() {
         {/*  <dd>{discord}</dd>*/}
         {/*</dl>*/}
         <dl>
-          <dt>{t("My.Twitter")}</dt>
+          <dt>
+            <img src={Twitter} alt=""/>
+            {t("My.Twitter")}
+          </dt>
           <dd>{twitter}</dd>
         </dl>
         {/*<dl>*/}
@@ -491,8 +590,18 @@ export default function Profile() {
         {/*  <dd>{wechat}</dd>*/}
         {/*</dl>*/}
         <dl>
-          <dt>{t("My.Mirror")}</dt>
+          <dt>
+            <img src={MirrorImg} alt=""/>
+            {t("My.Mirror")}
+          </dt>
           <dd>{mirror}</dd>
+        </dl>
+        <dl>
+          <dt>
+            <img src={GithubImg} alt=""/>
+            {t("My.Github")}
+          </dt>
+          <dd>{github}</dd>
         </dl>
       </LineBox>
 

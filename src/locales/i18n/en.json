@@ -102,6 +102,7 @@
     "Points2": "(Includes off-chain points to be issued)",
     "Name": "Name",
     "Email": "Email",
+    "Github": "Github",
     "Discord": "Discord",
     "Twitter": "Twitter",
     "WeChat": "WeChat",
