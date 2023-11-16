@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import {useSelector} from "react-redux";
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const TopBox = styled.div`
-    background: ${props => props.bgcolor};
+  background: ${(props) => props.bgcolor};
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding:0 20px;
+  padding: 0 20px;
   position: sticky;
   top: 0;
   left: 0;
@@ -16,72 +16,68 @@ const TopBox = styled.div`
   box-sizing: border-box;
   height: 70px;
   z-index: 999;
-  .AvatarBox{
+  .AvatarBox {
     width: 36px;
     height: 36px;
     border-radius: 36px;
     overflow: hidden;
     display: block;
-    img{
+    img {
       width: 36px;
       height: 36px;
       object-fit: cover;
-
     }
   }
-  .lft{
+  .lft {
     font-size: 30px;
     font-family: Poppins-SemiBold;
     font-weight: 600;
-    color: #1A1323;
+    color: #1a1323;
     line-height: 1.2em;
   }
-  &.act{
+  &.act {
     justify-content: center;
     height: 50px;
-    .lft{
+    .lft {
       font-size: 17px;
     }
-    .AvatarBox{
+    .AvatarBox {
       display: none;
     }
   }
+`;
 
+export default function StickyHeader({ title, bgcolor }) {
+  const userToken = useSelector((state) => state.userToken);
+  const [show, setShow] = useState(false);
+  const navigate = useNavigate();
 
-`
+  useEffect(() => {
+    window.addEventListener("scroll", ScrollHeight);
+    return () => {
+      window.removeEventListener("scroll", ScrollHeight);
+    };
+  }, []);
 
-export default function StickyHeader({title,bgcolor}){
-    const userToken = useSelector(state=> state.userToken);
-    const [show,setShow] = useState(false);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        window.addEventListener('scroll', ScrollHeight);
-        return () =>{
-            window.removeEventListener('scroll', ScrollHeight);
-        }
-    }, []);
-
-    const ScrollHeight = () =>{
-        var scrollHeight = window.pageYOffset || document.documentElement.scrollTop;
-        if(scrollHeight > 80){
-            setShow(true)
-        }else{
-            setShow(false)
-        }
+  const ScrollHeight = () => {
+    var scrollHeight = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollHeight > 80) {
+      setShow(true);
+    } else {
+      setShow(false);
     }
+  };
 
-    const toGo = () =>{
-        navigate("/user/profile")
-    }
+  const toGo = () => {
+    navigate("/user/profile");
+  };
 
-    return <TopBox bgcolor={bgcolor} className={show?"act":""}>
-        <div className="lft">
-            {title}
-        </div>
-        <div className="AvatarBox" onClick={()=>toGo()}>
-            <img src={userToken?.user?.avatar} alt=""/>
-        </div>
-
-</TopBox>
+  return (
+    <TopBox bgcolor={bgcolor} className={show ? "act" : ""}>
+      <div className="lft">{title}</div>
+      <div className="AvatarBox" onClick={() => toGo()}>
+        <img src={userToken?.user?.avatar} alt="" />
+      </div>
+    </TopBox>
+  );
 }
