@@ -96,10 +96,6 @@ const ButtonBox = styled.div`
 const ConfirmBox = styled.div`
   color: var(--primary-color);
   display: inline-block;
-  position: fixed;
-  top: 15px;
-  right: 20px;
-  z-index: 999999999;
 `
 
 export default function ProfileEdit() {
@@ -277,8 +273,11 @@ export default function ProfileEdit() {
   }
 
   return (
-    <Layout noTab title={t("My.MyProfile")}>
-
+    <Layout
+      noTab
+      title={t("My.MyProfile")}
+      rightOperation={<ConfirmBox onClick={saveProfile}>{t("General.confirm")}</ConfirmBox>}
+    >
       <Modal tips={tips} show={show} handleClose={handleClose} />
       <CardBox>
         {/*<HeadBox>*/}
@@ -296,7 +295,6 @@ export default function ProfileEdit() {
         {/*  </InfoBox>*/}
         {/*</HeadBox>*/}
 
-        <ConfirmBox onClick={saveProfile}>{t('General.confirm')}</ConfirmBox>
         <MidBox>
           <UlBox>
             <li>
@@ -304,47 +302,38 @@ export default function ProfileEdit() {
               <AvatarBox>
                 <UploadBox htmlFor="fileUpload" onChange={(e) => updateLogo(e)}>
                   {!avatar && (
-                      <div>
-                        <input id="fileUpload" type="file" hidden accept=".jpg, .jpeg, .png" />
-                        {<Upload />}
-                      </div>
+                    <div>
+                      <input id="fileUpload" type="file" hidden accept=".jpg, .jpeg, .png" />
+                      {<Upload />}
+                    </div>
                   )}
                   {!!avatar && (
-                      <ImgBox onClick={() => removeUrl()}>
-                        <div className="del">
-                          <X className="iconTop" />
-                        </div>
-                        <img src={avatar} alt="" />
-                      </ImgBox>
+                    <ImgBox onClick={() => removeUrl()}>
+                      <div className="del">
+                        <X className="iconTop" />
+                      </div>
+                      <img src={avatar} alt="" />
+                    </ImgBox>
                   )}
                 </UploadBox>
               </AvatarBox>
             </li>
             <li>
-              <div className="title">{t('My.Name')}</div>
+              <div className="title">{t("My.Name")}</div>
               <InputBox>
-                <input
-                  type="text"
-                  placeholder=""
-                  value={userName}
-                  onChange={(e) => handleInput(e, 'userName')}
-                />
+                <input type="text" placeholder="" value={userName} onChange={(e) => handleInput(e, "userName")} />
               </InputBox>
             </li>
             <li>
-              <div className="title">{t('My.Bio')}</div>
+              <div className="title">{t("My.Bio")}</div>
               <InputBox>
-                <textarea
-                  placeholder=""
-                  value={bio}
-                  onChange={(e) => handleInput(e, 'bio')}
-                />
+                <textarea placeholder="" value={bio} onChange={(e) => handleInput(e, "bio")} />
               </InputBox>
             </li>
             <li>
-              <div className="title">{t('My.Email')}</div>
+              <div className="title">{t("My.Email")}</div>
               <InputBox>
-                <inputl type="text" placeholder="" value={email} onChange={(e) => handleInput(e, 'email')} />
+                <inputl type="text" placeholder="" value={email} onChange={(e) => handleInput(e, "email")} />
               </InputBox>
             </li>
 
@@ -366,25 +355,23 @@ export default function ProfileEdit() {
             {/*  </InputBox>*/}
             {/*</li>*/}
             <li>
-              <div className="title">{t('My.WeChat')}</div>
+              <div className="title">{t("My.WeChat")}</div>
               <InputBox>
-                <input type="text" placeholder="" value={wechat} onChange={(e) => handleInput(e, 'wechat')} />
+                <input type="text" placeholder="" value={wechat} onChange={(e) => handleInput(e, "wechat")} />
               </InputBox>
             </li>
             <li>
-              <div className="title">{t('My.Mirror')}</div>
+              <div className="title">{t("My.Mirror")}</div>
               <InputBox>
-                <input type="text" placeholder="" value={mirror} onChange={(e) => handleInput(e, 'mirror')} />
+                <input type="text" placeholder="" value={mirror} onChange={(e) => handleInput(e, "mirror")} />
               </InputBox>
             </li>
           </UlBox>
         </MidBox>
         <ButtonBox>
-          <button onClick={()=>logout()}>{t('My.logout')}</button></ButtonBox>
+          <button onClick={() => logout()}>{t("My.logout")}</button>
+        </ButtonBox>
       </CardBox>
-
-
-
     </Layout>
   );
 }

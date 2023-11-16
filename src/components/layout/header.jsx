@@ -37,7 +37,12 @@ const LoadingBox = styled.div`
   right: -70px;
   top: 0;
 `
-export default function Header({ title, bgColor }) {
+const OperateBox = styled.div`
+  position: absolute;
+  right: 20px;
+  top: 0;
+`
+export default function Header({ title, bgColor, rightOperation }) {
   const navigate = useNavigate();
 
   const backTop = () => {
@@ -57,6 +62,7 @@ export default function Header({ title, bgColor }) {
           </LoadingBox>
         </Mid>
       </HeaderBox>
+      <OperateBox>{rightOperation}</OperateBox>
     </Box>
   );
 }
