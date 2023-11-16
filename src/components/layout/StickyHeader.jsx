@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const TopBox = styled.div`
-  background: ${(props) => props.bgcolor};
+  background: ${(props) => props.bgColor};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -47,25 +47,20 @@ const TopBox = styled.div`
   }
 `;
 
-export default function StickyHeader({ title, bgcolor }) {
+export default function StickyHeader({ title, bgColor, scrollRef }) {
   const userToken = useSelector((state) => state.userToken);
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.addEventListener("scroll", ScrollHeight);
+    scrollRef?.current && scrollRef.current.addEventListener("scroll", ScrollHeight);
     return () => {
-      window.removeEventListener("scroll", ScrollHeight);
+      scrollRef?.current?.removeEventListener("scroll", ScrollHeight);
     };
-  }, []);
+  }, [scrollRef?.current]);
 
   const ScrollHeight = () => {
-    var scrollHeight = window.pageYOffset || document.documentElement.scrollTop;
-    if (scrollHeight > 80) {
-      setShow(true);
-    } else {
-      setShow(false);
-    }
+    setShow(scrollRef.current.scrollTop > 80);
   };
 
   const toGo = () => {
@@ -73,7 +68,7 @@ export default function StickyHeader({ title, bgcolor }) {
   };
 
   return (
-    <TopBox bgcolor={bgcolor} className={show ? "act" : ""}>
+    <TopBox bgColor={bgColor} className={show ? "act" : ""}>
       <div className="lft">{title}</div>
       <div className="AvatarBox" onClick={() => toGo()}>
         <img src={userToken?.user?.avatar} alt="" />

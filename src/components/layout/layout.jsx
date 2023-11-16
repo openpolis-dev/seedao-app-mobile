@@ -2,24 +2,38 @@ import styled from "styled-components";
 import Header from "./header";
 import TabBar from "./tabBar";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import StickyHeader from "./StickyHeader";
 
 const OuterBox = styled.div`
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
   box-sizing: border-box;
-  display: flex;
+  /* display: flex; */
 `;
 const InnerBox = styled.div`
-  flex-grow: 1;
+  /* flex-grow: 1; */
   width: 100%;
-  padding-top: ${(props) => props.noheader};
+  height: 100%;
+  padding-top: ${(props) => props.paddingTop};
   padding-bottom: ${(props) => props.notab};
+  overflow-y: auto;
+  box-sizing: border-box;
 `;
-export default function Layout({ children, noHeader, title, noTab, headBgColor, bgColor }) {
+/**
+ *
+ * sticky: boolean
+ * title: string
+ * noTab: boolean
+ * headBgColor: string
+ * bgColor: string
+ */
+// TODO noHeader is not working
+export default function Layout({ children, noHeader, title, noTab, headBgColor, bgColor, sticky }) {
   const navigate = useNavigate();
-  const userToken = useSelector((state) => state.userToken);
+    const userToken = useSelector((state) => state.userToken);
+    const innerRef = useRef();
 
   useEffect(() => {
     if (!userToken?.token) {
@@ -33,8 +47,8 @@ export default function Layout({ children, noHeader, title, noTab, headBgColor, 
 
   return (
     <OuterBox>
-      {!noHeader && <Header title={title} bgColor={headBgColor} />}
-      <InnerBox notab={noTab ? 0 : "90px"} noheader={noHeader ? 0 : "60px"}>
+      {sticky ? <StickyHeader title={title} bgColor={bgColor} scrollRef={innerRef} /> : <Header title={title} bgColor={headBgColor} />}
+      <InnerBox ref={innerRef} notab={noTab ? 0 : "70px"} paddingTop={sticky ? "0" : "60px"}>
         {children}
       </InnerBox>
       {!noTab && <TabBar />}

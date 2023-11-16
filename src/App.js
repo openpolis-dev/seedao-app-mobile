@@ -31,7 +31,7 @@ const ethereumClient = new EthereumClient(wagmiConfig, chains);
 
 function App() {
   return (
-    <div >
+    <>
         <WagmiConfig config={wagmiConfig}>
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor} >
@@ -55,7 +55,7 @@ function App() {
             />
         </WagmiConfig>
         <InstallCheck />
-    </div>
+    </>
   );
 }
 

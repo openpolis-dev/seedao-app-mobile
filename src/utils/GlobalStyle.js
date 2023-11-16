@@ -8,6 +8,9 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
   }
+  #root {
+    height: 100vh;
+  }
   dl,dt,ul,li{
     padding: 0;
     margin: 0;
