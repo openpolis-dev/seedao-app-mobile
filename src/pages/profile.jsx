@@ -223,7 +223,7 @@ const OuterBox = styled.div`
 
   background:#F2F2F6 linear-gradient(182deg, #EEE6FF 1%, rgba(225,242,249,0.72) 50%, rgba(255,255,255,0) 100%);
   border-radius: 0;
-  opacity: 1;
+  min-height: 100vh;
 `
 
 const TopFlex = styled.div`
