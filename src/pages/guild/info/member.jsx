@@ -40,7 +40,6 @@ export default function GuildMember() {
         userData[item].title= t("Guild.Moderator");
       })
       setUserMap(userData);
-      console.log("userData:", userData);
     } catch (error) {
       console.error("getUsersInfo error:", error);
     } finally {

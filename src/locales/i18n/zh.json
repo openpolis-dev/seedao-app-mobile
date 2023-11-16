@@ -6,7 +6,8 @@
   },
   "General": {
     "connect": "连接钱包",
-    "confirm": "确定"
+    "confirm": "确定",
+    "Edit": "编辑"
   },
   "Buttons": {
     "Check": "查看",
@@ -96,9 +97,6 @@
     "logout": "退出",
     "Bio": "简介",
     "Exit": "退出",
-    "Assets": "USD资产",
-    "Points": "总积分",
-    "Points2": "(包含待发放未上链积分)",
     "Name": "昵称",
     "Email": "邮箱地址",
     "Github": "Github",
@@ -107,6 +105,9 @@
     "WeChat": "微信号",
     "Mirror": "Mirror",
     "Google": "Google",
+    "current": "当前",
+    "more": "查看全部",
+    "levelTips": "距离升级{{level}}还需",
     "ModifiedSuccess": "修改成功",
     "ModifiedFailed": "修改失败",
     "IncorrectLink": "{{media}}：请填写正确的信息",

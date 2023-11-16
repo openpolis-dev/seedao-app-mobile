@@ -6,7 +6,8 @@
   },
   "General": {
     "connect": "Connect Wallet",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "Edit": "Edit"
   },
   "Buttons": {
     "Check": "Check",
@@ -97,9 +98,6 @@
 
     "Bio": "Bio",
     "Exit": "Exit",
-    "Assets": "Assets",
-    "Points": "Points",
-    "Points2": "(Includes off-chain points to be issued)",
     "Name": "Name",
     "Email": "Email",
     "Github": "Github",
@@ -108,6 +106,9 @@
     "WeChat": "WeChat",
     "Mirror": "Mirror",
     "Google": "Google",
+    "current": "current",
+    "more": "View All",
+    "levelTips": "距离升级{{level}}还需",
     "ModifiedSuccess": "Modified Successfully",
     "ModifiedFailed": "Modified Failed",
     "IncorrectLink": "{{media}}: required the correct link",

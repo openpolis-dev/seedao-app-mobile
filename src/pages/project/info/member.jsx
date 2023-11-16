@@ -38,9 +38,7 @@ export default function ProjectMember() {
       sponsors.map((item)=>{
         userData[item].title= t("Guild.Moderator");
       })
-      console.log("=userData===",userData)
       setUserMap(userData);
-      console.log("userData:", userData);
     } catch (error) {
       console.error("getUsersInfo error:", error);
     } finally {

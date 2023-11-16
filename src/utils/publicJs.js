@@ -10,9 +10,9 @@ const AddressToShow = (address) => {
     return address;
   }
 
-  const frontStr = address.substring(0, 4);
+  const frontStr = address.substring(0, 8);
 
-  const afterStr = address.substring(address.length - 4, address.length);
+  const afterStr = address.substring(address.length - 8, address.length);
 
   return `${frontStr}...${afterStr}`;
 };

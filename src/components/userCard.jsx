@@ -20,7 +20,6 @@ const EmptyUserCard = () => {
 };
 
 export default function UserCard({ user, sns }) {
-    console.log("====user=",user)
   if (!user) {
     return <EmptyUserCard />;
   }

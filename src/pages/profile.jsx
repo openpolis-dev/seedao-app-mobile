@@ -32,7 +32,7 @@ const LineBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin: 8px 0;
   }
   img{
     width: 24px;
@@ -45,6 +45,7 @@ const LineBox = styled.div`
     flex-shrink: 0;
     display: flex;
     align-items: center;
+    color: #000000;
     
   }
   dd {
@@ -89,6 +90,11 @@ const FlexBox = styled.div`
 const FlexLine = styled.div`
   display: flex;
   align-items: center;
+  font-size: 13px;
+  font-family: Poppins-Regular;
+  font-weight: 400;
+  color: #9A9A9A;
+  line-height: 22px;
 `
 
 const ProgressBox = styled.div`
@@ -141,17 +147,8 @@ const LevelBox = styled.div`
 `
 
 const SCRBox = styled.div`
-    font-size:15px;
-  text-align: right;
   font-weight: 700;
-`
-const TipsBox = styled.div`
-    color: #b5b6c4;
-  margin-top: 10px;
   font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 `
 
 const NftBox = styled.div`
@@ -354,7 +351,6 @@ export default function Profile() {
 
   useEffect(() => {
     if (!seed.length) return;
-    console.log(seed)
     setList([]);
     // setSbtList([]);
     seed?.map(async (seedItem) => {
@@ -476,7 +472,7 @@ export default function Profile() {
         <TopFlex>
           <div xs={2} onClick={()=>backTop()}><ChevronLeft /></div>
           <TopBtn onClick={()=>ToGo()}>
-            编辑
+            {t("General.Edit")}
           </TopBtn>
         </TopFlex>
 
@@ -486,7 +482,7 @@ export default function Profile() {
           </AvatarBox>
           <div className="rhtTop">
               <div className="name">{detail?.nickname}</div>
-              <div>{sns}</div>
+              {/*<div>{sns}</div>*/}
               <FlexLine>
                 <div>{publicJs.AddressToShow(detail?.wallet)}</div>
                 {/*<RhtBox>*/}
@@ -509,11 +505,11 @@ export default function Profile() {
               <LevelBox>
                 LV {detail?.level?.current_lv}
               </LevelBox>
-              <SCRBox>{detail?.scr?.amount} SCR</SCRBox>
+              <SCRBox>{t("My.current")}{detail?.scr?.amount} SCR</SCRBox>
             </div>
               <div className="rht">
                 <div>
-                  next level:
+                  {t('My.levelTips', {level: Number(detail?.level?.current_lv) +1})}
                 </div>
                 <div>
                   {formatNumber(detail?.level?.scr_to_next_lv)} SCR
@@ -531,7 +527,7 @@ export default function Profile() {
           <dl>
             <dt>
               <span>SEED</span>
-              <div className="more">查看全部</div>
+              <div className="more">{t("My.more")}</div>
             </dt>
             <dd>
               <ul>
@@ -551,7 +547,7 @@ export default function Profile() {
         <dl>
           <dt>
             <span>SBT</span>
-            <div className="more">查看全部</div>
+            <div className="more">{t("My.more")}</div>
           </dt>
             <dd>
               <ul>
@@ -560,7 +556,6 @@ export default function Profile() {
                       <SbtCatMobile key={`sbt_${index}`}  item={item}/>
                   ))
                 }
-
               </ul>
             </dd>
           </dl>
