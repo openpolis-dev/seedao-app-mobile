@@ -18,15 +18,17 @@ const BannerBox = styled.div`
 
 const BannerLi = styled.div`
     margin: 0 20px;
-  height: 198px;
+  height: 99px;
   border-radius: 16px;
   background: url(${props => props.url}) no-repeat center;
   background-size: cover;
   display: flex;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   position: relative;
+  box-sizing: border-box;
+  padding: 19px 0;
 `
 const TitleBox = styled.div`
     text-align: center;
@@ -34,26 +36,38 @@ const TitleBox = styled.div`
   font-family: Poppins-SemiBold;
   font-weight: 600;
   color: #FFFFFF;
-  margin-bottom: 9px;
+  white-space: nowrap;
+  width: 90%;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `
 
 const DescBox = styled.div`
-  width: 62%;
   font-size: 15px;
   font-weight: 400;
   color: #FFFFFF;
   line-height: 1.5em;
-  text-align: center;
+  flex-grow: 1;
+  margin-right: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const LinkBox = styled.div`
-  position: absolute;
   font-size: 13px;
   font-weight: 400;
   color: #FFFFFF;
   line-height: 1.5em;
-  right: 15px;
-  bottom: 10px;
+  flex-shrink: 0;
+`
+
+const Bfst = styled.div`
+    display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
 `
 
 export default function Adv(){
@@ -69,9 +83,12 @@ export default function Adv(){
             {
                 banner?.map((item,index)=>( <SwiperSlide key={`banner_${index}`}>
                     <BannerLi url={item.img}>
-                        <TitleBox>{item.name}</TitleBox>
-                        <DescBox>{item.desc}</DescBox>
-                        <LinkBox>{t('home.more')} &gt;</LinkBox>
+                        <TitleBox>{item.name}{item.desc}</TitleBox>
+                        <Bfst>
+                            <DescBox>{item.desc}</DescBox>
+                            <LinkBox>{t('home.more')} &gt;</LinkBox>
+                        </Bfst>
+
                     </BannerLi>
                 </SwiperSlide>))
             }
