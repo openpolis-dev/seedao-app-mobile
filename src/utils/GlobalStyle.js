@@ -4,7 +4,6 @@ import "../assets/styles/custom_variable.scss";
 
 const GlobalStyle = createGlobalStyle`
   body,html{
-    background: #fff;
     color: var(--font-color);
     padding: 0;
     margin: 0;

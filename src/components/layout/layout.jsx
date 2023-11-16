@@ -19,8 +19,7 @@ const InnerBox = styled.div`
 
   
 `
-export default function Layout({children,noHeader,title,noTab, headBgColor}){
-
+export default function Layout({children,noHeader,title,noTab, headBgColor, bgColor}){
 
     const navigate = useNavigate();
     const userToken = useSelector(state=> state.userToken);
@@ -29,7 +28,11 @@ export default function Layout({children,noHeader,title,noTab, headBgColor}){
         if(!userToken?.token){
             navigate("/login")
         }
-    },[userToken])
+    }, [userToken])
+    
+    useEffect(() => {
+      document.querySelector("body").style.background = bgColor || "#FFFFFF";
+    }, [bgColor]);
 
 
     return <OuterBox>

@@ -37,7 +37,7 @@ export default function Governance() {
     ];
   }, [t]);
   return (
-    <Layout noHeader>
+    <Layout noHeader bgColor="var(--background-color)">
       <StickyHeader title={t("Governance.Head")} bgcolor="var(--background-color)" />
       <LayoutContainer>
         <FirstLine>

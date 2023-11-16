@@ -18,7 +18,8 @@ const BoxInner = styled.div`
 
 export default function Home(){
     const { t } = useTranslation();
-    return <Layout noHeader>
+    
+    return <Layout noHeader bgColor="var(--background-color)">
         <StickyHeader title={t("Menus.Square")} bgcolor="var(--background-color)" />
         <BoxInner>
             <Adv />
