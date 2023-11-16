@@ -4,7 +4,7 @@ import DeschoolIcon from '../assets/Imgs/home/Deschool.png';
 import DaolinkIcon from '../assets/Imgs/home/DAOlink.png';
 import Cascad3Icon from '../assets/Imgs/home/Cascad3.png';
 import Wormhole3Icon from '../assets/Imgs/home/Wormhole3.png';
-import SeeUImg from '../assets/Imgs/home/seeuNetwork.jpg';
+import SeeUImg from '../assets/Imgs/home/seeuNetwork.png';
 
 const apps =  [
     {

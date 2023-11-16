@@ -25,7 +25,7 @@ const DayBox = styled.div`
   color: #FFFFFF;
   line-height: 20px;
     .num{
-      font-size: 30px;
+      font-size: 44px;
       font-family: Poppins-SemiBold;
       font-weight: 600;
       color: #FFFFFF;

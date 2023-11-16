@@ -115,6 +115,9 @@
     "IncorrectMirror": "Please enter the correct Mirror link",
     "EmptySBT": "Not Owning SBT"
   },
+  "apps": {
+    "SeeU": "SeeU Network"
+  },
   "roles": {
     "SGN_HOLDER": "SGN Holder",
     "NODE_S1": "SeeDAO Node S1",

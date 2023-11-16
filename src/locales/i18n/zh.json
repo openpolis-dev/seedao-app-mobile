@@ -114,6 +114,9 @@
     "IncorrectMirror": "请填写正确的Mirror链接",
     "EmptySBT": "您还未拥有SBT"
   },
+  "apps": {
+    "SeeU": "SeeU Network"
+  },
   "roles": {
     "SGN_HOLDER": "SGN持有者",
     "NODE_S1": "节点S1",

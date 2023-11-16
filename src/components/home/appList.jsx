@@ -2,7 +2,6 @@ import styled from "styled-components";
 import apps from "../../constant/apps";
 import {useTranslation} from "react-i18next";
 import {useMemo} from "react";
-import Links from "../../utils/links";
 
 const Box = styled.div`
     background: #fff;
