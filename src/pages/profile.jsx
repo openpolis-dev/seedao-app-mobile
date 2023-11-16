@@ -217,11 +217,10 @@ const BtmBox = styled.div`
 `
 
 const OuterBox = styled.div`
-
-  background:#F2F2F6 linear-gradient(182deg, #EEE6FF 1%, rgba(225,242,249,0.72) 50%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(181deg, #ebe8fe 1%, rgba(225, 242, 249, 0.72) 44%, #eeeef4 99%);
   border-radius: 0;
   min-height: 100vh;
-`
+`;
 
 const TopFlex = styled.div`
   display: flex;
@@ -465,17 +464,16 @@ export default function Profile() {
 
   return (
       <OuterBox>
-
-
-    <Layout noHeader noTab>
-      <Box>
-        <TopFlex>
-          <div xs={2} onClick={()=>backTop()}><ChevronLeft /></div>
-          <TopBtn onClick={()=>ToGo()}>
+        <Layout
+        noTab
+        headBgColor="transparent"
+        bgColor="#EBE8FE"
+        isUserProfle
+        rightOperation={<TopBtn onClick={()=>ToGo()}>
             {t("General.Edit")}
-          </TopBtn>
-        </TopFlex>
-
+          </TopBtn>}
+      >
+      <Box>
         <FlexBox>
           <AvatarBox>
             <Avatar size="56px" src={detail?.avatar} />
