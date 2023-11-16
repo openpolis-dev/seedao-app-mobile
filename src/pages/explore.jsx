@@ -1,6 +1,5 @@
 import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
-import StickyHeader from "../components/layout/StickyHeader";
 import styled from "styled-components";
 import ExploreProjectSection from "components/explore/project";
 import ExploreGuildSection from "components/explore/guild";
@@ -11,8 +10,7 @@ export default function Explore() {
   const { t } = useTranslation();
 
   return (
-    <Layout noHeader>
-      <StickyHeader title={t("Explore.Head")} bgcolor="var(--background-color-1)" />
+    <Layout sticky title={t("Explore.Head")} bgColor="var(--background-color-1)">
       <LayoutContainer>
         <ExploreProjectSection />
         <ExploreGuildSection />

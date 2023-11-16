@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Layout from "components/layout/layout";
-import StickyHeader from "components/layout/StickyHeader";
 import VaultIcon from "assets/Imgs/governance/vault.svg";
 import ProposalIcon from "assets/Imgs/governance/proposal.svg";
 import GovernanceIcon from "assets/Imgs/governance/governance.svg";
@@ -37,8 +36,7 @@ export default function Governance() {
     ];
   }, [t]);
   return (
-    <Layout noHeader bgColor="var(--background-color)">
-      <StickyHeader title={t("Governance.Head")} bgcolor="var(--background-color)" />
+    <Layout sticky title={t("Governance.Head")} bgColor="var(--background-color)">
       <LayoutContainer>
         <FirstLine>
           <SquareLink className="vault" to="/assets">
