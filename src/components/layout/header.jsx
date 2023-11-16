@@ -3,12 +3,16 @@ import { ChevronLeft } from "react-bootstrap-icons";
 import Loading from "./loading";
 import { useNavigate } from "react-router-dom";
 
-const Row = styled.div`
+const Back = styled.div`
+  position: absolute;
+  left: 20px;
+`;
+const HeaderBox = styled.header`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  width: 100%;
 `;
-const Col = styled.div``;
 const Box = styled.div`
   position: fixed;
   left: 0;
@@ -22,16 +26,17 @@ const Box = styled.div`
   padding-inline: 20px;
 `;
 
-const Rht = styled(Col)`
-  text-align: right;
-`;
-
-const Mid = styled(Col)`
-  text-align: center;
+const Mid = styled.div`
+  position: relative;
   font-family: "Poppins-SemiBold";
   font-size: 17px;
   font-weight: 600;
 `;
+const LoadingBox = styled.div`
+  position: absolute;
+  right: -70px;
+  top: 0;
+`
 export default function Header({ title, bgColor }) {
   const navigate = useNavigate();
 
@@ -41,15 +46,17 @@ export default function Header({ title, bgColor }) {
 
   return (
     <Box bgColor={bgColor}>
-      <Row>
-        <Col xs={2} onClick={() => backTop()}>
-          <ChevronLeft />
-        </Col>
-        <Mid xs={8}>{title}</Mid>
-        <Rht xs={2}>
-          <Loading />
-        </Rht>
-      </Row>
+      <Back onClick={() => backTop()}>
+        <ChevronLeft />
+      </Back>
+      <HeaderBox>
+        <Mid>
+          <span>{title}</span>
+          <LoadingBox>
+            <Loading />
+          </LoadingBox>
+        </Mid>
+      </HeaderBox>
     </Box>
   );
 }
