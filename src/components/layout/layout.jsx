@@ -52,7 +52,7 @@ export default function Layout({ children, noHeader, title, noTab, headBgColor, 
       ) : (
         <Header title={title} bgColor={headBgColor} rightOperation={rightOperation} headColor={headColor} />
       )}
-      <InnerBox ref={innerRef} notab={noTab ? 0 : "70px"} paddingTop={sticky ? "0" : "60px"}>
+      <InnerBox ref={innerRef} notab={noTab ? 0 : "70px"} paddingTop={sticky ? "0" : "47px"}>
         {children}
       </InnerBox>
       {!noTab && <TabBar />}

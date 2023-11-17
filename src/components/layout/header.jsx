@@ -2,10 +2,12 @@ import styled from "styled-components";
 import { ChevronLeft } from "react-bootstrap-icons";
 import Loading from "./loading";
 import { useNavigate } from "react-router-dom";
+import BackSVG from "components/svgs/back";
 
 const Back = styled.div`
   position: absolute;
   left: 20px;
+  top: 7px;
 `;
 const HeaderBox = styled.header`
   display: flex;
@@ -18,8 +20,8 @@ const Box = styled.div`
   position: fixed;
   left: 0;
   top: 0;
-  height: 60px;
-  line-height: 60px;
+  height: 47px;
+  line-height: 47px;
   z-index: 9;
   background: ${(props) => props.bgColor || "var(--background-color-1)"};
   box-sizing: border-box;
@@ -53,7 +55,7 @@ export default function Header({ title, bgColor, headColor, rightOperation }) {
   return (
     <Box bgColor={bgColor}>
       <Back onClick={() => backTop()}>
-        <ChevronLeft />
+        <BackSVG />
       </Back>
       <HeaderBox headColor={headColor}>
         <Mid>
