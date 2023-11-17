@@ -67,27 +67,28 @@ export default function ProposalCategory() {
         {ProposalNav}
         <ProposalSubNav value={orderType} onSelect={(v) => setOrderType(v)} />
       </HeadBox>
-      <InfiniteScroll
-        dataLength={proposals.length}
-        next={getProposals}
-        hasMore={hasMore}
-        loader={<Loading />}
-        height={400}
-        style={{ height: "calc(var(--app-height) - 50px)" }}
-      >
-        {proposals.length === 0 && <NoItem />}
-        <ProposalBox>
+      <ProposalBox style={{ height: "calc(var(--app-height) - 182px)" }}>
+        <InfiniteScroll
+          dataLength={proposals.length}
+          next={getProposals}
+          hasMore={hasMore}
+          loader={<Loading />}
+          height={400}
+          style={{ height: "calc(var(--app-height) - 182px)" }}
+        >
+          {proposals.length === 0 && <NoItem />}
           {proposals.map((p) => (
             <ProposalCard key={p.id} data={p} />
           ))}
-        </ProposalBox>
-      </InfiniteScroll>
+        </InfiniteScroll>
+      </ProposalBox>
     </Layout>
   );
 }
 
 const ProposalBox = styled.div`
-  padding: 15px 15px 0;
+  padding: 15px 20px 0;
+  overflow-y: auto;
 `;
 
 const HeadBox = styled.div`

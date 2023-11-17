@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { ChevronLeft } from "react-bootstrap-icons";
 import Loading from "./loading";
 import { useNavigate } from "react-router-dom";
 import BackSVG from "components/svgs/back";
