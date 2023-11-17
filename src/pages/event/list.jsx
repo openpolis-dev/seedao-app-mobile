@@ -10,10 +10,12 @@ import store from "store";
 import { saveLoading } from "store/reducer";
 import { useSelector } from "react-redux";
 import Loading from "components/common/loading";
+import { useNavigate } from "react-router-dom";
 
 const PageSize = 20;
 
 export default function EventListPage() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const loading = useSelector((state) => state.loading);
 
@@ -43,6 +45,10 @@ export default function EventListPage() {
   useEffect(() => {
     getList();
   }, []);
+
+  const openEvent = (id) => {
+    navigate(`/event/view?id=${id}`);
+  };
   return (
     <Layout title={t("Event.ListTitle")}>
       <InfiniteScroll dataLength={list.length} next={getList} hasMore={hasMore} loader={<Loading />}>
@@ -60,7 +66,7 @@ export default function EventListPage() {
           ) : (
             list.map((p) => (
               <EventItem key={p.id}>
-                <EventCard event={p} />
+                <EventCard event={p} handleClick={openEvent} />
               </EventItem>
             ))
           )}

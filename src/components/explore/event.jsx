@@ -4,8 +4,10 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { getSeeuEventList } from "api/event";
 import EventCard, { EventCardSkeleton } from "components/eventCard";
+import { useNavigate } from "react-router-dom";
 
 export default function ExploreEventSection() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
@@ -24,6 +26,9 @@ export default function ExploreEventSection() {
     };
     getList();
   }, []);
+  const openEvent = (id) => {
+    navigate(`/event/view?id=${id}`);
+  };
   return (
     <ExploreSection title={t("Explore.OfflineEvent")} desc={t("Explore.OfflineEventDesc")} moreLink="/event">
       <List>
@@ -39,7 +44,7 @@ export default function ExploreEventSection() {
         ) : (
           list.map((item, index) => (
             <EventItem key={index}>
-              <EventCard event={item} />
+              <EventCard event={item} handleClick={openEvent} />
             </EventItem>
           ))
         )}

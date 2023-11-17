@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { getSeeuEventList } from "api/event";
 import EventCard, { EventCardSkeleton } from "./eventCard";
+import { useNavigate } from "react-router-dom";
 
 const Box = styled.div`
   padding: 0 24px;
@@ -31,6 +32,7 @@ const TitleBox = styled.div`
 `
 
 export default function Event() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
@@ -49,6 +51,9 @@ export default function Event() {
     };
     getList();
   }, []);
+  const openEvent = (id) => {
+    navigate(`/event/view?id=${id}`);
+  }
   return (
     <Box>
       <TitleBox>{t("home.events")}</TitleBox>
@@ -59,7 +64,7 @@ export default function Event() {
             <EventCardSkeleton />
           </>
         ) : (
-            list.map((item, index) => <EventCard event={item}  key={index} />)
+          list.map((item, index) => <EventCard event={item} key={index} handleClick={openEvent} />)
         )}
       </List>
     </Box>

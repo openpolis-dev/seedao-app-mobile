@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { RectangularSkeleton } from "components/common/skeleton";
 
-export default function EventCard({ event }) {
+export default function EventCard({ event, handleClick }) {
   return (
-    <EventItem>
+    <EventItem onClick={() => handleClick(event.id)}>
       <Cover src={event.thumbnail} />
       <Title>{event.subject}</Title>
       <InfoBox>

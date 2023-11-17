@@ -27,6 +27,7 @@ import Governance from "pages/governance";
 import Pub from "../pages/Pub";
 import PubDetail from "../pages/PubDetail";
 import EventList from "pages/event/list";
+import EventInfoPage from "pages/event/detail";
 
 // import MessagePage from "./message";
 // import EventHandler from "./components/eventHandler";
@@ -50,6 +51,7 @@ function RouterLink() {
         <Route path="/explore" element={<Explore />} />
         <Route path="/governance" element={<Governance />} />
         <Route path="/event" element={<EventList />} />
+        <Route path="/event/view" element={<EventInfoPage />} />
 
         <Route path="/pub" element={<Pub />} />
         <Route path="/pubDetail/:id" element={<PubDetail />} />

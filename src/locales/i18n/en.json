@@ -152,7 +152,8 @@
     "Intro": "公会介绍"
   },
   "Event": {
-    "ListTitle": "All Events"
+    "ListTitle": "All Events",
+    "DetailTitle": "Event Detail"
   },
   "Vault": {
     "TotalAssets": "Total Assets",
@@ -160,6 +161,8 @@
     "CityHallVault": "CityHall Vault",
     "IncubatorVault": "Incubator Vault",
     "SupplySCR": "Sent SCR",
-    "SupplySeed": "Sent SEED"
+    "SupplySeed": "Sent SEED",
+    "SendRecordTitle": "Send Record",
+    "ScrRanking": "SCR Ranking"
   }
 }

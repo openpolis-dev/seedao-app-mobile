@@ -151,7 +151,8 @@
     "Intro": "公会介绍"
   },
   "Event": {
-    "ListTitle": "所有活动"
+    "ListTitle": "所有活动",
+    "DetailTitle": "活动详情"
   },
   "Vault": {
     "TotalAssets": "总资产",
@@ -159,6 +160,8 @@
     "CityHallVault": "市政厅金库",
     "IncubatorVault": "孵化器金库",
     "SupplySCR": "已发放积分SCR总数",
-    "SupplySeed": "已发放SEED"
+    "SupplySeed": "已发放SEED",
+    "SendRecordTitle": "发放记录",
+    "ScrRanking": "积分总榜"
   }
 }
