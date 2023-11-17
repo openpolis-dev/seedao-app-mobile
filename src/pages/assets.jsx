@@ -17,6 +17,7 @@ import { ethers } from "ethers";
 import { formatNumber } from "../utils/number";
 import PublicJs from "../utils/publicJs";
 import CopyBox from "../components/common/copy";
+import VAULTS from "constant/vault";
 
 export default function Assets() {
   const { t } = useTranslation();
@@ -61,8 +62,6 @@ export default function Assets() {
       name: "Polygon",
     },
   };
-
-  const { VAULTS } = AppConfig;
 
   const getVaultBalance = async ({ chainId, address }) => {
     return axios.get(`https://safe-client.safe.global/v1/chains/${chainId}/safes/${address}/balances/usd?trusted=true`);
@@ -221,22 +220,27 @@ export default function Assets() {
       </TotalAssets>
       <WalletBox>
         {VAULTS.map((v, index) => (
-          <li key={index}>
-            <FirstLine>
-              <TitTop>{t(v.name)}</TitTop>
+          <WalletItem key={index}>
+            <WalletItemLeft>
+              <div className="name">{t(v.name)}</div>
+              <Addr>{PublicJs.AddressToShow(v.address, 4)}</Addr>
+              <img src={v.icon} alt="" onClick={() => linkTo(v)} />
+              <div className="signer">
+                {vaultsMap[v.id]?.threshold || 0}/{vaultsMap[v.id]?.total || 0}
+              </div>
+            </WalletItemLeft>
+            <WalletItemValue>${formatNumber(vaultsMap[v.id]?.balance || 0.0)}</WalletItemValue>
+            {/* <FirstLine>
               <Tag>
                 {SAFE_CHAIN[v.chainId].name} {vaultsMap[v.id]?.threshold || 0}/{vaultsMap[v.id]?.total || 0}
               </Tag>
             </FirstLine>
             <LineBox>
               <FirstLine>
-                <Addr>{PublicJs.AddressToShow(v.address)}</Addr>
                 <CopyBox text={v.address} />
-                <Share onClick={() => linkTo(v)} className="iconBox" />
               </FirstLine>
-              <Num>${formatNumber(vaultsMap[v.id]?.balance || 0.0)}</Num>
-            </LineBox>
-          </li>
+            </LineBox> */}
+          </WalletItem>
         ))}
       </WalletBox>
       <Box>
@@ -308,6 +312,33 @@ const TotalAssets = styled.div`
   }
 `;
 
+const WalletItem = styled.li`
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  line-height: 50px;
+`;
+
+const WalletItemLeft = styled.div`
+  display: flex;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-weight: 400;
+  .name {
+    margin-right: 20px;
+    font-weight: 600;
+    color: #eee5ff;
+  }
+  img {
+    margin-right: 4px;
+  }
+`;
+const WalletItemValue = styled.div`
+  font-size: 15px;
+  font-weight: 500;
+  color: #ff7193;
+`;
+
 const Box = styled.div`
   padding: 20px;
 `;
@@ -357,24 +388,6 @@ const FlexBox = styled.div`
   padding-bottom: 10px;
 `;
 
-const FlexBox2 = styled.ul`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  border-top: 1px solid #eee;
-  margin-top: 10px;
-  padding-top: 15px;
-  li {
-    width: 33%;
-    text-align: center;
-    border-right: 1px solid #ccc;
-    font-size: 12px;
-    &:last-child {
-      border-right: 0;
-    }
-  }
-`;
 const CardItem = styled(CardBox)`
   width: 48%;
   margin-bottom: 20px;
@@ -412,15 +425,6 @@ const CardItem = styled(CardBox)`
     letter-spacing: -5px;
   }
 `;
-const TopBox = styled.div`
-  width: 100%;
-`;
-
-const NumBal = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
 
 const BtmLine = styled.div`
   display: flex;
@@ -433,43 +437,11 @@ const WalletBox = styled.ul`
   color: #fff;
   margin-top: 20px;
   padding-inline: 20px;
-  li {
-    border: 1px solid rgba(255, 255, 255, 0.02);
-    line-height: 50px;
-  }
 `;
 
-const Tag = styled.div`
-  background: var(--bs-primary);
-  margin-left: 10px;
-  font-size: 12px;
-  color: #fff;
-  padding: 0 10px;
-  border-radius: 10px;
-`;
 
 const Addr = styled.div`
   font-size: 12px;
-  margin-right: 20px;
+  margin-right: 9px;
 `;
 
-const FirstLine = styled.div`
-  display: flex;
-  align-items: center;
-  .iconBox {
-    margin-inline: 20px;
-    font-size: 18px;
-  }
-`;
-
-const TitTop = styled.div`
-  font-size: 14px;
-  font-weight: bold;
-`;
-
-const LineBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 10px;
-`;

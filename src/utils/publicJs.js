@@ -2,17 +2,17 @@ import {SiweMessage} from 'siwe';
 import AppConfig from '../AppConfig';
 import axios from 'axios';
 
-const AddressToShow = (address) => {
+const AddressToShow = (address, num = 8) => {
   if (!address) {
     return "...";
   }
-  if (address.length <= 8) {
+  if (address.length <= num) {
     return address;
   }
 
-  const frontStr = address.substring(0, 8);
+  const frontStr = address.substring(0, num);
 
-  const afterStr = address.substring(address.length - 8, address.length);
+  const afterStr = address.substring(address.length - num, address.length);
 
   return `${frontStr}...${afterStr}`;
 };
