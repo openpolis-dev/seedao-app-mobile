@@ -7,11 +7,13 @@ export default function EventCard({ event }) {
       <Cover src={event.thumbnail} />
       <Title>{event.subject}</Title>
       <InfoBox>
-        <InfoLeft>
-          <div>{event.startTime}</div>
-          <div>{event.city.name}</div>
-        </InfoLeft>
-        <InfoRight>🚀 {event.status}</InfoRight>
+        <div>
+          <InfoDate>{event.startTime}</InfoDate>
+          <InfoBottom>
+            <div className="_city">{event.city.name}</div>
+            <div>🚀 {event.status}</div>
+          </InfoBottom>
+        </div>
       </InfoBox>
       <TagBox>
         {event.tags?.map((item, i) => (
@@ -27,12 +29,14 @@ export const EventCardSkeleton = () => {
     <EventItem>
       <RectangularSkeleton height="180px" radius="16px" />
       <RectangularSkeleton height="20px" style={{ marginTop: "14px", marginBottom: "10px" }} />
-      <InfoBox>
-        <InfoLeft>
+      <div>
+        <InfoDate>
           <RectangularSkeleton width="100px" height="16px" style={{ marginBottom: "4px" }} />
+        </InfoDate>
+        <InfoBottom>
           <RectangularSkeleton width="100px" height="16px" />
-        </InfoLeft>
-      </InfoBox>
+        </InfoBottom>
+      </div>
       <TagBox>
         <RectangularSkeleton width="46px" height="22px" />
         <RectangularSkeleton width="46px" height="22px" />
@@ -61,19 +65,22 @@ const Title = styled.div`
 `;
 
 const InfoBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
+  
 `;
-const InfoLeft = styled.div`
+const InfoDate = styled.div`
   font-size: 12px;
   font-weight: 400;
   color: var(--font-light-color);
   line-height: 17px;
 `;
 
-const InfoRight = styled.div`
+const InfoBottom = styled.div`
   font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  ._city {
+    color: var(--font-light-color);
+  }
 `;
 
 const TagBox = styled.ul`
@@ -81,6 +88,7 @@ const TagBox = styled.ul`
   display: flex;
   gap: 8px;
   margin-top: 8px;
+  flex-wrap: wrap;
   li {
     height: 22px;
     line-height: 22px;

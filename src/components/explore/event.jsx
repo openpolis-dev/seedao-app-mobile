@@ -14,7 +14,7 @@ export default function ExploreEventSection() {
     const getList = async () => {
       setLoading(true);
       try {
-        const res = await getSeeuEventList({ currentPage: 1, pageSize: 2 });
+        const res = await getSeeuEventList({ currentPage: 1, pageSize: 6 });
         setList(res.data.data);
         setLoading(false);
       } catch (error) {
@@ -29,11 +29,19 @@ export default function ExploreEventSection() {
       <List>
         {loading ? (
           <>
-            <EventCardSkeleton />
-            <EventCardSkeleton />
+            <EventItem>
+              <EventCardSkeleton />
+            </EventItem>
+            <EventItem>
+              <EventCardSkeleton />
+            </EventItem>
           </>
         ) : (
-          list.map((item, index) => <EventCard event={item} key={index} />)
+          list.map((item, index) => (
+            <EventItem key={index}>
+              <EventCard event={item} />
+            </EventItem>
+          ))
         )}
       </List>
     </ExploreSection>
@@ -42,12 +50,16 @@ export default function ExploreEventSection() {
 
 const List = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  & > div {
+  gap: 14px;
+  /* & > div {
     border-bottom: 1px solid var(--border-color-1);
     &:last-of-type {
       border-bottom: none;
     }
-  }
+  } */
+  flex-wrap: wrap;
+`;
+
+const EventItem = styled.div`
+  width: calc(50% - 7px);
 `;
