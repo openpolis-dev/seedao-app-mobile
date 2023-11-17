@@ -2,7 +2,8 @@
   "Menus": {
     "Explore": "探索",
     "Square": "广场",
-    "Governance": "治理"
+    "Governance": "治理",
+    "Vault": "金库"
   },
   "General": {
     "connect": "连接钱包",
@@ -151,5 +152,11 @@
   },
   "Event": {
     "ListTitle": "所有活动"
+  },
+  "Vault": {
+    "TotalAssets": "总资产",
+    "CommunityVault": "社区金库",
+    "CityHallVault": "市政厅金库",
+    "IncubatorVault": "孵化器金库"
   }
 }

@@ -2,7 +2,8 @@
   "Menus": {
     "Explore": "Explore",
     "Square": "Square",
-    "Governance": "Governance"
+    "Governance": "Governance",
+    "Vault": "Vault"
   },
   "General": {
     "connect": "Connect Wallet",
@@ -152,5 +153,11 @@
   },
   "Event": {
     "ListTitle": "All Events"
+  },
+  "Vault": {
+    "TotalAssets": "Total Assets",
+    "CommunityVault": "Community Vault",
+    "CityHallVault": "CityHall Vault",
+    "IncubatorVault": "Incubator Vault"
   }
 }
