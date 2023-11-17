@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { formatTime } from "utils/time";
+import { MultiLineStyle } from "assets/styles/common";
 
 export default function ProposalCard({ data }) {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ export default function ProposalCard({ data }) {
     }
     // post content is always a json string of Delta, we need to convert it html
     const QuillDeltaToHtmlConverter = await require("quill-delta-to-html");
-    const converter= new QuillDeltaToHtmlConverter.QuillDeltaToHtmlConverter(text, {});
+    const converter = new QuillDeltaToHtmlConverter.QuillDeltaToHtmlConverter(text, {});
     let textContent = converter.convert();
     if (textContent === "<p><br/></p>") {
       textContent = "";
@@ -66,68 +67,88 @@ export default function ProposalCard({ data }) {
   return (
     <CardBox key={data.id}>
       <div onClick={openProposal}>
-        <CardHeaderStyled>
+        <Title>{data.title}</Title>
+        <ProposalContent line={2} dangerouslySetInnerHTML={{ __html: content }}></ProposalContent>
+
+        <CardFooter>
           <div className="left">
             <UserAvatar src={data.user.photo_url} alt="" />
+            <div className="name">{data.user.username}</div>
+            {data.user?.user_title?.name && (
+              <UserTag bg={data.user.user_title.background}>{data.user.user_title?.name}</UserTag>
+            )}
           </div>
           <div className="right">
-            <div className="name">{data.user.username}</div>
-            <div className="date">{formatTime(new Date(data.updated_at))}</div>
+            <span>{`#${data.category_name}`}</span>
+            <span className="date">{formatTime(new Date(data.updated_at))}</span>
           </div>
-        </CardHeaderStyled>
-        <CardBody>
-          <Title>{data.title}</Title>
-          {/* <ProposalContent dangerouslySetInnerHTML={{ __html: content }}></ProposalContent> */}
-        </CardBody>
+        </CardFooter>
       </div>
     </CardBox>
   );
 }
 
 const CardBox = styled.div`
-  //border: 1px solid #f1f1f1;
-  cursor: pointer;
   background: #fff;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  padding: 10px 15px;
-  border-radius: 10px;
-  margin-bottom: 15px;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.02);
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 16px;
 `;
 
-const CardBody = styled.div``;
-
-const CardHeaderStyled = styled.div`
+const CardFooter = styled.div`
+  margin-top: 9px;
   display: flex;
-  gap: 10px;
-  padding-block: 10px;
-  .name {
-    font-weight: 500;
+  justify-content: space-between;
+  font-size: 12px;
+  .left {
+    display: flex;
+    align-items: center;
+    .name {
+      margin-left: 8px;
+    }
   }
-  .date {
-    font-size: 13px;
-    color: #999;
+  .right {
+    color: var(--font-light-color);
+    span:first-of-type {
+      margin-right: 8px;
+    }
   }
 `;
 
 const UserAvatar = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
 `;
 
 const Title = styled.div`
-  font-weight: 600;
   font-size: 16px;
-  margin-bottom: 10px;
+  font-family: "Poppins-SemiBold";
+  font-weight: 600;
+  line-height: 24px;
+  margin-bottom: 8px;
+  ${MultiLineStyle}
 `;
 
 const ProposalContent = styled.div`
-  -webkit-box-orient: vertical;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
+  ${MultiLineStyle}
   font-size: 14px;
+  color: #3a373e;
+  line-height: 24px;
   .ql-editor p {
     line-height: 24px;
   }
+`;
+
+const UserTag = styled.span`
+  padding-inline: 8px;
+  height: 18px;
+  line-height: 18px;
+  display: inline-block;
+  font-size: 12px;
+  background-color: ${(props) => props.bg};
+  border-radius: 20px;
+  margin-left: 8px;
+  color: #fff;
 `;
