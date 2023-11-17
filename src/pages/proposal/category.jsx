@@ -12,6 +12,7 @@ import Loading from "components/common/loading";
 import { useTranslation } from "react-i18next";
 import NoItem from "../../components/noItem";
 import ProposalSubNav from "components/proposal/proposalSubNav";
+import useProposalCategory from "hooks/useProposalCategory";
 
 export default function ProposalCategory() {
   const { id } = useParams();
@@ -23,6 +24,8 @@ export default function ProposalCategory() {
   const [orderType, setOrderType] = useState("new");
   const [hasMore, setHasMore] = useState(false);
   const [category, setcategory] = useState();
+
+  const ProposalNav = useProposalCategory(Number(id));
 
   const getProposals = async (useGlobalLoading) => {
     const _id = Number(id);
@@ -41,7 +44,7 @@ export default function ProposalCategory() {
       if (res?.data?.threads?.length) {
         setcategory(res.data.threads[0].category_name);
       } else {
-        setcategory(t("menus.Proposal"));
+        setcategory(t("Proposal.Governance"));
       }
 
       console.log(res);
@@ -55,20 +58,13 @@ export default function ProposalCategory() {
     }
   };
 
-  // const category = useMemo(() => {
-  //   return PROPOSAL_CATEGORIES[0].children.find((item) => item.category_id === Number(id));
-  // }, [id]);
-
   useEffect(() => {
-    // console.error(category)
-    // if (!category) {
-    //   navigate("/proposal");
-    // }
     id && getProposals(true);
   }, [id, orderType]);
   return (
     <Layout title={category} headBgColor="var(--background-color)" bgColor="var(--background-color)">
       <HeadBox>
+        {ProposalNav}
         <ProposalSubNav value={orderType} onSelect={(v) => setOrderType(v)} />
       </HeadBox>
       <InfiniteScroll
@@ -97,4 +93,6 @@ const ProposalBox = styled.div`
 const HeadBox = styled.div`
   display: flex;
   justify-content: space-between;
-`
+  padding-inline: 20px;
+  margin-top: 20px;
+`;
