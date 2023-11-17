@@ -9,8 +9,9 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import Loading from "components/common/loading";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import NoItem from "../../components/noItem";
+import ProposalSubNav from "components/poposal/proposalSubNav";
 
 export default function ProposalCategory() {
   const { id } = useParams();
@@ -19,9 +20,9 @@ export default function ProposalCategory() {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
   const [proposals, setProposals] = useState([]);
-  const [orderType] = useState("new");
+  const [orderType, setOrderType] = useState("new");
   const [hasMore, setHasMore] = useState(false);
-  const [category,setcategory] = useState()
+  const [category, setcategory] = useState();
 
   const getProposals = async (useGlobalLoading) => {
     const _id = Number(id);
@@ -37,13 +38,13 @@ export default function ProposalCategory() {
         category_index_id: _id,
         sort: orderType,
       });
-      if(res?.data?.threads?.length){
-        setcategory(res.data.threads[0].category_name)
-      }else{
-       setcategory(t("menus.Proposal"))
+      if (res?.data?.threads?.length) {
+        setcategory(res.data.threads[0].category_name);
+      } else {
+        setcategory(t("menus.Proposal"));
       }
 
-      console.log(res)
+      console.log(res);
       setProposals([...proposals, ...res.data.threads]);
       setHasMore(res.data.threads.length >= pageSize);
       setPage(page + 1);
@@ -66,7 +67,10 @@ export default function ProposalCategory() {
     id && getProposals(true);
   }, [id, orderType]);
   return (
-    <Layout title={category} noTab={true}>
+    <Layout title={category} headBgColor="var(--background-color)" bgColor="var(--background-color)">
+      <HeadBox>
+        <ProposalSubNav value={orderType} onSelect={(v) => setOrderType(v)} />
+      </HeadBox>
       <InfiniteScroll
         dataLength={proposals.length}
         next={getProposals}
@@ -89,3 +93,8 @@ export default function ProposalCategory() {
 const ProposalBox = styled.div`
   padding: 15px 15px 0;
 `;
+
+const HeadBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+`

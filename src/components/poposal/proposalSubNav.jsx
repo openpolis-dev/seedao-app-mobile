@@ -7,10 +7,10 @@ export default function ProposalSubNav({ onSelect, value }) {
 
   return (
     <SubNav>
-      <li className={value === 0 ? "selected" : ""} onClick={() => onSelect(0)}>
+      <li className={value === "new" ? "selected" : ""} onClick={() => onSelect("new")}>
         {t("Proposal.TheNeweset")}
       </li>
-      <li className={value === 1 ? "selected" : ""} onClick={() => onSelect(1)}>
+      <li className={value === "old" ? "selected" : ""} onClick={() => onSelect("old")}>
         {t("Proposal.TheOldest")}
       </li>
     </SubNav>
@@ -19,20 +19,23 @@ export default function ProposalSubNav({ onSelect, value }) {
 
 const SubNav = styled.ul`
   display: flex;
-  padding-inline: 20px;
-  margin-block: 15px;
-  gap: 20px;
+  line-height: 22px;
   li {
-    padding-inline: 20px;
-    height: 26px;
-    line-height: 26px;
-    background-color: #ddd;
-    border-radius: 20px;
-    color: #444;
+    padding-inline: 9px;
     font-size: 12px;
+    border: 1px solid var(--border-color-1);
+
     &.selected {
-      background-color: var(--bs-primary);
+      background-color: var(--primary-color);
       color: #fff;
+    }
+    &:first-child {
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px;
+    }
+    &:last-child {
+      border-top-right-radius: 6px;
+      border-bottom-right-radius: 6px;
     }
   }
 `;
