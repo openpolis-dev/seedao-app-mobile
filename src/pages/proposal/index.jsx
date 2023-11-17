@@ -8,6 +8,7 @@ import store from "store";
 import { saveProposalCategories } from "store/reducer";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import ArrowIcon from "assets/Imgs/arrow_top.svg"
 
 export default function Proposal() {
   const { t } = useTranslation();
@@ -34,6 +35,7 @@ export default function Proposal() {
           <CategoryCard key={index}>
             <div className="cate-name">
               <Link to={`/proposal/category/${category.category_id}`}>{category.name}</Link>
+              <img src={ArrowIcon} alt="" />
             </div>
             {!!category.children.length && (
               <SubCategoryCard>
@@ -115,6 +117,8 @@ const CategoryCard = styled.div`
     font-family: Poppins-SemiBold;
     font-weight: 600;
     color: #000000;
+    display: flex;
+    justify-content: space-between;
   }
 `;
 
