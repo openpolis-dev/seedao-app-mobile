@@ -157,6 +157,8 @@
     "TotalAssets": "总资产",
     "CommunityVault": "社区金库",
     "CityHallVault": "市政厅金库",
-    "IncubatorVault": "孵化器金库"
+    "IncubatorVault": "孵化器金库",
+    "SupplySCR": "已发放积分SCR总数",
+    "SupplySeed": "已发放SEED"
   }
 }

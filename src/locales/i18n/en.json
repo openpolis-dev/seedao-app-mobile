@@ -158,6 +158,8 @@
     "TotalAssets": "Total Assets",
     "CommunityVault": "Community Vault",
     "CityHallVault": "CityHall Vault",
-    "IncubatorVault": "Incubator Vault"
+    "IncubatorVault": "Incubator Vault",
+    "SupplySCR": "Sent SCR",
+    "SupplySeed": "Sent SEED"
   }
 }

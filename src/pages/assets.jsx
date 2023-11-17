@@ -18,6 +18,8 @@ import { formatNumber } from "../utils/number";
 import PublicJs from "../utils/publicJs";
 import CopyBox from "../components/common/copy";
 import VAULTS from "constant/vault";
+import CardIcon1 from "assets/Imgs/vault/cardIcon1.svg";
+import CardIcon2 from "assets/Imgs/vault/cardIcon2.svg";
 
 export default function Assets() {
   const { t } = useTranslation();
@@ -230,64 +232,23 @@ export default function Assets() {
               </div>
             </WalletItemLeft>
             <WalletItemValue>${formatNumber(vaultsMap[v.id]?.balance || 0.0)}</WalletItemValue>
-            {/* <FirstLine>
-              <Tag>
-                {SAFE_CHAIN[v.chainId].name} {vaultsMap[v.id]?.threshold || 0}/{vaultsMap[v.id]?.total || 0}
-              </Tag>
-            </FirstLine>
-            <LineBox>
-              <FirstLine>
-                <CopyBox text={v.address} />
-              </FirstLine>
-            </LineBox> */}
           </WalletItem>
         ))}
       </WalletBox>
-      <Box>
+      <BottomBox>
         <FlexBox>
           <CardItem>
-            <Tit>{t("Assets.SupplySCR")}</Tit>
+            <img src={CardIcon1} alt="" />
             <Num>{formatNumber(totalSCR)}</Num>
-            <BtmLine>
-              <div>≈ {formatNumber(SCRValue.toFixed(2))} U</div>
-              <div>(1SCR ≈ {SCR_PRICE} U)</div>
-            </BtmLine>
-            <div className="decorBg">SEE</div>
+            <Tit>{t("Vault.SupplySCR")}</Tit>
           </CardItem>
           <CardItem>
-            <Tit>{t("Assets.SupplySGN")}</Tit>
+            <img src={CardIcon2} alt="" />
             <Num>{formatNumber(nftData.totalSupply)}</Num>
-            <BtmLine>
-              <div>{t("Assets.FloorPrice")}</div>
-              <div>{nftData.floorPrice} ETH</div>
-            </BtmLine>
-            <div className="decorBg">DAO</div>
-          </CardItem>
-          <CardItem>
-            <Tit>{t("Assets.SeasonUseUSD")}</Tit>
-            {/*<Num>{(asset.token_total_amount || 0) - (asset.token_remain_amount||0)}</Num>*/}
-            <Num>{formatNumber(asset.token_used_amount)}</Num>
-            <BtmLine>
-              <div>{t("Assets.SeasonBudget")}</div>
-              <div>{formatNumber(asset.token_total_amount)}</div>
-            </BtmLine>
-            <div className="decorBg">SEE</div>
-          </CardItem>
-          <CardItem>
-            <Tit>
-              <div>{t("Assets.SeasonUsedSCR")}</div>
-              <div>{t("Assets.SCRTip")}</div>
-            </Tit>
-            {/*<Num>{(asset.credit_total_amount || 0) - (asset.credit_remain_amount || 0)}</Num>*/}
-            <Num>{formatNumber(asset.credit_used_amount)}</Num>
-            <BtmLine>
-              <div>{t("Assets.SeasonBudget")}</div>
-              <div>{asset.credit_total_amount}</div>
-            </BtmLine>
-            <div className="decorBg">DAO</div>
+            <Tit>{t("Vault.SupplySeed")}</Tit>
           </CardItem>
         </FlexBox>
-      </Box>
+      </BottomBox>
     </Layout>
   );
 }
@@ -339,98 +300,35 @@ const WalletItemValue = styled.div`
   color: #ff7193;
 `;
 
-const Box = styled.div`
+const BottomBox = styled.div`
   padding: 20px;
+  background-color: var(--background-color);
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
 `;
 
-const CardBox = styled.div`
-  background: #666;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  background: url(${BgImg}) top no-repeat;
-  background-size: 100%;
-  background-attachment: fixed;
-
-  .vaultInner {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-    background: rgba(161, 110, 255, 0.2);
-    padding: 20px;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-  }
-`;
 const Num = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #424242;
+  line-height: 26px;
+  margin-top: 9px;
 `;
 const Tit = styled.div`
   font-size: 12px;
-  text-align: center;
+  color: var(--font-light-color);
 `;
 
 const FlexBox = styled.div`
   display: flex;
-  align-items: stretch;
-  justify-content: space-between;
-  margin-top: 20px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
+  gap: 14px;
 `;
 
-const CardItem = styled(CardBox)`
-  width: 48%;
-  margin-bottom: 20px;
-  padding: 20px 10px;
-  color: #fff;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  &:first-child {
-    background: linear-gradient(to right, #9d72fa, #6961fa);
-  }
-  &:nth-child(2) {
-    background: linear-gradient(to right, #f1a6b6, #8f69d2);
-  }
-  &:nth-child(3) {
-    background: linear-gradient(to right, #3bdabe, #44b5f4);
-  }
-  &:nth-child(4) {
-    background: linear-gradient(to right, #f9a488, #fe7c7c);
-  }
-
-  .decorBg {
-    position: absolute;
-    right: 0;
-    bottom: -25px;
-    font-size: 85px;
-    font-family: "Jost-Bold";
-    opacity: 0.04;
-    color: #000;
-    width: 100%;
-    text-align: center;
-    letter-spacing: -5px;
-  }
-`;
-
-const BtmLine = styled.div`
-  display: flex;
-  flex-direction: column;
-  font-size: 12px;
-  align-items: center;
+const CardItem = styled.div`
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  flex: 1;
 `;
 
 const WalletBox = styled.ul`
@@ -439,9 +337,7 @@ const WalletBox = styled.ul`
   padding-inline: 20px;
 `;
 
-
 const Addr = styled.div`
   font-size: 12px;
   margin-right: 9px;
 `;
-
