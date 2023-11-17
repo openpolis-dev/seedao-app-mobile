@@ -34,14 +34,14 @@ const Mid = styled.div`
 `;
 const LoadingBox = styled.div`
   position: absolute;
-  right: -70px;
-  top: 0;
-`
+  right: -24px;
+  top: 3px;
+`;
 const OperateBox = styled.div`
   position: absolute;
   right: 20px;
   top: 0;
-`
+`;
 export default function Header({ title, bgColor, rightOperation }) {
   const navigate = useNavigate();
 
