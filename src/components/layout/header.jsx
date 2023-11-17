@@ -12,6 +12,7 @@ const HeaderBox = styled.header`
   align-items: center;
   justify-content: center;
   width: 100%;
+  color: ${(props) => props.headColor || "var(--font-color)"};
 `;
 const Box = styled.div`
   position: fixed;
@@ -42,7 +43,7 @@ const OperateBox = styled.div`
   right: 20px;
   top: 0;
 `;
-export default function Header({ title, bgColor, rightOperation }) {
+export default function Header({ title, bgColor, headColor, rightOperation }) {
   const navigate = useNavigate();
 
   const backTop = () => {
@@ -54,7 +55,7 @@ export default function Header({ title, bgColor, rightOperation }) {
       <Back onClick={() => backTop()}>
         <ChevronLeft />
       </Back>
-      <HeaderBox>
+      <HeaderBox headColor={headColor}>
         <Mid>
           <span>{title}</span>
           <LoadingBox>
