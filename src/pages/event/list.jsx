@@ -2,15 +2,20 @@ import styled from "styled-components";
 import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect, useMemo } from "react";
-import EventCard from "components/eventCard";
+import EventCard, { EventCardSkeleton } from "components/eventCard";
 import { getSeeuEventList } from "api/event";
 import InfiniteScroll from "react-infinite-scroll-component";
 import NoItem from "components/noItem";
+import store from "store";
+import { saveLoading } from "store/reducer";
+import { useSelector } from "react-redux";
+import Loading from "components/common/loading";
 
 const PageSize = 20;
 
 export default function EventListPage() {
   const { t } = useTranslation();
+  const loading = useSelector((state) => state.loading);
 
   const [list, setList] = useState([]);
   const [page, setPage] = useState(1);
@@ -21,14 +26,17 @@ export default function EventListPage() {
   }, [list, total]);
 
   const getList = async () => {
+    store.dispatch(saveLoading(true));
     try {
       const res = await getSeeuEventList({ currentPage: page, pageSize: PageSize });
-        setList([...list, ...res.data.data]);
+      setList([...list, ...res.data.data]);
       setTotal(res.data.total);
       setPage(page + 1);
     } catch (error) {
       //  TODO toast
       console.error(error);
+    } finally {
+      store.dispatch(saveLoading(false));
     }
   };
 
@@ -37,19 +45,25 @@ export default function EventListPage() {
   }, []);
   return (
     <Layout title={t("Event.ListTitle")}>
-      <InfiniteScroll
-        dataLength={list.length}
-        next={getList}
-        hasMore={hasMore}
-        // loader={<Loading />}
-      >
-        {list.length === 0 && <NoItem />}
+      <InfiniteScroll dataLength={list.length} next={getList} hasMore={hasMore} loader={<Loading />}>
+        {!loading && list.length === 0 && <NoItem />}
+
         <EventList>
-          {list.map((p) => (
-            <EventItem key={p.id}>
-              <EventCard event={p} />
-            </EventItem>
-          ))}
+          {loading && list.length === 0 ? (
+            <>
+              {new Array(4).fill(0).map((_, index) => (
+                <EventItem key={index}>
+                  <EventCardSkeleton />
+                </EventItem>
+              ))}
+            </>
+          ) : (
+            list.map((p) => (
+              <EventItem key={p.id}>
+                <EventCard event={p} />
+              </EventItem>
+            ))
+          )}
         </EventList>
       </InfiniteScroll>
     </Layout>
