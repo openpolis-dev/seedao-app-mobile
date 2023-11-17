@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import Layout from "components/layout/layout";
-import ProposalCard from "components/poposal/proposalCard";
+import ProposalCard from "components/proposal/proposalCard";
 import { getProposalsBySubCategory } from "api/proposal";
 import { PROPOSAL_CATEGORIES } from "utils/constant";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -11,7 +11,7 @@ import { saveLoading } from "store/reducer";
 import Loading from "components/common/loading";
 import { useTranslation } from "react-i18next";
 import NoItem from "../../components/noItem";
-import ProposalSubNav from "components/poposal/proposalSubNav";
+import ProposalSubNav from "components/proposal/proposalSubNav";
 
 export default function ProposalCategory() {
   const { id } = useParams();

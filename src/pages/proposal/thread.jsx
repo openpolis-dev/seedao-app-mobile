@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import QuillViewer from "components/poposal/quillViewer";
+import QuillViewer from "components/proposal/quillViewer";
 import useLoadQuill from "hooks/useLoadQuill";
 import { getProposalDetail } from "api/proposal";
 import { formatTime } from "utils/time";

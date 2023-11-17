@@ -1,4 +1,4 @@
-import ProposalCard from "components/poposal/proposalCard";
+import ProposalCard from "components/proposal/proposalCard";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { getProposalDetail } from "api/proposal";
