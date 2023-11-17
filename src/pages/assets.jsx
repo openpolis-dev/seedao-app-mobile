@@ -1,14 +1,9 @@
 import Layout from "../components/layout/layout";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import { Share } from "react-bootstrap-icons";
 import { useEffect, useMemo, useState } from "react";
 import store from "../store";
 import { saveLoading } from "../store/reducer";
-import { getProjectApplications } from "../api/applications";
-import { formatTime } from "../utils/time";
-import { useNavigate } from "react-router-dom";
-import BgImg from "../assets/images/homebg.png";
 import AppConfig from "../AppConfig";
 import axios from "axios";
 import { getTreasury } from "../api/treasury";
@@ -20,6 +15,7 @@ import CopyBox from "../components/common/copy";
 import VAULTS from "constant/vault";
 import CardIcon1 from "assets/Imgs/vault/cardIcon1.svg";
 import CardIcon2 from "assets/Imgs/vault/cardIcon2.svg";
+import ApplicantsSection from "components/vault/applications";
 
 export default function Assets() {
   const { t } = useTranslation();
@@ -225,7 +221,9 @@ export default function Assets() {
           <WalletItem key={index}>
             <WalletItemLeft>
               <div className="name">{t(v.name)}</div>
-              <Addr>{PublicJs.AddressToShow(v.address, 4)}</Addr>
+              <CopyBox>
+                <Addr>{PublicJs.AddressToShow(v.address, 4)}</Addr>
+              </CopyBox>
               <img src={v.icon} alt="" onClick={() => linkTo(v)} />
               <div className="signer">
                 {vaultsMap[v.id]?.threshold || 0}/{vaultsMap[v.id]?.total || 0}
@@ -248,6 +246,7 @@ export default function Assets() {
             <Tit>{t("Vault.SupplySeed")}</Tit>
           </CardItem>
         </FlexBox>
+        <ApplicantsSection />
       </BottomBox>
     </Layout>
   );
@@ -322,6 +321,7 @@ const Tit = styled.div`
 const FlexBox = styled.div`
   display: flex;
   gap: 14px;
+  margin-bottom: 22px;
 `;
 
 const CardItem = styled.div`

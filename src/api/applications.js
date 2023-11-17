@@ -5,6 +5,10 @@ const PATH_PREFIX = '/applications/';
 export const getApplicationById = application_id => {
   return request.get(`${PATH_PREFIX}${application_id}`);
 };
+
+export const getApplications = (data) => {
+  return request.get(`${PATH_PREFIX}`, data);
+};
 export const getProjectApplications = data => {
   return request.get(`${PATH_PREFIX}`, data);
 };
