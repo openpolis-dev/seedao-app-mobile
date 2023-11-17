@@ -1,7 +1,7 @@
 
 import Layout from "../components/layout/layout";
 import styled from 'styled-components';
-import React, { ChangeEvent, useEffect, useState, FormEvent } from 'react';
+import React, {ChangeEvent, useEffect, useState, FormEvent, useRef, useLayoutEffect} from 'react';
 import {getUser, updateUser} from "../api/user";
 // import { useAuthContext, AppActionType } from 'providers/authProvider';
 import { useTranslation } from 'react-i18next';
@@ -52,6 +52,8 @@ const UlBox = styled.ul`
   }
 `;
 const InputBox = styled(InputGroup)`
+  flex-grow: 1;
+  margin-left: 20px;
   .wallet {
     border: 1px solid #eee;
     width: 100%;
@@ -69,7 +71,16 @@ const InputBox = styled(InputGroup)`
   }
   input,textarea{
     border: 0;
+    width: 100%;
     text-align: right;
+    &:focus{
+      outline: none;
+    }
+  }
+  textarea{
+    height: auto;
+    min-height: 50px;
+    max-height: 100px;
   }
 `;
 const MidBox = styled.div`
@@ -116,8 +127,25 @@ export default function ProfileEdit() {
   const [mirror, setMirror] = useState('');
   const [avatar, setAvatar] = useState('');
   const [bio, setBio] = useState('');
+  const [github, setGithub] = useState('');
   const [wallet, setWallet] = useState('');
   const { disconnect } = useDisconnect();
+
+  const textareaRef = useRef(null);
+
+  useLayoutEffect(() => {
+    textareaRef.current.style.height = "inherit";
+    // Set height
+    textareaRef.current.style.height = `${Math.max(
+        textareaRef.current.scrollHeight,
+        32
+    )}px`;
+  }, [bio]);
+
+  const handleValue = (e) =>{
+    const { value } = e.target;
+    setBio(value);
+  }
 
   const[show,setShow] = useState(false);
   const[tips,setTips] = useState("");
@@ -156,6 +184,7 @@ export default function ProfileEdit() {
       setDiscord(mapArr.get('discord') ?? '');
       setWechat(mapArr.get('wechat') ?? '');
       setMirror(mapArr.get('mirror') ?? '');
+      setGithub(mapArr.get('github') ?? '');
       setBio(bio)
       setAvatar(avatar)
       setWallet(wallet)
@@ -187,8 +216,12 @@ export default function ProfileEdit() {
       case 'mirror':
         setMirror(value);
         break;
-      case 'bio':
-        setBio(value);
+      // case 'bio':
+      //   setBio(value);
+      //   break;
+      case 'github':
+        setGithub(value);
+        break;
     }
   };
   const saveProfile = async () => {
@@ -217,6 +250,7 @@ export default function ProfileEdit() {
         email,
         discord_profile: discord,
         twitter_profile: twitter,
+        github_profile: github,
         wechat,
         mirror,
         bio,
@@ -327,13 +361,13 @@ export default function ProfileEdit() {
             <li>
               <div className="title">{t("My.Bio")}</div>
               <InputBox>
-                <textarea placeholder="" value={bio} onChange={(e) => handleInput(e, "bio")} />
+                <textarea ref={textareaRef} placeholder="" value={bio} onChange={(e) => handleValue(e,)} />
               </InputBox>
             </li>
             <li>
               <div className="title">{t("My.Email")}</div>
               <InputBox>
-                <inputl type="text" placeholder="" value={email} onChange={(e) => handleInput(e, "email")} />
+                <input type="text" placeholder="" value={email} onChange={(e) => handleInput(e, "email")} />
               </InputBox>
             </li>
 
@@ -364,6 +398,12 @@ export default function ProfileEdit() {
               <div className="title">{t("My.Mirror")}</div>
               <InputBox>
                 <input type="text" placeholder="" value={mirror} onChange={(e) => handleInput(e, "mirror")} />
+              </InputBox>
+            </li>
+            <li>
+              <div className="title">{t("My.Github")}</div>
+              <InputBox>
+                <input type="text" placeholder="" value={github} onChange={(e) => handleInput(e, "github")} />
               </InputBox>
             </li>
           </UlBox>
