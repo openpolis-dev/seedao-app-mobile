@@ -10,7 +10,7 @@ export default function EventCard({ event }) {
         <div>
           <InfoDate>{event.startTime}</InfoDate>
           <InfoBottom>
-            <div className="_city">{event.city.name}</div>
+            <div className="_city">{event.city?.name}</div>
             <div>🚀 {event.status}</div>
           </InfoBottom>
         </div>

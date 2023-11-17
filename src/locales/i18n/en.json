@@ -149,5 +149,8 @@
     "Joined": "Joined",
     "Members": "Members",
     "Intro": "公会介绍"
+  },
+  "Event": {
+    "ListTitle": "All Events"
   }
 }

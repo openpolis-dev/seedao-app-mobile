@@ -51,12 +51,6 @@ export default function ExploreEventSection() {
 const List = styled.div`
   display: flex;
   gap: 14px;
-  /* & > div {
-    border-bottom: 1px solid var(--border-color-1);
-    &:last-of-type {
-      border-bottom: none;
-    }
-  } */
   flex-wrap: wrap;
 `;
 

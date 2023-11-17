@@ -148,5 +148,8 @@
     "Joined": "已加入",
     "Members": "成员",
     "Intro": "公会介绍"
+  },
+  "Event": {
+    "ListTitle": "所有活动"
   }
 }
