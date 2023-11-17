@@ -29,8 +29,17 @@ const InnerBox = styled.div`
  * headBgColor: string
  * bgColor: string
  */
-// TODO noHeader is not working
-export default function Layout({ children, noHeader, title, noTab, headBgColor, bgColor, headColor, sticky, rightOperation }) {
+export default function Layout({
+  children,
+  noHeader,
+  title,
+  noTab,
+  headBgColor,
+  bgColor,
+  headColor,
+  sticky,
+  rightOperation,
+}) {
   const navigate = useNavigate();
   const userToken = useSelector((state) => state.userToken);
   const innerRef = useRef();
@@ -47,12 +56,16 @@ export default function Layout({ children, noHeader, title, noTab, headBgColor, 
 
   return (
     <OuterBox>
-      {sticky ? (
-        <StickyHeader title={title} bgColor={bgColor} scrollRef={innerRef} />
+      {!noHeader ? (
+        sticky ? (
+          <StickyHeader title={title} bgColor={bgColor} scrollRef={innerRef} />
+        ) : (
+          <Header title={title} bgColor={headBgColor} rightOperation={rightOperation} headColor={headColor} />
+        )
       ) : (
-        <Header title={title} bgColor={headBgColor} rightOperation={rightOperation} headColor={headColor} />
+        <></>
       )}
-      <InnerBox ref={innerRef} notab={noTab ? 0 : "70px"} paddingTop={sticky ? "0" : "47px"}>
+      <InnerBox id="inner" ref={innerRef} notab={noTab ? 0 : "70px"} paddingTop={noHeader || sticky ? "0" : "47px"}>
         {children}
       </InnerBox>
       {!noTab && <TabBar />}

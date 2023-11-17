@@ -16,6 +16,8 @@ export default function ProposalThread() {
   const enableQuill = useLoadQuill();
 
   const [data, setData] = useState();
+  const [noHead, setNoHead] = useState(false);
+  console.log("noHead:", noHead);
 
   useEffect(() => {
     const getProposalInfo = async () => {
@@ -36,26 +38,46 @@ export default function ProposalThread() {
     qid && getProposalInfo();
   }, [qid]);
 
+  useEffect(() => {
+    const container = document.querySelector("#inner");
+    console.log("container:", container);
+    container && container.addEventListener("scroll", ScrollHeight);
+    return () => {
+      container.removeEventListener("scroll", ScrollHeight);
+    };
+  }, []);
+
+  const ScrollHeight = () => {
+
+    const container = document.querySelector("#inner");
+    console.log("～～～:", container.scrollTop);
+
+    setNoHead(container.scrollTop > 10);
+  };
+
   return (
-    <Layout title={t("Proposal.ProposalDetail")} noTab>
+    <Layout title={t("Proposal.ProposalDetail")} noHeader={noHead}>
       <ProposalContainer>
         {data && (
           <>
-            <ProposalTitle>{data?.title}</ProposalTitle>
+            <ThreadHeader>
+              <ProposalTitle>{data?.title}</ProposalTitle>
 
               <User>
                 <div className="left">
                   <UserAvatar src={data?.user.photo_url} alt="" />
                   <div className="name">{data?.user.username}</div>
+                  {data.user_title?.name && <UserTag bg={data.user_title.background}>{data.user_title?.name}</UserTag>}
                 </div>
                 <div className="right">
                   <div className="date">{formatTime(new Date(data?.updated_at || ""))}</div>
                 </div>
               </User>
+            </ThreadHeader>
+
             <BtmBox>
               {enableQuill && data?.first_post.content && <QuillViewer content={data?.first_post.content} />}
             </BtmBox>
-
           </>
         )}
       </ProposalContainer>
@@ -64,34 +86,35 @@ export default function ProposalThread() {
 }
 
 const BtmBox = styled.div`
-  padding: 0 24px;
-`
+  padding: 16px 20px;
+`;
 
 const ProposalContainer = styled.div`
-  //background: #fff;
-  padding: 20px 0;
   min-height: 100%;
   position: relative;
 `;
-
-const ProposalTitle = styled.div`
-  font-size: 18px;
-  font-weight: 600;
+const ThreadHeader = styled.div`
   position: sticky;
-  background: #fff;
-  padding: 10px 20px;
   left: 0;
   top: 0;
   z-index: 99999;
-  
+  background: #fff;
+  padding-top: 17px;
+`;
+
+const ProposalTitle = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 20px;
+  font-family: "Poppins-SemiBold";
 `;
 const User = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 18px 24px;
-  border-bottom: 1px solid rgba(217,217,217,0.5);
-  .left{
+  border-bottom: 1px solid rgba(217, 217, 217, 0.5);
+  .left {
     display: flex;
     align-items: center;
   }
@@ -102,13 +125,25 @@ const User = styled.div`
     line-height: 16px;
   }
   .date {
-    font-size: 13px;
-    color: #999;
+    font-size: 12px;
+    color: var(--font-light-color);
   }
 `;
 
 const UserAvatar = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
+`;
+
+const UserTag = styled.span`
+  padding-inline: 8px;
+  height: 18px;
+  line-height: 18px;
+  display: inline-block;
+  font-size: 12px;
+  background-color: ${(props) => props.bg};
+  border-radius: 20px;
+  margin-left: 8px;
+  color: #fff;
 `;
