@@ -29,7 +29,11 @@ export default function Proposal() {
   };
 
   return (
-    <Layout title={t("Proposal.Governance")} headBgColor={`var(--background-color)`}>
+    <Layout
+      title={t("Proposal.Governance")}
+      headBgColor={`var(--background-color)`}
+      bgColor="var(--background-color)"
+    >
       <Content>
         {proposalCategories.map((category, index) => (
           <CategoryCard key={index}>
@@ -67,7 +71,7 @@ export default function Proposal() {
 }
 
 const Content = styled.div`
-  padding: 0 20px 14px;
+  padding: 15px 20px 14px;
   background: var(--background-color);
 `;
 
