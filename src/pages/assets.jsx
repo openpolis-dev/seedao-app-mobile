@@ -256,7 +256,6 @@ const TotalAssets = styled.div`
   text-align: center;
   .value {
     font-size: 26px;
-    font-family: Poppins, Poppins;
     font-weight: 600;
     color: #ffffff;
     line-height: 34px;
@@ -264,7 +263,6 @@ const TotalAssets = styled.div`
   }
   .label {
     font-size: 12px;
-    font-family: Poppins, Poppins;
     font-weight: 400;
     color: #ffffff;
     line-height: 20px;
