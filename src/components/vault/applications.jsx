@@ -72,7 +72,7 @@ export default function ApplicationsSection() {
   };
 
   useEffect(() => {
-    // getRecords();
+    getRecords();
   }, []);
   return (
     <ApplicantsSectionBlock>
@@ -83,9 +83,9 @@ export default function ApplicationsSection() {
           <span>{t("Vault.ScrRanking")}</span>
         </SectionTitleRight>
       </SectionTitle>
-      <ApplicationItem />
-      <ApplicationItem />
-      <ApplicationItem />
+      {list.map((item, index) => (
+        <ApplicationItem data={item} key={index} />
+      ))}
     </ApplicantsSectionBlock>
   );
 }

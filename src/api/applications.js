@@ -7,7 +7,7 @@ export const getApplicationById = application_id => {
 };
 
 export const getApplications = (data) => {
-  return request.get(`${PATH_PREFIX}`, data);
+  return request.get(`${PATH_PREFIX}`, { ...data, type: "new_reward" });
 };
 export const getProjectApplications = data => {
   return request.get(`${PATH_PREFIX}`, data);

@@ -1,9 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components";
-import ApplicationStatusTag, {ApplicationStatus} from "components/applicationStatusTag";
+import ApplicationStatusTag, { ApplicationStatus } from "components/applicationStatusTag";
+import { useTranslation } from "react-i18next";
+import publicJs from "utils/publicJs";
 
-export default function ApplicationItem() {
-  const [moveStyle, setStyle] = useState({ width: 0, isShow: false });
+export default function ApplicationItem({ data }) {
+  const { t } = useTranslation();
+  const [moveStyle, setStyle] = useState({});
   const [startX, setStartX] = useState(0);
   const [startY, setStartY] = useState(0);
   const [currentX, setCurrentX] = useState(0);
@@ -43,14 +46,14 @@ export default function ApplicationItem() {
         <LeftBox>
           <img src="" alt="" />
           <div>
-            <div className="wallet">0xasdsa</div>
+            <div className="wallet">{publicJs.AddressToShow(data.target_user_wallet, 4)}</div>
             <div>
               <ApplicationStatusTag status={ApplicationStatus.Approved} />
             </div>
           </div>
         </LeftBox>
         <RightBox>
-          <div className="value">111</div>
+          <div className="value">{`${data.asset_display} ${data.season_name}`}</div>
           <div className="from">S3市政厅</div>
         </RightBox>
       </ContentInnerBox>
@@ -59,7 +62,7 @@ export default function ApplicationItem() {
         className={`delete-btn ${width ? "showBtn" : isShow ? "hideBtn" : ""}`}
         style={{ width: width + "px" }}
       >
-        chakan
+        {t("Application.Check")}
       </CheckButton>
     </ItemBox>
   );
@@ -87,7 +90,7 @@ const ContentInnerBox = styled.div`
 const CheckButton = styled.div`
   position: absolute;
   top: 0;
-  right: 0;
+  right: -8px;
   height: 100%;
   background: var(--primary-color);
   z-index: 99;
