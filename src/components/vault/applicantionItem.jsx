@@ -53,8 +53,8 @@ export default function ApplicationItem({ data }) {
           </div>
         </LeftBox>
         <RightBox>
-          <div className="value">{`${data.asset_display} ${data.season_name}`}</div>
-          <div className="from">S3市政厅</div>
+          <div className="value">{`${data.asset_display}`}</div>
+          <div className="from">{t("Governance.Cityhall", { season: data.season_name })}</div>
         </RightBox>
       </ContentInnerBox>
 
@@ -144,6 +144,7 @@ const LeftBox = styled.div`
 `;
 
 const RightBox = styled.div`
+  text-align: right;
   .value {
     font-size: 14px;
     line-height: 20px;
