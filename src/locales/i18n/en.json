@@ -173,6 +173,11 @@
     "Approved": "Approved",
     "Sended": "Sent",
     "Sending": "Sending",
-    "SearchSNSPlaceholder": "SNS/Wallet"
+    "SearchSNSPlaceholder": "SNS/Wallet",
+    "SupplySeed": "Sent SEED"
+  },
+  "Calendar": {
+    "Calendar":"Calendar"
+
   }
 }

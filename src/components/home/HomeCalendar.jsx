@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import {useEffect, useState} from "react";
-import axios from "axios";
 import dayjs from "dayjs";
 import 'dayjs/locale/zh';
 import {useTranslation} from "react-i18next";
+import {useNavigate} from "react-router-dom";
+import {getCalenderEvents} from "../../api/calendar";
 
 const Box = styled.div`
     margin: 24px 20px 0;
@@ -74,17 +75,16 @@ const ListBox = styled.ul`
 `
 export default function HomeCalendar(){
     const { t,i18n } = useTranslation();
-    const apiKey = 'AIzaSyDyZO-Xhx71aD0Rpv8EcwY2N5rsdBWG8hA';
 
+    const navigate = useNavigate();
     const [list,setList] = useState([])
     const getCalendar = async() =>{
-
         const Today = new Date().toDateString();
         let startTime = dayjs(Today).format();
         let endTime =  dayjs(Today).add(1, 'day').subtract(1,"second").format();
 
         try{
-            let rt = await axios.get(`https://www.googleapis.com/calendar/v3/calendars/seedao.tech@gmail.com/events?key=${apiKey}&timeMax=${encodeURIComponent(endTime)}&timeMin=${encodeURIComponent(startTime)}`);
+            let rt = await getCalenderEvents(startTime,endTime);
             let arr = rt.data.items.filter(item=>item.summary);
             let lArr = arr.slice(0,2);
             setList(lArr);
@@ -99,7 +99,6 @@ export default function HomeCalendar(){
     }
 
     const switchWeek =()=>{
-
         const date = new Date();
         return dayjs(date).locale(i18n.language).format("ddd");
     }
@@ -111,20 +110,25 @@ export default function HomeCalendar(){
     useEffect(() => {
         getCalendar()
     }, []);
+
+    const toGo = () =>{
+        navigate("/online-event")
+    }
+
     return <Box>
         <Flexbox>
             <div>
                 <TitleBox>{t("home.title")}</TitleBox>
                 <TipsBox>{t("home.tips")}</TipsBox>
             </div>
-            <DayBox>
+            <DayBox onClick={()=>toGo()}>
                 <span className="num">{switchDay()}</span>
                 <span>{switchWeek()}</span>
             </DayBox>
         </Flexbox>
         <ListBox>
             {
-                list?.map((item,index)=>(<li key={index}>
+                list?.map((item,index)=>(<li key={index} onClick={()=>toGo()}>
                     <span className="time">{switchTime(item.start?.dateTime)}</span>
                     <span>{item.summary}</span>
                 </li>))

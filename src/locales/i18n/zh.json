@@ -172,6 +172,10 @@
     "Approved": "已通过",
     "Sended": "已发放",
     "Sending": "发放中",
-    "SearchSNSPlaceholder": "SNS/钱包地址"
+    "SearchSNSPlaceholder": "SNS/钱包地址",
+    "SupplySeed": "已发放SEED"
+  },
+  "Calendar": {
+    "Calendar":"日历"
   }
 }
