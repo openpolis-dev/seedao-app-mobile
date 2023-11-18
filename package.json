@@ -20,6 +20,7 @@
     "axios": "^1.5.1",
     "dayjs": "^1.11.10",
     "ethers": "^5.7.2",
+    "excellentexport": "^3.9.6",
     "firebase": "^10.4.0",
     "i18next": "^23.5.1",
     "md-editor-rt": "^4.8.3",

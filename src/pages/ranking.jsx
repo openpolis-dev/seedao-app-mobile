@@ -10,7 +10,7 @@ import { formatNumber } from "utils/number";
 import publicJs from "utils/publicJs";
 import SortDownSvg from "components/svgs/sortDown";
 import SortUpSvg from "components/svgs/sortUp";
-import { MultiLineStyle } from "assets/styles/common";
+import ExcellentExport from "excellentexport";
 
 const RankDirection = {
   default: 0,
@@ -40,6 +40,14 @@ export default function RankingPage() {
 
   const currentSeason = useMemo(() => {
     return `S${currentSeasonNumber}`;
+  }, [currentSeasonNumber]);
+
+  const allSeasons = useMemo(() => {
+    if (currentSeasonNumber) {
+      return Array.from({ length: currentSeasonNumber + 1 }, (_, i) => i);
+    } else {
+      return [];
+    }
   }, [currentSeasonNumber]);
 
   const displayList = useMemo(() => {
@@ -128,9 +136,43 @@ export default function RankingPage() {
       return displayList.length - i;
     }
   };
+  const handleExport = () => {
+    ExcellentExport.convert(
+      {
+        filename: t("GovernanceNodeResult.SCRSeasonRankFilename", { season: currentSeason }),
+        format: "xlsx",
+        openAsDownload: true,
+      },
+      [
+        {
+          name: t("GovernanceNodeResult.SCRSeasonRankFilename", { season: currentSeason }),
+          from: {
+            array: [
+              ["SNS", ...allSeasons.map((s) => `S${s}(SCR)`), t("GovernanceNodeResult.Total") + "(SCR)"],
+              ...displayList.map((item) => [
+                dataMap.get(item.wallet) || item.wallet,
+                item.seasons_credit?.find((s) => s.season_idx === 0)?.total || 0,
+                item.seasons_credit?.find((s) => s.season_idx === 1)?.total || 0,
+                item.seasons_credit?.find((s) => s.season_idx === 2)?.total || 0,
+                item.seasons_credit?.find((s) => s.season_idx === 3)?.total || 0,
+                item.season_total_credit || 0,
+              ]),
+            ],
+          },
+          formats: ["B", "C", "D", "E", "F", "G", "H", "I", "J", "K"].map((c) => ({
+            range: `${c}2:${c}1000`,
+            format: ExcellentExport.formats.NUMBER,
+          })),
+        },
+      ],
+    );
+  };
 
   return (
-    <Layout title={t("Vault.ScrRanking")}>
+    <Layout
+      title={t("Vault.ScrRanking")}
+      rightOperation={<ExportButton onClick={handleExport}>{t("Vault.Export")}</ExportButton>}
+    >
       <SortBox>
         <NumberBox />
         <ItemBox style={{ flex: 3, width: 0 }} />
@@ -224,8 +266,7 @@ const SortItem = styled.div`
   box-sizing: border-box;
 `;
 
-const SortCurrentSeason = styled(SortItem)`
-`;
+const SortCurrentSeason = styled(SortItem)``;
 
 const SortTotalScr = styled(SortItem)``;
 
@@ -235,4 +276,15 @@ const SortButton = styled.div`
   align-items: center;
   justify-content: center;
   gap: 4px;
+`;
+
+const ExportButton = styled.span`
+  display: inline-block;
+  line-height: 24px;
+  background: var(--primary-color);
+  border-radius: 28px;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  width: 58px;
 `;

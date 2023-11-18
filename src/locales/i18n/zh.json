@@ -163,7 +163,8 @@
     "SupplySeed": "已发放SEED",
     "SendRecordTitle": "发放记录",
     "ScrRanking": "积分总榜",
-    "Total": "总计"
+    "Total": "总计",
+    "Export": "导出"
   },
   "Application": {
     "Check": "查看详情",

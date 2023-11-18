@@ -164,7 +164,8 @@
     "SupplySeed": "Sent SEED",
     "SendRecordTitle": "Send Record",
     "ScrRanking": "SCR Ranking",
-    "Total": "Total"
+    "Total": "Total",
+    "Export": "Export"
   },
   "Application": {
     "Check": "Check",
