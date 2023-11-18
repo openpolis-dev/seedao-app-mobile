@@ -12,6 +12,7 @@ import SeeSelect from "components/common/select";
 import useApplicationStatus from "hooks/useApplicationStatus";
 import useAssets from "hooks/useAssets";
 import SearchIcon from "assets/Imgs/search.svg";
+import { Link } from "react-router-dom";
 
 export default function ApplicationsSection() {
   const { t } = useTranslation();
@@ -89,7 +90,7 @@ export default function ApplicationsSection() {
     <ApplicantsSectionBlock>
       <SectionTitle>
         <div>{t("Vault.SendRecordTitle")}</div>
-        <SectionTitleRight>
+        <SectionTitleRight to="/ranking">
           <img src={RankIcon} alt="" />
           <span>{t("Vault.ScrRanking")}</span>
         </SectionTitleRight>
@@ -148,7 +149,9 @@ export default function ApplicationsSection() {
   );
 }
 
-const ApplicantsSectionBlock = styled.section``;
+const ApplicantsSectionBlock = styled.section`
+  min-height: 300px;
+`;
 const SectionTitle = styled.div`
   display: flex;
   justify-content: space-between;
@@ -159,7 +162,7 @@ const SectionTitle = styled.div`
   line-height: 22px;
 `;
 
-const SectionTitleRight = styled.div`
+const SectionTitleRight = styled(Link)`
   display: flex;
   align-items: center;
   font-size: 14px;

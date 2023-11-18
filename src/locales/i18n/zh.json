@@ -162,7 +162,8 @@
     "SupplySCR": "已发放积分SCR总数",
     "SupplySeed": "已发放SEED",
     "SendRecordTitle": "发放记录",
-    "ScrRanking": "积分总榜"
+    "ScrRanking": "积分总榜",
+    "Total": "总计"
   },
   "Application": {
     "Check": "查看详情",
