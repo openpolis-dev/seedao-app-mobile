@@ -163,5 +163,14 @@
     "SupplySeed": "已发放SEED",
     "SendRecordTitle": "发放记录",
     "ScrRanking": "积分总榜"
+  },
+  "Application": {
+    "Check": "查看详情",
+    "ToBeReviewed": "待审核",
+    "Rejected": "被驳回",
+    "ToBeIssued": "待发放",
+    "Approved": "已通过",
+    "Sended": "已发放",
+    "Sending": "发放中"
   }
 }

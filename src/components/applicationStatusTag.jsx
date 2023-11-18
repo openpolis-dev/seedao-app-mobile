@@ -17,20 +17,20 @@ export default function ApplicationStatusTag({ status, isProj }) {
   const [statusText, color] = useMemo(() => {
     if (isProj) {
       if (status === ApplicationStatus.Approved || status === ApplicationStatus.Completed) {
-        return [t("Project.Approved"), "#1F9E14"];
+        return [t("Application.Approved"), "#1F9E14"];
       }
     }
     switch (status) {
       case ApplicationStatus.Open:
-        return [t("Project.ToBeReviewed"), "#f9b617"];
+        return [t("Application.ToBeReviewed"), "#f9b617"];
       case ApplicationStatus.Approved:
-        return [t("Project.ToBeIssued"), "#f9b617"];
+        return [t("Application.ToBeIssued"), "#f9b617"];
       case ApplicationStatus.Rejected:
-        return [t("Project.Rejected"), "#FF7193"];
+        return [t("Application.Rejected"), "#FF7193"];
       case ApplicationStatus.Processing:
-        return [t("Project.Sending"), "#2F8FFF"];
+        return [t("Application.Sending"), "#2F8FFF"];
       case ApplicationStatus.Completed:
-        return [t("Project.Sended"), "#1F9E14"];
+        return [t("Application.Sended"), "#1F9E14"];
       default:
         return ["", ""];
     }

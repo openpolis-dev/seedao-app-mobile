@@ -164,5 +164,14 @@
     "SupplySeed": "Sent SEED",
     "SendRecordTitle": "Send Record",
     "ScrRanking": "SCR Ranking"
+  },
+  "Application": {
+    "Check": "Check",
+    "ToBeReviewed": "To Be Reviewed",
+    "Rejected": "Rejected",
+    "ToBeIssued": "To Be Issued",
+    "Approved": "Approved",
+    "Sended": "Sent",
+    "Sending": "Sending"
   }
 }
