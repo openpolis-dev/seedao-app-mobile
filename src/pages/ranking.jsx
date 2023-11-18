@@ -10,6 +10,7 @@ import { formatNumber } from "utils/number";
 import publicJs from "utils/publicJs";
 import SortDownSvg from "components/svgs/sortDown";
 import SortUpSvg from "components/svgs/sortUp";
+import { MultiLineStyle } from "assets/styles/common";
 
 const RankDirection = {
   default: 0,
@@ -72,7 +73,7 @@ export default function RankingPage() {
 
   const formatSNS = (wallet) => {
     const sns = dataMap[wallet];
-    return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns, 4);
+    return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns, 6);
   };
   useEffect(() => {
     const getList = () => {
@@ -131,34 +132,36 @@ export default function RankingPage() {
   return (
     <Layout title={t("Vault.ScrRanking")}>
       <SortBox>
-        <SortCurrentSeason onClick={onClickCurrentRank}>
-          <span>{currentSeason}</span>
-          <SortIcons direction={rankCurrent} />
-        </SortCurrentSeason>
-        <SortTotalScr onClick={onClicktotalRank}>
-          <span>{t("Vault.Total")}</span>
-          <SortIcons direction={rankTotal} />
-        </SortTotalScr>
+        <NumberBox />
+        <ItemBox style={{ flex: 3, width: 0 }} />
+        <ItemBox style={{ flex: 2, paddingRight: "8px" }}>
+          <SortCurrentSeason onClick={onClickCurrentRank}>
+            <span>
+              {currentSeason}
+              {"(SCR)"}
+            </span>
+            <SortIcons direction={rankCurrent} />
+          </SortCurrentSeason>
+        </ItemBox>
+        <ItemBox style={{ flex: 2 }}>
+          <SortTotalScr onClick={onClicktotalRank}>
+            <span>
+              {t("Vault.Total")}
+              {"(SCR)"}
+            </span>
+            <SortIcons direction={rankTotal} />
+          </SortTotalScr>
+        </ItemBox>
       </SortBox>
       <ListBox>
         {displayList.map((item, idx) => (
           <li key={item.wallet}>
             <NumberBox>{getRankNum(idx)}</NumberBox>
-            <ItemBox style={{ flex: 1 }}>{formatSNS(item.wallet)}</ItemBox>
-            <ItemBox style={{ flex: 1 }}>
-              <span>
-                {formatNumber(Number(item.seasons_credit?.find((s) => s.season_name === currentSeason)?.total || 0))}
-                {" SCR"}
-              </span>
-              <LightBox className="inline">{currentSeason}</LightBox>
+            <ItemBox style={{ flex: 3, width: 0 }}>{formatSNS(item.wallet)}</ItemBox>
+            <ItemBox style={{ flex: 2 }}>
+              {formatNumber(Number(item.seasons_credit?.find((s) => s.season_name === currentSeason)?.total || 0))}
             </ItemBox>
-            <ItemBox style={{ flex: 1 }}>
-              <span>
-                {formatNumber(Number(item.season_total_credit) || 0)}
-                {" SCR"}
-              </span>
-              <LightBox className="inline">{t("Vault.Total")}</LightBox>
-            </ItemBox>
+            <ItemBox style={{ flex: 2 }}>{formatNumber(Number(item.season_total_credit) || 0)}</ItemBox>
           </li>
         ))}
       </ListBox>
@@ -168,9 +171,8 @@ export default function RankingPage() {
 
 const ListBox = styled.ul`
   font-size: 12px;
-  padding-inline: 20px;
+  padding-inline: 15px;
   line-height: 44px;
-  height: calc(var(--app-height) - 168px);
   box-sizing: border-box;
   overflow-y: auto;
   li {
@@ -184,6 +186,7 @@ const ListBox = styled.ul`
 const ItemBox = styled.div`
   flex: 1;
 `;
+
 const LightBox = styled.span`
   color: #9ca1b3;
   font-size: 10px;
@@ -198,33 +201,33 @@ const NumberBox = styled(LightBox)`
 `;
 
 const SortBox = styled.div`
-  padding-inline: 20px;
+  padding-inline: 15px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 15px;
-  margin-bottom: 11px;
+  padding-top: 15px;
+  padding-bottom: 11px;
+  position: sticky;
+  top: 0;
+  background-color: var(--background-color-1);
 `;
 
 const SortItem = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 55px;
   height: 24px;
   line-height: 24px;
   padding-inline: 6px;
   background: var(--background-color-2);
   border-radius: 4px;
   font-size: 12px;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const SortCurrentSeason = styled(SortItem)`
-  width: 55px;
 `;
 
-const SortTotalScr = styled(SortItem)`
-  width: 65px;
-`;
+const SortTotalScr = styled(SortItem)``;
 
 const SortButton = styled.div`
   display: flex;
