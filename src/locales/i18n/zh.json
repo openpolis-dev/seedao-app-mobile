@@ -171,6 +171,7 @@
     "ToBeIssued": "待发放",
     "Approved": "已通过",
     "Sended": "已发放",
-    "Sending": "发放中"
+    "Sending": "发放中",
+    "SearchSNSPlaceholder": "SNS/钱包地址"
   }
 }

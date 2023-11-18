@@ -172,6 +172,7 @@
     "ToBeIssued": "To Be Issued",
     "Approved": "Approved",
     "Sended": "Sent",
-    "Sending": "Sending"
+    "Sending": "Sending",
+    "SearchSNSPlaceholder": "SNS/Wallet"
   }
 }

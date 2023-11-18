@@ -79,3 +79,7 @@ export const processApplications = data => {
 export const getApplicants = data => {
   return request.get('/apps_applicants', data);
 };
+
+export const getSeasons = () => {
+  return request.get(`/seasons/`);
+};
