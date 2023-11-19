@@ -19,14 +19,14 @@ const EmptyUserCard = () => {
   );
 };
 
-export default function UserCard({ user, sns }) {
+export default function UserCard({ user, sns, onChooseUser }) {
   if (!user) {
     return <EmptyUserCard />;
   }
   return (
     <UserCardBox>
       <div className="left">
-        <Avatar src={user.avatar} />
+        <Avatar src={user.avatar} onClick={onChooseUser} />
       </div>
       <UserRight>{(user.wallet || sns) && <>{sns || user.wallet}</>}</UserRight>
         {

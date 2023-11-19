@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { getUsers } from "api/user";
 import UserList from "components/userList";
 import { useParseSNSList } from "hooks/useParseSNS";
+import UserModal from "components/userModal";
 
 export default function ProjectMember() {
   const { t } = useTranslation();
@@ -16,6 +17,7 @@ export default function ProjectMember() {
   const [userMap, setUserMap] = useState({});
   const [members, setMembers] = useState([]);
   const [sponsors, setSponsors] = useState([]);
+  const [user, setUser] = useState();
 
   const uniqueUsers = useMemo(() => {
     return Array.from(new Set([...members, ...sponsors]));
@@ -58,11 +60,14 @@ export default function ProjectMember() {
     setMembers(members.map((m) => m.toLowerCase()));
     setSponsors(sponsors.map((m) => m.toLowerCase()));
     getUsersInfo(Array.from(new Set([...members, ...sponsors])));
-
   }, [data]);
+  const showUser = (u) => {
+    setUser(u);
+  };
   return (
     <MemberContent>
-        <UserList data={[...sponsorUsers, ...memberUsers]} nameMap={nameMap} />
+      {user && <UserModal user={{ ...user, sns: nameMap[user?.wallet] }} handleClose={() => setUser(undefined)} />}
+      <UserList data={[...sponsorUsers, ...memberUsers]} nameMap={nameMap} onChooseUser={showUser} />
     </MemberContent>
   );
 }
@@ -71,4 +76,4 @@ const MemberContent = styled.div`
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
-`
+`;
