@@ -264,6 +264,7 @@ const TotalAssets = styled.div`
     color: #ffffff;
     line-height: 34px;
     margin-top: 8px;
+    font-family: 'Poppins-SemiBold';
   }
   .label {
     font-size: 12px;
@@ -277,8 +278,11 @@ const TotalAssets = styled.div`
 const WalletItem = styled.li`
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   line-height: 50px;
+  &:last-child{
+    border-bottom: 0;
+  }
 `;
 
 const WalletItemLeft = styled.div`
@@ -299,6 +303,7 @@ const WalletItemValue = styled.div`
   font-size: 15px;
   font-weight: 500;
   color: #ff7193;
+  font-family: 'Poppins-Medium';
 `;
 
 const BottomBox = styled.div`
@@ -313,7 +318,8 @@ const Num = styled.div`
   font-weight: 600;
   color: #424242;
   line-height: 26px;
-  margin-top: 9px;
+  margin-top: 5px;
+  font-family: 'Poppins-SemiBold';
 `;
 const Tit = styled.div`
   font-size: 12px;
@@ -337,6 +343,7 @@ const WalletBox = styled.ul`
   color: #fff;
   margin-top: 20px;
   padding-inline: 20px;
+  padding-bottom: 10px;
 `;
 
 const Addr = styled.div`

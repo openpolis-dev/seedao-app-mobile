@@ -86,9 +86,7 @@ export default function ApplicationDetailPage({ data, formatSNS, handleClose }) 
                   <TransactionTx key={index} href={`https://etherscan.io/tx/${item}`} target="_blank">
                     {item.slice(0, 8) + "..." + item.slice(-8)}
                   </TransactionTx>
-                ) : (
-                  <></>
-                );
+                ) : null;
               })}
             </div>
           </RowItem>
