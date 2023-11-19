@@ -6,7 +6,6 @@ import { formatTime } from "utils/time";
 import { formatNumber } from "utils/number";
 import { getApplications } from "api/applications";
 import useQuerySNS from "hooks/useQuerySNS";
-import ApplicationItem from "./applicantionItem";
 import useSeasons from "hooks/useSeasons";
 import SeeSelect from "components/common/select";
 import useApplicationStatus from "hooks/useApplicationStatus";
@@ -16,8 +15,10 @@ import ApplicationDetailPage from "./applicationDetail";
 import { ethers } from "ethers";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { Type as ListType, SwipeableList } from "react-swipeable-list";
+import { Type as ListType, SwipeableList, SwipeableListItem, SwipeAction, TrailingActions } from "react-swipeable-list";
 import "react-swipeable-list/dist/styles.css";
+import ApplicationStatusTag from "components/applicationStatusTag";
+import publicJs from "utils/publicJs";
 
 export default function ApplicationsSection({ handleBg }) {
   const { t } = useTranslation();
@@ -127,6 +128,14 @@ export default function ApplicationsSection({ handleBg }) {
       handleSearch();
     }
   };
+
+  const trailingActions = (item) => (
+    <TrailingActions>
+      <SwipeAction destructive={false} onClick={() => openDetail(item)}>
+        <CheckButton>{t("Application.Check")}</CheckButton>
+      </SwipeAction>
+    </TrailingActions>
+  );
   return (
     <ApplicantsSectionBlock>
       {showDetail && <ApplicationDetailPage data={showDetail} handleClose={closeDetail} />}
@@ -191,9 +200,28 @@ export default function ApplicationsSection({ handleBg }) {
         </div>
       </FilterBox>
       <InfiniteScroll scrollableTarget="inner" dataLength={list.length} next={getRecords} hasMore={hasMore}>
-        <SwipeableList threshold={0.25} type={ListType.IOS}>
-          {list.map((item, index) => (
-            <ApplicationItem data={item} key={index} onCheck={() => openDetail(item)} />
+        <SwipeableList threshold={0.5} type={ListType.IOS}>
+          {list.map((data, index) => (
+            // <ApplicationItem data={item} key={index} onCheck={() => openDetail(item)} />
+            <SwipeableListItem trailingActions={trailingActions(data)} key={index}>
+              <ItemBox>
+                <ContentInnerBox>
+                  <LeftBox>
+                    <img src="" alt="" />
+                    <div>
+                      <div className="wallet">{publicJs.AddressToShow(data.target_user_wallet, 4)}</div>
+                      <div>
+                        <ApplicationStatusTag status={data.status} />
+                      </div>
+                    </div>
+                  </LeftBox>
+                  <RightBox>
+                    <div className="value">{`${data.asset_display}`}</div>
+                    <div className="from">{t("Governance.Cityhall", { season: data.season_name })}</div>
+                  </RightBox>
+                </ContentInnerBox>
+              </ItemBox>
+            </SwipeableListItem>
           ))}
         </SwipeableList>
       </InfiniteScroll>
@@ -256,5 +284,65 @@ const InputStyle = styled.input`
   overflow-x: auto;
   &:focus-visible {
     outline: none;
+  }
+`;
+
+const ItemBox = styled.div`
+  min-width: 100%;
+  height: 60px;
+  border-bottom: 1px solid #e1e1eb;
+  position: relative;
+`;
+
+const ContentInnerBox = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding-top: 10px;
+  box-sizing: border-box;
+  left: 0;
+  top: 0;
+  transition: transform 0.3s ease;
+`;
+
+const CheckButton = styled.span`
+  display: inline-block;
+  line-height: 60px;
+  background: var(--primary-color);
+  text-align: center;
+  font-size: 13px;
+  color: #ffffff;
+  white-space: nowrap;
+  width: 100px;
+`;
+
+const LeftBox = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  img {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+  }
+  .wallet {
+    font-size: 14px;
+  }
+`;
+
+const RightBox = styled.div`
+  text-align: right;
+  .value {
+    font-size: 14px;
+    line-height: 20px;
+    color: #000000;
+  }
+  .from {
+    font-size: 12px;
+    line-height: 14px;
+    color: #9ca1b3;
+    margin-top: 5px;
   }
 `;
