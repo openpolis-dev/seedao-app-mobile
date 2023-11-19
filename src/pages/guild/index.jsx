@@ -112,20 +112,22 @@ export default function Guild() {
 
   return (
     <Layout title={t("Guild.Guild")}>
-      <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
+      <div style={{ marginTop: "14px" }}>
+        <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
+      </div>
       <LayoutContainer>
         <InfiniteScroll
-            dataLength={proList.length}
-            next={getCurrentList}
-            hasMore={hasMore}
-            loader={<Loading />}
-            height={400}
-            style={{ height: "calc(100vh - 90px)" }}
+          dataLength={proList.length}
+          next={getCurrentList}
+          hasMore={hasMore}
+          loader={<Loading />}
+          height={400}
+          style={{ height: "calc(100vh - 90px)" }}
         >
           {proList.length === 0 && <NoItem />}
           <ProjectList>
             {proList.map((item) => (
-                <ProjectOrGuildItemDetail key={item.id} data={item} onClickItem={openDetail} />
+              <ProjectOrGuildItemDetail key={item.id} data={item} onClickItem={openDetail} />
             ))}
           </ProjectList>
         </InfiniteScroll>

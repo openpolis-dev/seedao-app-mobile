@@ -16,8 +16,8 @@ export default function Tab({ data, onChangeTab, value, ...rest }) {
 }
 
 const TabMenu = styled.div`
-  height: 40px;
-  line-height: 40px;
+  height: 34px;
+  line-height: 34px;
   color: var(--bs-primary);
 
   display: flex;
@@ -27,18 +27,18 @@ const TabMenu = styled.div`
 
   ul {
     display: flex;
-    height: 40px;
-    background: #EEEEF4;
+    height: 34px;
+    background: #eeeef4;
     border-radius: 8px;
     overflow: hidden;
   }
   li {
-    padding-inline: 20px;
+    width: 126px;
     white-space: nowrap;
     text-align: center;
     &.selected {
       background: var(--primary-color);
-      color:#fff;
+      color: #fff;
     }
   }
 `;

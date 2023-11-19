@@ -106,7 +106,9 @@ export default function Project() {
 
   return (
     <Layout title={t("Project.Projects")}>
-      <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
+      <div style={{ marginTop: "14px" }}>
+        <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
+      </div>
       <LayoutContainer>
         <InfiniteScroll
           dataLength={proList.length}
