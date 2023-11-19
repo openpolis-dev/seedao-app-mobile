@@ -80,7 +80,7 @@ export default function RankingPage() {
   }, [allList, rankCurrent, rankTotal]);
 
   const formatSNS = (wallet) => {
-    const sns = dataMap[wallet];
+    const sns = dataMap[wallet] || wallet;
     return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns, 6);
   };
   useEffect(() => {
@@ -150,7 +150,7 @@ export default function RankingPage() {
             array: [
               ["SNS", ...allSeasons.map((s) => `S${s}(SCR)`), t("GovernanceNodeResult.Total") + "(SCR)"],
               ...displayList.map((item) => [
-                dataMap.get(item.wallet) || item.wallet,
+                dataMap[item.wallet] || item.wallet,
                 item.seasons_credit?.find((s) => s.season_idx === 0)?.total || 0,
                 item.seasons_credit?.find((s) => s.season_idx === 1)?.total || 0,
                 item.seasons_credit?.find((s) => s.season_idx === 2)?.total || 0,
