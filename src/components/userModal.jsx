@@ -5,8 +5,15 @@ import MirrorIcon from "assets/Imgs/social/mirror.svg";
 import EmailIcon from "assets/Imgs/social/email.svg";
 import GithubIcon from "assets/Imgs/social/github1.svg";
 import Avatar from "./common/avatar";
+import { useEffect } from "react";
 
 export default function UserModal({ user, handleClose }) {
+  useEffect(() => {
+    document.querySelector("body").classList.add("over-hidden");
+    return () => {
+      document.querySelector("body").classList.remove("over-hidden");
+    };
+  }, []);
   return (
     <UserModalModal>
       <UserModalMask onClick={handleClose} />

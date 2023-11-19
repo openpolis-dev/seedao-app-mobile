@@ -8,6 +8,9 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
   }
+  body.over-hidden {
+    overflow: hidden;
+  }
   #root {
     height: 100vh;
   }
