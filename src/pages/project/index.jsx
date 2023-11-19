@@ -67,7 +67,7 @@ export default function Project() {
     setProList([...proList, ...rows]);
     setPageSize(size);
     setTotal(total);
-    setPageCur(page);
+    setPageCur(page + 1);
   };
 
   const getMyList = async () => {
@@ -111,11 +111,11 @@ export default function Project() {
       </div>
       <LayoutContainer>
         <InfiniteScroll
+          scrollableTarget="inner"
           dataLength={proList.length}
           next={getCurrentList}
           hasMore={hasMore}
           loader={<></>}
-          style={{ height: "calc(100vh - 90px)" }}
         >
           {proList.length === 0 && <NoItem />}
           <ProjectList>
@@ -137,6 +137,6 @@ const ProjectList = styled.div`
 
 const LayoutContainer = styled.div`
   padding-inline: 20px;
-  
+  /* height: calc(100vh - 90px); */
 `;
 

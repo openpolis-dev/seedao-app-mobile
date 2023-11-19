@@ -86,7 +86,7 @@ export default function Guild() {
       setProList([...proList, ...rows]);
       setPageSize(size);
       setTotal(total);
-      setPageCur(page);
+      setPageCur(page + 1);
     } catch (error) {
       console.error(error);
     } finally {
@@ -117,12 +117,12 @@ export default function Guild() {
       </div>
       <LayoutContainer>
         <InfiniteScroll
+          scrollableTarget="inner"
           dataLength={proList.length}
           next={getCurrentList}
           hasMore={hasMore}
           loader={<Loading />}
           height={400}
-          style={{ height: "calc(100vh - 90px)" }}
         >
           {proList.length === 0 && <NoItem />}
           <ProjectList>
