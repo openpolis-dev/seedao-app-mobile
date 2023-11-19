@@ -39,6 +39,7 @@ export default function Layout({
   headColor,
   sticky,
   rightOperation,
+  handleBack,
 }) {
   const navigate = useNavigate();
   const userToken = useSelector((state) => state.userToken);
@@ -60,7 +61,13 @@ export default function Layout({
         sticky ? (
           <StickyHeader title={title} bgColor={bgColor} scrollRef={innerRef} />
         ) : (
-          <Header title={title} bgColor={headBgColor} rightOperation={rightOperation} headColor={headColor} />
+          <Header
+            title={title}
+            bgColor={headBgColor}
+            rightOperation={rightOperation}
+            headColor={headColor}
+            handleBack={handleBack}
+          />
         )
       ) : (
         <></>

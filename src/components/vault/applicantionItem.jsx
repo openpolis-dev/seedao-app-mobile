@@ -4,7 +4,7 @@ import ApplicationStatusTag, { ApplicationStatus } from "components/applicationS
 import { useTranslation } from "react-i18next";
 import publicJs from "utils/publicJs";
 
-export default function ApplicationItem({ data }) {
+export default function ApplicationItem({ data, onCheck }) {
   const { t } = useTranslation();
   const [moveStyle, setStyle] = useState({});
   const [startX, setStartX] = useState(0);
@@ -61,6 +61,7 @@ export default function ApplicationItem({ data }) {
       <CheckButton
         className={`delete-btn ${width ? "showBtn" : isShow ? "hideBtn" : ""}`}
         style={{ width: width + "px" }}
+        onClick={onCheck}
       >
         {t("Application.Check")}
       </CheckButton>

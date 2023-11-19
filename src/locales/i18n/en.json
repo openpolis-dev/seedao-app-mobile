@@ -176,7 +176,22 @@
     "Sended": "Sent",
     "Sending": "Sending",
     "SearchSNSPlaceholder": "SNS/Wallet",
-    "SupplySeed": "Sent SEED"
+    "SupplySeed": "Sent SEED",
+    "SendDetail": "Detail",
+    "Applicant": "Applicant",
+    "Receiver": "Receiver",
+    "Auditor": "Auditor",
+    "OutVault": "Out-Vault",
+    "Season": "Season",
+    "BudgetSource": "Budget Source",
+    "State": "State",
+    "Items": "事项",
+    "Comment": "Comment",
+    "ApplyDate": "Apply Time",
+    "ApplyIntro": "Apply Intro",
+    "AuditorDate": "Auditor Time",
+    "TransactionId": "Transaction ID",
+    "TransactionDate": "Transaction Time"
   },
   "Calendar": {
     "Calendar":"Calendar"

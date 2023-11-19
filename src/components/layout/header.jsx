@@ -44,11 +44,12 @@ const OperateBox = styled.div`
   right: 20px;
   top: 0;
 `;
-export default function Header({ title, bgColor, headColor, rightOperation }) {
+export default function Header({ title, bgColor, headColor, rightOperation, handleBack }) {
   const navigate = useNavigate();
 
   const backTop = () => {
-    navigate(-1);
+    console.log("handleBack", handleBack);
+    handleBack ? handleBack() : navigate(-1);
   };
 
   return (

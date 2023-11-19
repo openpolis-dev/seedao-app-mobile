@@ -175,7 +175,22 @@
     "Sended": "已发放",
     "Sending": "发放中",
     "SearchSNSPlaceholder": "SNS/钱包地址",
-    "SupplySeed": "已发放SEED"
+    "SupplySeed": "已发放SEED",
+    "SendDetail": "发放详情",
+    "Applicant": "申请人",
+    "Receiver": "接收人",
+    "Auditor": "审核人",
+    "OutVault": "支出金库",
+    "Season": "季度",
+    "BudgetSource": "预算来源",
+    "State": "状态",
+    "Items": "事项",
+    "Comment": "备注",
+    "ApplyDate": "申请时间",
+    "ApplyIntro": "申请说明",
+    "AuditorDate": "审核时间",
+    "TransactionId": "交易ID",
+    "TransactionDate": "交易时间"
   },
   "Calendar": {
     "Calendar":"日历"

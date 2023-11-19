@@ -13,10 +13,12 @@ import useApplicationStatus from "hooks/useApplicationStatus";
 import useAssets from "hooks/useAssets";
 import SearchIcon from "assets/Imgs/search.svg";
 import { Link } from "react-router-dom";
+import ApplicationDetailPage from "./applicationDetail";
 
 export default function ApplicationsSection() {
   const { t } = useTranslation();
 
+  const [showDetail, setShowDetail] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);
@@ -88,6 +90,7 @@ export default function ApplicationsSection() {
   }, []);
   return (
     <ApplicantsSectionBlock>
+      {showDetail && <ApplicationDetailPage handleClose={() => setShowDetail(undefined)} />}
       <SectionTitle>
         <div>{t("Vault.SendRecordTitle")}</div>
         <SectionTitleRight to="/ranking">
@@ -143,7 +146,7 @@ export default function ApplicationsSection() {
         </div>
       </FilterBox>
       {list.map((item, index) => (
-        <ApplicationItem data={item} key={index} />
+        <ApplicationItem data={item} key={index} onCheck={() => setShowDetail(true)} />
       ))}
     </ApplicantsSectionBlock>
   );
