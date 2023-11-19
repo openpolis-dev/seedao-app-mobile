@@ -1,14 +1,14 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import { rrulestr } from 'rrule'
-
 import styled from "styled-components";
-
-
+import { Element, scroller,animateScroll } from 'react-scroll';
 import CalendarItem from "./CalendarItem";
 import dayjs from "dayjs";
 import {useTranslation} from "react-i18next";
 import {getCalenderEvents} from "../../api/calendar";
 import utc from "dayjs/plugin/utc"
+import store from "../../store";
+import {saveLoading} from "../../store/reducer";
 dayjs.extend(utc);
 
 
@@ -35,7 +35,7 @@ const TitleBox = styled.ul`
   li{
     margin:0 20px;
     flex-shrink: 0;
-    
+    white-space: nowrap;
     font-size: 14px;
     font-weight: 500;
     color: #9A9A9A;
@@ -57,16 +57,64 @@ const CList = styled.div`
 export default function NewCalendar(){
     const { i18n } = useTranslation();
     const [currentMonth, setCurrentMonth] = useState(2);
-
     const [eventList, setEventList] = useState([])
-
     const [list,setList] = useState([]);
+    const [eventArr,setEventArr] = useState([]);
+
 
     useEffect(() => {
+
         getMonth()
         getCurrent()
         getEvent()
     }, []);
+
+    useEffect(() => {
+        ScrollToCenter()
+    }, [currentMonth]);
+
+    useEffect(() => {
+        getCurrentEvent()
+    }, [eventList,currentMonth]);
+
+    const ScrollToCenter = () =>{
+        const width = -(window.screen.width / 2) +40;
+        setTimeout(()=>{
+            scroller.scrollTo(currentMonth, {
+                duration: 200,
+                smooth: true,
+                horizontal:true,
+                offset:width,
+                containerId:"innerContent"
+            });
+        },0)
+    }
+
+    useEffect(()=>{
+        ScrollToToday()
+    },[eventArr,currentMonth])
+
+    const ScrollToToday = () =>{
+        const month = dayjs().month();
+        const date = dayjs().format('YYYYMMDD');
+        if(month === currentMonth){
+            setTimeout(()=>{
+                scroller.scrollTo(date, {
+                    duration: 200,
+                    smooth: true,
+                    offset: -150,
+                    containerId:"inner"
+                });
+            },0)
+        }else{
+            animateScroll.scrollTo(0, {
+                containerId:"inner",
+                duration: 200,
+                smooth: true
+            });
+        }
+    }
+
 
     const getMonth = () =>{
         const Today = new Date().toDateString();
@@ -112,6 +160,7 @@ export default function NewCalendar(){
     }
 
     const getEvent = async() =>{
+        store.dispatch(saveLoading(true));
         try{
             let rt = await getCalenderEvents('','');
 
@@ -134,6 +183,8 @@ export default function NewCalendar(){
             setEventList(eventArr)
         }catch (e) {
             console.log(e)
+        }finally {
+            store.dispatch(saveLoading(false));
         }
 
     }
@@ -161,30 +212,30 @@ export default function NewCalendar(){
 
         let sortArr = Array.from(dateMap.keys()).sort()
 
-        return sortArr.map((item)=>{
+        let rt =  sortArr.map((item)=>{
             return {
                 day:item,
                 eventInfo:dateMap.get(item)
             }
         })
+        setEventArr([...rt])
 
     }
 
     return <Box>
-        <HeaderBox>
+        <HeaderBox  id="innerContent">
             <TitleBox>
                 {
-                    list.map((item,index)=>(<li
-                        key={index}
+                    list.map((item,index)=>(<Element name={`${item.month()}`} key={index}>
+                        <li
                         className={currentMonth===item.month()?"active":""}
-                        onClick={()=>handleCurrent(item.month())}
-                    >{item.format("MMM")}</li>))
+                        onClick={()=>handleCurrent(item.month())}>{item.format("MMM")}</li></Element>))
                 }
             </TitleBox>
         </HeaderBox>
         <CList>
             {
-                getCurrentEvent().map((item,index)=>( <CalendarItem key={`calendar_${index}}`}  detail={item} />))
+                eventArr.map((item,index)=>( <Element  key={`calendar_${index}}`} name={`${item.day}`} ><CalendarItem detail={item} /></Element>))
             }
         </CList>
     </Box>

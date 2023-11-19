@@ -144,8 +144,6 @@ export default function CalendarItem({detail}){
 
     const switchWeek =()=>{
         const date = dayjs(detail.day, 'YYYYMMDD');
-
-
         return date.locale(i18n.language).format("MM-DD ddd");
     }
 
