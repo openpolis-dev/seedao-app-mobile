@@ -3,7 +3,7 @@ import CopyBox from "./common/copy";
 import TwitterIcon from "assets/Imgs/social/twitter.svg";
 import MirrorIcon from "assets/Imgs/social/mirror.svg";
 import EmailIcon from "assets/Imgs/social/email.svg";
-import GithubIcon from "assets/Imgs/social/github.svg";
+import GithubIcon from "assets/Imgs/social/github1.svg";
 import Avatar from "./common/avatar";
 
 export default function UserModal({ user, handleClose }) {
