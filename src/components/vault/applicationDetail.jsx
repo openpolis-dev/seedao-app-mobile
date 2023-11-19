@@ -113,12 +113,14 @@ const AssetBox = styled.div`
 const SectionBlock = styled.section`
   padding-top: 16px;
   font-size: 14px;
+  padding-inline: 20px;
 `;
 
 const SectionDivider = styled.div`
   padding-inline: 20px;
   height: 1px;
   border-bottom: 1px solid var(--border-color-1);
+  margin-inline: 20px;
 `;
 
 const RowItem = styled.div`

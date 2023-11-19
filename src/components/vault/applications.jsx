@@ -14,8 +14,9 @@ import useAssets from "hooks/useAssets";
 import SearchIcon from "assets/Imgs/search.svg";
 import { Link } from "react-router-dom";
 import ApplicationDetailPage from "./applicationDetail";
+import { ethers } from "ethers";
 
-export default function ApplicationsSection({handleBg}) {
+export default function ApplicationsSection({ handleBg }) {
   const { t } = useTranslation();
 
   const [showDetail, setShowDetail] = useState(false);
@@ -33,6 +34,8 @@ export default function ApplicationsSection({handleBg}) {
   // assets
   const assets = useAssets();
   const [selectAsset, setSelectAsset] = useState();
+  // search
+  const [keyword, setKeyword] = useState("");
 
   const [snsMap, setSnsMap] = useState(new Map());
 
@@ -95,9 +98,26 @@ export default function ApplicationsSection({handleBg}) {
     setShowDetail(item);
   };
   const closeDetail = () => {
-    setShowDetail(undefined)
+    setShowDetail(undefined);
     handleBg && handleBg();
+  };
+  const handleSearch = () => {
+    // TODO
+    if (keyword.endsWith(".seedao")) {
+      // sns
+    } else if (!ethers.utils.isAddress(keyword)) {
+      // address
+    } else {
+      // invalid
+    }
   }
+  const onKeyUp = (e) => {
+    console.log(e.keyCode);
+    if (e.keyCode === 13) {
+      document.activeElement.blur();
+      handleSearch();
+    }
+  };
   return (
     <ApplicantsSectionBlock>
       {showDetail && <ApplicationDetailPage data={showDetail} handleClose={closeDetail} />}
@@ -112,7 +132,14 @@ export default function ApplicationsSection({handleBg}) {
         <div style={{ flex: 6 }}>
           <SearchInputBox>
             <img src={SearchIcon} alt="" className="search" />
-            <InputStyle type="text" placeholder={t("Application.SearchSNSPlaceholder")} />
+            <InputStyle
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+              type="search"
+              enterKeyHint="search"
+              placeholder={t("Application.SearchSNSPlaceholder")}
+              onKeyUp={onKeyUp}
+            />
           </SearchInputBox>
         </div>
         <div style={{ flex: 2 }}>
