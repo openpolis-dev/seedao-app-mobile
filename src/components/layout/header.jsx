@@ -55,7 +55,7 @@ export default function Header({ title, bgColor, headColor, rightOperation, hand
   return (
     <Box bgColor={bgColor}>
       <Back onClick={() => backTop()}>
-        <BackSVG />
+        <BackSVG color={headColor} />
       </Back>
       <HeaderBox headColor={headColor}>
         <Mid>
