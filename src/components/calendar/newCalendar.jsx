@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import { rrulestr } from 'rrule'
 
 import styled from "styled-components";
 
@@ -7,13 +8,15 @@ import CalendarItem from "./CalendarItem";
 import dayjs from "dayjs";
 import {useTranslation} from "react-i18next";
 import {getCalenderEvents} from "../../api/calendar";
+import utc from "dayjs/plugin/utc"
+dayjs.extend(utc);
 
 
 const Box = styled.div`
     background: var(--background-color);
   display: flex;
   flex-direction: column;
-  
+  min-height: 100%;
 `
 
 const HeaderBox = styled.div`
@@ -55,6 +58,8 @@ export default function NewCalendar(){
     const { i18n } = useTranslation();
     const [currentMonth, setCurrentMonth] = useState(2);
 
+    const [eventList, setEventList] = useState([])
+
     const [list,setList] = useState([]);
 
     useEffect(() => {
@@ -95,27 +100,38 @@ export default function NewCalendar(){
         setCurrentMonth(month)
     }
 
-    const getEvent = async() =>{
+    const formatDateTime = (dStr,ruleStr) =>{
 
+        const dateFormat = dayjs(dStr).utc().format('YYYYMMDDTHHmmss');
+
+        const rruleSet = rrulestr(`DTSTART:${dateFormat}Z\n${ruleStr}`, {forceset: true})
+        const begin = dayjs().subtract(5,"month").toDate();
+        const end = dayjs().add(6,"month").toDate();
+
+        return rruleSet.between(begin, end);
+    }
+
+    const getEvent = async() =>{
         try{
             let rt = await getCalenderEvents('','');
 
-            console.table(rt.data.items.length)
+            const validTimeArr = rt.data.items.filter((item)=>item.status === "confirmed");
 
-            rt.data.items.map((event)=>{
-                // let newEvent = {
-                //     id: event.id,
-                //     name: event.summary,
-                //     startTime: event.start?.dateTime ,
-                //     endTime: event.end?.dateTime,
-                //     description: event.description,
-                //     location: event.location,
-                //     recurrence: event.recurrence,
-                // };
-                console.log(event)
+            let eventArr = [];
+
+            validTimeArr.map((event)=>{
+                let eventStr =  formatDateTime(event.start?.dateTime,event.recurrence);
+
+                let arr = eventStr.map((item)=> {
+                    return {
+                        dayTime:item,
+                        event
+                    }
+                })
+                eventArr.push(...arr);
             })
 
-
+            setEventList(eventArr)
         }catch (e) {
             console.log(e)
         }
@@ -123,6 +139,35 @@ export default function NewCalendar(){
     }
     const handleCurrent = (month) =>{
         setCurrentMonth(month)
+    }
+
+    const getCurrentEvent = () =>{
+
+        let arr =[];
+        eventList.map((item)=>{
+            const month = dayjs(item.dayTime).month()
+            if(month === currentMonth){
+                arr.push(item)
+            }
+        })
+        let dateMap = new Map();
+
+        arr.map((item)=>{
+            let day = dayjs(item.dayTime).format("YYYYMMDD");
+            let events = dateMap.get(day)??[];
+            events.push(item)
+            dateMap.set(day,[...events])
+        })
+
+        let sortArr = Array.from(dateMap.keys()).sort()
+
+        return sortArr.map((item)=>{
+            return {
+                day:item,
+                eventInfo:dateMap.get(item)
+            }
+        })
+
     }
 
     return <Box>
@@ -139,7 +184,7 @@ export default function NewCalendar(){
         </HeaderBox>
         <CList>
             {
-                [...Array(3)].map((item,index)=>( <CalendarItem key={`calendar_${index}}`}  />))
+                getCurrentEvent().map((item,index)=>( <CalendarItem key={`calendar_${index}}`}  detail={item} />))
             }
         </CList>
     </Box>

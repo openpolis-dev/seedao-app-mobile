@@ -6,14 +6,24 @@ import LocationWhite from "../../assets/Imgs/calendar/location-white.svg";
 import LocationImg from "../../assets/Imgs/calendar/location.svg";
 import MoreImg from "../../assets/Imgs/calendar/more.svg";
 import MoreWhite from "../../assets/Imgs/calendar/more-white.svg";
+import SubImg from "../../assets/Imgs/calendar/sub.svg";
+import SubWhite from "../../assets/Imgs/calendar/sub-white.svg";
 import styled from "styled-components";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import dayjs from "dayjs";
+import {useTranslation} from "react-i18next";
 
 
 const EventBox= styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  span{
+    font-size: 14px;
+  }
+  img{
+    margin-top: 8px;
+  }
 `
 
 const EventDesc = styled.div`
@@ -91,52 +101,112 @@ const DlBox = styled.div`
  
 `
 
-export default function CalendarItem(){
+export default function CalendarItem({detail}){
+    const { i18n } = useTranslation();
     const [index] = useState(0)
-    const [currentEvent, setCurrentEvent] = useState(1);
-    const [currentDay, setCurrentDay] = useState(2);
+    const [currentDay, setCurrentDay] = useState();
+    const [list, setList] = useState([]);
+    const [showList, setShowList] = useState([]);
+    const [more,setMore] = useState(false);
+    const SliceNum = 3;
 
-    const [more,setMore] = useState(false)
+    useEffect(() => {
+        formatDay()
+    }, []);
+
+    useEffect(() => {
+
+        let arr = !more ? list : list.slice(0,SliceNum)
+        setShowList([...arr])
+    }, [more,list]);
+
+    const formatDay = () =>{
+        const arr = detail.eventInfo;
+        setList(arr.map(item=>{
+            return{
+                ...item,
+                status:false
+            }
+        }));
+        setMore(arr.length > SliceNum)
+        let cDay = dayjs().format("YYYYMMDD")
+        setCurrentDay(cDay);
+    }
+
+    const getTime = (item) =>{
+        const startTime = item.event.start.dateTime;
+        const endTime = item.event.end.dateTime;
+        const sTime = dayjs(startTime).format("HH:mm");
+        const eTime = dayjs(endTime).format("HH:mm");
+        return `${sTime} - ${eTime}`
+    }
 
 
-    return <DlBox key={`calendar_${index}}`}  className={currentDay===index? "activeBox":""}>
-        <dt>11-01 周四</dt>
+    const switchWeek =()=>{
+        const date = dayjs(detail.day, 'YYYYMMDD');
+
+
+        return date.locale(i18n.language).format("MM-DD ddd");
+    }
+
+    const handleShow = (index,desc,location) =>{
+        if(!desc && !location ) return;
+        const arr = [...list];
+        arr[index].status = !arr[index].status;
+
+        setList(arr);
+    }
+
+    const handleMore = () =>{
+        setMore(!more);
+    }
+
+    return <DlBox key={`calendar_${index}}`}  className={currentDay=== detail.day? "activeBox":""}>
+        <dt>{switchWeek()}</dt>
         <dd>
             <ul>
                 {
-                    [...Array(4)].map((innerItem,innerIndex)=><li key={`events_${innerIndex}}`}>
-                        <EventBox>
-                            <span>15:00-16:00 翻译公会 周会</span>
-                            <img src={currentDay===index ?PlusWhite:PlusImg} alt=""/>
+                    showList.map((innerItem,innerIndex)=><li key={`events_${innerIndex}}`}>
+                        <EventBox onClick={()=>handleShow(innerIndex,innerItem.event.description,innerItem.event.location)}>
+                            <span>{getTime(innerItem)} {innerItem.event.summary}</span>
+                            {
+                                !innerItem.status && (!!innerItem.event.description || !!innerItem.event.location) && <img src={currentDay===detail.day ?PlusWhite:PlusImg} alt=""/>
+                            }
+                            {
+                                innerItem.status && (!!innerItem.event.description || !!innerItem.event.location) && <img src={currentDay===detail.day ?SubWhite:SubImg} alt=""/>
+                            }
                         </EventBox>
 
                         {
-                            currentEvent === innerIndex &&<EventDesc>
+                            innerItem.status &&<EventDesc>
                                 <div className="line">
                                     <div className="lft">
                                         <img src={currentDay===index?TitleWhite:TitleImg} alt=""/>
                                     </div>
-                                    <div className="location">Alex 邀请您参加腾讯会议 会议主题：Web端原型修改</div>
+                                    <div className="location"  dangerouslySetInnerHTML={{__html: innerItem.event.description}}></div>
                                 </div>
                                 <div className="line">
                                     <div className="lft">
                                         <img src={currentDay===index?LocationWhite:LocationImg} alt=""/>
                                     </div>
-                                    <div className="location">http://meeting.tencent.com/dm/Dfsi31kwzdOV</div>
+                                    <div className="location">{innerItem.event.location}</div>
                                 </div>
                             </EventDesc>
                         }
 
                     </li>)
                 }
-                <li className="moreLi">
-                    <div>
-                        剩余2项
-                    </div>
-                    <div>
-                        <img src={currentDay===index?MoreWhite:MoreImg} alt=""/>
-                    </div>
-                </li>
+                {
+                   more &&<li className="moreLi" onClick={()=>handleMore()}>
+                        <div>
+                            剩余 {list.length - SliceNum } 项
+                        </div>
+                        <div>
+                            <img src={currentDay===index?MoreWhite:MoreImg} alt=""/>
+                        </div>
+                    </li>
+                }
+
             </ul>
 
         </dd>
