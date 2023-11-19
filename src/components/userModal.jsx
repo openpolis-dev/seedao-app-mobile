@@ -4,13 +4,14 @@ import TwitterIcon from "assets/Imgs/social/twitter.svg";
 import MirrorIcon from "assets/Imgs/social/mirror.svg";
 import EmailIcon from "assets/Imgs/social/email.svg";
 import GithubIcon from "assets/Imgs/social/github.svg";
+import Avatar from "./common/avatar";
 
 export default function UserModal({ user, handleClose }) {
   return (
     <UserModalModal>
       <UserModalMask onClick={handleClose} />
       <UserModalModalContent>
-        <Avatar src={user.avatar} alt="" />
+        <AvatarBox src={user.avatar} alt="" size="84px" />
         <SnsBox>
           <d>{user.sns}</d>
           <CopyBox text={user.wallet} />
@@ -75,15 +76,12 @@ const UserModalModalContent = styled.div`
   text-align: center;
 `;
 
-const Avatar = styled.img`
-  width: 84px;
-  height: 84px;
-  border-radius: 50%;
+const AvatarBox = styled(Avatar)`
   position: absolute;
   top: -42px;
   left: 50%;
   margin-left: -42px;
-  background-color: #000;
+  background-color: #fff;
 `;
 
 const SnsBox = styled.div`

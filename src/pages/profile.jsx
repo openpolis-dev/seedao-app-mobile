@@ -32,7 +32,10 @@ const LineBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 8px 0;
+    margin-bottom: 20px;
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
   img{
     width: 24px;

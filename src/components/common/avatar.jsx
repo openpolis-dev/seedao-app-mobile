@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import DefaultAvatarIcon from "assets/images/user/avatar.svg";
 import { useEffect, useState } from "react";
+import DefaultAvatarIcon from "assets/Imgs/avatar.svg";
 
 export default function Avatar({ src, size, ...rest }) {
   const [imgSrc, setImgSrc] = useState(DefaultAvatarIcon);
