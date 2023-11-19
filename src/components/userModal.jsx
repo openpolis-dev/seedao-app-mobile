@@ -14,14 +14,27 @@ export default function UserModal({ user, handleClose }) {
       document.querySelector("body").classList.remove("over-hidden");
     };
   }, []);
+
+
+  const getTitle = (sns) =>{
+    if(sns.indexOf("...")>-1){
+      return user.wallet;
+    }else{
+      return user.sns;
+    }
+  }
+
   return (
     <UserModalModal>
       <UserModalMask onClick={handleClose} />
       <UserModalModalContent>
         <AvatarBox src={user.avatar} alt="" size="84px" />
         <SnsBox>
-          <div className="sns">{user.sns}</div>
-          <CopyBox text={user.wallet} />
+          <div className="sns">{getTitle(user.sns)}
+            <div className="copySns" >
+              <CopyBox text={user.wallet}/>
+            </div>
+          </div>
         </SnsBox>
         <NameBox>{user.name}</NameBox>
         <BioBox>{user.bio}</BioBox>
@@ -64,6 +77,7 @@ const UserModalModal = styled.div`
 const UserModalMask = styled.div`
   position: absolute;
   background: rgba(244, 244, 248, 0.9);
+  backdrop-filter: blur(4px);
   left: 0;
   top: 0;
   bottom: 0;
@@ -73,7 +87,7 @@ const UserModalMask = styled.div`
 const UserModalModalContent = styled.div`
   min-height: 20vh;
   background-color: var(--background-color-1);
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.02);
+  box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.05);
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   position: absolute;
@@ -102,6 +116,11 @@ const SnsBox = styled.div`
   gap: 10px;
   width: 70%;
   margin: 0 auto;
+  word-break: break-all;
+  .copySns{
+    display: inline-block;
+    padding-left: 10px;
+  }
 `;
 
 const NameBox = styled.div`
