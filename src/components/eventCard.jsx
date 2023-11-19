@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import { RectangularSkeleton } from "components/common/skeleton";
+import { MultiLineStyle } from "assets/styles/common";
 
 export default function EventCard({ event, handleClick }) {
   return (
     <EventItem onClick={() => handleClick(event.id)}>
       <Cover src={event.thumbnail} />
-      <Title>{event.subject}</Title>
+      <Title line={2}>{event.subject}</Title>
       <InfoBox>
         <div>
           <InfoDate>{event.startTime}</InfoDate>
@@ -62,6 +63,7 @@ const Title = styled.div`
   font-weight: 600;
   margin-top: 14px;
   margin-bottom: 10px;
+  ${MultiLineStyle}
 `;
 
 const InfoBox = styled.div``;
