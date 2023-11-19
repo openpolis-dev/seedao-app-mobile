@@ -92,7 +92,12 @@
     "TheNeweset": "Latest",
     "CreateProposal": "Create Proposal",
     "TheOldest": "Oldest",
-    "Topics": "topics"
+    "Topics": "topics",
+    "Export": "Export",
+    "PollNFT": "Poll NFT address",
+    "VoteClose": "Voting Closed",
+    "VoteEndAt": "Voting ends in {{leftTime}}",
+    "TotalVotes": "Total Votes"
   },
   "My": {
     "MyProfile": "My Profile",

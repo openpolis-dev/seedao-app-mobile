@@ -9,6 +9,7 @@ import { getProposalDetail } from "api/proposal";
 import { formatTime } from "utils/time";
 import store from "store";
 import { saveLoading } from "store/reducer";
+import ProposalVoteProgress from "components/proposal/proposalVote";
 
 export default function ProposalThread() {
   const { t } = useTranslation();
@@ -48,7 +49,6 @@ export default function ProposalThread() {
   }, []);
 
   const ScrollHeight = () => {
-
     const container = document.querySelector("#inner");
     console.log("～～～:", container.scrollTop);
 
@@ -78,6 +78,8 @@ export default function ProposalThread() {
             <BtmBox>
               {enableQuill && data?.first_post.content && <QuillViewer content={data?.first_post.content} />}
             </BtmBox>
+
+            {data.polls[0] && <ProposalVoteProgress poll={data.polls[0]} />}
           </>
         )}
       </ProposalContainer>

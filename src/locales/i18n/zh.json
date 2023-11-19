@@ -92,7 +92,12 @@
     "TheNeweset": "最新的",
     "CreateProposal": "创建提案",
     "TheOldest": "最早的",
-    "Topics": "话题"
+    "Topics": "话题",
+    "Export": "导出",
+    "PollNFT": "投票NFT地址",
+    "VoteClose": "投票结束",
+    "VoteEndAt": "投票剩余时间{{leftTime}}",
+    "TotalVotes": "总投票数"
   },
   "My": {
     "MyProfile": "我的信息",
