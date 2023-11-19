@@ -14,7 +14,7 @@ export default function ExploreGuildSection() {
   const [list, setList] = useState([]);
 
   const openDetail = (id) => {
-    navigate(`/project/info/${id}`);
+    navigate(`/guild/info/${id}`);
   };
 
   useEffect(() => {
