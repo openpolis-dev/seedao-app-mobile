@@ -66,7 +66,7 @@ export default function ProposalCard({ data }) {
     navigate(`/proposal/thread/${data.id}`);
   };
 
-  
+
   return (
     <CardBox key={data.id}>
       <div onClick={openProposal}>
@@ -110,12 +110,16 @@ const CardFooter = styled.div`
     display: flex;
     align-items: center;
     .name {
-      margin-left: 8px;
+      margin-left: 4px;
+      width: 10vw;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   .right {
     font-size: 10px;
     color: var(--font-light-color);
+    flex-shrink: 0;
     span:first-of-type {
       margin-right: 4px;
     }
@@ -160,4 +164,5 @@ const UserTag = styled.span`
   border-radius: 20px;
   margin-left: 8px;
   color: #fff;
+  flex-shrink: 0;
 `;
