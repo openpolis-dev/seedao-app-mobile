@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import Layout from "../../components/layout/layout";
 import styled from "styled-components";
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import { getCategories } from "api/proposal";
 import MsgIcon from "assets/Imgs/msg.png";
 import store from "store";
@@ -12,7 +12,8 @@ import ArrowIcon from "assets/Imgs/arrow_top.svg"
 
 export default function Proposal() {
   const { t } = useTranslation();
-  const proposalCategories = useSelector((state) => state.proposalCategories);
+  const [list,setList] = useState([])
+  // const proposalCategories = useSelector((state) => state.proposalCategories);
 
   useEffect(() => {
     getCategoriesAPi();
@@ -21,12 +22,23 @@ export default function Proposal() {
   const getCategoriesAPi = async () => {
     try {
       const resp = await getCategories();
-      store.dispatch(saveProposalCategories(resp?.data.group.categories));
+      console.log(resp?.data.group.categories)
+      let arr = resp?.data.group.categories.map((item)=> ({...item,statusShow:true}))
+      store.dispatch(saveProposalCategories(arr));
+      setList(arr);
     } catch (error) {
       console.error("getCategories failed", error);
     } finally {
     }
   };
+
+  const handleShow = (index) =>{
+
+    let arr = JSON.parse(JSON.stringify(list));
+    console.log(arr[index])
+    arr[index].statusShow = !(arr[index].statusShow);
+    setList(arr)
+  }
 
   return (
     <Layout
@@ -35,15 +47,15 @@ export default function Proposal() {
       bgColor="var(--background-color)"
     >
       <Content>
-        {proposalCategories.map((category, index) => (
+        {list.map((category, index) => (
           <CategoryCard key={index}>
-            <div className="cate-name">
+            <div className="cate-name" onClick={()=>handleShow(index)}>
               <Link to={`/proposal/category/${category.category_id}`}>{category.name}</Link>
               {
-                  !!category.children.length && <img src={ArrowIcon} alt="" />
+                  !!category.children.length && <img src={ArrowIcon} alt=""  className={category.statusShow?"":"arrowRht"}/>
               }
             </div>
-            {!!category.children.length && (
+            {!!category.children.length && category.statusShow && (
               <SubCategoryCard>
                 {category.children.map((subCategory) => (
                   <a href={`/proposal/category/${subCategory.category_id}`} key={subCategory.category_id}>
@@ -125,6 +137,9 @@ const CategoryCard = styled.div`
     color: #000000;
     display: flex;
     justify-content: space-between;
+  }
+  .arrowRht{
+    transform: rotate(180deg);
   }
 `;
 
