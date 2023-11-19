@@ -43,6 +43,7 @@
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.8.0",
+    "react-swipeable-list": "^1.9.3",
     "redux-persist": "^6.0.0",
     "rrule": "^2.8.1",
     "sass": "^1.68.0",
