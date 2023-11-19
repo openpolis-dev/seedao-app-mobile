@@ -11,7 +11,7 @@ export default function ExploreResourceSection() {
     return links.resource.slice(0, 6).map((item) => ({ ...item, name: t(item.name), desc: t(item.desc) }));
   }, [t]);
   return (
-    <ExploreSection title={t("Explore.ResourceApply")} desc={t("Explore.ResourceApplyDesc")} moreLink="/resources">
+    <ExploreSection title={t("Explore.ResourceApply")} desc={t("Explore.ResourceApplyDesc")} moreLink="/resources" noMore>
       <LinkBox>
         {list.map((item, i) => (
           <ResourceCard data={item} key={i} />

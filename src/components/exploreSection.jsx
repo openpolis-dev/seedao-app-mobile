@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-export default function ExploreSection({ title, desc, children, moreLink }) {
+export default function ExploreSection({ title, desc, children, moreLink,noMore }) {
   const { t } = useTranslation();
   return (
     <SectionBlock>
@@ -12,9 +12,11 @@ export default function ExploreSection({ title, desc, children, moreLink }) {
           <SectionDesc>{desc}</SectionDesc>
         </div>
         <div>
-          <LinkBox to={moreLink}>
-            <CheckButton>{t("Buttons.CheckAll")}</CheckButton>
-          </LinkBox>
+          {
+            !noMore &&    <LinkBox to={moreLink}>
+                <CheckButton>{t("Buttons.CheckAll")}</CheckButton>
+              </LinkBox>
+          }
         </div>
       </SectionHead>
       <SectionBody>{children}</SectionBody>
