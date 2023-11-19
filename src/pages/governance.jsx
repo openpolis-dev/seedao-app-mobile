@@ -30,9 +30,18 @@ export default function Governance() {
 
   const books = useMemo(() => {
     return [
-      { name: t("Governance.MetaRule") },
-      { name: t("Governance.GovernanceBook") },
-      { name: t("Governance.NodesConferenceRule") },
+      {
+        name: t("Governance.MetaRule"),
+        link: "https://seedao.notion.site/SeeDAO-SIP-2-a4720f18c068455785a7a9ee5fd626ee",
+      },
+      {
+        name: t("Governance.GovernanceBook"),
+        link: "https://seedao.notion.site/SIP-19-cadf3c7691b84e4bbc8b4620110fe9ce",
+      },
+      {
+        name: t("Governance.NodesConferenceRule"),
+        link: "https://seedao.notion.site/SIP-20-720aa499e0124838974dfcb44d4bcb44",
+      },
     ];
   }, [t]);
   return (
@@ -59,7 +68,9 @@ export default function Governance() {
             <img src={GovernanceIcon} alt="" />
             <GovernanceBoxTopLeft>
               <div className="title">{t("Governance.GovernanceRule")}</div>
-              <div className="desc">{t("Governance.GovernanceRuleDesc")}</div>
+              <a className="desc" href={books[1].link} target="_blank" rel="noreferrer">
+                {t("Governance.GovernanceRuleDesc")}
+              </a>
             </GovernanceBoxTopLeft>
           </GovernanceBoxTop>
           <GovernanceContent>
@@ -162,6 +173,7 @@ const GovernanceBoxTopLeft = styled.div`
     margin-bottom: 9px;
   }
   .desc {
+    display: inline-block;
     font-size: 12px;
     font-family: Poppins-Regular, Poppins;
     font-weight: 400;
