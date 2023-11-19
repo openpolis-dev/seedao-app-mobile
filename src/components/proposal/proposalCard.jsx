@@ -77,7 +77,7 @@ export default function ProposalCard({ data }) {
         <CardFooter>
           <div className="left">
             <UserAvatar src={data.user.photo_url} alt="" />
-            <div className="name">{data.user.username}</div>
+            <div className={data.user?.user_title?.name?"name":"nameAll"}>{data.user.username}</div>
             {data.user?.user_title?.name && (
               <UserTag bg={data.user.user_title.background}>{data.user.user_title?.name}</UserTag>
             )}
@@ -114,6 +114,12 @@ const CardFooter = styled.div`
       width: 10vw;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+    .nameAll{
+      margin-left: 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 30vw;
     }
   }
   .right {
