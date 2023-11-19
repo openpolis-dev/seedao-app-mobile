@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { formatTime } from "utils/time";
+import { formatDate } from "utils/time";
 import { MultiLineStyle } from "assets/styles/common";
 
 export default function ProposalCard({ data }) {
@@ -80,7 +80,7 @@ export default function ProposalCard({ data }) {
           </div>
           <div className="right">
             <span>{`#${data.category_name}`}</span>
-            <span className="date">{formatTime(new Date(data.updated_at))}</span>
+            <span className="date">{formatDate(new Date(data.updated_at))}</span>
           </div>
         </CardFooter>
       </div>
@@ -101,6 +101,7 @@ const CardFooter = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 12px;
+  align-items: center;
   .left {
     display: flex;
     align-items: center;
@@ -109,9 +110,10 @@ const CardFooter = styled.div`
     }
   }
   .right {
+    font-size: 10px;
     color: var(--font-light-color);
     span:first-of-type {
-      margin-right: 8px;
+      margin-right: 4px;
     }
   }
 `;
@@ -139,14 +141,17 @@ const ProposalContent = styled.div`
   .ql-editor p {
     line-height: 24px;
   }
+  strong, span {
+    background-color: transparent !important;
+    color: var(--font-color) !important;
+  }
 `;
 
 const UserTag = styled.span`
   padding-inline: 8px;
-  height: 18px;
   line-height: 18px;
   display: inline-block;
-  font-size: 12px;
+  font-size: 10px;
   background-color: ${(props) => props.bg};
   border-radius: 20px;
   margin-left: 8px;
