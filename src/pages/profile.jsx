@@ -21,6 +21,9 @@ import GithubImg from "../assets/Imgs/social/github.svg"
 
 const Box = styled.div`
   padding: 20px;
+  .bio{
+    font-size: 14px;
+  }
 `;
 
 const LineBox = styled.div`
@@ -147,10 +150,10 @@ const LevelBox = styled.div`
   font-size: 12px;
   font-family: Poppins-ExtraBold;
   font-weight: normal;
+  font-style: italic;
 `
 
 const SCRBox = styled.div`
-  font-weight: 700;
   font-size: 12px;
 `
 
@@ -232,7 +235,7 @@ const TopFlex = styled.div`
 `
 
 const TagBox = styled.ul`
-  font-size: 12px;
+  font-size: 10px;
   flex-wrap: wrap;
   display: flex;
   font-weight: 400;
@@ -468,7 +471,6 @@ export default function Profile() {
   return (
       <OuterBox>
         <Layout
-        noTab
         headBgColor="transparent"
         bgColor="#EBE8FE"
         isUserProfle
@@ -492,7 +494,7 @@ export default function Profile() {
               </FlexLine>
           </div>
         </FlexBox>
-        <div>{detail?.bio}</div>
+        <div className="bio">{detail?.bio}</div>
 
 
         <TagBox>
