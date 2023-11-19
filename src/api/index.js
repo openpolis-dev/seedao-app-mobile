@@ -17,7 +17,7 @@ instance.interceptors.request.use(function (config) {
   if (
     !["post", "put", "delete"].includes(method) &&
     !config.url.includes("my") &&
-    !config.url.includes("user") &&
+    !config.url.includes("me") &&
     !config.url.includes("push") &&
     !config.url.includes("app_bundles")
   ) {
