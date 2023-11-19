@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
+import ApplicationStatusTag from "components/applicationStatusTag";
 
 const UserComp = ({ avatar, sns }) => {
   return (
@@ -28,7 +29,9 @@ export default function ApplicationDetailPage({ data, sns, handleClose }) {
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.State")}</div>
-            <div className="value">{data.created_date}</div>
+            <div className="value">
+              <ApplicationStatusTag status={data.status} type="tag" />
+            </div>
           </RowItem>
         </SectionBlock>
         <SectionDivider />

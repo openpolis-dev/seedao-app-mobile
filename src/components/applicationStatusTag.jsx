@@ -11,7 +11,7 @@ export const ApplicationStatus = {
   Completed: "completed",
 };
 
-export default function ApplicationStatusTag({ status, isProj }) {
+export default function ApplicationStatusTag({ status, isProj, type }) {
   const { t } = useTranslation();
 
   const [statusText, color] = useMemo(() => {
@@ -24,7 +24,7 @@ export default function ApplicationStatusTag({ status, isProj }) {
       case ApplicationStatus.Open:
         return [t("Application.ToBeReviewed"), "#f9b617"];
       case ApplicationStatus.Approved:
-        return [t("Application.ToBeIssued"), "#f9b617"];
+        return [t("Application.ToBeIssued"), "var(--primary-color)"];
       case ApplicationStatus.Rejected:
         return [t("Application.Rejected"), "#FF7193"];
       case ApplicationStatus.Processing:
@@ -35,12 +35,17 @@ export default function ApplicationStatusTag({ status, isProj }) {
         return ["", ""];
     }
   }, [status, t]);
-  return (
-    <Tag color={color}>
-      <span className="dot"></span>
-      <span className="text">{statusText}</span>
-    </Tag>
-  );
+
+  if (type === "tag") {
+    return <TagStyle color={color}>{statusText}</TagStyle>;
+  } else {
+    return (
+      <Tag color={color}>
+        <span className="dot"></span>
+        <span className="text">{statusText}</span>
+      </Tag>
+    );
+  }
 }
 
 const Tag = styled.span`
@@ -56,4 +61,16 @@ const Tag = styled.span`
     color: ${({ color }) => color || "#ccc"};
     font-size: 10px;
   }
+`;
+
+const TagStyle = styled.span`
+  display: inline-block;
+  line-height: 18px;
+  background: ${({ color }) => color || "#ccc"};
+  border-radius: 6px;
+  padding-inline: 8px;
+  min-width: 46px;
+  font-size: 10px;
+  color: #fff;
+  text-align: center;
 `;

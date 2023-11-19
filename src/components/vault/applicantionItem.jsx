@@ -54,7 +54,7 @@ export default function ApplicationItem({ data, onCheck }) {
           <div>
             <div className="wallet">{publicJs.AddressToShow(data.target_user_wallet, 4)}</div>
             <div>
-              <ApplicationStatusTag status={ApplicationStatus.Approved} />
+              <ApplicationStatusTag status={data.status} />
             </div>
           </div>
         </LeftBox>
