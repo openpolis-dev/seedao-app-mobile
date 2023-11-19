@@ -11,12 +11,12 @@ const UserComp = ({ avatar, sns }) => {
   );
 };
 
-export default function ApplicationDetailPage({ handleClose }) {
+export default function ApplicationDetailPage({ data, sns, handleClose }) {
   const { t } = useTranslation();
   return (
     <LayoutOuter>
       <Layout title={t("Application.SendDetail")} handleBack={handleClose}>
-        <AssetBox>123 USDT</AssetBox>
+        <AssetBox>{data.asset_display}</AssetBox>
         <SectionBlock>
           <RowItem>
             <div className="label">{t("Application.Receiver")}</div>
@@ -24,30 +24,30 @@ export default function ApplicationDetailPage({ handleClose }) {
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.OutVault")}</div>
-            <div className="value"></div>
+            <div className="value">{t("Governance.CityhallPure")}</div>
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.State")}</div>
-            <div className="value"></div>
+            <div className="value">{data.created_date}</div>
           </RowItem>
         </SectionBlock>
         <SectionDivider />
         <SectionBlock>
           <RowItem>
             <div className="label">{t("Application.Season")}</div>
-            <div className="value"></div>
+            <div className="value">{data.season}</div>
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.BudgetSource")}</div>
-            <div className="value"></div>
+            <div className="value">{data.budget_source}</div>
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.Items")}</div>
-            <div className="value">这是一笔必要的支出这是一笔必要的支出这是一笔必要的支出，这是</div>
+            <div className="value">{data.detailed_type}</div>
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.Comment")}</div>
-            <div className="value">多行文本多行文本多行文本多行文本多行文本</div>
+            <div className="value">{data.comment}</div>
           </RowItem>
         </SectionBlock>
         <SectionDivider />
@@ -77,7 +77,17 @@ export default function ApplicationDetailPage({ handleClose }) {
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.TransactionId")}</div>
-            <div className="value"></div>
+            <div className="value">
+              {data.transactions?.map((item, index) => {
+                return item ? (
+                  <TransactionTx key={index} href={`https://etherscan.io/tx/${item}`} target="_blank">
+                    {item.slice(0, 8) + "..." + item.slice(-8)}
+                  </TransactionTx>
+                ) : (
+                  <></>
+                );
+              })}
+            </div>
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.TransactionDate")}</div>
@@ -150,4 +160,9 @@ const UserBox = styled.div`
     height: 24px;
     border-radius: 50%;
   }
+`;
+
+const TransactionTx = styled.a`
+  display: block;
+  text-decoration: underline;
 `;

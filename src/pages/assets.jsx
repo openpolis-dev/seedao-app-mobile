@@ -70,10 +70,10 @@ export default function Assets() {
   };
 
   useEffect(() => {
-    getAssets();
-    getVaultsInfo();
-    getFloorPrice();
-    getSCR();
+    // getAssets();
+    // getVaultsInfo();
+    // getFloorPrice();
+    // getSCR();
   }, []);
 
   useEffect(() => {
@@ -210,6 +210,10 @@ export default function Assets() {
     window.open(`https://app.safe.global/balances?safe=${SAFE_CHAIN[v.chainId].short}:${v.address}`);
   };
 
+  const handleBg = () => {
+    document.querySelector("body").style.background = "var(--primary-color)";
+  }
+
   return (
     <Layout title={t("Menus.Vault")} bgColor="var(--primary-color)" headBgColor="var(--primary-color)" headColor="#FFF">
       <TotalAssets>
@@ -246,7 +250,7 @@ export default function Assets() {
             <Tit>{t("Vault.SupplySeed")}</Tit>
           </CardItem>
         </FlexBox>
-        <ApplicantsSection />
+        <ApplicantsSection handleBg={handleBg} />
       </BottomBox>
     </Layout>
   );
