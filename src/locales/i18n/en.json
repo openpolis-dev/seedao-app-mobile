@@ -205,6 +205,9 @@
   },
   "Calendar": {
     "Calendar":"Calendar"
-
+  },
+  "Msg": {
+    "SnsNotFound": "SNS Not Found",
+    "InvalidAddress": "Invalid Address"
   }
 }

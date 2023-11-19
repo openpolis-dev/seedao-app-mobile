@@ -204,5 +204,9 @@
   },
   "Calendar": {
     "Calendar":"日历"
+  },
+  "Msg": {
+    "SnsNotFound": "无效的SNS",
+    "InvalidAddress": "无效的地址"
   }
 }

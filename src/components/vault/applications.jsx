@@ -19,6 +19,10 @@ import { Type as ListType, SwipeableList, SwipeableListItem, SwipeAction, Traili
 import "react-swipeable-list/dist/styles.css";
 import ApplicationStatusTag from "components/applicationStatusTag";
 import publicJs from "utils/publicJs";
+import sns from "@seedao/sns-js";
+import store from "store";
+import { saveLoading } from "store/reducer";
+import useToast from "hooks/useToast";
 
 export default function ApplicationsSection({ handleBg }) {
   const { t } = useTranslation();
@@ -28,6 +32,8 @@ export default function ApplicationsSection({ handleBg }) {
   const [pageSize, setPageSize] = useState(20);
   const [total, setTotal] = useState(0);
   const [list, setList] = useState([]);
+
+  const { Toast, showToast } = useToast();
 
   // status
   const statusList = useApplicationStatus();
@@ -40,6 +46,7 @@ export default function ApplicationsSection({ handleBg }) {
   const [selectAsset, setSelectAsset] = useState();
   // search
   const [keyword, setKeyword] = useState("");
+  const [searchVal, setSearchVal] = useState("");
 
   const [snsMap, setSnsMap] = useState(new Map());
 
@@ -64,6 +71,9 @@ export default function ApplicationsSection({ handleBg }) {
       }
       if (selectAsset) {
         queryData.asset_name = selectAsset;
+      }
+      if (searchVal) {
+        queryData.user_wallet = searchVal;
       }
 
       const res = await getApplications(
@@ -103,7 +113,7 @@ export default function ApplicationsSection({ handleBg }) {
 
   useEffect(() => {
     getRecords(true);
-  }, [selectAsset, selectSeason, selectStatus]);
+  }, [selectAsset, selectSeason, selectStatus, searchVal]);
   const openDetail = (item) => {
     setShowDetail(item);
   };
@@ -111,14 +121,22 @@ export default function ApplicationsSection({ handleBg }) {
     setShowDetail(undefined);
     handleBg && handleBg();
   };
-  const handleSearch = () => {
-    // TODO
+  const handleSearch = async () => {
     if (keyword.endsWith(".seedao")) {
       // sns
+      store.dispatch(saveLoading(true));
+      const w = await sns.resolve(keyword);
+      if (w) {
+        setSearchVal(w.toLocaleLowerCase());
+      } else {
+        showToast(t("Msg.SnsNotFound"));
+      }
+      store.dispatch(saveLoading(false));
     } else if (!ethers.utils.isAddress(keyword)) {
       // address
+      setSearchVal(keyword.toLocaleLowerCase());
     } else {
-      // invalid
+      showToast(t("Msg.InvalidAddress"));
     }
   };
   const onKeyUp = (e) => {
@@ -225,6 +243,7 @@ export default function ApplicationsSection({ handleBg }) {
           ))}
         </SwipeableList>
       </InfiniteScroll>
+      {Toast}
     </ApplicantsSectionBlock>
   );
 }
