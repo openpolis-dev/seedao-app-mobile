@@ -156,11 +156,20 @@ const MemberAvatarStyle = styled.div`
     margin-bottom: 4px;
     line-height: 21px;
     color: var(--font-color-1);
-    ${MultiLineStyle}
+    box-sizing: border-box;
+    padding: 0 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .name {
     width: 100%;
-    ${MultiLineStyle}
+    box-sizing: border-box;
+    color: #9a9a9a;
+    padding: 0 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 `;
 
