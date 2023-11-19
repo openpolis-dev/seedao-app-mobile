@@ -81,8 +81,37 @@ const getImage = async (img) => {
   }
 };
 
+
+const filterTags = (html) => {
+  const decodedStr = html.replace(/&#(\d+);/g, function(match, dec) {
+    return String.fromCharCode(dec);
+  });
+  const decodedHtmlWithHex = decodedStr.replace(/&#x([0-9A-Fa-f]+);/g, function(match, hex) {
+    return String.fromCharCode(parseInt(hex, 16));
+  });
+  const decodedHtml = decodedHtmlWithHex.replace(/&(amp|lt|gt|quot|#39);/g, function(match, entity) {
+    const entities = {
+      amp: '&',
+      lt: '<',
+      gt: '>',
+      quot: '"',
+      '#39': "'"
+    };
+    return entities[entity];
+  });
+  const unicodeDecodedStr = decodedHtml.replace(/\\u([\d\w]{4})/gi, function(match, hex) {
+    return String.fromCharCode(parseInt(hex, 16));
+  });
+  const urlDecodedStr = decodeURIComponent(unicodeDecodedStr);
+  const unicodeHexDecodedStr = urlDecodedStr.replace(/\\x([\d\w]{2})/gi, function(match, hex) {
+    return String.fromCharCode(parseInt(hex, 16));
+  });
+  return unicodeHexDecodedStr.replace(/(<([^>]+)>)/ig, '');
+}
+
 export default {
   AddressToShow,
   createSiweMessage,
-  getImage
+  getImage,
+  filterTags
 };

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "utils/time";
 import { MultiLineStyle } from "assets/styles/common";
+import PublicJs from "../../utils/publicJs";
 
 export default function ProposalCard({ data }) {
   const navigate = useNavigate();
@@ -64,11 +65,14 @@ export default function ProposalCard({ data }) {
   const openProposal = () => {
     navigate(`/proposal/thread/${data.id}`);
   };
+
+  
   return (
     <CardBox key={data.id}>
       <div onClick={openProposal}>
         <Title>{data.title}</Title>
-        <ProposalContent line={2} dangerouslySetInnerHTML={{ __html: content }}></ProposalContent>
+        {/*<ProposalContent line={2} dangerouslySetInnerHTML={{ __html: content }}></ProposalContent>*/}
+        <ProposalContent line={2} >{PublicJs.filterTags(content)}</ProposalContent>
 
         <CardFooter>
           <div className="left">
