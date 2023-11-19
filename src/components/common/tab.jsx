@@ -36,6 +36,7 @@ const TabMenu = styled.div`
     width: 126px;
     white-space: nowrap;
     text-align: center;
+    font-size: 15px;
     &.selected {
       background: var(--primary-color);
       color: #fff;
