@@ -1,81 +1,45 @@
-import { useState } from "react";
 import styled from "styled-components";
-import ApplicationStatusTag, { ApplicationStatus } from "components/applicationStatusTag";
+import ApplicationStatusTag from "components/applicationStatusTag";
 import { useTranslation } from "react-i18next";
 import publicJs from "utils/publicJs";
+import { SwipeableListItem, SwipeAction, TrailingActions } from "react-swipeable-list";
 
 export default function ApplicationItem({ data, onCheck }) {
   const { t } = useTranslation();
-  const [moveStyle, setStyle] = useState({});
-  const [startX, setStartX] = useState(0);
-  const [startY, setStartY] = useState(0);
-  const [currentX, setCurrentX] = useState(0);
-  const [moveX, setMoveX] = useState(0);
-  const [moveY, setMoveY] = useState(0);
-  const [width, setWidth] = useState(0);
-  const [isShow, setIsShow] = useState(false);
 
-  const handleTouchStart = (e) => {
-    setStartX(e.touches[0].pageX);
-    setStartY(e.touches[0].pageY);
-  };
-
-  const handleTouchMove = (e) => {
-    setCurrentX(e.touches[0].pageX);
-    setMoveX(currentX - startX);
-    setMoveY(e.touches[0].pageY - startY);
-    if (Math.abs(moveY) > Math.abs(moveX)) {
-      return;
-    }
-    if (Math.abs(moveX) < 10) {
-      return;
-    }
-    const distance = moveX >= 0 ? 0 : -105;
-    setStyle({
-      transform: `translateX(${distance}px)`,
-    });
-    setWidth(Math.abs(distance * 1));
-    setIsShow(true);
-  };
-
-  const handleCheck = () => {
-    setWidth(0);
-     setStyle({
-       transform: `translateX(0)`,
-     });
-    onCheck && onCheck();
-  }
+  const trailingActions = () => (
+    <TrailingActions>
+      <SwipeAction destructive={true} onClick={() => console.info("swipe action triggered")}>
+        <CheckButton onClick={onCheck}>{t("Application.Check")}</CheckButton>
+      </SwipeAction>
+    </TrailingActions>
+  );
 
   return (
-    <ItemBox>
-      <ContentInnerBox style={moveStyle} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove}>
-        <LeftBox>
-          <img src="" alt="" />
-          <div>
-            <div className="wallet">{publicJs.AddressToShow(data.target_user_wallet, 4)}</div>
+    <SwipeableListItem trailingActions={trailingActions()}>
+      <ItemBox>
+        <ContentInnerBox>
+          <LeftBox>
+            <img src="" alt="" />
             <div>
-              <ApplicationStatusTag status={data.status} />
+              <div className="wallet">{publicJs.AddressToShow(data.target_user_wallet, 4)}</div>
+              <div>
+                <ApplicationStatusTag status={data.status} />
+              </div>
             </div>
-          </div>
-        </LeftBox>
-        <RightBox>
-          <div className="value">{`${data.asset_display}`}</div>
-          <div className="from">{t("Governance.Cityhall", { season: data.season_name })}</div>
-        </RightBox>
-      </ContentInnerBox>
-
-      <CheckButton
-        className={`delete-btn ${width ? "showBtn" : isShow ? "hideBtn" : ""}`}
-        style={{ width: width + "px" }}
-        onClick={handleCheck}
-      >
-        {t("Application.Check")}
-      </CheckButton>
-    </ItemBox>
+          </LeftBox>
+          <RightBox>
+            <div className="value">{`${data.asset_display}`}</div>
+            <div className="from">{t("Governance.Cityhall", { season: data.season_name })}</div>
+          </RightBox>
+        </ContentInnerBox>
+      </ItemBox>
+    </SwipeableListItem>
   );
 }
 
 const ItemBox = styled.div`
+  min-width: 100%;
   height: 60px;
   border-bottom: 1px solid #e1e1eb;
   position: relative;
@@ -95,45 +59,12 @@ const ContentInnerBox = styled.div`
 `;
 
 const CheckButton = styled.div`
-  position: absolute;
-  top: 0;
-  right: -8px;
-  height: 100%;
+  line-height: 60px;
   background: var(--primary-color);
-  z-index: 99;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
   font-size: 13px;
   color: #ffffff;
   white-space: nowrap;
-  overflow: hidden;
-  &.showBtn {
-    animation-name: showBtn;
-    animation-duration: 0.5s;
-  }
-  &.hideBtn {
-    animation-name: hideBtn;
-    animation-duration: 0.5s;
-  }
-  /* 动画代码 */
-  @keyframes showBtn {
-    from {
-      width: 0px;
-    }
-    to {
-      width: 105px;
-    }
-  }
-  /* 动画代码 */
-  @keyframes hideBtn {
-    from {
-      width: 105px;
-    }
-    to {
-      width: 0px;
-    }
-  }
 `;
 
 const LeftBox = styled.div`

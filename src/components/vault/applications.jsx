@@ -16,6 +16,9 @@ import ApplicationDetailPage from "./applicationDetail";
 import { ethers } from "ethers";
 import InfiniteScroll from "react-infinite-scroll-component";
 
+import { Type as ListType, SwipeableList } from "react-swipeable-list";
+import "react-swipeable-list/dist/styles.css";
+
 export default function ApplicationsSection({ handleBg }) {
   const { t } = useTranslation();
 
@@ -46,10 +49,9 @@ export default function ApplicationsSection({ handleBg }) {
     setSnsMap(sns_map);
   };
 
-   const hasMore = useMemo(() => {
-     return list.length < total;
-   }, [total, list]);
-
+  const hasMore = useMemo(() => {
+    return list.length < total;
+  }, [total, list]);
 
   const getRecords = async (init) => {
     const _page = init ? 1 : page;
@@ -91,7 +93,7 @@ export default function ApplicationsSection({ handleBg }) {
         receiver_name: item.target_user_wallet?.toLocaleLowerCase(),
       }));
       setList(init ? _list : [...list, ..._list]);
-      setPage(_page + 1)
+      setPage(_page + 1);
     } catch (error) {
       console.error("getRecords error", error);
     } finally {
@@ -117,7 +119,7 @@ export default function ApplicationsSection({ handleBg }) {
     } else {
       // invalid
     }
-  }
+  };
   const onKeyUp = (e) => {
     console.log(e.keyCode);
     if (e.keyCode === 13) {
@@ -188,15 +190,12 @@ export default function ApplicationsSection({ handleBg }) {
           />
         </div>
       </FilterBox>
-      <InfiniteScroll
-        scrollableTarget="inner"
-        dataLength={list.length}
-        next={getRecords}
-        hasMore={hasMore}
-      >
-        {list.map((item, index) => (
-          <ApplicationItem data={item} key={index} onCheck={() => openDetail(item)} />
-        ))}
+      <InfiniteScroll scrollableTarget="inner" dataLength={list.length} next={getRecords} hasMore={hasMore}>
+        <SwipeableList threshold={0.25} type={ListType.IOS}>
+          {list.map((item, index) => (
+            <ApplicationItem data={item} key={index} onCheck={() => openDetail(item)} />
+          ))}
+        </SwipeableList>
       </InfiniteScroll>
     </ApplicantsSectionBlock>
   );

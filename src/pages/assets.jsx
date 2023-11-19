@@ -70,10 +70,10 @@ export default function Assets() {
   };
 
   useEffect(() => {
-    // getAssets();
-    // getVaultsInfo();
-    // getFloorPrice();
-    // getSCR();
+    getAssets();
+    getVaultsInfo();
+    getFloorPrice();
+    getSCR();
   }, []);
 
   useEffect(() => {
