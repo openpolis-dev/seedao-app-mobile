@@ -9,7 +9,8 @@
     "connect": "Connect Wallet",
     "confirm": "Confirm",
     "Edit": "Edit",
-    "Empty": "Empty"
+    "Empty": "Empty",
+    "Copied": "Copied"
   },
   "Buttons": {
     "Check": "Check",

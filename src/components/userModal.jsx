@@ -13,7 +13,7 @@ export default function UserModal({ user, handleClose }) {
       <UserModalModalContent>
         <AvatarBox src={user.avatar} alt="" size="84px" />
         <SnsBox>
-          <d>{user.sns}</d>
+          <div className="sns">{user.sns}</div>
           <CopyBox text={user.wallet} />
         </SnsBox>
         <NameBox>{user.name}</NameBox>
@@ -89,10 +89,10 @@ const SnsBox = styled.div`
   font-family: Poppins-Regular, Poppins;
   font-weight: 400;
   line-height: 22px;
-  & > div {
-    display: inline-block;
-    margin-left: 20px;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   width: 70%;
   margin: 0 auto;
 `;

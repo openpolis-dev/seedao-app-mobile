@@ -22,12 +22,11 @@ const CopyBox = ({ children, text, dir }) => {
       <CopyToClipboard text={text} onCopy={handleCopy}>
         <CopyContent className="copy-content" dir={dir || "right"}>
           {children || <img src={CopyIcon} className="copy-icon" alt="" />}
-          {/* {isCopied && <span className="tooltip-content">{t("mobile.copied")}</span>} */}
         </CopyContent>
       </CopyToClipboard>
       {isCopied && (
         <TipsBox>
-          <InnerBox>{t("mobile.copied")}</InnerBox>
+          <InnerBox>{t("General.Copied")}</InnerBox>
         </TipsBox>
       )}
     </>
@@ -79,7 +78,6 @@ const CopyContent = styled.div`
 `;
 
 const TipsBox = styled.div`
-  background: rgba(0, 0, 0, 0.2);
   width: 100vw;
   height: 100vh;
   left: 0;
@@ -91,8 +89,8 @@ const TipsBox = styled.div`
   justify-content: center;
 `;
 
-const InnerBox = styled.div`
-  background: #fff;
+const InnerBox = styled.span`
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.2);
   padding: 10px 20px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
 `;
