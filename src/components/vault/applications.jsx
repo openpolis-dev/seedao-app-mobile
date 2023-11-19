@@ -23,6 +23,7 @@ import sns from "@seedao/sns-js";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import useToast from "hooks/useToast";
+import Avatar from "components/common/avatar";
 
 export default function ApplicationsSection({ handleBg }) {
   const { t } = useTranslation();
@@ -152,6 +153,11 @@ export default function ApplicationsSection({ handleBg }) {
     !v && searchVal && setSearchVal("");
   }
 
+  const formatSNS = (wallet) => {
+    const sns = snsMap[wallet] || wallet;
+    return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns, 6);
+  };
+
   const trailingActions = (item) => (
     <TrailingActions>
       <SwipeAction destructive={false} onClick={() => openDetail(item)}>
@@ -161,7 +167,9 @@ export default function ApplicationsSection({ handleBg }) {
   );
   return (
     <ApplicantsSectionBlock>
-      {showDetail && <ApplicationDetailPage data={showDetail} handleClose={closeDetail} />}
+      {showDetail && (
+        <ApplicationDetailPage data={showDetail} handleClose={closeDetail} formatSNS={formatSNS} />
+      )}
       <SectionTitle>
         <div>{t("Vault.SendRecordTitle")}</div>
         <SectionTitleRight to="/ranking">
@@ -230,9 +238,9 @@ export default function ApplicationsSection({ handleBg }) {
               <ItemBox>
                 <ContentInnerBox>
                   <LeftBox>
-                    <img src="" alt="" />
+                    <Avatar size="34px" />
                     <div>
-                      <div className="wallet">{publicJs.AddressToShow(data.target_user_wallet, 4)}</div>
+                      <div className="wallet">{formatSNS(data.target_user_wallet)}</div>
                       <div>
                         <ApplicationStatusTag status={data.status} />
                       </div>
@@ -346,11 +354,6 @@ const LeftBox = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
-  img {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-  }
   .wallet {
     font-size: 14px;
   }

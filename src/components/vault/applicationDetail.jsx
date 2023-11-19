@@ -12,7 +12,7 @@ const UserComp = ({ avatar, sns }) => {
   );
 };
 
-export default function ApplicationDetailPage({ data, sns, handleClose }) {
+export default function ApplicationDetailPage({ data, formatSNS, handleClose }) {
   const { t } = useTranslation();
   return (
     <LayoutOuter>
@@ -21,7 +21,7 @@ export default function ApplicationDetailPage({ data, sns, handleClose }) {
         <SectionBlock>
           <RowItem>
             <div className="label">{t("Application.Receiver")}</div>
-            <UserComp avatar={""} sns={"0xdes3...ds34"} />
+            <UserComp avatar={""} sns={formatSNS(data.target_user_wallet.toLowerCase())} />
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.OutVault")}</div>
@@ -38,7 +38,7 @@ export default function ApplicationDetailPage({ data, sns, handleClose }) {
         <SectionBlock>
           <RowItem>
             <div className="label">{t("Application.Season")}</div>
-            <div className="value">{data.season}</div>
+            <div className="value">{data.season_name}</div>
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.BudgetSource")}</div>
@@ -57,7 +57,7 @@ export default function ApplicationDetailPage({ data, sns, handleClose }) {
         <SectionBlock>
           <RowItem>
             <div className="label">{t("Application.Applicant")}</div>
-            <UserComp avatar={""} sns={"0xdes3...ds34"} />
+            <UserComp avatar={""} sns={formatSNS(data.submitter_wallet.toLowerCase())} />
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.ApplyDate")}</div>
@@ -72,7 +72,7 @@ export default function ApplicationDetailPage({ data, sns, handleClose }) {
         <SectionBlock>
           <RowItem>
             <div className="label">{t("Application.Auditor")}</div>
-            <UserComp avatar={""} sns={"0xdes3...ds34"} />
+            {data.reviewer_wallet && <UserComp avatar={""} sns={formatSNS(data.reviewer_wallet.toLowerCase())} />}
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.AuditorDate")}</div>
