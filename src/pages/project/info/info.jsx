@@ -56,7 +56,7 @@ const DescBox = styled.div`
 const ContentBlock = styled.div`
   border-top: 1px solid rgba(217, 217, 217, 0.5);
   padding-top: 30px;
-  margin-inline: 20px;
+  margin: 0 20px 20px;
 `;
 
 const TitleAll = styled.div`
