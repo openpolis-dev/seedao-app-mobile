@@ -48,7 +48,6 @@ export default function Header({ title, bgColor, headColor, rightOperation, hand
   const navigate = useNavigate();
 
   const backTop = () => {
-    console.log("handleBack", handleBack);
     handleBack ? handleBack() : navigate(-1);
   };
 
