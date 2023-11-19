@@ -102,8 +102,7 @@ const filterTags = (html) => {
   const unicodeDecodedStr = decodedHtml.replace(/\\u([\d\w]{4})/gi, function(match, hex) {
     return String.fromCharCode(parseInt(hex, 16));
   });
-  const urlDecodedStr = decodeURIComponent(unicodeDecodedStr);
-  const unicodeHexDecodedStr = urlDecodedStr.replace(/\\x([\d\w]{2})/gi, function(match, hex) {
+  const unicodeHexDecodedStr = unicodeDecodedStr.replace(/\\x([\d\w]{2})/gi, function(match, hex) {
     return String.fromCharCode(parseInt(hex, 16));
   });
   return unicodeHexDecodedStr.replace(/(<([^>]+)>)/ig, '');
