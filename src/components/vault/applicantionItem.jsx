@@ -24,11 +24,9 @@ export default function ApplicationItem({ data, onCheck }) {
     setCurrentX(e.touches[0].pageX);
     setMoveX(currentX - startX);
     setMoveY(e.touches[0].pageY - startY);
-    // 纵向移动时return
     if (Math.abs(moveY) > Math.abs(moveX)) {
       return;
     }
-    // 滑动超过一定距离时，才触发
     if (Math.abs(moveX) < 10) {
       return;
     }
@@ -39,6 +37,14 @@ export default function ApplicationItem({ data, onCheck }) {
     setWidth(Math.abs(distance * 1));
     setIsShow(true);
   };
+
+  const handleCheck = () => {
+    setWidth(0);
+     setStyle({
+       transform: `translateX(0)`,
+     });
+    onCheck && onCheck();
+  }
 
   return (
     <ItemBox>
@@ -61,7 +67,7 @@ export default function ApplicationItem({ data, onCheck }) {
       <CheckButton
         className={`delete-btn ${width ? "showBtn" : isShow ? "hideBtn" : ""}`}
         style={{ width: width + "px" }}
-        onClick={onCheck}
+        onClick={handleCheck}
       >
         {t("Application.Check")}
       </CheckButton>
