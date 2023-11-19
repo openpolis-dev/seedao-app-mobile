@@ -91,6 +91,9 @@ const TipsBox = styled.div`
 
 const InnerBox = styled.span`
   display: inline-block;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.75);
   padding: 10px 20px;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 4px;
 `;
