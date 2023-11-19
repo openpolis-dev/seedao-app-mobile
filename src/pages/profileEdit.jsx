@@ -1,7 +1,7 @@
 
 import Layout from "../components/layout/layout";
 import styled from 'styled-components';
-import React, {ChangeEvent, useEffect, useState, FormEvent, useRef, useLayoutEffect} from 'react';
+import React, {ChangeEvent, useEffect, useState, FormEvent, useRef} from 'react';
 import {getUser, updateUser} from "../api/user";
 // import { useAuthContext, AppActionType } from 'providers/authProvider';
 import { useTranslation } from 'react-i18next';
@@ -48,6 +48,7 @@ const UlBox = styled.ul`
     padding: 15px 0;
     .title {
       color: #9a9a9a;
+      font-size: 14px;
     }
   }
 `;
@@ -78,9 +79,8 @@ const InputBox = styled(InputGroup)`
     }
   }
   textarea{
-    height: auto;
-    min-height: 50px;
-    max-height: 100px;
+    margin-bottom: -5px;
+    resize: none;
   }
 `;
 const MidBox = styled.div`
@@ -131,15 +131,11 @@ export default function ProfileEdit() {
   const [wallet, setWallet] = useState('');
   const { disconnect } = useDisconnect();
 
-  const textareaRef = useRef(null);
+  const [height, setHeight] = useState('1em');
 
-  useLayoutEffect(() => {
-    textareaRef.current.style.height = "inherit";
-    // Set height
-    textareaRef.current.style.height = `${Math.max(
-        textareaRef.current.scrollHeight,
-        32
-    )}px`;
+  useEffect(() => {
+    const textarea = document.getElementById('textarea');
+    setHeight(`${textarea.scrollHeight}px`);
   }, [bio]);
 
   const handleValue = (e) =>{
@@ -361,7 +357,7 @@ export default function ProfileEdit() {
             <li>
               <div className="title">{t("My.Bio")}</div>
               <InputBox>
-                <textarea ref={textareaRef} placeholder="" value={bio} onChange={(e) => handleValue(e,)} />
+                <textarea id="textarea" placeholder="" style={{ height: height }} value={bio} onChange={(e) => handleValue(e,)} />
               </InputBox>
             </li>
             <li>
