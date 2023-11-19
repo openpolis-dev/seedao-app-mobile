@@ -51,7 +51,7 @@ const EventItem = styled.div`
 
 const Cover = styled.img`
   width: 100%;
-  height: 188px;
+  height: 23vw;
   border-radius: 16px;
   object-fit: cover;
 `;
