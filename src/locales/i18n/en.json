@@ -8,7 +8,8 @@
   "General": {
     "connect": "Connect Wallet",
     "confirm": "Confirm",
-    "Edit": "Edit"
+    "Edit": "Edit",
+    "Empty": "Empty"
   },
   "Buttons": {
     "Check": "Check",

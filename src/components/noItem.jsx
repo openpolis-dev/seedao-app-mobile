@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import {Calendar3Range} from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
+import EmptyIcon from "assets/Imgs/empty.svg";
 
 const Box = styled.div`
-    flex: 1;
+  flex: 1;
   min-height: 50vh;
   display: flex;
   align-items: center;
@@ -11,17 +11,17 @@ const Box = styled.div`
   flex-direction: column;
   .sizeTop {
     font-size: 30px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
-`
+`;
 export default function NoItem() {
   const { t } = useTranslation();
-    return (
-      <Box>
-        <div>
-          <Calendar3Range className="sizeTop" />
-        </div>
-        <div>{t("mobile.NoData")}</div>
-      </Box>
-    );
+  return (
+    <Box>
+      <div>
+        <img src={EmptyIcon} alt="" className="sizeTop" />
+      </div>
+      <div>{t("General.Empty")}</div>
+    </Box>
+  );
 }

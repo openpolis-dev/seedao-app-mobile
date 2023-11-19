@@ -8,7 +8,8 @@
   "General": {
     "connect": "连接钱包",
     "confirm": "确定",
-    "Edit": "编辑"
+    "Edit": "编辑",
+    "Empty": "空空如也"
   },
   "Buttons": {
     "Check": "查看",
