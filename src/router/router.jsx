@@ -60,12 +60,12 @@ function RouterLink() {
 
         <Route path="/online-event" element={<Calendar />} />
 
-        <Route path="/my" element={<My />} />
-        <Route path="/setting" element={<Setting />} />
-        <Route path="/board" element={<Board />} />
+        {/* <Route path="/my" element={<My />} /> */}
+        {/* <Route path="/setting" element={<Setting />} /> */}
+        {/* <Route path="/board" element={<Board />} /> */}
         <Route path="/user/profile" element={<Profile />} />
-        <Route path="/user/vault" element={<Vault />} />
-        <Route path="/privacy" element={<Privacy />} />
+        {/* <Route path="/user/vault" element={<Vault />} /> */}
+        {/* <Route path="/privacy" element={<Privacy />} /> */}
 
         {/*<Route path="/message" element={<MessagePage />} />*/}
       </Routes>
