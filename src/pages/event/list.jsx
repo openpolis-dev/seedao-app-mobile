@@ -51,7 +51,13 @@ export default function EventListPage() {
   };
   return (
     <Layout title={t("Event.ListTitle")}>
-      <InfiniteScroll dataLength={list.length} next={getList} hasMore={hasMore} loader={<Loading />}>
+      <InfiniteScroll
+        scrollableTarget="inner"
+        dataLength={list.length}
+        next={getList}
+        hasMore={hasMore}
+        loader={<Loading />}
+      >
         {!loading && list.length === 0 && <NoItem />}
 
         <EventList>
@@ -80,6 +86,7 @@ const EventList = styled.div`
   gap: 14px;
   flex-wrap: wrap;
   padding-inline: 20px;
+  margin-top: 14px;
 `;
 
 const EventItem = styled.div`
