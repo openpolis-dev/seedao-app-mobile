@@ -39,7 +39,9 @@ export default function Proposal() {
           <CategoryCard key={index}>
             <div className="cate-name">
               <Link to={`/proposal/category/${category.category_id}`}>{category.name}</Link>
-              <img src={ArrowIcon} alt="" />
+              {
+                  !!category.children.length && <img src={ArrowIcon} alt="" />
+              }
             </div>
             {!!category.children.length && (
               <SubCategoryCard>
