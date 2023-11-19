@@ -58,7 +58,7 @@ function RouterLink() {
         <Route path="/pub" element={<Pub />} />
         <Route path="/pubDetail/:id" element={<PubDetail />} />
 
-        <Route path="/online-event" element={<Calendar />} />
+        <Route path="/calendar" element={<Calendar />} />
 
         {/* <Route path="/my" element={<My />} /> */}
         {/* <Route path="/setting" element={<Setting />} /> */}

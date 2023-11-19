@@ -79,7 +79,7 @@ export default function TabBar() {
   }
   const active_tabs = useMemo(() => {
     const governance_list = ["governance", "proposal", "assets"];
-    const home_list = ["home", "online-event"];
+    const home_list = ["home", "calendar"];
     const explore_list = ["explore", "project", "guild", "event"];
     return [checkIsActive(governance_list), checkIsActive(home_list), checkIsActive(explore_list)];
   }, [pathname]);

@@ -112,7 +112,7 @@ export default function HomeCalendar(){
     }, []);
 
     const toGo = () =>{
-        navigate("/online-event")
+        navigate("/calendar")
     }
 
     return <Box>

@@ -124,7 +124,7 @@ export default function SwiperBanner(){
 
     const handleClickEvent = (id,link) => {
         if (id === 'online') {
-            navigate('/online-event');
+            navigate('/calendar');
         } else  if (id === 'pub') {
             navigate('/pub');
         } else {
