@@ -122,7 +122,6 @@ export default function Guild() {
           next={getCurrentList}
           hasMore={hasMore}
           loader={<Loading />}
-          height={400}
         >
           {proList.length === 0 && <NoItem />}
           <ProjectList>
