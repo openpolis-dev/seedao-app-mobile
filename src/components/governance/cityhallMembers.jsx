@@ -47,9 +47,10 @@ export default function CityhallMembers() {
     return members.map((w) => {
       const user = userMap[w.toLowerCase()];
       if (user) {
+        const sns = snsMap[w.toLowerCase()] || w.toLowerCase();
         return {
           ...user,
-          sns: snsMap[w.toLowerCase()] || publicJs.AddressToShow(w.toLowerCase(), 6),
+          sns: sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns, 6),
         };
       } else {
         return { sns: publicJs.AddressToShow(w.toLowerCase(), 6) };
