@@ -63,11 +63,12 @@
     "IncubatorDesc": "Apply to join SeeDAO Incubator."
   },
   "Project": {
-    "Projects": "项目",
+    "Projects": "Project",
     "AllProjects": "All Projects",
     "JoinedProjects": "Joined",
     "Members": "Members",
-    "Intro": "Introduction"
+    "Intro": "Introduction",
+    "Detail": "Project Detail"
   },
   "home": {
     "title": "城邦日历",
@@ -150,7 +151,8 @@
     "AllProjects": "All Guilds",
     "Joined": "Joined",
     "Members": "Members",
-    "Intro": "公会介绍"
+    "Intro": "Guild Intro",
+    "Detail": "Guild Detail"
   },
   "Event": {
     "ListTitle": "All Events",

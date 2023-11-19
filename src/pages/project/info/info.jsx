@@ -102,8 +102,8 @@ export default function ProjectInfo() {
   }, [id, dispatch]);
   return (
     // <Layout title={data?.name || t("mobile.projectDetail")}>
-    <Layout title={data?.name || t("mobile.projectDetail")}>
-      < >
+    <Layout title={data?.name || t("Project.Detail")}>
+      <>
         <FlexBox>
           <ImgBlock>{data?.logo && <img src={data.logo} alt="" />}</ImgBlock>
           <TitleBox>{data?.name}</TitleBox>
@@ -112,7 +112,7 @@ export default function ProjectInfo() {
         <DescBox>{data?.desc}</DescBox>
         <ProposalsBox>
           {data?.proposals?.map((item, index) => (
-              <SipTag key={`proposal_${index}`} slug={item} />
+            <SipTag key={`proposal_${index}`} slug={item} />
           ))}
         </ProposalsBox>
         <MBox>
@@ -120,13 +120,11 @@ export default function ProjectInfo() {
           <ProjectMember />
         </MBox>
 
-
         <ContentBlock>
           <TitleAll>{t("Project.Intro")}</TitleAll>
-          <MdPreview modelValue={data?.intro || ''} />
+          <MdPreview modelValue={data?.intro || ""} />
         </ContentBlock>
       </>
-
     </Layout>
   );
 }
