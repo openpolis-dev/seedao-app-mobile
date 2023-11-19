@@ -5,9 +5,7 @@ export default function ResourceCard({ data }) {
 
 
 const handleClickEvent = () => {
-    console.log(data)
-
-    const {id,link} = data;
+    const {link} = data;
     window.open(link, '_blank');
 };
 
