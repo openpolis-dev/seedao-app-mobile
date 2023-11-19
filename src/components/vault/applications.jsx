@@ -146,6 +146,11 @@ export default function ApplicationsSection({ handleBg }) {
       handleSearch();
     }
   };
+  const onChangeKeyword = (e) => { 
+    const v = e.target.value;
+    setKeyword(v);
+    !v && searchVal && setSearchVal("");
+  }
 
   const trailingActions = (item) => (
     <TrailingActions>
@@ -169,7 +174,7 @@ export default function ApplicationsSection({ handleBg }) {
           <SearchInputBox>
             <InputStyle
               value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
+              onChange={onChangeKeyword}
               type="search"
               enterKeyHint="search"
               placeholder={t("Application.SearchSNSPlaceholder")}
