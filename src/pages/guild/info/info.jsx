@@ -14,9 +14,10 @@ import ProjectMember from "../../project/info/member";
 import {MdPreview} from "md-editor-rt";
 
 const FlexBox = styled.div`
-    display: flex;
+  display: flex;
   align-items: center;
-  margin: 0 24px;
+  padding-inline: 20px;
+  margin-top: 24px;
 `
 
 const ImgBlock = styled.div`
@@ -44,20 +45,21 @@ const TitleBox = styled.div`
 
 const ProposalsBox = styled.div`
   display: flex;
-  margin: 0 14px 0 24px;
+  margin-inline: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid rgba(217,217,217,0.5);
 `;
 
 
 const DescBox = styled.div`
-  padding: 39px 24px 10px;
+  padding: 15px 20px 10px;
   color: #9a9a9a;
 `
 
 const ContentBlock = styled.div`
-  border-top: 1px solid rgba(217,217,217,0.5);
-  padding: 30px 24px 0;
+  border-top: 1px solid rgba(217, 217, 217, 0.5);
+  padding-top: 30px;
+  margin-inline: 20px;
 `;
 
 const TitleAll = styled.div`

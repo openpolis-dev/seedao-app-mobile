@@ -23,7 +23,7 @@ export default function SipTag({ slug }) {
 
 const SipTagStyle = styled.a`
   display: inline-block;
-  border-radius: 5px;
+  border-radius: 8px;
   border: 1px solid #0085ff;
   font-size: 12px;
   padding: 2px 12px;

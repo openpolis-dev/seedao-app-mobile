@@ -16,10 +16,11 @@ import {MdPreview} from "md-editor-rt";
 
 
 const FlexBox = styled.div`
-    display: flex;
+  display: flex;
   align-items: center;
-  margin: 0 24px;
-`
+  padding-inline: 20px;
+  margin-top: 24px;
+`;
 
 const ImgBlock = styled.div`
   display: flex;
@@ -41,25 +42,24 @@ const TitleBox = styled.div`
   line-height: 24px;
   flex-grow: 1;
   padding-left: 15px;
-  
-`
+`;
 
 const ProposalsBox = styled.div`
   display: flex;
-  margin: 0 14px 0 24px;
+  margin-inline: 20px;
   padding-bottom: 20px;
-  border-bottom: 1px solid rgba(217,217,217,0.5);
+  border-bottom: 1px solid rgba(217, 217, 217, 0.5);
 `;
 
-
 const DescBox = styled.div`
-  padding: 39px 24px 10px;
+  padding: 15px 20px 10px;
   color: #9a9a9a;
-`
+`;
 
 const ContentBlock = styled.div`
-  border-top: 1px solid rgba(217,217,217,0.5);
-  padding: 30px 24px 0;
+  border-top: 1px solid rgba(217, 217, 217, 0.5);
+  padding-top: 30px;
+  margin-inline: 20px;
 `;
 
 const TitleAll = styled.div`
@@ -67,12 +67,11 @@ const TitleAll = styled.div`
   font-family: Poppins-SemiBold;
   font-weight: 600;
   padding-bottom: 15px;
-`
+`;
 
 const MBox = styled.div`
   padding: 30px 24px 0;
-`
-
+`;
 
 export default function ProjectInfo() {
   const { t } = useTranslation();
