@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { House, Person } from "react-bootstrap-icons";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import HomeImg from "../../assets/Imgs/home.svg";
@@ -73,10 +73,20 @@ const ItemBox = styled.div`
 
 export default function TabBar() {
   const { t } = useTranslation();
+  const { pathname } = useLocation()
+  const checkIsActive = (list) => { 
+    return list.some(item=>pathname.includes(item)) ? "active" : ""
+  }
+  const active_tabs = useMemo(() => {
+    const governance_list = ["governance", "proposal", "assets"];
+    const home_list = ["home", "online-event"];
+    const explore_list = ["explore", "project", "guild", "event"];
+    return [checkIsActive(governance_list), checkIsActive(home_list), checkIsActive(explore_list)];
+  }, [pathname]);
   return (
     <Box>
       <ItemBox>
-        <NavLink className={({ isActive }) => (isActive ? "active" : "")} to="/governance">
+        <NavLink className={active_tabs[0]} to="/governance">
           <dl>
             <dt>
               <img src={GoverImg} className="nor" alt="" />
@@ -85,7 +95,7 @@ export default function TabBar() {
             <dd>{t("Menus.Governance")}</dd>
           </dl>
         </NavLink>
-        <NavLink className={({ isActive }) => (isActive ? "active" : "")} to="/home">
+        <NavLink className={active_tabs[1]} to="/home">
           <dl>
             <dt>
               <img src={HomeImg} className="nor" alt="" />
@@ -95,7 +105,7 @@ export default function TabBar() {
           </dl>
         </NavLink>
 
-        <NavLink className={({ isActive }) => (isActive ? "active" : "")} to="/explore">
+        <NavLink className={active_tabs[2]} to="/explore">
           <dl>
             <dt>
               <img src={ExploreImg} className="nor" alt="" />
