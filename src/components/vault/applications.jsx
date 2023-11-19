@@ -11,7 +11,6 @@ import useSeasons from "hooks/useSeasons";
 import SeeSelect from "components/common/select";
 import useApplicationStatus from "hooks/useApplicationStatus";
 import useAssets from "hooks/useAssets";
-import SearchIcon from "assets/Imgs/search.svg";
 import { Link } from "react-router-dom";
 import ApplicationDetailPage from "./applicationDetail";
 import { ethers } from "ethers";
@@ -131,7 +130,6 @@ export default function ApplicationsSection({ handleBg }) {
       <FilterBox>
         <div style={{ flex: 6 }}>
           <SearchInputBox>
-            <img src={SearchIcon} alt="" className="search" />
             <InputStyle
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
@@ -225,11 +223,6 @@ const SeasonSelect = styled(SeeSelect)`
 const SearchInputBox = styled.div`
   width: 100%;
   position: relative;
-  img.search {
-    position: absolute;
-    left: 6px;
-    top: 7px;
-  }
 `;
 
 const InputStyle = styled.input`
@@ -238,7 +231,7 @@ const InputStyle = styled.input`
   line-height: 24px;
   background: #e2e2ee;
   border-radius: 6px;
-  padding-left: 24px;
+  padding-left: 6px;
   border: none;
   font-size: 10px;
   box-sizing: border-box;
