@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
@@ -41,7 +41,6 @@ export default function ProposalThread() {
 
   useEffect(() => {
     const container = document.querySelector("#inner");
-    console.log("container:", container);
     container && container.addEventListener("scroll", ScrollHeight);
     return () => {
       container.removeEventListener("scroll", ScrollHeight);
@@ -50,8 +49,6 @@ export default function ProposalThread() {
 
   const ScrollHeight = () => {
     const container = document.querySelector("#inner");
-    console.log("～～～:", container.scrollTop);
-
     setNoHead(container.scrollTop > 10);
   };
 
@@ -70,7 +67,7 @@ export default function ProposalThread() {
                   {data.user_title?.name && <UserTag bg={data.user_title.background}>{data.user_title?.name}</UserTag>}
                 </div>
                 <div className="right">
-                  <div className="date">{formatTime(new Date(data?.updated_at || ""))}</div>
+                  <span className="date">{formatTime(new Date(data?.updated_at || ""))}</span>
                 </div>
               </User>
             </ThreadHeader>
@@ -143,9 +140,10 @@ const UserTag = styled.span`
   height: 18px;
   line-height: 18px;
   display: inline-block;
-  font-size: 12px;
+  font-size: 10px;
   background-color: ${(props) => props.bg};
   border-radius: 20px;
   margin-left: 8px;
   color: #fff;
+  flex-shrink: 0;
 `;
