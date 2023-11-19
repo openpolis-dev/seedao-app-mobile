@@ -2,8 +2,17 @@ import styled from "styled-components";
 import { MultiLineStyle } from "assets/styles/common";
 
 export default function ResourceCard({ data }) {
+
+
+const handleClickEvent = () => {
+    console.log(data)
+
+    const {id,link} = data;
+    window.open(link, '_blank');
+};
+
   return (
-    <ResourceCardItem>
+    <ResourceCardItem onClick={handleClickEvent}>
       <img src={data.icon} alt="" />
       <Title>{data.name}</Title>
       <Desc line={1}>{data.desc}</Desc>
