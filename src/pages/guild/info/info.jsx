@@ -8,9 +8,7 @@ import { useGuildContext, GUILD_ACTIONS } from "./provider";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import GuildMember from "./member";
-import GuildBasic from "./basic";
 import SipTag from "../../../components/sipTag";
-import ProjectMember from "../../project/info/member";
 import {MdPreview} from "md-editor-rt";
 
 const FlexBox = styled.div`
@@ -102,7 +100,7 @@ export default function GuildInfo() {
   }, [id, dispatch]);
 
   return (
-    <Layout noTab title={data?.name || t("Guild.Detail")}>
+    <Layout title={data?.name || t("Guild.Detail")}>
       <>
         <FlexBox>
           <ImgBlock>{data?.logo && <img src={data.logo} alt="" />}</ImgBlock>

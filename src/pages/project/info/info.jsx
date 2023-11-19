@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
-import Tab from "components/common/tab";
 import {  useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getProjectById } from "api/project";
@@ -9,8 +8,6 @@ import { useProjectContext, PROJECT_ACTIONS } from "./provider";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import ProjectMember from "./member";
-import ProjectProposal from "./proposal";
-import ProjectAssets from "./asset";
 import SipTag from "../../../components/sipTag";
 import {MdPreview} from "md-editor-rt";
 
@@ -101,7 +98,6 @@ export default function ProjectInfo() {
     }
   }, [id, dispatch]);
   return (
-    // <Layout title={data?.name || t("mobile.projectDetail")}>
     <Layout title={data?.name || t("Project.Detail")}>
       <>
         <FlexBox>
