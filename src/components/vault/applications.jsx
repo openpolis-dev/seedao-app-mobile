@@ -50,6 +50,9 @@ export default function ApplicationsSection({handleBg}) {
       if (selectSeason) {
         queryData.season_id = selectSeason;
       }
+      if (selectAsset) {
+        queryData.asset_name = selectAsset;
+      }
 
       const res = await getApplications(
         {
@@ -87,7 +90,7 @@ export default function ApplicationsSection({handleBg}) {
 
   useEffect(() => {
     getRecords();
-  }, []);
+  }, [selectAsset, selectSeason, selectStatus]);
   const openDetail = (item) => {
     setShowDetail(item);
   };
