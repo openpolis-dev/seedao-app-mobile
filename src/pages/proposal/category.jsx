@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Layout from "components/layout/layout";
 import ProposalCard from "components/proposal/proposalCard";
 import { getProposalsBySubCategory } from "api/proposal";
-import { PROPOSAL_CATEGORIES } from "utils/constant";
 import InfiniteScroll from "react-infinite-scroll-component";
 import store from "store";
 import { saveLoading } from "store/reducer";
@@ -17,7 +16,6 @@ import useProposalCategory from "hooks/useProposalCategory";
 export default function ProposalCategory() {
   const { id } = useParams();
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
   const [proposals, setProposals] = useState([]);
@@ -27,16 +25,17 @@ export default function ProposalCategory() {
 
   const ProposalNav = useProposalCategory(Number(id));
 
-  const getProposals = async (useGlobalLoading) => {
+  const getProposals = async (init) => {
     const _id = Number(id);
     // console.log("_id", _id);
     if (!_id) {
       return;
     }
-    useGlobalLoading && store.dispatch(saveLoading(true));
+    store.dispatch(saveLoading(true));
+    const _page = init ? 1 : page;
     try {
       const res = await getProposalsBySubCategory({
-        page,
+        page: _page,
         per_page: pageSize,
         category_index_id: _id,
         sort: orderType,
@@ -48,13 +47,13 @@ export default function ProposalCategory() {
       }
 
       console.log(res);
-      setProposals([...proposals, ...res.data.threads]);
+      setProposals( init ? res.data.threads : [...proposals, ...res.data.threads]);
       setHasMore(res.data.threads.length >= pageSize);
-      setPage(page + 1);
+      setPage(_page + 1);
     } catch (error) {
       console.error(error);
     } finally {
-      useGlobalLoading && store.dispatch(saveLoading(false));
+      store.dispatch(saveLoading(false));
     }
   };
 
@@ -67,14 +66,13 @@ export default function ProposalCategory() {
         {ProposalNav}
         <ProposalSubNav value={orderType} onSelect={(v) => setOrderType(v)} />
       </HeadBox>
-      <ProposalBox style={{ height: "calc(var(--app-height) - 182px)" }}>
+      <ProposalBox>
         <InfiniteScroll
+          scrollableTarget="inner"
           dataLength={proposals.length}
           next={getProposals}
           hasMore={hasMore}
           loader={<Loading />}
-          height={400}
-          style={{ height: "calc(var(--app-height) - 182px)" }}
         >
           {proposals.length === 0 && <NoItem />}
           {proposals.map((p) => (
