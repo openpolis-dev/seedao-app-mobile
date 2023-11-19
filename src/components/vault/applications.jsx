@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import RankIcon from "assets/Imgs/vault/rank.svg";
@@ -14,13 +14,14 @@ import useAssets from "hooks/useAssets";
 import { Link } from "react-router-dom";
 import ApplicationDetailPage from "./applicationDetail";
 import { ethers } from "ethers";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function ApplicationsSection({ handleBg }) {
   const { t } = useTranslation();
 
   const [showDetail, setShowDetail] = useState(false);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(20);
   const [total, setTotal] = useState(0);
   const [list, setList] = useState([]);
 
@@ -45,7 +46,13 @@ export default function ApplicationsSection({ handleBg }) {
     setSnsMap(sns_map);
   };
 
-  const getRecords = async () => {
+   const hasMore = useMemo(() => {
+     return list.length < total;
+   }, [total, list]);
+
+
+  const getRecords = async (init) => {
+    const _page = init ? 1 : page;
     try {
       const queryData = {};
       if (selectStatus) queryData.state = selectStatus;
@@ -58,7 +65,7 @@ export default function ApplicationsSection({ handleBg }) {
 
       const res = await getApplications(
         {
-          page,
+          page: _page,
           size: pageSize,
           sort_field: "created_at",
           sort_order: "desc",
@@ -83,7 +90,8 @@ export default function ApplicationsSection({ handleBg }) {
         reviewer_name: item.reviewer_wallet?.toLocaleLowerCase(),
         receiver_name: item.target_user_wallet?.toLocaleLowerCase(),
       }));
-      setList(_list);
+      setList(init ? _list : [...list, ..._list]);
+      setPage(_page + 1)
     } catch (error) {
       console.error("getRecords error", error);
     } finally {
@@ -91,7 +99,7 @@ export default function ApplicationsSection({ handleBg }) {
   };
 
   useEffect(() => {
-    getRecords();
+    getRecords(true);
   }, [selectAsset, selectSeason, selectStatus]);
   const openDetail = (item) => {
     setShowDetail(item);
@@ -180,9 +188,16 @@ export default function ApplicationsSection({ handleBg }) {
           />
         </div>
       </FilterBox>
-      {list.map((item, index) => (
-        <ApplicationItem data={item} key={index} onCheck={() => openDetail(item)} />
-      ))}
+      <InfiniteScroll
+        scrollableTarget="inner"
+        dataLength={list.length}
+        next={getRecords}
+        hasMore={hasMore}
+      >
+        {list.map((item, index) => (
+          <ApplicationItem data={item} key={index} onCheck={() => openDetail(item)} />
+        ))}
+      </InfiniteScroll>
     </ApplicantsSectionBlock>
   );
 }
@@ -212,8 +227,12 @@ const SectionTitleRight = styled(Link)`
 const FilterBox = styled.div`
   display: flex;
   gap: 8px;
-  margin-top: 17px;
+  padding-top: 17px;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  background-color: var(--background-color);
 `;
 
 const SeasonSelect = styled(SeeSelect)`
