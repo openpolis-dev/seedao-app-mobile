@@ -17,7 +17,7 @@ export default function UserModal({ user, handleClose }) {
 
 
   const getTitle = (sns) =>{
-    if(sns.indexOf("...")>-1){
+    if(sns?.indexOf("...")>-1){
       return user.wallet;
     }else{
       return user.sns;
