@@ -9,6 +9,8 @@ import React, {useEffect, useMemo, useState} from "react";
 import {saveLoading} from "../store/reducer";
 import {publicList} from "../api/publicData";
 import styled from "styled-components";
+import {EventCardSkeleton} from "../components/eventCard";
+import store from "../store";
 
 
 const UlBox = styled.div`
@@ -109,7 +111,7 @@ export default function PubList(){
             size: pageSize,
         };
 
-        // dispatch({ type: AppActionType.SET_LOADING, payload: true });
+        store.dispatch(saveLoading(true));
         try {
             let result = await publicList(obj);
 
@@ -122,7 +124,7 @@ export default function PubList(){
         } catch (e) {
             console.error(e);
         } finally {
-            // dispatch({ type: AppActionType.SET_LOADING, payload: false });
+            store.dispatch(saveLoading(false));
         }
     };
 
@@ -150,7 +152,7 @@ export default function PubList(){
         return cStr;
     };
 
-    return   <Layout title={t("Event.ListTitle")}>
+    return   <Layout title={t("Pub.ListTitle")}>
         <InfiniteScroll
             scrollableTarget="inner"
             dataLength={list.length}
@@ -161,27 +163,36 @@ export default function PubList(){
             {!loading && list.length === 0 && <NoItem />}
 
             <UlBox>
-                {list?.map((item, index) => (
-                    <li className="libox" key={index} onClick={() => ToGo(item.id)}>
-                        <InnerBox>
-                            <div className="imgBox">
-                                <img src={item?.cover?.file?.url || item?.cover?.external.url} alt="" />
-                            </div>
-                            <ul className="btm">
-                                <Tit>{item.properties['悬赏名称']?.title[0]?.plain_text}</Tit>
-                                {item.properties['悬赏状态']?.select?.name && (
-                                    <li>
-                                        <TagBox className={returnStatus(item.properties['悬赏状态']?.select?.name)}>
-                                            {item.properties['悬赏状态']?.select?.name}
-                                        </TagBox>
-                                    </li>
-                                )}
-                                <li>招募截止时间：{item.properties['招募截止时间']?.rich_text[0]?.plain_text}</li>
-                                <li className="line2">{item.properties['贡献报酬']?.rich_text[0]?.plain_text}</li>
-                            </ul>
-                        </InnerBox>
-                    </li>
-                ))}
+                {
+                    loading && list.length === 0 ?<>
+                        {
+                            [...Array(6)].map((item,index)=>(<li className="libox" key={`list_${index}`} >
+                                <EventCardSkeleton />
+                            </li>))
+                        }
+                    </>:
+                        list?.map((item, index) => (
+                        <li className="libox" key={index} onClick={() => ToGo(item.id)}>
+                            <InnerBox>
+                                <div className="imgBox">
+                                    <img src={item?.cover?.file?.url || item?.cover?.external.url} alt="" />
+                                </div>
+                                <ul className="btm">
+                                    <Tit>{item.properties['悬赏名称']?.title[0]?.plain_text}</Tit>
+                                    {item.properties['悬赏状态']?.select?.name && (
+                                        <li>
+                                            <TagBox className={returnStatus(item.properties['悬赏状态']?.select?.name)}>
+                                                {item.properties['悬赏状态']?.select?.name}
+                                            </TagBox>
+                                        </li>
+                                    )}
+                                    <li>招募截止时间：{item.properties['招募截止时间']?.rich_text[0]?.plain_text}</li>
+                                    <li className="line2">{item.properties['贡献报酬']?.rich_text[0]?.plain_text}</li>
+                                </ul>
+                            </InnerBox>
+                        </li>
+                    ))
+                }
             </UlBox>
         </InfiniteScroll>
     </Layout>

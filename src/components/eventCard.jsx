@@ -28,7 +28,7 @@ export default function EventCard({ event, handleClick }) {
 export const EventCardSkeleton = () => {
   return (
     <EventItem>
-      <RectangularSkeleton height="180px" radius="16px" />
+      <RectangularSkeleton height="23vw" radius="16px" />
       <RectangularSkeleton height="20px" style={{ marginTop: "14px", marginBottom: "10px" }} />
       <div>
         <InfoDate>

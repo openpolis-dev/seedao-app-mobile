@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { publicList } from '../../api/publicData';
 import ExploreSection from "components/exploreSection";
+import {EventCardSkeleton} from "../eventCard";
 
 const Box = styled.div`
     padding-top: 20px;
@@ -117,7 +118,7 @@ export default function Pub() {
     const navigate = useNavigate();
     const [list, setList] = useState([]);
     const { t } = useTranslation();
-
+    const [loading, setLoading] = useState(true);
     const [pageCur, setPageCur] = useState(1);
     const [pageSize, setPageSize] = useState(6);
 
@@ -134,7 +135,7 @@ export default function Pub() {
             size: pageSize,
         };
 
-        // dispatch({ type: AppActionType.SET_LOADING, payload: true });
+        setLoading(true);
         try {
             let result = await publicList(obj);
 
@@ -146,7 +147,7 @@ export default function Pub() {
         } catch (e) {
             console.error(e);
         } finally {
-            // dispatch({ type: AppActionType.SET_LOADING, payload: false });
+            setLoading(false);
         }
     };
 
@@ -204,27 +205,39 @@ export default function Pub() {
     return (<Box>
                 <ExploreSection title={t("Explore.PubTitle")} desc={t("Explore.PubDesc")} moreLink="/pubList">
                 <UlBox>
-                    {list?.map((item, index) => (
-                        <li className="libox" key={index} onClick={() => ToGo(item.id)}>
-                            <InnerBox>
-                                <div className="imgBox">
-                                    <img src={item?.cover?.file?.url || item?.cover?.external.url} alt="" />
-                                </div>
-                                <ul className="btm">
-                                    <Tit>{item.properties['悬赏名称']?.title[0]?.plain_text}</Tit>
-                                    {item.properties['悬赏状态']?.select?.name && (
-                                        <li>
-                                            <TagBox className={returnStatus(item.properties['悬赏状态']?.select?.name)}>
-                                                {item.properties['悬赏状态']?.select?.name}
-                                            </TagBox>
-                                        </li>
-                                    )}
-                                    <li>招募截止时间：{item.properties['招募截止时间']?.rich_text[0]?.plain_text}</li>
-                                    <li className="line2">{item.properties['贡献报酬']?.rich_text[0]?.plain_text}</li>
-                                </ul>
-                            </InnerBox>
-                        </li>
-                    ))}
+                    {
+                        loading? (
+                            <>
+                                <li className="libox">
+                                    <EventCardSkeleton />
+                                </li>
+                                <li className="libox">
+                                    <EventCardSkeleton />
+                                </li>
+                            </>
+                        ):
+                            list?.map((item, index) => (
+                            <li className="libox" key={index} onClick={() => ToGo(item.id)}>
+                                <InnerBox>
+                                    <div className="imgBox">
+                                        <img src={item?.cover?.file?.url || item?.cover?.external.url} alt="" />
+                                    </div>
+                                    <ul className="btm">
+                                        <Tit>{item.properties['悬赏名称']?.title[0]?.plain_text}</Tit>
+                                        {item.properties['悬赏状态']?.select?.name && (
+                                            <li>
+                                                <TagBox className={returnStatus(item.properties['悬赏状态']?.select?.name)}>
+                                                    {item.properties['悬赏状态']?.select?.name}
+                                                </TagBox>
+                                            </li>
+                                        )}
+                                        <li>招募截止时间：{item.properties['招募截止时间']?.rich_text[0]?.plain_text}</li>
+                                        <li className="line2">{item.properties['贡献报酬']?.rich_text[0]?.plain_text}</li>
+                                    </ul>
+                                </InnerBox>
+                            </li>
+                        ))
+                    }
             </UlBox>
             </ExploreSection>
         </Box>

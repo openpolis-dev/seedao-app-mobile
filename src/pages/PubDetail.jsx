@@ -266,7 +266,9 @@ export default function PubDetail() {
                     </ImgBox>
                 )}
                 <FlexBox>
-                    <TagBox className={returnStatus(status)}> {status}</TagBox>
+                    {
+                        !!status && <TagBox className={returnStatus(status)}> {status}</TagBox>
+                    }
                     <Title>{title}</Title>
                     <ContentBox>
                         <li>
