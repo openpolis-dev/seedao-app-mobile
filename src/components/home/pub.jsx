@@ -225,7 +225,7 @@ export default function Pub() {
     return (
         <PageStyle>
             <Box>
-                <TitleBox>{t("home.events")}</TitleBox>
+                <TitleBox>{t("Explore.PubTitle")}</TitleBox>
                 <UlBox>
                     {list?.map((item, index) => (
                         <li className="libox" key={index} onClick={() => ToGo(item.id)}>
