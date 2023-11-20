@@ -70,6 +70,11 @@ export default function AppList(){
         return apps.map((item) => ({ ...item, name: t(item.name) }));
     }, [t]);
 
+    const handleClickEvent = (data) => {
+        const {link} = data;
+        window.open(link, '_blank');
+    };
+
     return <Box>
         <div>
             <TitleBox>{t("home.apps")}</TitleBox>
@@ -77,7 +82,7 @@ export default function AppList(){
         </div>
         <UlBox>
             {
-                events.map(((item,index)=>(<dl key={index}>
+                events.map(((item,index)=>(<dl key={index}  onClick={()=>handleClickEvent(item)}>
                     <dt>
                         <img src={item.icon} alt=""/>
                     </dt>

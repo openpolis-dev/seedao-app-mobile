@@ -10,7 +10,7 @@ const handleClickEvent = () => {
 };
 
   return (
-    <ResourceCardItem onClick={handleClickEvent}>
+    <ResourceCardItem onClick={()=>handleClickEvent()}>
       <img src={data.icon} alt="" />
       <Title>{data.name}</Title>
       <Desc line={1}>{data.desc}</Desc>

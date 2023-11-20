@@ -37,7 +37,7 @@ export default function Setting() {
     const[show,setShow]= useState(false);
     const returnLan = () =>{
         const arr = AppConfig.Lan.filter(item=>item.value === i18n.language )
-        return arr[0].name
+        return arr[0]?.name
     };
 
 
