@@ -105,7 +105,6 @@
     "MyProfile": "My Profile",
     "MyAccount": "My Account",
     "logout": "Disconnect",
-
     "Bio": "Bio",
     "Exit": "Exit",
     "Name": "Name",
@@ -206,10 +205,13 @@
     "TransactionDate": "Transaction Time"
   },
   "Calendar": {
-    "Calendar":"Calendar"
+    "Calendar": "Calendar"
   },
   "Msg": {
     "SnsNotFound": "SNS Not Found",
     "InvalidAddress": "Invalid Address"
+  },
+  "GovernanceNodeResult": {
+    "SCRSeasonRankFilename": "{{season}} SCR Rank"
   }
 }

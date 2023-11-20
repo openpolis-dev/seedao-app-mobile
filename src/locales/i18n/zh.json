@@ -205,10 +205,13 @@
     "TransactionDate": "交易时间"
   },
   "Calendar": {
-    "Calendar":"日历"
+    "Calendar": "日历"
   },
   "Msg": {
     "SnsNotFound": "无效的SNS",
     "InvalidAddress": "无效的地址"
+  },
+  "GovernanceNodeResult": {
+    "SCRSeasonRankFilename": "{{season}} 积分榜"
   }
 }
