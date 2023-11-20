@@ -125,7 +125,8 @@
     "IncorrectEmail": "Please enter the correct email information",
     "IncorrectGoogle": "Please enter the correct Google email",
     "IncorrectMirror": "Please enter the correct Mirror link",
-    "EmptySBT": "Not Owning SBT"
+    "EmptySBT": "Not Owning SBT",
+    "EditTitle": "Edit Profile"
   },
   "apps": {
     "SeeU": "SeeU Network"

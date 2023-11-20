@@ -305,7 +305,7 @@ export default function ProfileEdit() {
   return (
     <Layout
       noTab
-      title={t("My.MyProfile")}
+      title={t("My.EditTitle")}
       rightOperation={<ConfirmBox onClick={saveProfile}>{t("General.confirm")}</ConfirmBox>}
     >
       <Modal tips={tips} show={show} handleClose={handleClose} />
