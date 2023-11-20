@@ -51,6 +51,7 @@ const ProposalsBox = styled.div`
 const DescBox = styled.div`
   padding: 15px 20px 10px;
   color: #9a9a9a;
+  font-size: 14px;
 `;
 
 const ContentBlock = styled.div`
