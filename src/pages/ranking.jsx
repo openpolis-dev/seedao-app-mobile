@@ -6,7 +6,7 @@ import useQuerySNS from "hooks/useQuerySNS";
 import { getGovernanceNodeResult } from "api/cityhall";
 import store from "../store";
 import { saveLoading } from "../store/reducer";
-import { formatNumber } from "utils/number";
+import { formatNumber, getShortDisplay } from "utils/number";
 import publicJs from "utils/publicJs";
 import SortDownSvg from "components/svgs/sortDown";
 import SortUpSvg from "components/svgs/sortUp";
@@ -89,7 +89,12 @@ export default function RankingPage() {
       getGovernanceNodeResult()
         .then((res) => {
           const data = res.data;
-          setAllList(data.records);
+          setAllList(
+            data.records.map((item) => ({
+              ...item,
+              total_display: formatNumber(Number(getShortDisplay(item.season_total_credit, 2))),
+            })),
+          );
 
           setCurrentSeasonNumber(Number(data.season_name.replace("S", "")));
 
@@ -203,7 +208,7 @@ export default function RankingPage() {
             <ItemBox style={{ flex: 2 }}>
               {formatNumber(Number(item.seasons_credit?.find((s) => s.season_name === currentSeason)?.total || 0))}
             </ItemBox>
-            <ItemBox style={{ flex: 2 }}>{formatNumber(Number(item.season_total_credit) || 0)}</ItemBox>
+            <ItemBox style={{ flex: 2 }}>{item.total_display}</ItemBox>
           </li>
         ))}
       </ListBox>
