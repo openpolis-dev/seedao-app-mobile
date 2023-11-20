@@ -101,7 +101,6 @@ export default function PubList(){
     const [pageSize, setPageSize] = useState(6);
 
     const hasMore = useMemo(() => {
-        console.log(list.length ,total)
         return list.length < total;
     }, [list, total]);
 
