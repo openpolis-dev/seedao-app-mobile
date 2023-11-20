@@ -215,28 +215,32 @@ export default function Assets() {
   }
 
   return (
-    <Layout title={t("Menus.Vault")} bgColor="var(--primary-color)" headBgColor="var(--primary-color)" headColor="#FFF">
-      <TotalAssets>
-        <div className="value">${formatNumber(Number(totalBalance))}</div>
-        <div className="label">{t("Vault.TotalAssets")}</div>
-      </TotalAssets>
-      <WalletBox>
-        {VAULTS.map((v, index) => (
-          <WalletItem key={index}>
-            <WalletItemLeft>
-              <div className="name">{t(v.name)}</div>
-              <CopyBox>
-                <Addr>{PublicJs.AddressToShow(v.address, 4)}</Addr>
-              </CopyBox>
-              <img src={v.icon} alt="" onClick={() => linkTo(v)} />
-              <div className="signer">
-                {vaultsMap[v.id]?.threshold || 0}/{vaultsMap[v.id]?.total || 0}
-              </div>
-            </WalletItemLeft>
-            <WalletItemValue>${formatNumber(vaultsMap[v.id]?.balance || 0.0)}</WalletItemValue>
-          </WalletItem>
-        ))}
-      </WalletBox>
+    <Layout title={t("Menus.Vault")} bgColor="var(--background-color)" headBgColor="var(--primary-color)" headColor="#FFF">
+      <TopBox>
+        <TotalAssets>
+          <div className="value">${formatNumber(Number(totalBalance))}</div>
+          <div className="label">{t("Vault.TotalAssets")}</div>
+        </TotalAssets>
+        <WalletBox>
+          {VAULTS.map((v, index) => (
+              <WalletItem key={index}>
+                <WalletItemLeft>
+                  <div className="name">{t(v.name)}</div>
+                  <CopyBox>
+                    <Addr>{PublicJs.AddressToShow(v.address, 4)}</Addr>
+                  </CopyBox>
+                  <img src={v.icon} alt="" onClick={() => linkTo(v)} />
+                  <div className="signer">
+                    {vaultsMap[v.id]?.threshold || 0}/{vaultsMap[v.id]?.total || 0}
+                  </div>
+                </WalletItemLeft>
+                <WalletItemValue>${formatNumber(vaultsMap[v.id]?.balance || 0.0)}</WalletItemValue>
+              </WalletItem>
+          ))}
+        </WalletBox>
+      </TopBox>
+
+
       <BottomBox>
         <FlexBox>
           <CardItem>
@@ -256,14 +260,20 @@ export default function Assets() {
   );
 }
 
+const TopBox = styled.div`
+  background: var(--primary-color);
+  padding-bottom: 18px;
+`
+
 const TotalAssets = styled.div`
   text-align: center;
+
   .value {
     font-size: 26px;
     font-weight: 600;
     color: #ffffff;
     line-height: 34px;
-    margin-top: 8px;
+    padding-top: 8px;
     font-family: 'Poppins-SemiBold';
   }
   .label {
@@ -311,6 +321,7 @@ const BottomBox = styled.div`
   background-color: var(--background-color);
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
+  margin-top: -18px;
 `;
 
 const Num = styled.div`
