@@ -31,6 +31,7 @@ instance.interceptors.request.use(function (config) {
 
   if (!checkTokenValid(tokenstr?.token, tokenstr?.token_exp)) {
     clearStorage();
+    window.location.replace(`${window.location.origin}/login`);
     return Promise.reject();
   }
 
