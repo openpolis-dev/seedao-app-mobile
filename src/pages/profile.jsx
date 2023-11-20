@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import store from "../store";
-import {saveLoading} from "../store/reducer";
+import { useSelector } from "react-redux";
+import { saveLoading, saveUserToken } from "../store/reducer";
 import { getUser } from "../api/user";
 import Avatar from "components/common/avatar";
 import CopyBox from "components/common/copy";
@@ -291,6 +292,7 @@ const TagBox = styled.ul`
 export default function Profile() {
   const { t } = useTranslation();
   const navigate = useNavigate()
+  const userToken = useSelector((state) => state.userToken);
 
   const [detail, setDetail] = useState();
   const sns = useParseSNS(detail?.wallet);
@@ -325,6 +327,22 @@ export default function Profile() {
     store.dispatch(saveLoading(true));
     try {
       let rt = await getUser();
+      store.dispatch(
+        saveUserToken({
+          ...userToken,
+          user: {
+            ...userToken.user,
+            avatar: rt.data.avatar,
+            bio: rt.data.bio,
+            name: rt.data.nickname,
+            discord_profile: rt.data.social_accounts.find((r) => r.network === "discord")?.identity,
+            twitter_profile: rt.data.social_accounts.find((r) => r.network === "twitter")?.identity,
+            mirror_profile: rt.data.social_accounts.find((r) => r.network === "mirror")?.identity,
+            github_profile: rt.data.social_accounts.find((r) => r.network === "github")?.identity,
+            email: rt.data.email,
+          },
+        }),
+      );
       setDetail(rt.data);
       setRoles(rt.data.roles);
       let mapArr = new Map();

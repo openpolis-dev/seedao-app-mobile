@@ -258,9 +258,7 @@ export default function ProfileEdit() {
       await updateUser(data);
       // dispatch({ type: AppActionType.SET_USER_DATA, payload: { ...userData, ...data } });
       toast.success(t("My.ModifiedSuccess"));
-      setTimeout(() => {
-        window.location.replace(`${window.location.origin}/user/profile`);
-      }, 1000);
+      navigate(-1);
     } catch (error) {
       console.error("updateUser failed", error);
       toast.danger(t("My.ModifiedFailed"));
