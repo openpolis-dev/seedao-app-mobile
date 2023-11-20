@@ -131,7 +131,7 @@ export default function  Metamask(){
 
     return <dl onClick={()=>onClick()}>
         <dt >
-            <div className="logo">
+            <div className="logo metamask">
                 <img src={MetamaskLogo} alt=""/>
             </div>
 

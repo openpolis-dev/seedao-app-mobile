@@ -39,27 +39,35 @@ const BtnList = styled.ul`
     border-radius: 16px;
     padding: 10px;
 
-    dl{
+    dl {
       display: flex;
       align-items: center;
-      justify-content: space-between; 
+      justify-content: space-between;
       padding: 6px;
     }
-    .logo{
+    .logo {
       margin-right: 12px;
       background: #fff;
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      img{
+      overflow: hidden;
+      width: 56px;
+      height: 56px;
+      img {
         width: 56px;
       }
+      &.metamask {
+        img {
+          width: 42px;
+        }
+      }
     }
-    dt{
+    dt {
       display: flex;
       align-items: center;
-      span{
+      span {
         font-size: 15px;
         font-family: Poppins-SemiBold;
         font-weight: 600;
