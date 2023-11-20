@@ -323,7 +323,7 @@ export default function ProfileEdit() {
         <MidBox>
           <UlBox>
             <li>
-              <div className="title">头像</div>
+              <div className="title">{t("My.Avatar")}</div>
               <AvatarBox>
                 <UploadBox htmlFor="fileUpload" onChange={(e) => updateLogo(e)}>
                   {!avatar && (
