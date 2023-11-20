@@ -103,6 +103,7 @@ const ButtonBox = styled.div`
     background: #EEEEF4;
     border-radius: 16px;
     border: 0;
+    font-size: 14px;
   }
 `
 
@@ -221,6 +222,8 @@ export default function ProfileEdit() {
       case 'github':
         setGithub(value);
         break;
+      default:
+        return;
     }
   };
   const saveProfile = async () => {
@@ -388,9 +391,9 @@ export default function ProfileEdit() {
             {/*  </InputBox>*/}
             {/*</li>*/}
             <li>
-              <div className="title">{t("My.WeChat")}</div>
+              <div className="title">{t("My.Twitter")}</div>
               <InputBox>
-                <input type="text" placeholder="" value={wechat} onChange={(e) => handleInput(e, "wechat")} />
+                <input type="text" placeholder="" value={twitter} onChange={(e) => handleInput(e, "twitter")} />
               </InputBox>
             </li>
             <li>
