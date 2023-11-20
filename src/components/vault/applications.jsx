@@ -90,7 +90,7 @@ export default function ApplicationsSection({ handleBg }) {
       const _wallets = new Set();
       res.data.rows.forEach((item) => {
         _wallets.add(item.target_user_wallet);
-        _wallets.add(item.submitter_wallet);
+        item.applicant_wallet && _wallets.add(item.applicant_wallet);
         item.reviewer_wallet && _wallets.add(item.reviewer_wallet);
       });
       handleSNS(Array.from(_wallets));
@@ -167,9 +167,7 @@ export default function ApplicationsSection({ handleBg }) {
   );
   return (
     <ApplicantsSectionBlock>
-      {showDetail && (
-        <ApplicationDetailPage data={showDetail} handleClose={closeDetail} formatSNS={formatSNS} />
-      )}
+      {showDetail && <ApplicationDetailPage data={showDetail} handleClose={closeDetail} formatSNS={formatSNS} />}
       <SectionTitle>
         <div>{t("Vault.SendRecordTitle")}</div>
         <SectionTitleRight to="/ranking">
@@ -238,7 +236,7 @@ export default function ApplicationsSection({ handleBg }) {
               <ItemBox>
                 <ContentInnerBox>
                   <LeftBox>
-                    <Avatar size="34px" />
+                    <Avatar size="34px" src={data.traget_user_avatar} />
                     <div>
                       <div className="wallet">{formatSNS(data.target_user_wallet)}</div>
                       <div>

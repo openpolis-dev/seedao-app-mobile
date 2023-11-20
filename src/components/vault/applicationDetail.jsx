@@ -3,11 +3,12 @@ import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
 import ApplicationStatusTag from "components/applicationStatusTag";
 import { formatDate } from "utils/time";
+import Avatar from "components/common/avatar";
 
 const UserComp = ({ avatar, sns }) => {
   return (
     <UserBox>
-      <img src={avatar} alt="" />
+      <Avatar src={avatar} size="24px" />
       <span>{sns}</span>
     </UserBox>
   );
@@ -58,7 +59,11 @@ export default function ApplicationDetailPage({ data, formatSNS, handleClose }) 
         <SectionBlock>
           <RowItem>
             <div className="label">{t("Application.Applicant")}</div>
-            <UserComp avatar={""} sns={formatSNS(data.submitter_wallet.toLowerCase())} />
+            {data.applicant_wallet ? (
+              <UserComp avatar={data.applicant_avatar} sns={formatSNS(data.applicant_wallet?.toLowerCase())} />
+            ) : (
+              <div className="value">-</div>
+            )}
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.ApplyDate")}</div>
@@ -73,7 +78,11 @@ export default function ApplicationDetailPage({ data, formatSNS, handleClose }) 
         <SectionBlock>
           <RowItem>
             <div className="label">{t("Application.Auditor")}</div>
-            {data.reviewer_wallet && <UserComp avatar={""} sns={formatSNS(data.reviewer_wallet.toLowerCase())} />}
+            {data.reviewer_wallet ? (
+              <UserComp avatar={data.reviewer_avatar} sns={formatSNS(data.reviewer_wallet?.toLowerCase())} />
+            ) : (
+              <div className="value">-</div>
+            )}
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.AuditorDate")}</div>
@@ -87,13 +96,15 @@ export default function ApplicationDetailPage({ data, formatSNS, handleClose }) 
                   <TransactionTx key={index} href={`https://etherscan.io/tx/${item}`} target="_blank">
                     {item.slice(0, 8) + "..." + item.slice(-8)}
                   </TransactionTx>
-                ) : "-";
+                ) : (
+                  "-"
+                );
               })}
             </div>
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.TransactionDate")}</div>
-            <div className="value">{data.process_ts ? formatDate(data.process_ts * 1000) : "-"}</div>
+            <div className="value">{data.complete_ts ? formatDate(data.complete_ts * 1000) : "-"}</div>
           </RowItem>
         </SectionBlock>
       </Layout>
@@ -159,11 +170,6 @@ const UserBox = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
-  img {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-  }
 `;
 
 const TransactionTx = styled.a`
