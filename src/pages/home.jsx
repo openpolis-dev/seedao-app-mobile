@@ -6,6 +6,7 @@ import Adv from "../components/home/Adv";
 import HomeCalendar from "../components/home/HomeCalendar";
 import AppList from "../components/home/appList";
 import Event from "../components/home/event";
+import Pub from "../components/home/pub";
 
 const BoxInner = styled.div`
   display: flex;
@@ -25,6 +26,7 @@ export default function Home() {
         <HomeCalendar />
         <AppList />
         <Event />
+        <Pub />
       </BoxInner>
     </Layout>
   );

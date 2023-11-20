@@ -5,6 +5,7 @@ import ExploreProjectSection from "components/explore/project";
 import ExploreGuildSection from "components/explore/guild";
 import ExploreResourceSection from "components/explore/resource";
 import ExploreEventSection from "components/explore/event";
+import Pub from "components/explore/pub";
 
 export default function Explore() {
   const { t } = useTranslation();
@@ -16,6 +17,7 @@ export default function Explore() {
         <ExploreGuildSection />
         <ExploreResourceSection />
         <ExploreEventSection />
+        <Pub />
       </LayoutContainer>
     </Layout>
   );

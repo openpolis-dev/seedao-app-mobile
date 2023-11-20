@@ -53,10 +53,11 @@ const EventContent = styled.div`
       gap: 30px;
       img {
         width: unset;
-        max-width: 500px;
+        max-width: 100%;
       }
       & > div:first-child {
         flex: unset !important;
+        min-width: 100%!important;
         width: unset !important;
       }
     }
