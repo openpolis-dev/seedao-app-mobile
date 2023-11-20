@@ -74,13 +74,13 @@ const ItemBox = styled.div`
 export default function TabBar() {
   const { t } = useTranslation();
   const { pathname } = useLocation()
-  const checkIsActive = (list) => { 
+  const checkIsActive = (list) => {
     return list.some(item=>pathname.includes(item)) ? "active" : ""
   }
   const active_tabs = useMemo(() => {
     const governance_list = ["governance", "proposal", "assets"];
     const home_list = ["home", "calendar"];
-    const explore_list = ["explore", "project", "guild", "event"];
+    const explore_list = ["explore", "project", "guild", "event","pub"];
     return [checkIsActive(governance_list), checkIsActive(home_list), checkIsActive(explore_list)];
   }, [pathname]);
   return (
