@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { publicList } from '../../api/publicData';
-import {EventCardSkeleton} from "./eventCard";
 
 const PageStyle = styled.div`
     margin: 0 24px;
@@ -76,7 +75,7 @@ const TagBox = styled.div`
   color: #fff;
   padding: 3px 10px;
   border-radius: 5px;
-
+  margin-right: 10px;
   &.str1 {
     background: #b0b0b0;
   }
@@ -91,7 +90,6 @@ const TagBox = styled.div`
 const TypeBox = styled(TagBox)`
   padding: 3px 10px;
   opacity: 1;
-  margin: 5px 10px 10px 0;
   color: #000;
   &.type1 {
     background: rgb(250, 222, 201);
@@ -128,6 +126,15 @@ const TitleBox = styled.div`
   color: #1A1323;
   line-height: 22px;
   margin-top: 40px;
+`
+
+const FlexLine = styled.div`
+    display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  &>div{
+    padding-bottom: 10px;
+  }
 `
 export default function Pub() {
 
@@ -228,21 +235,24 @@ export default function Pub() {
                                 </div>
                                 <ul className="btm">
                                     <Tit>{item.properties['悬赏名称']?.title[0]?.plain_text}</Tit>
-                                    {item.properties['悬赏状态']?.select?.name && (
-                                        <li>
-                                            <TagBox className={returnStatus(item.properties['悬赏状态']?.select?.name)}>
-                                                {item.properties['悬赏状态']?.select?.name}
-                                            </TagBox>
-                                        </li>
-                                    )}
-                                    <li>
-                                        {!!item.properties['悬赏类型']?.multi_select?.length &&
-                                            (item.properties['悬赏类型']?.multi_select).map((innerItem, innerIndex) => (
-                                            <TypeBox key={`${index}_${innerIndex}`} className={returnColor(innerItem.name)}>
-                                        {innerItem?.name}
-                                    </TypeBox>
-                                    ))}
-                        </li>
+                                    <FlexLine>
+                                        {item.properties['悬赏状态']?.select?.name && (
+                                            <div>
+                                                <TagBox className={returnStatus(item.properties['悬赏状态']?.select?.name)}>
+                                                    {item.properties['悬赏状态']?.select?.name}
+                                                </TagBox>
+                                            </div>
+                                        )}
+                                        <div>
+                                            {!!item.properties['悬赏类型']?.multi_select?.length &&
+                                                (item.properties['悬赏类型']?.multi_select).map((innerItem, innerIndex) => (
+                                                    <TypeBox key={`${index}_${innerIndex}`} className={returnColor(innerItem.name)}>
+                                                        {innerItem?.name}
+                                                    </TypeBox>
+                                                ))}
+                                        </div>
+                                    </FlexLine>
+
                         <li>招募截止时间：{item.properties['招募截止时间']?.rich_text[0]?.plain_text}</li>
 
                 <li className="line2">{item.properties['贡献报酬']?.rich_text[0]?.plain_text}</li>
