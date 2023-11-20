@@ -26,6 +26,7 @@ import Governance from "pages/governance";
 
 import Pub from "../pages/Pub";
 import PubDetail from "../pages/PubDetail";
+import PubList from "../pages/PubList";
 import EventList from "pages/event/list";
 import EventInfoPage from "pages/event/detail";
 import RankingPage from "pages/ranking";
@@ -56,6 +57,7 @@ function RouterLink() {
         <Route path="/ranking" element={<RankingPage />} />
 
         <Route path="/pub" element={<Pub />} />
+        <Route path="/pubList" element={<PubList />} />
         <Route path="/pubDetail/:id" element={<PubDetail />} />
 
         <Route path="/calendar" element={<Calendar />} />

@@ -202,7 +202,7 @@ export default function Pub() {
     };
 
     return (<Box>
-                <ExploreSection title={t("Explore.PubTitle")} desc={t("Explore.PubDesc")} moreLink="/event">
+                <ExploreSection title={t("Explore.PubTitle")} desc={t("Explore.PubDesc")} moreLink="/pubList">
                 <UlBox>
                     {list?.map((item, index) => (
                         <li className="libox" key={index} onClick={() => ToGo(item.id)}>
@@ -219,14 +219,6 @@ export default function Pub() {
                                             </TagBox>
                                         </li>
                                     )}
-                        {/*            <li>*/}
-                        {/*                {!!item.properties['悬赏类型']?.multi_select?.length &&*/}
-                        {/*                    (item.properties['悬赏类型']?.multi_select).map((innerItem, innerIndex) => (*/}
-                        {/*                    <TypeBox key={`${index}_${innerIndex}`} className={returnColor(innerItem.name)}>*/}
-                        {/*                {innerItem?.name}*/}
-                        {/*            </TypeBox>*/}
-                        {/*            ))}*/}
-                        {/*</li>*/}
                                     <li>招募截止时间：{item.properties['招募截止时间']?.rich_text[0]?.plain_text}</li>
                                     <li className="line2">{item.properties['贡献报酬']?.rich_text[0]?.plain_text}</li>
                                 </ul>
