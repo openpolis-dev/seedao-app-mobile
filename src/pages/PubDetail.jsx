@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { pubDetail } from '../api/publicData';
 import axios from 'axios';
 import Layout from "components/layout/layout";
+import store from "../store";
+import {saveLoading} from "../store/reducer";
 
 
 const Col = styled.div`
@@ -204,7 +206,7 @@ export default function PubDetail() {
     // };
 
     const getDetail = async (id) => {
-        // dispatch({ type: AppActionType.SET_LOADING, payload: true });
+        store.dispatch(saveLoading(true));
         try {
             // let detailInfo = await getInfo(id);
             let detailInfo = await pubDetail(id);
@@ -237,7 +239,7 @@ export default function PubDetail() {
         } catch (e) {
             console.error(e);
         } finally {
-            // dispatch({ type: AppActionType.SET_LOADING, payload: false });
+            store.dispatch(saveLoading(false));
         }
     };
 
