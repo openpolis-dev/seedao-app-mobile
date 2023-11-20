@@ -96,6 +96,9 @@ const ButtonBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  bottom: 50px;
+  left: 0;
   button {
     width: 89%;
     height: 44px;
@@ -402,10 +405,10 @@ export default function ProfileEdit() {
             </li>
           </UlBox>
         </MidBox>
-        <ButtonBox>
-          <button onClick={() => logout()}>{t("My.logout")}</button>
-        </ButtonBox>
       </CardBox>
+      <ButtonBox>
+        <button onClick={() => logout()}>{t("My.logout")}</button>
+      </ButtonBox>
       {Toast}
     </Layout>
   );
