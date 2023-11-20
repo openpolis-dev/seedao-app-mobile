@@ -168,6 +168,9 @@
     "ListTitle": "All Events",
     "DetailTitle": "Event Detail"
   },
+  "Pub": {
+    "DetailTitle": "Pub Detail"
+  },
   "Vault": {
     "TotalAssets": "Total Assets",
     "CommunityVault": "Community Vault",

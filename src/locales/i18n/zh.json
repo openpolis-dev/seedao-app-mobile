@@ -168,6 +168,9 @@
     "ListTitle": "所有活动",
     "DetailTitle": "活动详情"
   },
+  "Pub": {
+    "DetailTitle": "酒馆详情"
+  },
   "Vault": {
     "TotalAssets": "总资产",
     "CommunityVault": "社区金库",
