@@ -71,7 +71,7 @@ export default function ApplicationDetailPage({ data, formatSNS, handleClose }) 
           </RowItem>
           <ApplyIntroRowItem>
             <div className="label">{t("Application.ApplyIntro")}</div>
-            <div className="value">这是一笔必要的支出这是一笔必要的支出这是一笔必要的支出，这是一笔必要的支出</div>
+            <div className="value">{data.app_bundle_comment}</div>
           </ApplyIntroRowItem>
         </SectionBlock>
         <SectionDivider />
