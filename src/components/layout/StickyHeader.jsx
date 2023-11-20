@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Avatar from "components/common/avatar";
 
 const TopBox = styled.div`
   background: ${(props) => props.bgColor};
@@ -16,18 +17,6 @@ const TopBox = styled.div`
   box-sizing: border-box;
   height: 70px;
   z-index: 999;
-  .AvatarBox {
-    width: 36px;
-    height: 36px;
-    border-radius: 36px;
-    overflow: hidden;
-    display: block;
-    img {
-      width: 36px;
-      height: 36px;
-      object-fit: cover;
-    }
-  }
   .lft {
     font-size: 30px;
     font-family: Poppins-SemiBold;
@@ -71,7 +60,7 @@ export default function StickyHeader({ title, bgColor, scrollRef }) {
     <TopBox bgColor={bgColor} className={show ? "act" : ""}>
       <div className="lft">{title}</div>
       <div className="AvatarBox" onClick={() => toGo()}>
-        <img src={userToken?.user?.avatar} alt="" />
+        <Avatar src={userToken?.user?.avatar} size="36px" />
       </div>
     </TopBox>
   );
