@@ -1,26 +1,25 @@
-
 import Layout from "../components/layout/layout";
-import styled from 'styled-components';
-import React, {ChangeEvent, useEffect, useState, FormEvent, useRef} from 'react';
-import {getUser, updateUser} from "../api/user";
+import styled from "styled-components";
+import React, { ChangeEvent, useEffect, useState, FormEvent, useRef } from "react";
+import { getUser, updateUser } from "../api/user";
 // import { useAuthContext, AppActionType } from 'providers/authProvider';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 // import useToast, { ToastType } from 'hooks/useToast';
-import { Upload, X } from 'react-bootstrap-icons';
+import { Upload, X } from "react-bootstrap-icons";
 // import { ContainerPadding } from 'assets/styles/global';
 // import useParseSNS from 'hooks/useParseSNS';
 // import CopyBox from 'components/copy';
-import copyIcon from 'assets/images/copy.svg';
-import {useSelector} from "react-redux";
+import copyIcon from "assets/images/copy.svg";
+import { useSelector } from "react-redux";
 import store from "../store";
-import {saveAccount, saveLoading, saveUserToken, saveWalletType} from "../store/reducer";
+import { saveAccount, saveLoading, saveUserToken, saveWalletType } from "../store/reducer";
 import Modal from "../components/modal";
-import {useDisconnect} from "wagmi";
-import {useNavigate} from "react-router-dom";
+import { useDisconnect } from "wagmi";
+import { useNavigate } from "react-router-dom";
 
-const InputGroup = styled.div``
-const Button = styled.div``
-const Form = styled.div``
+const InputGroup = styled.div``;
+const Button = styled.div``;
+const Form = styled.div``;
 
 const HeadBox = styled.div`
   display: flex;
@@ -44,7 +43,7 @@ const UlBox = styled.ul`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(217,217,217,0.5);
+    border-bottom: 1px solid rgba(217, 217, 217, 0.5);
     padding: 15px 0;
     .title {
       color: #9a9a9a;
@@ -93,25 +92,25 @@ const MidBox = styled.div`
 `;
 
 const ButtonBox = styled.div`
-    width: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  button{
+  button {
     width: 89%;
     height: 44px;
-    background: #EEEEF4;
+    background: #eeeef4;
     border-radius: 16px;
     border: 0;
     font-size: 14px;
   }
-`
+`;
 
 const ConfirmBox = styled.div`
   color: var(--primary-color);
   display: inline-block;
   font-size: 17px;
-`
+`;
 
 export default function ProfileEdit() {
   // const {
@@ -120,74 +119,73 @@ export default function ProfileEdit() {
   // } = useAuthContext();
   // const sns = useParseSNS(userData?.wallet);
 
-
   const { t } = useTranslation();
   // const { Toast, showToast } = useToast();
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [discord, setDiscord] = useState('');
-  const [twitter, setTwitter] = useState('');
-  const [wechat, setWechat] = useState('');
-  const [mirror, setMirror] = useState('');
-  const [avatar, setAvatar] = useState('');
-  const [bio, setBio] = useState('');
-  const [github, setGithub] = useState('');
-  const [wallet, setWallet] = useState('');
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [discord, setDiscord] = useState("");
+  const [twitter, setTwitter] = useState("");
+  const [wechat, setWechat] = useState("");
+  const [mirror, setMirror] = useState("");
+  const [avatar, setAvatar] = useState("");
+  const [bio, setBio] = useState("");
+  const [github, setGithub] = useState("");
+  const [wallet, setWallet] = useState("");
   const { disconnect } = useDisconnect();
 
-  const [height, setHeight] = useState('1em');
+  const [height, setHeight] = useState("1em");
 
   useEffect(() => {
-    const textarea = document.getElementById('textarea');
+    const textarea = document.getElementById("textarea");
     setHeight(`${textarea.scrollHeight}px`);
   }, [bio]);
 
-  const handleValue = (e) =>{
+  const handleValue = (e) => {
     const { value } = e.target;
     setBio(value);
-  }
+  };
 
-  const[show,setShow] = useState(false);
-  const[tips,setTips] = useState("");
+  const [show, setShow] = useState(false);
+  const [tips, setTips] = useState("");
 
-  const userToken = useSelector(state=> state.userToken);
-  const walletType = useSelector(state => state.walletType);
-  const navigate = useNavigate()
+  const userToken = useSelector((state) => state.userToken);
+  const walletType = useSelector((state) => state.walletType);
+  const navigate = useNavigate();
 
-  const logout = () =>{
+  const logout = () => {
     store.dispatch(saveAccount(null));
     store.dispatch(saveUserToken(null));
     store.dispatch(saveWalletType(null));
-    if(walletType ==="metamask"){
+    if (walletType === "metamask") {
       disconnect();
     }
     // store.dispatch(saveLogout(true));
     navigate("/login");
-  }
+  };
 
-  useEffect(()=>{
-    getMyDetail()
-  },[])
+  useEffect(() => {
+    getMyDetail();
+  }, []);
   const getMyDetail = async () => {
     store.dispatch(saveLoading(true));
     try {
       let rt = await getUser();
-      const {avatar,bio,email,discord_profile,twitter_profile,wechat,mirror,wallet,nickname} = rt.data;
-      setUserName(nickname)
-      setEmail(email)
+      const { avatar, bio, email, discord_profile, twitter_profile, wechat, mirror, wallet, nickname } = rt.data;
+      setUserName(nickname);
+      setEmail(email);
       let mapArr = new Map();
 
       rt.data.social_accounts.map((item) => {
         mapArr.set(item.network, item.identity);
       });
-      setTwitter(mapArr.get('twitter') ?? '');
-      setDiscord(mapArr.get('discord') ?? '');
-      setWechat(mapArr.get('wechat') ?? '');
-      setMirror(mapArr.get('mirror') ?? '');
-      setGithub(mapArr.get('github') ?? '');
-      setBio(bio)
-      setAvatar(avatar)
-      setWallet(wallet)
+      setTwitter(mapArr.get("twitter") ?? "");
+      setDiscord(mapArr.get("discord") ?? "");
+      setWechat(mapArr.get("wechat") ?? "");
+      setMirror(mapArr.get("mirror") ?? "");
+      setGithub(mapArr.get("github") ?? "");
+      setBio(bio);
+      setAvatar(avatar);
+      setWallet(wallet);
     } catch (e) {
       console.error(e);
     } finally {
@@ -198,28 +196,28 @@ export default function ProfileEdit() {
   const handleInput = (e, type) => {
     const { value } = e.target;
     switch (type) {
-      case 'userName':
+      case "userName":
         setUserName(value);
         break;
-      case 'email':
+      case "email":
         setEmail(value);
         break;
-      case 'discord':
+      case "discord":
         setDiscord(value);
         break;
-      case 'twitter':
+      case "twitter":
         setTwitter(value);
         break;
-      case 'wechat':
+      case "wechat":
         setWechat(value);
         break;
-      case 'mirror':
+      case "mirror":
         setMirror(value);
         break;
       // case 'bio':
       //   setBio(value);
       //   break;
-      case 'github':
+      case "github":
         setGithub(value);
         break;
       default:
@@ -229,17 +227,17 @@ export default function ProfileEdit() {
   const saveProfile = async () => {
     const reg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (email && !reg.test(email)) {
-      setTips(t('My.IncorrectEmail'));
+      setTips(t("My.IncorrectEmail"));
       setShow(true);
       return;
     }
-    if (mirror && mirror.indexOf('mirror.xyz') === -1) {
-      setTips(t('My.IncorrectMirror'));
+    if (mirror && mirror.indexOf("mirror.xyz") === -1) {
+      setTips(t("My.IncorrectMirror"));
       setShow(true);
       return;
     }
-    if (twitter && !twitter.startsWith('https://twitter.com/')) {
-      setTips(t('My.IncorrectLink', { media: 'Twitter' }));
+    if (twitter && !twitter.startsWith("https://twitter.com/")) {
+      setTips(t("My.IncorrectLink", { media: "Twitter" }));
       setShow(true);
       return;
     }
@@ -259,16 +257,15 @@ export default function ProfileEdit() {
       };
       await updateUser(data);
       // dispatch({ type: AppActionType.SET_USER_DATA, payload: { ...userData, ...data } });
-      setTips(t('My.ModifiedSuccess'));
+      setTips(t("My.ModifiedSuccess"));
       setShow(true);
-      setTimeout(()=>{
+      setTimeout(() => {
         setShow(false);
         window.location.reload();
-      },1000)
-
+      }, 1000);
     } catch (error) {
-      console.error('updateUser failed', error);
-      setTips(t('My.ModifiedFailed'));
+      console.error("updateUser failed", error);
+      setTips(t("My.ModifiedFailed"));
       setShow(true);
     } finally {
       store.dispatch(saveLoading(false));
@@ -278,8 +275,8 @@ export default function ProfileEdit() {
   const getBase64 = (imgUrl) => {
     window.URL = window.URL || window.webkitURL;
     const xhr = new XMLHttpRequest();
-    xhr.open('get', imgUrl, true);
-    xhr.responseType = 'blob';
+    xhr.open("get", imgUrl, true);
+    xhr.responseType = "blob";
     xhr.onload = function () {
       if (this.status === 200) {
         const blob = this.response;
@@ -301,12 +298,12 @@ export default function ProfileEdit() {
   };
 
   const removeUrl = () => {
-    setAvatar('');
+    setAvatar("");
   };
 
-  const handleClose = () =>{
+  const handleClose = () => {
     setShow(false);
-  }
+  };
 
   return (
     <Layout
@@ -363,7 +360,13 @@ export default function ProfileEdit() {
             <li>
               <div className="title">{t("My.Bio")}</div>
               <InputBox>
-                <textarea id="textarea" placeholder="" style={{ height: height }} value={bio} onChange={(e) => handleValue(e,)} />
+                <textarea
+                  id="textarea"
+                  placeholder=""
+                  style={{ height: height }}
+                  value={bio}
+                  onChange={(e) => handleValue(e)}
+                />
               </InputBox>
             </li>
             <li>
@@ -427,7 +430,7 @@ const UploadBox = styled.label`
   justify-content: center;
   border-radius: 50%;
   margin-top: 20px;
-  font-family: 'Inter-Regular';
+  font-family: "Inter-Regular";
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
