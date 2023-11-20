@@ -15,7 +15,7 @@ const OuterBox = styled.div`
 const InnerBox = styled.div`
   /* flex-grow: 1; */
   width: 100%;
-  height: 100%;
+  height: ${(props) => `calc(100% - ${props.sticky ? "70px" : 0})`};
   padding-top: ${(props) => props.paddingTop};
   padding-bottom: ${(props) => props.notab};
   overflow-y: auto;
@@ -72,7 +72,13 @@ export default function Layout({
       ) : (
         <></>
       )}
-      <InnerBox id="inner" ref={innerRef} notab={noTab ? 0 : "70px"} paddingTop={noHeader || sticky ? "0" : "47px"}>
+      <InnerBox
+        id="inner"
+        ref={innerRef}
+        notab={noTab ? 0 : "70px"}
+        sticky
+        paddingTop={noHeader || sticky ? "0" : "47px"}
+      >
         {children}
       </InnerBox>
       {!noTab && <TabBar />}

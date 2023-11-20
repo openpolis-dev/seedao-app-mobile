@@ -12,7 +12,7 @@ const GlobalStyle = createGlobalStyle`
     overflow: hidden;
   }
   #root {
-    height: 100vh;
+    height: var(--app-height);
   }
   dl,dt,ul,li{
     padding: 0;
