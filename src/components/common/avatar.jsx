@@ -23,5 +23,6 @@ const AvatarStyle = styled.div`
   overflow: hidden;
   img {
     width: 100%;
+    object-fit: cover;
   }
 `;
