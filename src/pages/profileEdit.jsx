@@ -13,9 +13,9 @@ import copyIcon from "assets/images/copy.svg";
 import { useSelector } from "react-redux";
 import store from "../store";
 import { saveAccount, saveLoading, saveUserToken, saveWalletType } from "../store/reducer";
-import Modal from "../components/modal";
 import { useDisconnect } from "wagmi";
 import { useNavigate } from "react-router-dom";
+import useToast from "hooks/useToast";
 
 const InputGroup = styled.div``;
 const Button = styled.div``;
@@ -146,12 +146,11 @@ export default function ProfileEdit() {
     setBio(value);
   };
 
-  const [show, setShow] = useState(false);
-  const [tips, setTips] = useState("");
-
   const userToken = useSelector((state) => state.userToken);
   const walletType = useSelector((state) => state.walletType);
   const navigate = useNavigate();
+
+  const { Toast, toast } = useToast();
 
   const logout = () => {
     store.dispatch(saveAccount(null));
@@ -228,18 +227,15 @@ export default function ProfileEdit() {
   const saveProfile = async () => {
     const reg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (email && !reg.test(email)) {
-      setTips(t("My.IncorrectEmail"));
-      setShow(true);
+      toast.danger(t("My.IncorrectEmail"));
       return;
     }
     if (mirror && mirror.indexOf("mirror.xyz") === -1) {
-      setTips(t("My.IncorrectMirror"));
-      setShow(true);
+      toast.danger(t("My.IncorrectMirror"));
       return;
     }
     if (twitter && !twitter.startsWith("https://twitter.com/")) {
-      setTips(t("My.IncorrectLink", { media: "Twitter" }));
-      setShow(true);
+      toast.danger(t("My.IncorrectLink", { media: "Twitter" }));
       return;
     }
 
@@ -258,16 +254,13 @@ export default function ProfileEdit() {
       };
       await updateUser(data);
       // dispatch({ type: AppActionType.SET_USER_DATA, payload: { ...userData, ...data } });
-      setTips(t("My.ModifiedSuccess"));
-      setShow(true);
+      toast.success(t("My.ModifiedSuccess"));
       setTimeout(() => {
-        setShow(false);
         window.location.reload();
       }, 1000);
     } catch (error) {
       console.error("updateUser failed", error);
-      setTips(t("My.ModifiedFailed"));
-      setShow(true);
+      toast.danger(t("My.ModifiedFailed"));
     } finally {
       store.dispatch(saveLoading(false));
     }
@@ -302,17 +295,12 @@ export default function ProfileEdit() {
     setAvatar("");
   };
 
-  const handleClose = () => {
-    setShow(false);
-  };
-
   return (
     <Layout
       noTab
       title={t("My.EditTitle")}
       rightOperation={<ConfirmBox onClick={saveProfile}>{t("General.confirm")}</ConfirmBox>}
     >
-      <Modal tips={tips} show={show} handleClose={handleClose} />
       <CardBox>
         {/*<HeadBox>*/}
 
@@ -418,6 +406,7 @@ export default function ProfileEdit() {
           <button onClick={() => logout()}>{t("My.logout")}</button>
         </ButtonBox>
       </CardBox>
+      {Toast}
     </Layout>
   );
 }
