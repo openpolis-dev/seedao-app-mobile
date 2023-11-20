@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
 import ApplicationStatusTag from "components/applicationStatusTag";
+import { formatDate } from "utils/time";
 
 const UserComp = ({ avatar, sns }) => {
   return (
@@ -61,7 +62,7 @@ export default function ApplicationDetailPage({ data, formatSNS, handleClose }) 
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.ApplyDate")}</div>
-            <div className="value"></div>
+            <div className="value">{data.apply_ts ? formatDate(data.apply_ts * 1000) : "-"}</div>
           </RowItem>
           <ApplyIntroRowItem>
             <div className="label">{t("Application.ApplyIntro")}</div>
@@ -76,7 +77,7 @@ export default function ApplicationDetailPage({ data, formatSNS, handleClose }) 
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.AuditorDate")}</div>
-            <div className="value"></div>
+            <div className="value">{data.review_ts ? formatDate(data.review_ts * 1000) : "-"}</div>
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.TransactionId")}</div>
@@ -86,13 +87,13 @@ export default function ApplicationDetailPage({ data, formatSNS, handleClose }) 
                   <TransactionTx key={index} href={`https://etherscan.io/tx/${item}`} target="_blank">
                     {item.slice(0, 8) + "..." + item.slice(-8)}
                   </TransactionTx>
-                ) : null;
+                ) : "-";
               })}
             </div>
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.TransactionDate")}</div>
-            <div className="value"></div>
+            <div className="value">{data.process_ts ? formatDate(data.process_ts * 1000) : "-"}</div>
           </RowItem>
         </SectionBlock>
       </Layout>
