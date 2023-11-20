@@ -433,8 +433,7 @@ const UploadBox = styled.label`
   }
   img {
     max-width: 100%;
-    max-height: 100%;
-    border-radius: 50%;
+    object-fit: cover;
   }
 `;
 
@@ -445,6 +444,8 @@ const ImgBox = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
+  border-radius: 50%;
+  overflow: hidden;
   .del {
     display: none;
     position: absolute;
