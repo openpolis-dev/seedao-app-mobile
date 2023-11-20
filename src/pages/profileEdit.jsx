@@ -70,15 +70,17 @@ const InputBox = styled(InputGroup)`
     right: -30px;
     top: 8px;
   }
-  input,textarea{
+  input,
+  textarea {
     border: 0;
     width: 100%;
     text-align: right;
-    &:focus{
+    font-size: 14px;
+    &:focus {
       outline: none;
     }
   }
-  textarea{
+  textarea {
     margin-bottom: -5px;
     resize: none;
   }
@@ -107,6 +109,7 @@ const ButtonBox = styled.div`
 const ConfirmBox = styled.div`
   color: var(--primary-color);
   display: inline-block;
+  font-size: 17px;
 `
 
 export default function ProfileEdit() {
