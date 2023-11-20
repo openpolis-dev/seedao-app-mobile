@@ -78,6 +78,7 @@ const UserModalMask = styled.div`
   position: absolute;
   background: rgba(244, 244, 248, 0.9);
   backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(10px);
   left: 0;
   top: 0;
   bottom: 0;
