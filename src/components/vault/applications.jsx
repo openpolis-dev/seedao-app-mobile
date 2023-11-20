@@ -128,14 +128,14 @@ export default function ApplicationsSection({ handleBg }) {
       store.dispatch(saveLoading(true));
       const w = await sns.resolve(keyword);
       if (w) {
-        setSearchVal(w.toLocaleLowerCase());
+        setSearchVal(w?.toLocaleLowerCase());
       } else {
         showToast(t("Msg.SnsNotFound"));
       }
       store.dispatch(saveLoading(false));
     } else if (!ethers.utils.isAddress(keyword)) {
       // address
-      setSearchVal(keyword.toLocaleLowerCase());
+      setSearchVal(keyword?.toLocaleLowerCase());
     } else {
       showToast(t("Msg.InvalidAddress"));
     }
@@ -147,7 +147,7 @@ export default function ApplicationsSection({ handleBg }) {
       handleSearch();
     }
   };
-  const onChangeKeyword = (e) => { 
+  const onChangeKeyword = (e) => {
     const v = e.target.value;
     setKeyword(v);
     !v && searchVal && setSearchVal("");

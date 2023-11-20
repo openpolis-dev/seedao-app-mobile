@@ -33,7 +33,7 @@ export default function useQuerySNS() {
 
   const getMultiSNS = async (wallets) => {
     const wallet_sns_map = {};
-    const _wallets = wallets.map((w) => w.toLocaleLowerCase());
+    const _wallets = wallets.map((w) => w?.toLocaleLowerCase());
     const _to_be_queried = _wallets.filter((w) => !snsMap[w]);
 
     const _snsMap = { ...snsMap };
