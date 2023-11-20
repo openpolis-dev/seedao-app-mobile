@@ -7,10 +7,11 @@ import AppConfig from '../AppConfig';
 import {saveLang} from '../store/reducer';
 
 async function getStoreLang() {
-  // const defaultLan = localStorage.getItem('lang');
-  const userLanguage = navigator.language || navigator.userLanguage;
+  const defaultLan = localStorage.getItem('lang');
+  const userLanguage = defaultLan?defaultLan:(navigator.language || navigator.userLanguage);
+  console.error(defaultLan,userLanguage)
   await i18n.changeLanguage(userLanguage);
-  // return defaultLan;
+  return userLanguage;
 }
 
 
