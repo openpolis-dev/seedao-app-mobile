@@ -8,6 +8,7 @@
   "General": {
     "connect": "Connect Wallet",
     "confirm": "Confirm",
+    "cancel": "Cancel",
     "Edit": "Edit",
     "Empty": "Empty",
     "Copied": "Copied"

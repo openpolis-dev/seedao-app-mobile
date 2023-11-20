@@ -8,6 +8,7 @@
   "General": {
     "connect": "连接钱包",
     "confirm": "确定",
+    "cancel": "取消",
     "Edit": "编辑",
     "Empty": "空空如也",
     "Copied": "已复制"

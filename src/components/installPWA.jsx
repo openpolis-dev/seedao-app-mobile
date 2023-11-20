@@ -83,7 +83,7 @@ export default function InstallCheck() {
                     {t("Install.AndroidInstall")}
                   </div>
                   <div className="btn-cancel" onClick={()=>handleClose()}>
-                    {t("general.cancel")}
+                    {t("General.cancel")}
                   </div>
                 </div>
               </AndroidBox>
@@ -135,6 +135,8 @@ const AndroidBox = styled.div`
   justify-content: space-between;
   padding-inline: 20px;
   align-items: center;
+  box-sizing: border-box;
+
   img {
     width: 36px;
     margin-right: 10px;
