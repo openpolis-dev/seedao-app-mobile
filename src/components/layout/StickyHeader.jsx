@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Avatar from "components/common/avatar";
 
 const TopBox = styled.div`
-  background: ${(props) => props.bgColor};
+  background: ${(props) => props.bgcolor};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -57,7 +57,7 @@ export default function StickyHeader({ title, bgColor, scrollRef }) {
   };
 
   return (
-    <TopBox bgColor={bgColor} className={show ? "act" : ""}>
+    <TopBox bgcolor={bgColor} className={show ? "act" : ""}>
       <div className="lft">{title}</div>
       <div className="AvatarBox" onClick={() => toGo()}>
         <Avatar src={userToken?.user?.avatar} size="36px" />
