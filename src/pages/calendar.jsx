@@ -6,9 +6,11 @@ export default function Calendar(){
 
     const { t } = useTranslation();
 
-    return  <Layout title={t("Calendar.Calendar")} headBgColor={`var(--background-color)`}>
+    return (
+      <Layout title={t("Calendar.Calendar")} headBgColor={`var(--background-color)`} bgColor="var(--background-color)">
         {/*<CalendarBox />*/}
         <NewCalendar />
-    </Layout>
+      </Layout>
+    );
 }
 
