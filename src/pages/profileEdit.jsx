@@ -103,6 +103,7 @@ const ButtonBox = styled.div`
     border-radius: 16px;
     border: 0;
     font-size: 14px;
+    color: #000;
   }
 `;
 
