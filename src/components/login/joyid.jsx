@@ -27,10 +27,8 @@ export default function Joyid(){
     const [msg,setMsg] = useState();
     const [result,setResult] = useState(null);
     const handlePermission = usePushPermission();
-
+    const JOY_ID_URL ="https://app.joy.id";
     useEffect(() => {
-
-        const JOY_ID_URL ="https://app.joy.id";
         const redirectHome = () => {
             const _address = localStorage.getItem("joyid-address");
             if (_address) {
