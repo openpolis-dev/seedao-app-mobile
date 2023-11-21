@@ -487,21 +487,19 @@ export default function Profile() {
   };
 
   return (
-      <OuterBox>
-        <Layout
+    <OuterBox>
+      <Layout
         headBgColor="transparent"
         bgColor="#EBE8FE"
         isUserProfle
-        rightOperation={<TopBtn onClick={()=>ToGo()}>
-            {t("General.Edit")}
-          </TopBtn>}
+        rightOperation={<TopBtn onClick={() => ToGo()}>{t("General.Edit")}</TopBtn>}
       >
-      <Box>
-        <FlexBox>
-          <AvatarBox>
-            <Avatar size="56px" src={detail?.avatar} />
-          </AvatarBox>
-          <div className="rhtTop">
+        <Box>
+          <FlexBox>
+            <AvatarBox>
+              <Avatar size="56px" src={detail?.avatar} />
+            </AvatarBox>
+            <div className="rhtTop">
               <div className="name">{detail?.nickname}</div>
               {/*<div>{sns}</div>*/}
               <FlexLine>
@@ -510,122 +508,120 @@ export default function Profile() {
                 {/*  <CopyBox text={detail?.wallet} />*/}
                 {/*</RhtBox>*/}
               </FlexLine>
-          </div>
-        </FlexBox>
-        <div className="bio">{detail?.bio}</div>
-
-
-        <TagBox>
-          {roles?.map((item, index) => (
-              <li key={`tag_${index}`}>{switchRoles(item)}</li>
-          ))}
-        </TagBox>
-        <ProgressOuter>
-          <FstLine>
-            <div className="lft">
-              <LevelBox>
-                LV {detail?.level?.current_lv}
-              </LevelBox>
-              <SCRBox>{t("My.current")}{detail?.scr?.amount} SCR</SCRBox>
             </div>
-              <div className="rht">
-                <div>
-                  {t('My.levelTips', {level: Number(detail?.level?.current_lv) +1})}
-                </div>
-                <div>
-                  {formatNumber(detail?.level?.scr_to_next_lv)} SCR
-                </div>
+          </FlexBox>
+          <div className="bio">{detail?.bio}</div>
+
+          <TagBox>
+            {roles?.map((item, index) => (
+              <li key={`tag_${index}`}>{switchRoles(item)}</li>
+            ))}
+          </TagBox>
+          <ProgressOuter>
+            <FstLine>
+              <div className="lft">
+                <LevelBox>LV {detail?.level?.current_lv}</LevelBox>
+                <SCRBox>
+                  {t("My.current")}
+                  {detail?.scr?.amount} SCR
+                </SCRBox>
               </div>
-          </FstLine>
-          <ProgressBox width={detail?.level?.upgrade_percent}>
-            <div className="inner" />
-          </ProgressBox>
-        </ProgressOuter>
-
-      </Box>
-
-      <NftBox>
+              <div className="rht">
+                <div>{t("My.levelTips", { level: Number(detail?.level?.current_lv) + 1 })}</div>
+                <div>{formatNumber(detail?.level?.scr_to_next_lv)} SCR</div>
+              </div>
+            </FstLine>
+            <ProgressBox width={detail?.level?.upgrade_percent}>
+              <div className="inner" />
+            </ProgressBox>
+          </ProgressOuter>
+        </Box>
+        {!!list.length && (
+          <NftBox>
+            <dl>
+              <dt>
+                <span>SEED</span>
+                {!!sns && (
+                  <a href={`https://${sns}.id`} target="_blank" className="more">
+                    {t("My.more")}
+                  </a>
+                )}
+              </dt>
+              <dd>
+                <ul>
+                  {list?.map((item, index) => (
+                    <li key={index}>
+                      <div>
+                        <img src={item.url} alt="" />
+                      </div>
+                      <div>ID {item.token_id}</div>
+                    </li>
+                  ))}
+                </ul>
+              </dd>
+            </dl>
+          </NftBox>
+        )}
+        {!!sbt.length && (
+          <NftBox>
+            <dl>
+              <dt>
+                <span>SBT</span>
+                {!!sns && (
+                  <a href={`https://${sns}.id`} target="_blank" className="more">
+                    {t("My.more")}
+                  </a>
+                )}
+              </dt>
+              <dd>
+                <ul>
+                  {sbt?.map((item, index) => (
+                    <SbtCatMobile key={`sbt_${index}`} item={item} />
+                  ))}
+                </ul>
+              </dd>
+            </dl>
+          </NftBox>
+        )}
+        <LineBox>
           <dl>
             <dt>
-              <span>SEED</span>
-              {
-                  !!sns &&   <a href={`https://${sns}.id`} target="_blank" className="more">{t("My.more")}</a>
-              }
+              <img src={EmailImg} alt="" />
+              {t("My.Email")}
             </dt>
-            <dd>
-              <ul>
-                {
-                  list?.map((item,index)=>(<li key={index}>
-                    <div><img src={item.url} alt=""/></div>
-                    <div>ID {item.token_id}</div>
-                  </li>))
-                }
-              </ul>
-            </dd>
+            <dd>{detail?.email}</dd>
           </dl>
-      </NftBox>
-
-
-      <NftBox>
-        <dl>
-          <dt>
-            <span>SBT</span>
-            {
-                !!sns &&   <a href={`https://${sns}.id`} target="_blank" className="more">{t("My.more")}</a>
-            }
-          </dt>
-            <dd>
-              <ul>
-                {
-                  sbt?.map((item,index)=>(
-                      <SbtCatMobile key={`sbt_${index}`}  item={item}/>
-                  ))
-                }
-              </ul>
-            </dd>
+          {/*<dl>*/}
+          {/*  <dt>{t("My.Discord")}</dt>*/}
+          {/*  <dd>{discord}</dd>*/}
+          {/*</dl>*/}
+          <dl>
+            <dt>
+              <img src={Twitter} alt="" />
+              {t("My.Twitter")}
+            </dt>
+            <dd>{twitter}</dd>
           </dl>
-      </NftBox>
-
-      <LineBox>
-
-        <dl>
-          <dt>
-            <img src={EmailImg} alt=""/>
-            {t("My.Email")}</dt>
-          <dd>{detail?.email}</dd>
-        </dl>
-        {/*<dl>*/}
-        {/*  <dt>{t("My.Discord")}</dt>*/}
-        {/*  <dd>{discord}</dd>*/}
-        {/*</dl>*/}
-        <dl>
-          <dt>
-            <img src={Twitter} alt=""/>
-            {t("My.Twitter")}
-          </dt>
-          <dd>{twitter}</dd>
-        </dl>
-        {/*<dl>*/}
-        {/*  <dt>{t("My.WeChat")}</dt>*/}
-        {/*  <dd>{wechat}</dd>*/}
-        {/*</dl>*/}
-        <dl>
-          <dt>
-            <img src={MirrorImg} alt=""/>
-            {t("My.Mirror")}
-          </dt>
-          <dd>{mirror}</dd>
-        </dl>
-        <dl>
-          <dt>
-            <img src={GithubImg} alt=""/>
-            {t("My.Github")}
-          </dt>
-          <dd>{github}</dd>
-        </dl>
-      </LineBox>
-
-    </Layout>
-      </OuterBox>
+          {/*<dl>*/}
+          {/*  <dt>{t("My.WeChat")}</dt>*/}
+          {/*  <dd>{wechat}</dd>*/}
+          {/*</dl>*/}
+          <dl>
+            <dt>
+              <img src={MirrorImg} alt="" />
+              {t("My.Mirror")}
+            </dt>
+            <dd>{mirror}</dd>
+          </dl>
+          <dl>
+            <dt>
+              <img src={GithubImg} alt="" />
+              {t("My.Github")}
+            </dt>
+            <dd>{github}</dd>
+          </dl>
+        </LineBox>
+      </Layout>
+    </OuterBox>
   );
 }
