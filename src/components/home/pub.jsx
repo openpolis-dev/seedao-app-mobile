@@ -118,8 +118,6 @@ const TypeBox = styled(TagBox)`
 
 const TitleBox = styled.div`
   margin-bottom: 16px;
-  width: 80px;
-  height: 22px;
   font-size: 20px;
   font-family: Poppins-SemiBold;
   font-weight: 600;
