@@ -23,7 +23,7 @@ const Box = styled.div`
   height: 47px;
   line-height: 47px;
   z-index: 9;
-  background: ${(props) => props.bgcolor || "var(--background-color-1)"};
+  background: ${(props) => props.bgColor || "var(--background-color-1)"};
   box-sizing: border-box;
   width: 100vw;
   padding-inline: 20px;
