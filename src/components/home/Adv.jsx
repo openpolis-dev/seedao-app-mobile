@@ -71,22 +71,27 @@ const Bfst = styled.div`
 `
 
 export default function Adv(){
-    const { t } = useTranslation();
+  const { t } = useTranslation();
+  const openLink = (link) => {
+    if (link) {
+      window.open(link, "_blank")
+    }
+  }
     return <BannerBox>
         <Swiper
             modules={[Autoplay]}
             autoplay={{
-                delay: 2500,
+                delay: 5000,
                 disableOnInteraction: false,
             }}
         >
             {
                 banner?.map((item,index)=>( <SwiperSlide key={`banner_${index}`}>
-                    <BannerLi url={item.img}>
+                    <BannerLi url={item.img} onClick={() => openLink(item.link)}>
                         <TitleBox>{item.name}{item.desc}</TitleBox>
                         <Bfst>
-                            <DescBox>{item.desc}</DescBox>
-                            <LinkBox>{t('home.more')} &gt;</LinkBox>
+                      <DescBox>{item.desc}</DescBox>
+                      {item.link && <LinkBox>{t('home.more')} &gt;</LinkBox>}
                         </Bfst>
 
                     </BannerLi>
