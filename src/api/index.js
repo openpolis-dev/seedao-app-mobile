@@ -2,6 +2,7 @@ import axios from "axios";
 import store from "../store";
 import {parseToken,checkTokenValid,clearStorage} from "../utils/auth";
 import getConfig from "constant/envCofnig";
+import { clearLogin } from "store/reducer";
 
 export const BASE_URL = getConfig().REACT_APP_BASE_ENDPOINT;
 export const API_VERSION = process.env.REACT_APP_API_VERSION;
@@ -31,6 +32,7 @@ instance.interceptors.request.use(function (config) {
 
   if (!checkTokenValid(tokenstr?.token, tokenstr?.token_exp)) {
     clearStorage();
+    store.dispatch(clearLogin());
     window.location.replace(`${window.location.origin}/login`);
     return Promise.reject();
   }

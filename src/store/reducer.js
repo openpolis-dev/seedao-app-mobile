@@ -5,6 +5,11 @@ const mainSlice = createSlice({
     name: 'main',
     initialState: InitState,
     reducers: {
+        clearLogin(state) {
+            state.account = null;
+            state.userToken = null;
+            state.walletType = null;
+        },
         saveAccount(state, action) {
             state.account = action.payload;
         },
