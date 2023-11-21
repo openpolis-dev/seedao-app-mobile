@@ -548,7 +548,9 @@ export default function Profile() {
           <dl>
             <dt>
               <span>SEED</span>
-              <a href={`https://${sns}.id`} target="_blank" className="more">{t("My.more")}</a>
+              {
+                  !!sns &&   <a href={`https://${sns}.id`} target="_blank" className="more">{t("My.more")}</a>
+              }
             </dt>
             <dd>
               <ul>
@@ -568,7 +570,9 @@ export default function Profile() {
         <dl>
           <dt>
             <span>SBT</span>
-            <a href={`https://${sns}.id`} target="_blank" className="more">{t("My.more")}</a>
+            {
+                !!sns &&   <a href={`https://${sns}.id`} target="_blank" className="more">{t("My.more")}</a>
+            }
           </dt>
             <dd>
               <ul>
