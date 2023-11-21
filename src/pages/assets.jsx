@@ -215,7 +215,12 @@ export default function Assets() {
   }
 
   return (
-    <Layout title={t("Menus.Vault")} bgColor="var(--background-color)" headBgColor="var(--primary-color)" headColor="#FFF">
+    <Layout
+      title={t("Menus.Vault")}
+      bgColor="var(--background-color)"
+      headBgColor="var(--primary-color)"
+      headColor="var(--primary-color)"
+    >
       <TopBox>
         <TotalAssets>
           <div className="value">${formatNumber(Number(totalBalance))}</div>
