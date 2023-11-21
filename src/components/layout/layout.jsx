@@ -11,6 +11,9 @@ const OuterBox = styled.div`
   height: 100%;
   box-sizing: border-box;
   /* display: flex; */
+
+  padding-bottom: constant(safe-area-inset-bottom);
+  background: #f00;
 `;
 const InnerBox = styled.div`
   /* flex-grow: 1; */

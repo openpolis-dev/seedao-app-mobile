@@ -28,11 +28,11 @@ const BannerLi = styled.div`
   justify-content: space-between;
   position: relative;
   box-sizing: border-box;
-  padding: 19px 0;
+  padding: 24px 0;
 `
 const TitleBox = styled.div`
     text-align: center;
-  font-size: 22px;
+  font-size: 15px;
   font-family: Poppins-SemiBold;
   font-weight: 600;
   color: #FFFFFF;
@@ -44,7 +44,7 @@ const TitleBox = styled.div`
 `
 
 const DescBox = styled.div`
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 400;
   color: #FFFFFF;
   line-height: 1.5em;
