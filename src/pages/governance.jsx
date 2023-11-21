@@ -67,10 +67,8 @@ export default function Governance() {
           <GovernanceBoxTop>
             <img src={GovernanceIcon} alt="" />
             <GovernanceBoxTopLeft>
-              <div className="title">{t("Governance.GovernanceRule")}</div>
-              <div className="desc">
-                {t("Governance.GovernanceRuleDesc")}
-              </div>
+              <FirstLineTitle>{t("Governance.GovernanceRule")}</FirstLineTitle>
+              <div className="desc">{t("Governance.GovernanceRuleDesc")}</div>
             </GovernanceBoxTopLeft>
           </GovernanceBoxTop>
           <GovernanceContent>
@@ -158,20 +156,15 @@ const GovernanceBoxTop = styled.div`
   justify-content: space-between;
   background: #ffffff linear-gradient(65deg, #2f76ff 0%, #40c1f8 100%);
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.02);
-  align-items: center;
-  padding-inline: 20px;
+  align-items: flex-end;
+  padding: 16px;
+  box-sizing: border-box;
 `;
 
 const GovernanceBoxTopLeft = styled.div`
   text-align: center;
-  .title {
-    font-size: 18px;
-    font-family: Poppins-SemiBold, Poppins;
-    font-weight: 600;
-    color: #ffffff;
-    line-height: 22px;
-    margin-bottom: 9px;
-  }
+  text-align: right;
+
   .desc {
     font-size: 13px;
     font-family: Poppins-Regular, Poppins;
