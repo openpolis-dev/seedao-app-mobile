@@ -180,8 +180,8 @@ export default function RankingPage() {
     >
       <SortBox>
         <NumberBox />
-        <ItemBox style={{ flex: 3, width: 0 }} />
-        <ItemBox style={{ flex: 2, paddingRight: "8px" }}>
+        <HeaderItemBox style={{ flex: 3, width: 0 }} />
+        <HeaderItemBox style={{ flex: 2 }}>
           <SortCurrentSeason onClick={onClickCurrentRank}>
             <span>
               {currentSeason}
@@ -189,8 +189,8 @@ export default function RankingPage() {
             </span>
             <SortIcons direction={rankCurrent} />
           </SortCurrentSeason>
-        </ItemBox>
-        <ItemBox style={{ flex: 2 }}>
+        </HeaderItemBox>
+        <HeaderItemBox style={{ flex: 2 }}>
           <SortTotalScr onClick={onClicktotalRank}>
             <span>
               {t("Vault.Total")}
@@ -198,17 +198,17 @@ export default function RankingPage() {
             </span>
             <SortIcons direction={rankTotal} />
           </SortTotalScr>
-        </ItemBox>
+        </HeaderItemBox>
       </SortBox>
       <ListBox>
         {displayList.map((item, idx) => (
           <li key={item.wallet}>
             <NumberBox>{getRankNum(idx)}</NumberBox>
             <ItemBox style={{ flex: 3, width: 0 }}>{formatSNS(item.wallet)}</ItemBox>
-            <ItemBox style={{ flex: 2 }}>
+            <ItemBox style={{ flex: 2, textAlign: "right" }}>
               {formatNumber(Number(item.seasons_credit?.find((s) => s.season_name === currentSeason)?.total || 0))}
             </ItemBox>
-            <ItemBox style={{ flex: 2 }}>{item.total_display}</ItemBox>
+            <ItemBox style={{ flex: 2, textAlign: "right" }}>{item.total_display}</ItemBox>
           </li>
         ))}
       </ListBox>
@@ -232,6 +232,9 @@ const ListBox = styled.ul`
 `;
 const ItemBox = styled.div`
   flex: 1;
+`;
+const HeaderItemBox = styled(ItemBox)`
+  margin-left: 8px;
 `;
 
 const LightBox = styled.span`
