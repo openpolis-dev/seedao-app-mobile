@@ -6,7 +6,7 @@ import BackSVG from "components/svgs/back";
 const Back = styled.div`
   position: absolute;
   left: 20px;
-  top: 7px;
+  top: calc(7px + env(safe-area-inset-top));
 `;
 const HeaderBox = styled.header`
   display: flex;
@@ -14,6 +14,7 @@ const HeaderBox = styled.header`
   justify-content: center;
   width: 100%;
   color: ${(props) => props.headcolor || "var(--font-color)"};
+  padding-top: env(safe-area-inset-top);
 `;
 const Box = styled.div`
   position: fixed;
@@ -42,7 +43,7 @@ const LoadingBox = styled.div`
 const OperateBox = styled.div`
   position: absolute;
   right: 20px;
-  top: 0;
+  top: env(safe-area-inset-top);
 `;
 export default function Header({ title, bgColor, headColor, rightOperation, handleBack }) {
   const navigate = useNavigate();

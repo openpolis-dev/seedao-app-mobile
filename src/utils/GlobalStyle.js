@@ -8,6 +8,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     overscroll-behavior: none;
+    
   }
   body.over-hidden {
     overflow: hidden;

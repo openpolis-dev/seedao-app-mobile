@@ -8,8 +8,17 @@ import StickyHeader from "./StickyHeader";
 
 const OuterBox = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh ;
   box-sizing: border-box;
+  
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+  
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);  
+  
+
+  
   /* display: flex; */
 
  
@@ -17,6 +26,7 @@ const OuterBox = styled.div`
 const InnerBox = styled.div`
   /* flex-grow: 1; */
   width: 100%;
+  //height: ${(props) => `calc(100% - ${props.sticky === "true" ? props.notab : 0})`};
   height: ${(props) => `calc(100% - ${props.sticky === "true" ? props.notab : 0})`};
   padding-top: ${(props) => props.paddingtop};
   padding-bottom: ${(props) => props.notab};

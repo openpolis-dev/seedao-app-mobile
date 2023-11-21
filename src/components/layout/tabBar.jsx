@@ -26,6 +26,7 @@ const Box = styled.div`
   display: flex;
   align-items: center;
   border-top: 1px solid var(--border-color);
+  padding-bottom: env(safe-area-inset-bottom);
 `;
 
 const ItemBox = styled.div`
