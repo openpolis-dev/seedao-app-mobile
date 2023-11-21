@@ -71,24 +71,24 @@ export default function InstallCheck() {
   }
   if (isAndroid) {
     return (
-        <>
-          {
-            show &&<AndroidBox>
-                <div className="left">
-                  <img src={AppIcon} alt="" />
-                  <span>SeeDAO</span>
-                </div>
-                <div className="lineRht">
-                  <div className="btn-button" onClick={installApp}>
-                    {t("Install.AndroidInstall")}
-                  </div>
-                  <div className="btn-cancel" onClick={()=>handleClose()}>
-                    {t("General.cancel")}
-                  </div>
-                </div>
-              </AndroidBox>
-          }
-        </>
+      <>
+        {show && (
+          <AndroidBox>
+            <div className="left">
+              <img src={AppIcon} alt="" />
+              <span>SeeDAO</span>
+            </div>
+            <div className="lineRht">
+              <div className="btn-cancel" onClick={() => handleClose()}>
+                {t("General.cancel")}
+              </div>
+              <div className="btn-button" onClick={installApp}>
+                {t("Install.AndroidInstall")}
+              </div>
+            </div>
+          </AndroidBox>
+        )}
+      </>
     );
   }
   if (isIOS) {
@@ -124,7 +124,7 @@ export default function InstallCheck() {
 
 const AndroidBox = styled.div`
   position: fixed;
-  bottom: 0;
+  top: 0;
   width: 100%;
   height: 60px;
   line-height: 60px;
@@ -136,32 +136,37 @@ const AndroidBox = styled.div`
   padding-inline: 20px;
   align-items: center;
   box-sizing: border-box;
+  z-index: 99;
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
 
   img {
     width: 36px;
-    margin-right: 10px;
   }
   .btn-button {
     cursor: pointer;
-    line-height: 36px;
+    line-height: 32px;
     padding-inline: 15px;
     border-radius: 4px;
-    background-color: var(--bs-primary);
+    background-color: var(--primary-color);
     color: #fff;
     font-size: 14px;
   }
-  .lineRht{
+  .lineRht {
     display: flex;
     align-items: center;
-    
+    gap: 8px;
   }
   .btn-cancel {
     cursor: pointer;
-    line-height: 36px;
+    line-height: 32px;
     padding-inline: 15px;
     border-radius: 4px;
-    border: 1px solid var(--bs-primary);
-    color: var(--bs-primary);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
     margin-left: 10px;
     font-size: 14px;
   }
