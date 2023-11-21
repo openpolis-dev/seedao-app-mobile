@@ -7,6 +7,7 @@ const GlobalStyle = createGlobalStyle`
     color: var(--font-color);
     padding: 0;
     margin: 0;
+    overscroll-behavior: none;
   }
   body.over-hidden {
     overflow: hidden;
