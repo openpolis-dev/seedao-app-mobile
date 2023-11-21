@@ -14,9 +14,9 @@ import ExploreImg from "../../assets/Imgs/explore.svg";
 import ExploreHover from "../../assets/Imgs/explore_active.png";
 
 const Box = styled.div`
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   position: fixed;
   height: 70px;
   bottom: 0;
