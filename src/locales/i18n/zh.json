@@ -11,8 +11,7 @@
     "cancel": "取消",
     "Edit": "编辑",
     "Empty": "空空如也",
-    "Copied": "已复制",
-    "All": "所有"
+    "Copied": "已复制"
   },
   "Buttons": {
     "Check": "查看",
@@ -210,7 +209,13 @@
     "ApplyIntro": "申请说明",
     "AuditorDate": "审核时间",
     "TransactionId": "交易ID",
-    "TransactionDate": "交易时间"
+    "TransactionDate": "交易时间",
+    "SelectSeason": "季度",
+    "AllSeasons": "所有季度",
+    "SelectStatus": "状态",
+    "AllStatus": "所有状态",
+    "SelectAsset": "资产",
+    "AllAssets": "所有资产类型"
   },
   "Calendar": {
     "Calendar": "日历"

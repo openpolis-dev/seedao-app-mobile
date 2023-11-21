@@ -151,7 +151,7 @@ export default function ApplicationsSection({ handleBg }) {
     const v = e.target.value;
     setKeyword(v);
     !v && searchVal && setSearchVal("");
-  }
+  };
 
   const formatSNS = (wallet) => {
     const sns = snsMap[wallet] || wallet;
@@ -191,11 +191,10 @@ export default function ApplicationsSection({ handleBg }) {
         <div style={{ flex: 3 }}>
           <SeasonSelect
             width="100%"
-            defaultValue={seasons[0]}
             options={seasons}
             closeClear={true}
             isSearchable={false}
-            placeholder=""
+            placeholder={t("Application.SelectSeason")}
             onChange={(value) => {
               setSelectSeason(value?.value);
             }}
@@ -204,11 +203,10 @@ export default function ApplicationsSection({ handleBg }) {
         <div style={{ flex: 3 }}>
           <SeasonSelect
             width="100%"
-            defaultValue={statusList[0]}
             options={statusList}
             closeClear={true}
             isSearchable={false}
-            placeholder=""
+            placeholder={t("Application.SelectStatus")}
             onChange={(value) => {
               setSelectStatus(value?.value);
             }}
@@ -217,11 +215,10 @@ export default function ApplicationsSection({ handleBg }) {
         <div style={{ flex: 3 }}>
           <SeasonSelect
             width="100%"
-            defaultValue={assets[0]}
             options={assets}
             closeClear={true}
             isSearchable={false}
-            placeholder=""
+            placeholder={t("Application.SelectAsset")}
             onChange={(value) => {
               setSelectAsset(value?.value);
             }}
