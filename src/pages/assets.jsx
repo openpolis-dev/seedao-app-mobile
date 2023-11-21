@@ -215,12 +215,7 @@ export default function Assets() {
   }
 
   return (
-    <Layout
-      title={t("Menus.Vault")}
-      bgColor="var(--primary-color)"
-      headBgColor="var(--primary-color)"
-      headColor="#fff"
-    >
+    <Layout title={t("Menus.Vault")} bgColor="var(--primary-color)" headBgColor="var(--primary-color)" headColor="#fff">
       <TopBox>
         <TotalAssets>
           <div className="value">${formatNumber(Number(totalBalance))}</div>
@@ -231,7 +226,7 @@ export default function Assets() {
             <WalletItem key={index}>
               <WalletItemLeft>
                 <div className="name">{t(v.name)}</div>
-                <CopyBox>
+                <CopyBox style={{ width: "65px" }}>
                   <Addr>{PublicJs.AddressToShow(v.address, 4)}</Addr>
                 </CopyBox>
                 <img src={v.icon} alt="" onClick={() => linkTo(v)} />
@@ -305,12 +300,18 @@ const WalletItemLeft = styled.div`
   font-size: 12px;
   font-weight: 400;
   .name {
+    min-width: 65px;
     margin-right: 20px;
     font-weight: 600;
     color: #eee5ff;
+    flex: 3;
+  }
+  .signer {
+    width: 35px;
   }
   img {
     margin-right: 4px;
+    margin-left: 9px;
   }
 `;
 const WalletItemValue = styled.div`

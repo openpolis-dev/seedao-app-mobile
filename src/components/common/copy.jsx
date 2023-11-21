@@ -4,7 +4,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import styled, { css } from "styled-components";
 import CopyIcon from "assets/Imgs/copy.svg";
 
-const CopyBox = ({ children, text, dir }) => {
+const CopyBox = ({ children, text, dir, ...props }) => {
   const { t } = useTranslation();
   const [isCopied, setIsCopied] = useState(false);
 
@@ -20,7 +20,7 @@ const CopyBox = ({ children, text, dir }) => {
   return (
     <>
       <CopyToClipboard text={text} onCopy={handleCopy}>
-        <CopyContent className="copy-content" dir={dir || "right"}>
+        <CopyContent className="copy-content" dir={dir || "right"} {...props}>
           {children || <img src={CopyIcon} className="copy-icon" alt="" />}
         </CopyContent>
       </CopyToClipboard>
