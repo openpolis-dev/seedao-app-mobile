@@ -13,7 +13,7 @@ const HeaderBox = styled.header`
   align-items: center;
   justify-content: center;
   width: 100%;
-  color: ${(props) => props.headcolor || "var(--font-color)"};
+  color: ${(props) => props.$headColor || "var(--font-color)"};
   padding-top: env(safe-area-inset-top);
 `;
 const Box = styled.div`
@@ -23,7 +23,7 @@ const Box = styled.div`
   height: 47px;
   line-height: 47px;
   z-index: 9;
-  background: ${(props) => props.bgcolor || "var(--background-color-1)"};
+  background: ${(props) => props.$bgColor || "var(--background-color-1)"};
   box-sizing: border-box;
   width: 100vw;
   padding-inline: 20px;
@@ -53,11 +53,11 @@ export default function Header({ title, bgColor, headColor, rightOperation, hand
   };
 
   return (
-    <Box bgcolor={bgColor}>
+    <Box $bgColor={bgColor}>
       <Back onClick={() => backTop()}>
         <BackSVG color={headColor} />
       </Back>
-      <HeaderBox headcolor={headColor}>
+      <HeaderBox $headColor={headColor}>
         <Mid>
           <span>{title}</span>
           <LoadingBox>
