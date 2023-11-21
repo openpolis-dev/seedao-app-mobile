@@ -217,7 +217,7 @@ export default function Assets() {
   return (
     <Layout
       title={t("Menus.Vault")}
-      bgColor="var(--background-color)"
+      bgColor="var(--primary-color)"
       headBgColor="var(--primary-color)"
       headColor="var(--primary-color)"
     >
