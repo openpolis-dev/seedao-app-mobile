@@ -39,8 +39,9 @@ export default function Event() {
     const getList = async () => {
       setLoading(true);
       try {
-        const res = await getSeeuEventList({ currentPage: 1, pageSize: 2 });
-        setList(res.data.data);
+        const res = await getSeeuEventList({ currentPage: 1, pageSize:10 });
+        const rt = res.data.data.filter((item)=>item.status==="进行中")
+        setList(rt.slice(0,2));
         setLoading(false);
       } catch (error) {
         //  TODO toast
