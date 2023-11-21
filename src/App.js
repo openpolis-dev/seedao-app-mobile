@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import {PersistGate} from "redux-persist/integration/react";
 import store,{persistor} from "./store";
 import "./locales"
+import 'md-editor-rt/lib/style.css';
 import "./assets/styles/quill.css";
 
 import GlobalStyle from "./utils/GlobalStyle";
