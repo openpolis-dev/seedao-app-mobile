@@ -102,7 +102,7 @@ const SubCategoryCard = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: stretch;
-  padding: 10px 8px;
+  padding: 10px 6px;
   a {
     display: block;
     width: 50%;
@@ -112,7 +112,7 @@ const SubCategoryCard = styled.div`
 const SubCategoryItem = styled.div`
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding-block: 8px;
   cursor: pointer;
   .name {
     font-size: 14px;
