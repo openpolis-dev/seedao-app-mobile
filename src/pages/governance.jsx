@@ -68,9 +68,9 @@ export default function Governance() {
             <img src={GovernanceIcon} alt="" />
             <GovernanceBoxTopLeft>
               <div className="title">{t("Governance.GovernanceRule")}</div>
-              <a className="desc" href={books[1].link} target="_blank" rel="noreferrer">
+              <div className="desc">
                 {t("Governance.GovernanceRuleDesc")}
-              </a>
+              </div>
             </GovernanceBoxTopLeft>
           </GovernanceBoxTop>
           <GovernanceContent>
@@ -173,17 +173,13 @@ const GovernanceBoxTopLeft = styled.div`
     margin-bottom: 9px;
   }
   .desc {
-    display: inline-block;
-    font-size: 12px;
+    font-size: 13px;
     font-family: Poppins-Regular, Poppins;
     font-weight: 400;
     color: #ffffff;
-    line-height: 28px;
+    line-height: 21px;
     text-align: center;
-    height: 28px;
-    border-radius: 36px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    padding-inline: 15px;
+    margin-top: 8px;
   }
 `;
 
