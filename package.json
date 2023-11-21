@@ -7,7 +7,7 @@
     "@emotion/react": "^11.11.1",
     "@ericz1803/react-google-calendar": "^4.3.1",
     "@ethersproject/shims": "^5.7.0",
-    "@joyid/evm": "^0.2.0-beta.4",
+    "@joyid/evm": "^0.2.4",
     "@metamask/sdk": "^0.7.1",
     "@reduxjs/toolkit": "^1.9.6",
     "@seedao/sns-js": "^0.5.4",

@@ -29,6 +29,8 @@ export default function Joyid(){
     const handlePermission = usePushPermission();
 
     useEffect(() => {
+
+        const JOY_ID_URL ="https://app.joy.id";
         const redirectHome = () => {
             const _address = localStorage.getItem("joyid-address");
             if (_address) {
@@ -100,6 +102,7 @@ export default function Joyid(){
 
             const url = buildRedirectUrl("sign-message");
             signMessageWithRedirect(url, siweMessage, account, {
+                joyidAppURL: `${JOY_ID_URL}/?prefer=login`,
                 state: msg,
             });
         }catch (e){
@@ -114,6 +117,7 @@ export default function Joyid(){
             localStorage.setItem("joyid-status", "login");
             const url = buildRedirectUrl("connect");
             connectWithRedirect(url, {
+                joyidAppURL: `${JOY_ID_URL}/?prefer=login`,
               rpcURL: "https://eth.llamarpc.com",
               network: {
                 chainId: 1,
