@@ -13,20 +13,21 @@ const HeaderBox = styled.header`
   align-items: center;
   justify-content: center;
   width: 100%;
+  height: 47px;
+  line-height: 47px;
   color: ${(props) => props.$headColor || "var(--font-color)"};
-  padding-top: env(safe-area-inset-top);
 `;
 const Box = styled.div`
   position: fixed;
   left: 0;
   top: 0;
-  height: 47px;
-  line-height: 47px;
+  height: calc(47px + env(safe-area-inset-top));
   z-index: 9;
   background: ${(props) => props.$bgColor || "var(--background-color-1)"};
   box-sizing: border-box;
   width: 100vw;
   padding-inline: 20px;
+  padding-top: env(safe-area-inset-top);
 `;
 
 const Mid = styled.div`
