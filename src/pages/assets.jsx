@@ -228,23 +228,22 @@ export default function Assets() {
         </TotalAssets>
         <WalletBox>
           {VAULTS.map((v, index) => (
-              <WalletItem key={index}>
-                <WalletItemLeft>
-                  <div className="name">{t(v.name)}</div>
-                  <CopyBox>
-                    <Addr>{PublicJs.AddressToShow(v.address, 4)}</Addr>
-                  </CopyBox>
-                  <img src={v.icon} alt="" onClick={() => linkTo(v)} />
-                  <div className="signer">
-                    {vaultsMap[v.id]?.threshold || 0}/{vaultsMap[v.id]?.total || 0}
-                  </div>
-                </WalletItemLeft>
-                <WalletItemValue>${formatNumber(vaultsMap[v.id]?.balance || 0.0)}</WalletItemValue>
-              </WalletItem>
+            <WalletItem key={index}>
+              <WalletItemLeft>
+                <div className="name">{t(v.name)}</div>
+                <CopyBox>
+                  <Addr>{PublicJs.AddressToShow(v.address, 4)}</Addr>
+                </CopyBox>
+                <img src={v.icon} alt="" onClick={() => linkTo(v)} />
+                <div className="signer">
+                  {vaultsMap[v.id]?.threshold || 0}/{vaultsMap[v.id]?.total || 0}
+                </div>
+              </WalletItemLeft>
+              <WalletItemValue>${formatNumber(vaultsMap[v.id]?.balance || 0.0)}</WalletItemValue>
+            </WalletItem>
           ))}
         </WalletBox>
       </TopBox>
-
 
       <BottomBox>
         <FlexBox>
