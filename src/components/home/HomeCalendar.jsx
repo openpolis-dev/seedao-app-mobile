@@ -115,20 +115,20 @@ export default function HomeCalendar(){
         navigate("/calendar")
     }
 
-    return <Box>
+    return <Box onClick={toGo}>
         <Flexbox>
             <div>
                 <TitleBox>{t("home.title")}</TitleBox>
                 <TipsBox>{t("home.tips")}</TipsBox>
             </div>
-            <DayBox onClick={()=>toGo()}>
+            <DayBox>
                 <span className="num">{switchDay()}</span>
                 <span>{switchWeek()}</span>
             </DayBox>
         </Flexbox>
         <ListBox>
             {
-                list?.map((item,index)=>(<li key={index} onClick={()=>toGo()}>
+                list?.map((item,index)=>(<li key={index}>
                     <span className="time">{switchTime(item.start?.dateTime)}</span>
                     <span>{item.summary}</span>
                 </li>))
