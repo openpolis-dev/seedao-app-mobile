@@ -1,6 +1,6 @@
+import { useTranslation } from "react-i18next";
+
 export default function useAssets() {
-  return [
-    { value: "SCR", label: "SCR" },
-    { value: "USDT", label: "USDT" },
-  ];
+  const { t } = useTranslation();
+  return [{ label: t("General.All") }, { value: "SCR", label: "SCR" }, { value: "USDT", label: "USDT" }];
 }

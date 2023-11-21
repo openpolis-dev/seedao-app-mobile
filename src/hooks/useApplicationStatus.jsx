@@ -6,6 +6,7 @@ export default function useApplicationStatus() {
   const { t } = useTranslation();
   return useMemo(() => {
     return [
+      { label: t("General.All") },
       { label: t("Application.ToBeReviewed"), value: ApplicationStatus.Open },
       { label: t("Application.Rejected"), value: ApplicationStatus.Rejected },
       { label: t("Application.ToBeIssued"), value: ApplicationStatus.Approved },

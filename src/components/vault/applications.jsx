@@ -188,42 +188,42 @@ export default function ApplicationsSection({ handleBg }) {
             />
           </SearchInputBox>
         </div>
-        <div style={{ flex: 2 }}>
+        <div style={{ flex: 3 }}>
           <SeasonSelect
             width="100%"
+            defaultValue={seasons[0]}
             options={seasons}
             closeClear={true}
             isSearchable={false}
             placeholder=""
             onChange={(value) => {
               setSelectSeason(value?.value);
-              setPage(1);
             }}
           />
         </div>
         <div style={{ flex: 3 }}>
           <SeasonSelect
             width="100%"
+            defaultValue={statusList[0]}
             options={statusList}
             closeClear={true}
             isSearchable={false}
             placeholder=""
             onChange={(value) => {
               setSelectStatus(value?.value);
-              setPage(1);
             }}
           />
         </div>
         <div style={{ flex: 3 }}>
           <SeasonSelect
             width="100%"
+            defaultValue={assets[0]}
             options={assets}
             closeClear={true}
             isSearchable={false}
             placeholder=""
             onChange={(value) => {
               setSelectAsset(value?.value);
-              setPage(1);
             }}
           />
         </div>
