@@ -219,7 +219,7 @@ export default function Assets() {
       title={t("Menus.Vault")}
       bgColor="var(--primary-color)"
       headBgColor="var(--primary-color)"
-      headColor="var(--primary-color)"
+      headColor="#fff"
     >
       <TopBox>
         <TotalAssets>
