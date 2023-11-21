@@ -4,11 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { publicList } from '../../api/publicData';
 
-const PageStyle = styled.div`
-    margin: 0 24px;
-`;
 
-const Box = styled.div``;
+const Box = styled.div`
+  margin: 0 24px;
+`
 
 const UlBox = styled.div`
   display: flex;
@@ -123,7 +122,6 @@ const TitleBox = styled.div`
   font-weight: 600;
   color: #1A1323;
   line-height: 22px;
-  margin-top: 40px;
 `
 
 const FlexLine = styled.div`
@@ -141,7 +139,7 @@ export default function Pub() {
     const { t } = useTranslation();
 
     const [pageCur, setPageCur] = useState(1);
-    const [pageSize, setPageSize] = useState(2);
+    const [pageSize, setPageSize] = useState(10);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -155,11 +153,10 @@ export default function Pub() {
         };
         setLoading(true);
         try {
-
             let result = await publicList(obj);
             const { rows, page, size } = result.data;
-
-            setList(rows);
+            const rt = rows.filter((item)=>(item.properties['悬赏状态']?.select?.name ==="招募中"))
+            setList(rt.slice(0,2));
             setPageSize(size);
             setPageCur(page);
         } catch (e) {
@@ -221,45 +218,48 @@ export default function Pub() {
     };
 
     return (
-        <PageStyle>
-            <Box>
-                <TitleBox>{t("Explore.PubTitle")}</TitleBox>
-                <UlBox>
-                    {list?.map((item, index) => (
-                        <li className="libox" key={index} onClick={() => ToGo(item.id)}>
-                            <InnerBox>
-                                <div className="imgBox">
-                                    <img src={item?.cover?.file?.url || item?.cover?.external.url} alt="" />
-                                </div>
-                                <ul className="btm">
-                                    <Tit>{item.properties['悬赏名称']?.title[0]?.plain_text}</Tit>
-                                    <FlexLine>
-                                        {item.properties['悬赏状态']?.select?.name && (
+        <>
+            {
+                !!list?.length && <Box>
+                    <TitleBox>{t("Explore.PubTitle")}</TitleBox>
+                    <UlBox>
+                        {list?.map((item, index) => (
+                            <li className="libox" key={index} onClick={() => ToGo(item.id)}>
+                                <InnerBox>
+                                    <div className="imgBox">
+                                        <img src={item?.cover?.file?.url || item?.cover?.external.url} alt="" />
+                                    </div>
+                                    <ul className="btm">
+                                        <Tit>{item.properties['悬赏名称']?.title[0]?.plain_text}</Tit>
+                                        <FlexLine>
+                                            {item.properties['悬赏状态']?.select?.name && (
+                                                <div>
+                                                    <TagBox className={returnStatus(item.properties['悬赏状态']?.select?.name)}>
+                                                        {item.properties['悬赏状态']?.select?.name}
+                                                    </TagBox>
+                                                </div>
+                                            )}
                                             <div>
-                                                <TagBox className={returnStatus(item.properties['悬赏状态']?.select?.name)}>
-                                                    {item.properties['悬赏状态']?.select?.name}
-                                                </TagBox>
+                                                {!!item.properties['悬赏类型']?.multi_select?.length &&
+                                                    (item.properties['悬赏类型']?.multi_select).map((innerItem, innerIndex) => (
+                                                        <TypeBox key={`${index}_${innerIndex}`} className={returnColor(innerItem.name)}>
+                                                            {innerItem?.name}
+                                                        </TypeBox>
+                                                    ))}
                                             </div>
-                                        )}
-                                        <div>
-                                            {!!item.properties['悬赏类型']?.multi_select?.length &&
-                                                (item.properties['悬赏类型']?.multi_select).map((innerItem, innerIndex) => (
-                                                    <TypeBox key={`${index}_${innerIndex}`} className={returnColor(innerItem.name)}>
-                                                        {innerItem?.name}
-                                                    </TypeBox>
-                                                ))}
-                                        </div>
-                                    </FlexLine>
+                                        </FlexLine>
 
-                        <li>招募截止时间：{item.properties['招募截止时间']?.rich_text[0]?.plain_text}</li>
+                                        <li>招募截止时间：{item.properties['招募截止时间']?.rich_text[0]?.plain_text}</li>
 
-                <li className="line2">{item.properties['贡献报酬']?.rich_text[0]?.plain_text}</li>
-            </ul>
-        </InnerBox>
-        </li>
-        ))}
-    </UlBox>
-    </Box>
-    </PageStyle>
+                                        <li className="line2">{item.properties['贡献报酬']?.rich_text[0]?.plain_text}</li>
+                                    </ul>
+                                </InnerBox>
+                            </li>
+                        ))}
+                    </UlBox>
+                </Box>
+            }
+
+    </>
 );
 }

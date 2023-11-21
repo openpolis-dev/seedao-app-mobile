@@ -6,7 +6,7 @@ import EventCard, { EventCardSkeleton } from "./eventCard";
 import { useNavigate } from "react-router-dom";
 
 const Box = styled.div`
-  padding: 0 24px;
+  padding: 0 24px 20px;
 `
 
 const List = styled.div`
@@ -54,19 +54,26 @@ export default function Event() {
     navigate(`/event/view?id=${id}`);
   }
   return (
-    <Box>
-      <TitleBox>{t("home.events")}</TitleBox>
-      <List>
-        {loading ? (
-          <>
-            <EventCardSkeleton />
-            <EventCardSkeleton />
-          </>
-        ) : (
-          list.map((item, index) => <EventCard event={item} key={index} handleClick={openEvent} />)
-        )}
-      </List>
-    </Box>
+      <>
+        {
+          !!list?.length && <Box>
+              <TitleBox>{t("home.events")}</TitleBox>
+              <List>
+                {loading ? (
+                    <>
+                      <EventCardSkeleton />
+                      <EventCardSkeleton />
+                    </>
+                ) : (
+                    list.map((item, index) => <EventCard event={item} key={index} handleClick={openEvent} />)
+                )}
+              </List>
+            </Box>
+        }
+
+      </>
+
+
   );
 }
 
