@@ -150,13 +150,16 @@ export default function NewCalendar(){
 
     const formatDateTime = (dStr,ruleStr) =>{
 
-        const dateFormat = dayjs(dStr).utc().format('YYYYMMDDTHHmmss');
-
-        const rruleSet = rrulestr(`DTSTART:${dateFormat}Z\n${ruleStr}`, {forceset: true})
-        const begin = dayjs().subtract(5,"month").toDate();
-        const end = dayjs().add(6,"month").toDate();
-
-        return rruleSet.between(begin, end);
+        if(ruleStr){
+            const dateFormat = dayjs(dStr).utc().format('YYYYMMDDTHHmmss');
+            const rruleSet = rrulestr(`DTSTART:${dateFormat}Z\n${ruleStr}`, {forceset: true})
+            const begin = dayjs().subtract(5,"month").toDate();
+            const end = dayjs().add(6,"month").toDate();
+            return rruleSet.between(begin, end);
+        }else{
+            const date = dayjs(dStr).utc().toDate();
+            return [date]
+        }
     }
 
     const getEvent = async() =>{
@@ -165,7 +168,6 @@ export default function NewCalendar(){
             let rt = await getCalenderEvents('','');
 
             const validTimeArr = rt.data.items.filter((item)=>item.status === "confirmed");
-
             let eventArr = [];
 
             validTimeArr.map((event)=>{
@@ -179,7 +181,6 @@ export default function NewCalendar(){
                 })
                 eventArr.push(...arr);
             })
-
             setEventList(eventArr)
         }catch (e) {
             console.log(e)
@@ -209,7 +210,6 @@ export default function NewCalendar(){
             events.push(item)
             dateMap.set(day,[...events])
         })
-
         let sortArr = Array.from(dateMap.keys()).sort()
 
         let rt =  sortArr.map((item)=>{
@@ -218,6 +218,7 @@ export default function NewCalendar(){
                 eventInfo:dateMap.get(item)
             }
         })
+
         setEventArr([...rt])
 
     }

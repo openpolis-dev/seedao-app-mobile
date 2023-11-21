@@ -112,7 +112,7 @@ export default function CalendarItem({detail}){
 
     useEffect(() => {
         formatDay()
-    }, []);
+    }, [detail]);
 
     useEffect(() => {
 
@@ -161,10 +161,11 @@ export default function CalendarItem({detail}){
 
     return <DlBox key={`calendar_${index}}`}  className={currentDay=== detail.day? "activeBox":""}>
         <dt>{switchWeek()}</dt>
+
         <dd>
             <ul>
                 {
-                    showList.map((innerItem,innerIndex)=><li key={`events_${innerIndex}}`}>
+                    showList.map((innerItem,innerIndex)=><li key={`events_${detail.day}_${innerIndex}}`}>
                         <EventBox onClick={()=>handleShow(innerIndex,innerItem.event.description,innerItem.event.location)}>
                             <span>{getTime(innerItem)} {innerItem.event.summary}</span>
                             {
@@ -177,18 +178,23 @@ export default function CalendarItem({detail}){
 
                         {
                             innerItem.status &&<EventDesc>
-                                <div className="line">
-                                    <div className="lft">
-                                        <img src={currentDay===index?TitleWhite:TitleImg} alt=""/>
+                                {
+                                    !!innerItem.event.description &&<div className="line">
+                                        <div className="lft">
+                                            <img src={currentDay===index?TitleWhite:TitleImg} alt=""/>
+                                        </div>
+                                        <div className="location"  dangerouslySetInnerHTML={{__html: innerItem.event.description}}></div>
                                     </div>
-                                    <div className="location"  dangerouslySetInnerHTML={{__html: innerItem.event.description}}></div>
-                                </div>
-                                <div className="line">
-                                    <div className="lft">
-                                        <img src={currentDay===index?LocationWhite:LocationImg} alt=""/>
+                                }
+                                {
+                                    !!innerItem.event.location &&<div className="line">
+                                        <div className="lft">
+                                            <img src={currentDay===index?LocationWhite:LocationImg} alt=""/>
+                                        </div>
+                                        <div className="location">{innerItem.event.location}</div>
                                     </div>
-                                    <div className="location">{innerItem.event.location}</div>
-                                </div>
+                                }
+
                             </EventDesc>
                         }
 
