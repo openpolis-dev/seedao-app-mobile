@@ -25,7 +25,7 @@
     "GuildDescription": "来这里寻找小伙伴吧",
     "ResourceApply": "资源申请",
     "ResourceApplyDesc": "薅羊毛专区",
-    "OfflineEvent": "线下活动",
+    "OfflineEvent": "城邦活动",
     "OfflineEventDesc": "面基面基网友面基",
     "PubTitle": "悬赏酒馆",
     "PubDesc": "悬赏酒馆悬赏酒馆悬赏酒馆"
@@ -166,7 +166,7 @@
     "Detail": "公会详情"
   },
   "Event": {
-    "ListTitle": "线下活动",
+    "ListTitle": "城邦活动",
     "DetailTitle": "活动详情"
   },
   "Pub": {
