@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Layout from "components/layout/layout";
 import ProposalCard from "components/proposal/proposalCard";
 import { getProposalsBySubCategory } from "api/proposal";
@@ -15,13 +15,14 @@ import useProposalCategory from "hooks/useProposalCategory";
 
 export default function ProposalCategory() {
   const { id } = useParams();
+  const { state } = useLocation();
   const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
   const [proposals, setProposals] = useState([]);
   const [orderType, setOrderType] = useState("new");
   const [hasMore, setHasMore] = useState(false);
-  const [category, setcategory] = useState();
+  const [category, setcategory] = useState(state);
 
   const ProposalNav = useProposalCategory(Number(id));
 

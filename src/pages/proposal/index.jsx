@@ -1,19 +1,20 @@
 import { useTranslation } from "react-i18next";
 import Layout from "../../components/layout/layout";
 import styled from "styled-components";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { getCategories } from "api/proposal";
 import MsgIcon from "assets/Imgs/msg.png";
 import store from "store";
+import { saveLoading } from "store/reducer";
+import { useSelector } from "react-redux";
 import { saveProposalCategories } from "store/reducer";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import ArrowIcon from "assets/Imgs/arrow_top.svg"
+import ArrowIcon from "assets/Imgs/arrow_top.svg";
 
 export default function Proposal() {
   const { t } = useTranslation();
-  const [list,setList] = useState([])
-  // const proposalCategories = useSelector((state) => state.proposalCategories);
+  const [list, setList] = useState([]);
+  const proposalCategories = useSelector((state) => state.proposalCategories);
 
   useEffect(() => {
     getCategoriesAPi();
@@ -21,44 +22,50 @@ export default function Proposal() {
 
   const getCategoriesAPi = async () => {
     try {
+      store.dispatch(saveLoading(true));
       const resp = await getCategories();
-      console.log(resp?.data.group.categories)
-      let arr = resp?.data.group.categories.map((item)=> ({...item,statusShow:true}))
+      console.log(resp?.data.group.categories);
+      let arr = resp?.data.group.categories.map((item) => ({ ...item, statusShow: true }));
       store.dispatch(saveProposalCategories(arr));
-      setList(arr);
     } catch (error) {
       console.error("getCategories failed", error);
     } finally {
+      store.dispatch(saveLoading(false));
     }
   };
 
-  const handleShow = (index) =>{
-
+  const handleShow = (index) => {
     let arr = JSON.parse(JSON.stringify(list));
-    console.log(arr[index])
-    arr[index].statusShow = !(arr[index].statusShow);
-    setList(arr)
-  }
+    console.log(arr[index]);
+    arr[index].statusShow = !arr[index].statusShow;
+    setList(arr);
+  };
+
+  useEffect(() => {
+    setList(proposalCategories.map((item) => ({ ...item, statusShow: true })));
+  }, [proposalCategories]);
 
   return (
-    <Layout
-      title={t("Proposal.Governance")}
-      headBgColor={`var(--background-color)`}
-      bgColor="var(--background-color)"
-    >
+    <Layout title={t("Proposal.Governance")} headBgColor={`var(--background-color)`} bgColor="var(--background-color)">
       <Content>
         {list.map((category, index) => (
           <CategoryCard key={index}>
-            <div className="cate-name" onClick={()=>handleShow(index)}>
-              <Link to={`/proposal/category/${category.category_id}`}>{category.name}</Link>
-              {
-                  !!category.children.length && <img src={ArrowIcon} alt=""  className={category.statusShow?"":"arrowRht"}/>
-              }
+            <div className="cate-name" onClick={() => handleShow(index)}>
+              <Link to={`/proposal/category/${category.category_id}`} state={category.name}>
+                {category.name}
+              </Link>
+              {!!category.children.length && (
+                <img src={ArrowIcon} alt="" className={category.statusShow ? "" : "arrowRht"} />
+              )}
             </div>
             {!!category.children.length && category.statusShow && (
               <SubCategoryCard>
                 {category.children.map((subCategory) => (
-                  <a href={`/proposal/category/${subCategory.category_id}`} key={subCategory.category_id}>
+                  <Link
+                    to={`/proposal/category/${subCategory.category_id}`}
+                    key={subCategory.category_id}
+                    state={subCategory.name}
+                  >
                     <SubCategoryItem>
                       <ImgBox>
                         <img src={MsgIcon} alt="" width="24px" height="24px" />
@@ -73,7 +80,7 @@ export default function Proposal() {
                         </div>
                       </div>
                     </SubCategoryItem>
-                  </a>
+                  </Link>
                 ))}
               </SubCategoryCard>
             )}
@@ -138,7 +145,7 @@ const CategoryCard = styled.div`
     display: flex;
     justify-content: space-between;
   }
-  .arrowRht{
+  .arrowRht {
     transform: rotate(180deg);
   }
 `;
