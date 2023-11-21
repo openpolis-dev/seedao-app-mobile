@@ -11,7 +11,7 @@ import AppConfig from "../AppConfig";
 
 const Box = styled.div`
   width: 100%;
-  height: 100vh;
+  height: var(--app-height);
   box-sizing: border-box;
 `;
 
