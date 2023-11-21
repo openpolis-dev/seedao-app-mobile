@@ -38,6 +38,7 @@ const mainSlice = createSlice({
 });
 
 export const {
+    clearLogin,
     saveAccount,
     saveLoading,
     // saveContract,
