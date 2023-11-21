@@ -166,11 +166,11 @@
     "Detail": "公会详情"
   },
   "Event": {
-    "ListTitle": "所有活动",
+    "ListTitle": "线下活动",
     "DetailTitle": "活动详情"
   },
   "Pub": {
-    "ListTitle": "酒馆列表",
+    "ListTitle": "悬赏酒馆",
     "DetailTitle": "酒馆详情"
   },
   "Vault": {

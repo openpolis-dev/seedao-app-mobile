@@ -166,11 +166,11 @@
     "Detail": "Guild Detail"
   },
   "Event": {
-    "ListTitle": "All Events",
+    "ListTitle": "Events",
     "DetailTitle": "Event Detail"
   },
   "Pub": {
-    "ListTitle": "酒馆列表",
+    "ListTitle": "SeeDAO Pub",
     "DetailTitle": "Pub Detail"
   },
   "Vault": {
