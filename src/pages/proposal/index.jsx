@@ -24,7 +24,8 @@ export default function Proposal() {
     try {
       store.dispatch(saveLoading(true));
       const resp = await getCategories();
-      console.log(resp?.data.group.categories);
+      resp?.data.group.categories.sort((a, b) => b.children.length - a.children.length);
+
       let arr = resp?.data.group.categories.map((item) => ({ ...item, statusShow: true }));
       store.dispatch(saveProposalCategories(arr));
     } catch (error) {
