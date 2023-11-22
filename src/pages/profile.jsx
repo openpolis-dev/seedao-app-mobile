@@ -28,7 +28,7 @@ const Box = styled.div`
 `;
 
 const LineBox = styled.div`
-  margin: 0 24px;
+  margin: 0 20px;
   background: #fff;
   border-radius: 16px;
   padding: 14px;
@@ -165,7 +165,7 @@ const NftBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 24px;
+    padding: 0 20px;
     span{
       font-size: 16px;
       font-family: Poppins-SemiBold, Poppins;
