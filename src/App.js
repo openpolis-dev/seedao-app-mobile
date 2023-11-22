@@ -15,6 +15,8 @@ import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import InstallCheck from "components/installPWA";
 import RouterChecker from "./components/routerChecker";
+import useToast from "hooks/useToast";
+import { useEffect } from "react";
 
 
 const chains = [mainnet]
@@ -28,9 +30,13 @@ const wagmiConfig = createConfig({
 })
 const ethereumClient = new EthereumClient(wagmiConfig, chains);
 
-
-
 function App() {
+    const { Toast, showToast } = useToast();
+
+    useEffect(() => {
+        showToast(`load ${new Date().getTime() - window.START_TIME}ms`);
+    }, [])
+
   return (
     <>
         <WagmiConfig config={wagmiConfig}>
@@ -55,7 +61,8 @@ function App() {
                        explorerExcludedWalletIds="ALL"
             />
         </WagmiConfig>
-        <InstallCheck />
+          <InstallCheck />
+          {Toast}
     </>
   );
 }
