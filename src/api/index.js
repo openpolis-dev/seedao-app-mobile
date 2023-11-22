@@ -33,7 +33,12 @@ instance.interceptors.request.use(function (config) {
   if (!checkTokenValid(tokenstr?.token, tokenstr?.token_exp)) {
     clearStorage();
     store.dispatch(clearLogin());
-    window.location.replace(`${window.location.origin}/login`);
+    try {
+      const e = new Event("TOKEN_EXPIRED");
+      window.dispatchEvent(e);
+    } catch (error) {
+      console.error("dispatch event failed", error);
+    }
     return Promise.reject();
   }
 

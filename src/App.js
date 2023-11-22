@@ -19,6 +19,7 @@ import InstallCheck from "components/installPWA";
 import RouterChecker from "./components/routerChecker";
 import useToast from "hooks/useToast";
 import { useEffect } from "react";
+import EventHandler from "components/eventHandler";
 
 
 const chains = [mainnet]
@@ -48,6 +49,7 @@ function App() {
                         <RouterLink />
                         <RouterChecker />
                     </Router>
+                    <EventHandler />
                 </PersistGate>
             </Provider>
             <GlobalStyle />
@@ -61,7 +63,7 @@ function App() {
                            // '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0'
                        ]}
                        explorerExcludedWalletIds="ALL"
-            />
+              />
         </WagmiConfig>
           <InstallCheck />
           {Toast}
