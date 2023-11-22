@@ -1,35 +1,61 @@
 import React from "react";
+import { lazy } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import Home from "../pages/home";
-import Login from "../pages/login";
-import Project from "pages/project";
-import ProjectInfoRoot from "pages/project/info";
 
-import Guild from "pages/guild";
-import GuildInfoRoot from "pages/guild/info";
 
-import Proposal from "../pages/proposal";
-import ProposalCategory from "pages/proposal/category";
-import ProposalThread from "pages/proposal/thread";
+const Home = lazy(() => import("../pages/home"));
+const Login = lazy(() => import("../pages/login"));
+const Project = lazy(() => import("pages/project"));
+const ProjectInfoRoot = lazy(() => import("pages/project/info"));
+const Guild = lazy(() => import("pages/guild"));
+const GuildInfoRoot = lazy(() => import("pages/guild/info"));
+const Proposal = lazy(() => import("../pages/proposal"));
+const ProposalCategory = lazy(() => import("pages/proposal/category"));
+const ProposalThread = lazy(() => import("pages/proposal/thread"));
+const Setting = lazy(() => import("../pages/setting"));
+const Assets = lazy(() => import("../pages/assets"));
+const Profile = lazy(() => import("../pages/profile"));
+const Calendar = lazy(() => import("../pages/calendar"));
+const ProfileEdit = lazy(() => import("../pages/profileEdit"));
+const Explore = lazy(() => import("../pages/explore"));
+const Governance = lazy(() => import("pages/governance"));
+const Pub = lazy(() => import("../pages/Pub"));
+const PubDetail = lazy(() => import("../pages/PubDetail"));
+const PubList = lazy(() => import("../pages/PubList"));
+const EventList = lazy(() => import("pages/event/list"));
+const EventInfoPage = lazy(() => import("pages/event/detail"));
+const RankingPage = lazy(() => import("pages/ranking"));
 
-import My from "../pages/my";
-import Board from "../pages/board";
-import Setting from "../pages/setting";
-import Assets from "../pages/assets";
-import Profile from "../pages/profile";
-import Vault from "../pages/vault";
-import Privacy from "../pages/privacy";
-import Calendar from "../pages/calendar";
-import ProfileEdit from "../pages/profileEdit";
-import Explore from "../pages/explore";
-import Governance from "pages/governance";
+// import Home from "../pages/home";
+// import Login from "../pages/login";
+// import Project from "pages/project";
+// import ProjectInfoRoot from "pages/project/info";
 
-import Pub from "../pages/Pub";
-import PubDetail from "../pages/PubDetail";
-import PubList from "../pages/PubList";
-import EventList from "pages/event/list";
-import EventInfoPage from "pages/event/detail";
-import RankingPage from "pages/ranking";
+// import Guild from "pages/guild";
+// import GuildInfoRoot from "pages/guild/info";
+
+// import Proposal from "../pages/proposal";
+// import ProposalCategory from "pages/proposal/category";
+// import ProposalThread from "pages/proposal/thread";
+
+// import My from "../pages/my";
+// import Board from "../pages/board";
+// import Setting from "../pages/setting";
+// import Assets from "../pages/assets";
+// import Profile from "../pages/profile";
+// import Vault from "../pages/vault";
+// import Privacy from "../pages/privacy";
+// import Calendar from "../pages/calendar";
+// import ProfileEdit from "../pages/profileEdit";
+// import Explore from "../pages/explore";
+// import Governance from "pages/governance";
+
+// import Pub from "../pages/Pub";
+// import PubDetail from "../pages/PubDetail";
+// import PubList from "../pages/PubList";
+// import EventList from "pages/event/list";
+// import EventInfoPage from "pages/event/detail";
+// import RankingPage from "pages/ranking";
 
 // import MessagePage from "./message";
 // import EventHandler from "./components/eventHandler";

@@ -6,6 +6,8 @@ import store,{persistor} from "./store";
 import "./locales"
 import 'md-editor-rt/lib/style.css';
 import "./assets/styles/quill.css";
+import { Suspense } from "react";
+import Loading from "./components/loading";
 
 import GlobalStyle from "./utils/GlobalStyle";
 
@@ -38,7 +40,7 @@ function App() {
     }, [])
 
   return (
-    <>
+    <Suspense fallback={<Loading />}>
         <WagmiConfig config={wagmiConfig}>
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor} >
@@ -63,7 +65,7 @@ function App() {
         </WagmiConfig>
           <InstallCheck />
           {Toast}
-    </>
+    </Suspense>
   );
 }
 
