@@ -29,7 +29,6 @@ const BannerLi = styled.div`
   padding: 24px 0;
 `;
 const TitleBox = styled.div`
-  text-align: center;
   font-size: 15px;
   font-family: Poppins-SemiBold;
   font-weight: 600;
@@ -89,7 +88,6 @@ export default function Adv() {
             <BannerLi url={item.img} onClick={() => openLink(item.link)}>
               <TitleBox>
                 {item.name}
-                {item.desc}
               </TitleBox>
               <Bfst>
                 <DescBox>{item.desc}</DescBox>
