@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { isAndroid, isIOS, isMobile } from "utils/userAgent";
-import AppIcon from "assets/images/app.png";
-import ShareIcon from "assets/images/install/share.svg";
-import AddIcon from "assets/images/install/add.svg";
+import AppIcon from "assets/Imgs/install/app.png";
+import ShareIcon from "assets/Imgs/install/share.svg";
+import AddIcon from "assets/Imgs/install/add.svg";
 import { useTranslation } from "react-i18next";
 import {X} from "react-bootstrap-icons";
 
