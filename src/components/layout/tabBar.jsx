@@ -45,6 +45,11 @@ const ItemBox = styled.div`
     width: 50%;
     color: #9a9a9a;
     display: inline-block;
+    border: 0;
+    user-select: none;
+    &:hover,&:active,&:focus{
+      background: transparent;
+    }
     &.active {
       color: var(--font-color);
       .nor {
@@ -54,12 +59,19 @@ const ItemBox = styled.div`
         display: block;
       }
     }
+    &:focus-visible{
+      outline: none!important;
+
+    }
+ 
   }
   dl {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    
+
   }
   dt {
     img {

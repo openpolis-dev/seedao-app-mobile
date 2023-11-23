@@ -90,7 +90,10 @@ const FlexBox = styled.div`
     font-size: 16px;
     font-family: Poppins-SemiBold;
     font-weight: 600;
-
+  }
+  .sns{
+    color: #9A9A9A;
+    font-size: 13px;
   }
 `
 
@@ -501,8 +504,9 @@ export default function Profile() {
             </AvatarBox>
             <div className="rhtTop">
               <div className="name">{detail?.nickname}</div>
-              {/*<div>{sns}</div>*/}
+              <div className="sns">{sns}</div>
               <FlexLine>
+
                 <div>{publicJs.AddressToShow(detail?.wallet)}</div>
                 {/*<RhtBox>*/}
                 {/*  <CopyBox text={detail?.wallet} />*/}
