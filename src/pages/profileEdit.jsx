@@ -12,6 +12,7 @@ import { useDisconnect } from "wagmi";
 import { useNavigate } from "react-router-dom";
 import useToast from "hooks/useToast";
 import CloseImg from "../assets/Imgs/close-circle.svg";
+import UploadImg from "../assets/Imgs/upload.svg";
 
 const InputGroup = styled.div``;
 
@@ -270,11 +271,11 @@ export default function ProfileEdit() {
               <div className="title">{t("My.Avatar")}</div>
               <AvatarBox>
                 <UploadBox htmlFor="fileUpload" onChange={(e) => updateLogo(e)}>
+                  <img src={UploadImg} alt="" className="rhtBtm"/>
                   {!avatar && (
                     <div>
                       <input id="fileUpload" type="file" hidden accept=".jpg, .jpeg, .png" />
-                      {/*{<Upload />}*/}
-                      <div>upload</div>
+
                     </div>
                   )}
                   {!!avatar && (
@@ -347,10 +348,10 @@ const UploadBox = styled.label`
   justify-content: center;
   border-radius: 50%;
   margin-top: 20px;
-  font-family: "Inter-Regular";
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
+  position: relative;
   .iconRht {
     margin-right: 10px;
   }
@@ -359,6 +360,14 @@ const UploadBox = styled.label`
     height: 100%;
     object-fit: cover;
     object-position: center;
+  }
+  .rhtBtm{
+    position: absolute;
+    z-index: 9999;
+    width: 18px;
+    height: 18px;
+    right: 0;
+    bottom: -3px;
   }
 `;
 
