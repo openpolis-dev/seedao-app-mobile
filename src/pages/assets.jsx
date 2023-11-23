@@ -305,8 +305,7 @@ const WalletItemLeft = styled.div`
   font-size: 12px;
   font-weight: 400;
   .name {
-    min-width: 65px;
-    margin-right: 20px;
+    min-width: 130px;
     font-weight: 600;
     color: #eee5ff;
     flex: 3;

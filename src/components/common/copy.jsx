@@ -9,9 +9,18 @@ const CopyBox = ({ children, text, dir, ...props }) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = async(text) => {
-    console.log("====text",text)
     try {
-       await navigator.clipboard.writeText(text);
+       // await navigator.clipboard.writeText(text);
+
+      const input = document.createElement('input')
+      document.body.appendChild(input)
+      input.setAttribute('value', text)
+      input.select()
+      if (document.execCommand('copy')) {
+        document.execCommand('copy')
+      }
+      document.body.removeChild(input)
+
 
       setIsCopied(true);
       setTimeout(() => {
@@ -19,6 +28,7 @@ const CopyBox = ({ children, text, dir, ...props }) => {
       }, 1000);
 
     } catch (error) {
+
       console.error('Failed to copy text: ', error);
     }
   };
