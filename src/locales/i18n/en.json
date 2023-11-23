@@ -218,7 +218,8 @@
     "AllAssets": "All Asset Type"
   },
   "Calendar": {
-    "Calendar": "Calendar"
+    "Calendar": "Calendar",
+    "more": "剩余{{item}}项"
   },
   "Msg": {
     "SnsNotFound": "SNS Not Found",

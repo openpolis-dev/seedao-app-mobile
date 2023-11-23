@@ -102,7 +102,7 @@ const DlBox = styled.div`
 `
 
 export default function CalendarItem({detail}){
-    const { i18n } = useTranslation();
+    const { t,i18n } = useTranslation();
     const [index] = useState(0)
     const [currentDay, setCurrentDay] = useState();
     const [list, setList] = useState([]);
@@ -203,7 +203,9 @@ export default function CalendarItem({detail}){
                 {
                    more &&<li className="moreLi" onClick={()=>handleMore()}>
                         <div>
-                            剩余 {list.length - SliceNum } 项
+                            {
+                                t("Calendar.more", { item: list.length - SliceNum  })
+                            }
                         </div>
                         <div>
                             <img src={currentDay===index?MoreWhite:MoreImg} alt=""/>

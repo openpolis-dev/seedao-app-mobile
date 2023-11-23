@@ -218,7 +218,8 @@
     "AllAssets": "所有资产类型"
   },
   "Calendar": {
-    "Calendar": "日历"
+    "Calendar": "日历",
+    "more": "剩余{{item}}项"
   },
   "Msg": {
     "SnsNotFound": "无效的SNS",
