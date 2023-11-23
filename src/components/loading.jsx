@@ -10,7 +10,7 @@ const Box = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
 `
