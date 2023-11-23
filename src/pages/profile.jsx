@@ -123,7 +123,7 @@ const ProgressBox = styled.div`
 const ProgressOuter = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  //margin-bottom: 20px;
   background: #fff;
   border-radius: 16px;
   padding:14px;
