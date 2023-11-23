@@ -65,12 +65,12 @@ const Tag = styled.span`
 
 const TagStyle = styled.span`
   display: inline-block;
-  line-height: 18px;
+  line-height: 20px;
   background: ${({ color }) => color || "#ccc"};
   border-radius: 6px;
   padding-inline: 8px;
   min-width: 46px;
-  font-size: 10px;
+  font-size: 12px;
   color: #fff;
   text-align: center;
 `;
