@@ -348,7 +348,7 @@ export default function Profile() {
       setRoles(rt.data.roles);
       let mapArr = new Map();
 
-      rt.data.social_accounts.map((item) => {
+      rt.data.social_accounts?.map((item) => {
         mapArr.set(item.network, item.identity);
       });
       setTwitter(mapArr.get('twitter') ?? '');
