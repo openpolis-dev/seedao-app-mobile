@@ -111,7 +111,8 @@ const User = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 24px;
+  padding: 17px 20px;
+  padding-top: 0;
   border-bottom: 1px solid rgba(217, 217, 217, 0.5);
   .left {
     display: flex;
