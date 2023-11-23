@@ -4,6 +4,10 @@ import { useTranslation } from "react-i18next";
 import ApplicationStatusTag from "components/applicationStatusTag";
 import { formatDate } from "utils/time";
 import Avatar from "components/common/avatar";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import useQuerySNS from "hooks/useQuerySNS";
+import publicJs from "utils/publicJs";
 
 const UserComp = ({ avatar, sns }) => {
   return (
@@ -14,11 +18,40 @@ const UserComp = ({ avatar, sns }) => {
   );
 };
 
-export default function ApplicationDetailPage({ data, formatSNS, handleClose }) {
+export default function ApplicationDetailPage() {
   const { t } = useTranslation();
+  const { state: data } = useLocation();
+
+  const [snsMap, setSnsMap] = useState(new Map());
+
+  const { getMultiSNS } = useQuerySNS();
+
+  useEffect(() => {
+    const handleSNS = async () => {
+      try {
+        const _wallets = new Set();
+        _wallets.add(data.target_user_wallet);
+        data.applicant_wallet && _wallets.add(data.applicant_wallet);
+        data.reviewer_wallet && _wallets.add(data.reviewer_wallet);
+        const sns_map = await getMultiSNS(Array.from(_wallets));
+        setSnsMap(sns_map);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    handleSNS();
+  }, [data]);
+
+  
+
+  const formatSNS = (wallet) => {
+    const sns = snsMap[wallet] || wallet;
+    return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns, 6);
+  };
+
   return (
     <LayoutOuter>
-      <Layout title={t("Application.SendDetail")} handleBack={handleClose}>
+      <Layout title={t("Application.SendDetail")}>
         <AssetBox>{data.asset_display}</AssetBox>
         <SectionBlock>
           <RowItem>

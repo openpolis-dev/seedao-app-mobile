@@ -10,8 +10,7 @@ import useSeasons from "hooks/useSeasons";
 import SeeSelect from "components/common/select";
 import useApplicationStatus from "hooks/useApplicationStatus";
 import useAssets from "hooks/useAssets";
-import { Link } from "react-router-dom";
-import ApplicationDetailPage from "./applicationDetail";
+import { Link, useNavigate } from "react-router-dom";
 import { ethers } from "ethers";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -27,8 +26,8 @@ import Avatar from "components/common/avatar";
 
 export default function ApplicationsSection({ handleBg }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
-  const [showDetail, setShowDetail] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [total, setTotal] = useState(0);
@@ -116,11 +115,7 @@ export default function ApplicationsSection({ handleBg }) {
     getRecords(true);
   }, [selectAsset, selectSeason, selectStatus, searchVal]);
   const openDetail = (item) => {
-    setShowDetail(item);
-  };
-  const closeDetail = () => {
-    setShowDetail(undefined);
-    handleBg && handleBg();
+    navigate("/assets/application", { state: item });
   };
   const handleSearch = async () => {
     if (keyword.endsWith(".seedao")) {
@@ -167,7 +162,6 @@ export default function ApplicationsSection({ handleBg }) {
   );
   return (
     <ApplicantsSectionBlock>
-      {showDetail && <ApplicationDetailPage data={showDetail} handleClose={closeDetail} formatSNS={formatSNS} />}
       <SectionTitle>
         <div>{t("Vault.SendRecordTitle")}</div>
         <SectionTitleRight to="/ranking">

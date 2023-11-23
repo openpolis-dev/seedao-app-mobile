@@ -1,17 +1,17 @@
-import Layout from "../components/layout/layout";
+import Layout from "../../components/layout/layout";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useState } from "react";
-import store from "../store";
-import { saveLoading } from "../store/reducer";
-import AppConfig from "../AppConfig";
+import store from "../../store";
+import { saveLoading } from "../../store/reducer";
+import AppConfig from "../../AppConfig";
 import axios from "axios";
-import { getTreasury } from "../api/treasury";
+import { getTreasury } from "../../api/treasury";
 import { ethers } from "ethers";
 
-import {formatNumber, getShortDisplay} from "../utils/number";
-import PublicJs from "../utils/publicJs";
-import CopyBox from "../components/common/copy";
+import {formatNumber, getShortDisplay} from "../../utils/number";
+import PublicJs from "../../utils/publicJs";
+import CopyBox from "../../components/common/copy";
 import VAULTS from "constant/vault";
 import CardIcon1 from "assets/Imgs/vault/cardIcon1.svg";
 import CardIcon2 from "assets/Imgs/vault/cardIcon2.svg";

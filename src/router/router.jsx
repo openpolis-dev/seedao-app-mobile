@@ -13,7 +13,8 @@ const Proposal = lazy(() => import("../pages/proposal"));
 const ProposalCategory = lazy(() => import("pages/proposal/category"));
 const ProposalThread = lazy(() => import("pages/proposal/thread"));
 const Setting = lazy(() => import("../pages/setting"));
-const Assets = lazy(() => import("../pages/assets"));
+const Assets = lazy(() => import("../pages/vault/assets"));
+const AssetsApplication = lazy(() => import("../pages/vault/application"));
 const Profile = lazy(() => import("../pages/profile"));
 const Calendar = lazy(() => import("../pages/calendar"));
 const ProfileEdit = lazy(() => import("../pages/profileEdit"));
@@ -75,6 +76,7 @@ function RouterLink() {
         <Route path="/proposal/category/:id" element={<ProposalCategory />} />
         <Route path="/proposal/thread/:id" element={<ProposalThread />} />
         <Route path="/assets" element={<Assets />} />
+        <Route path="/assets/application" element={<AssetsApplication />} />
         <Route path="/user/edit" element={<ProfileEdit />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/governance" element={<Governance />} />
@@ -89,7 +91,7 @@ function RouterLink() {
         <Route path="/calendar" element={<Calendar />} />
 
         {/* <Route path="/my" element={<My />} /> */}
-         <Route path="/setting" element={<Setting />} />
+        <Route path="/setting" element={<Setting />} />
         {/* <Route path="/board" element={<Board />} /> */}
         <Route path="/user/profile" element={<Profile />} />
         {/* <Route path="/user/vault" element={<Vault />} /> */}
