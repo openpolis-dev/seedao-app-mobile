@@ -50,7 +50,7 @@ const TitleBox = styled.ul`
 `
 
 const CList = styled.div`
-  padding: 50px 24px 20px;
+  padding: 50px 20px 20px;
   
 `
 
