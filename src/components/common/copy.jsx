@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+// import { CopyToClipboard } from "react-copy-to-clipboard";
 import styled, { css } from "styled-components";
 import CopyIcon from "assets/Imgs/copy.svg";
 
@@ -8,22 +8,28 @@ const CopyBox = ({ children, text, dir, ...props }) => {
   const { t } = useTranslation();
   const [isCopied, setIsCopied] = useState(false);
 
-  const handleCopy = (text, result) => {
-    if (result) {
+  const handleCopy = async(text) => {
+    console.log("====text",text)
+    try {
+       await navigator.clipboard.writeText(text);
+
       setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);
       }, 1000);
+
+    } catch (error) {
+      console.error('Failed to copy text: ', error);
     }
   };
 
   return (
     <>
-      <CopyToClipboard text={text} onCopy={handleCopy}>
+      <div onClick={()=>handleCopy(text)}>
         <CopyContent className="copy-content" dir={dir || "right"} {...props}>
           {children || <img src={CopyIcon} className="copy-icon" alt="" />}
         </CopyContent>
-      </CopyToClipboard>
+      </div>
       {isCopied && (
         <TipsBox>
           <InnerBox>{t("General.Copied")}</InnerBox>

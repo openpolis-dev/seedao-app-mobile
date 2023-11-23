@@ -35,10 +35,17 @@ const GlobalStyle = createGlobalStyle`
     width: 0;
     height: 0;
   }
+    &:focus{
+      outline: none;
+    }
+    &:focus-visible{
+      outline: none!important;
+    }
   }
   a{
     text-decoration: none;
     color: #000;
+  
   }
   .btn-primary{
     color:#fff;

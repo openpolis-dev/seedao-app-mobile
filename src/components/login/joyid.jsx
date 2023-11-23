@@ -45,7 +45,7 @@ export default function Joyid(){
                     return true;
                 }
             } catch (error) {
-                console.error("callback:", error);
+                console.log("callback:", error);
                 localStorage.removeItem("joyid-status")
             }
         };
@@ -57,7 +57,7 @@ export default function Joyid(){
                 setSig(state.signature);
                 return true;
             } catch (error) {
-                console.error("callback sign:", error);
+                console.log("callback sign:", error);
                 localStorage.removeItem("joyid-status")
             }
         };
