@@ -114,8 +114,10 @@ const CardFooter = styled.div`
       width: 10vw;
       overflow: hidden;
       text-overflow: ellipsis;
+      height: 24px;
+      line-height: 24px;
     }
-    .nameAll{
+    .nameAll {
       margin-left: 4px;
       overflow: hidden;
       text-overflow: ellipsis;
