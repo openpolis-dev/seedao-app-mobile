@@ -24,6 +24,7 @@ export default function UserModal({ user, handleClose }) {
     }
   }
 
+
   return (
     <UserModalModal>
       <UserModalMask onClick={handleClose} />

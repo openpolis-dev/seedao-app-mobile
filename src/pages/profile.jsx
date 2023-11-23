@@ -1,10 +1,10 @@
 import Layout from "../components/layout/layout";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import store from "../store";
 import { useSelector } from "react-redux";
-import { saveLoading, saveUserToken } from "../store/reducer";
+import {saveAccount, saveLoading, saveUserToken, saveWalletType} from "../store/reducer";
 import { getUser } from "../api/user";
 import Avatar from "components/common/avatar";
 import useParseSNS from "hooks/useParseSNS";
@@ -17,6 +17,7 @@ import EmailImg from "../assets/Imgs/social/email.svg";
 import Twitter from "../assets/Imgs/social/twitter.svg";
 import MirrorImg from "../assets/Imgs/social/mirror.svg";
 import GithubImg from "../assets/Imgs/social/github.svg"
+import {useDisconnect} from "wagmi";
 
 const Box = styled.div`
   padding: 20px;
@@ -229,12 +230,23 @@ const OuterBox = styled.div`
   border-radius: 0;
   min-height: 100vh;
 `;
-
-const TopFlex = styled.div`
+const ButtonBox = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-`
+  justify-content: center;
+  margin-top: 20px;
+  button {
+    width: 89%;
+    height: 44px;
+    background: #eeeef4;
+    border-radius: 16px;
+    border: 0;
+    font-size: 14px;
+    color: #000;
+  }
+`;
+
 
 const TagBox = styled.ul`
   font-size: 10px;
@@ -297,6 +309,8 @@ export default function Profile() {
 
   const [detail, setDetail] = useState();
   const sns = useParseSNS(detail?.wallet);
+  const { disconnect } = useDisconnect();
+  const walletType = useSelector((state) => state.walletType);
 
   const [roles, setRoles] = useState([]);
   const [discord, setDiscord] = useState('');
@@ -487,6 +501,17 @@ export default function Profile() {
     return str;
   };
 
+  const logout = () => {
+    store.dispatch(saveAccount(null));
+    store.dispatch(saveUserToken(null));
+    store.dispatch(saveWalletType(null));
+    if (walletType === "metamask") {
+      disconnect();
+    }
+    // store.dispatch(saveLogout(true));
+    navigate("/login");
+  };
+
   return (
     <OuterBox>
       <Layout
@@ -623,6 +648,9 @@ export default function Profile() {
             <dd>{github}</dd>
           </dl>
         </LineBox>
+        <ButtonBox>
+          <button onClick={() => logout()}>{t("My.logout")}</button>
+        </ButtonBox>
       </Layout>
     </OuterBox>
   );

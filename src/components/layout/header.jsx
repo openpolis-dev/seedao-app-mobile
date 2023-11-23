@@ -45,6 +45,7 @@ const OperateBox = styled.div`
   position: absolute;
   right: 20px;
   top: env(safe-area-inset-top);
+  padding-top: 10px;
 `;
 export default function Header({ title, bgColor, headColor, rightOperation, handleBack }) {
   const navigate = useNavigate();

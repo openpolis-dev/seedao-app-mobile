@@ -15,13 +15,6 @@ import useToast from "hooks/useToast";
 
 const InputGroup = styled.div``;
 
-
-const HeadBox = styled.div`
-  display: flex;
-  gap: 30px;
-  align-items: center;
-  margin-bottom: 40px;
-`;
 const CardBox = styled.div`
   min-height: 100%;
   padding: 0 20px;
@@ -130,7 +123,7 @@ export default function ProfileEdit() {
   const [bio, setBio] = useState("");
   const [github, setGithub] = useState("");
   const [wallet, setWallet] = useState("");
-  const { disconnect } = useDisconnect();
+
 
   const [height, setHeight] = useState("1em");
 
@@ -144,22 +137,12 @@ export default function ProfileEdit() {
     setBio(value);
   };
 
-  const userToken = useSelector((state) => state.userToken);
-  const walletType = useSelector((state) => state.walletType);
+
   const navigate = useNavigate();
 
   const { Toast, toast } = useToast();
 
-  const logout = () => {
-    store.dispatch(saveAccount(null));
-    store.dispatch(saveUserToken(null));
-    store.dispatch(saveWalletType(null));
-    if (walletType === "metamask") {
-      disconnect();
-    }
-    // store.dispatch(saveLogout(true));
-    navigate("/login");
-  };
+
 
   useEffect(() => {
     getMyDetail();
@@ -367,9 +350,6 @@ export default function ProfileEdit() {
           </UlBox>
         </MidBox>
       </CardBox>
-      <ButtonBox>
-        <button onClick={() => logout()}>{t("My.logout")}</button>
-      </ButtonBox>
       {Toast}
     </Layout>
   );
@@ -431,15 +411,5 @@ const ImgBox = styled.div`
     .del {
       display: flex;
     }
-  }
-`;
-
-const InfoBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  .wallet {
-    display: flex;
-    gap: 10px;
   }
 `;
