@@ -370,7 +370,7 @@ export default function Profile() {
       setWechat(mapArr.get('wechat') ?? '');
       setMirror(mapArr.get('mirror') ?? '');
       setGithub(mapArr.get('github') ?? '');
-      setSeed(rt.data.seed);
+      setSeed(rt.data.seed || []);
 
       let sbtArr = rt.data.sbt;
       sbtArr?.map( async (seedItem)=>{
