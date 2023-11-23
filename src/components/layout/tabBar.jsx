@@ -99,7 +99,7 @@ export default function TabBar() {
   return (
     <Box>
       <ItemBox>
-        <NavLink className={active_tabs[0]} to="/governance">
+        <NavLink className={`${active_tabs[0]} rm-shadow`} to="/governance">
           <dl>
             <dt>
               <img src={GoverImg} className="nor" alt="" />
@@ -108,7 +108,7 @@ export default function TabBar() {
             <dd>{t("Menus.Governance")}</dd>
           </dl>
         </NavLink>
-        <NavLink className={active_tabs[1]} to="/home">
+        <NavLink className={`${active_tabs[1]} rm-shadow`} to="/home">
           <dl>
             <dt>
               <img src={HomeImg} className="nor" alt="" />
@@ -118,7 +118,7 @@ export default function TabBar() {
           </dl>
         </NavLink>
 
-        <NavLink className={active_tabs[2]} to="/explore">
+        <NavLink className={`${active_tabs[2]} rm-shadow`} to="/explore">
           <dl>
             <dt>
               <img src={ExploreImg} className="nor" alt="" />

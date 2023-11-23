@@ -51,6 +51,9 @@ const GlobalStyle = createGlobalStyle`
       color: rgba(143, 155, 179, 0.48);
     }
   }
+  .rm-shadow{
+    -webkit-tap-highlight-color:transparent;
+  }
 `;
 
 export default GlobalStyle;
