@@ -204,7 +204,7 @@ export default function RankingPage() {
         {displayList.map((item, idx) => (
           <li key={item.wallet}>
             <NumberBox>{getRankNum(idx)}</NumberBox>
-            <ItemBox style={{ flex: 3, width: 0 }}>{formatSNS(item.wallet)}</ItemBox>
+            <ItemBox style={{ flex: 3, width: 0, marginLeft: "4px" }}>{formatSNS(item.wallet)}</ItemBox>
             <ItemBox style={{ flex: 2, textAlign: "right" }}>
               {formatNumber(Number(item.seasons_credit?.find((s) => s.season_name === currentSeason)?.total || 0))}
             </ItemBox>
