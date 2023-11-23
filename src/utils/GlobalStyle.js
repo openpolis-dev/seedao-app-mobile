@@ -58,6 +58,11 @@ const GlobalStyle = createGlobalStyle`
       color: rgba(143, 155, 179, 0.48);
     }
   }
+
+  .md-editor-preview-wrapper {
+    padding: 0;
+  }
+
   * {
     -webkit-tap-highlight-color: transparent;
   }
