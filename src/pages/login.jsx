@@ -19,9 +19,10 @@ const LogoBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 100px;
+  padding-top: 11vh;
   img {
-    width: 70%;
+    //width: 70%;
+    height: 29vh;
     margin: 0 auto;
   }
 `;
@@ -37,7 +38,7 @@ const BtnList = styled.ul`
     margin-bottom: 20px;
     background: #f7f7f9;
     border-radius: 16px;
-    padding: 10px;
+    padding: 1vh 10px;
 
     dl {
       display: flex;
@@ -56,11 +57,14 @@ const BtnList = styled.ul`
       width: 56px;
       height: 56px;
       img {
-        width: 56px;
+        //width: 56px;
+        height: 6vh;
       }
       &.metamask {
         img {
-          width: 42px;
+          height: 4vh;
+          //width: 42px;
+          
         }
       }
     }
@@ -77,52 +81,12 @@ const BtnList = styled.ul`
   }
 `;
 
-const FlexBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-  min-height: 40px;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-`;
-
-const LanguageBox = styled.div`
-  font-size: 14px;
-  span{
-    margin-right: 5px;
-  }
-`
 
 export default function Login() {
   const { t,i18n } = useTranslation();
-  const[show,setShow]= useState(false);
-
-
-
-  const returnLan = () =>{
-    const arr = AppConfig.Lan.filter(item=>item.value === i18n.language )
-    return arr[0].name
-  };
-  const showBtm = () =>{
-    setShow(true)
-  }
-  const handleClose = () =>{
-    setShow(false)
-  }
-
 
   return (
     <Layout noHeader noTab>
-      {/*<SwitchLan show={show} handleClose={handleClose} />*/}
-      {/*<FlexBox>*/}
-      {/*  <LanguageBox onClick={()=>showBtm()}>*/}
-      {/*    <span>{returnLan()}</span>*/}
-      {/*  </LanguageBox>*/}
-      {/*</FlexBox>*/}
-
       <Box>
         <LogoBox>
           <img src={LogoImg} alt="" />
