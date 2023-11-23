@@ -127,13 +127,13 @@ export default function ApplicationsSection({ handleBg }) {
       // sns
       store.dispatch(saveLoading(true));
       const w = await sns.resolve(keyword);
-      if (w) {
+      if (w && w !== ethers.constants.AddressZero) {
         setSearchVal(w?.toLocaleLowerCase());
       } else {
         showToast(t("Msg.SnsNotFound"));
       }
       store.dispatch(saveLoading(false));
-    } else if (!ethers.utils.isAddress(keyword)) {
+    } else if (ethers.utils.isAddress(keyword)) {
       // address
       setSearchVal(keyword?.toLocaleLowerCase());
     } else {
