@@ -114,7 +114,7 @@ export default function Assets() {
         if (res.status === "fulfilled") {
           const _v = Number(res.value.data?.fiatTotal || 0);
           vaults_map[VAULTS[index].id] = {
-            balance: _v.toFixed(2),
+            balance: formatNumber(Number(res.value.data?.fiatTotal || 0)),
           };
           _total += _v;
         }
@@ -239,7 +239,7 @@ export default function Assets() {
                   {vaultsMap[v.id]?.threshold || 0}/{vaultsMap[v.id]?.total || 0}
                 </div>
               </WalletItemLeft>
-              <WalletItemValue>${getShortDisplay(vaultsMap[v.id]?.balance || 0.0)}</WalletItemValue>
+              <WalletItemValue>${getShortDisplay(vaultsMap[v.id]?.balance || 0.0, 2)}</WalletItemValue>
             </WalletItem>
           ))}
         </WalletBox>
