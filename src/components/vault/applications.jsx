@@ -219,6 +219,10 @@ export default function ApplicationsSection({ handleBg }) {
           />
         </div>
       </FilterBox>
+
+      <BoxList>
+
+
       <InfiniteScroll scrollableTarget="inner" dataLength={list.length} next={getRecords} hasMore={hasMore}>
         <SwipeableList threshold={0.5} type={ListType.IOS}>
           {list.map((data, index) => (
@@ -245,13 +249,19 @@ export default function ApplicationsSection({ handleBg }) {
           ))}
         </SwipeableList>
       </InfiniteScroll>
+      </BoxList>
       {Toast}
     </ApplicantsSectionBlock>
   );
 }
 
+const BoxList = styled.div`
+  margin-right: -20px;
+`
+
 const ApplicantsSectionBlock = styled.section`
   min-height: 300px;
+
 `;
 const SectionTitle = styled.div`
   display: flex;
@@ -354,11 +364,14 @@ const RightBox = styled.div`
     font-size: 14px;
     line-height: 20px;
     color: #000000;
+    padding-right: 20px;
   }
   .from {
     font-size: 12px;
     line-height: 14px;
     color: #9ca1b3;
     margin-top: 5px;
+    padding-right: 20px;
+
   }
 `;
