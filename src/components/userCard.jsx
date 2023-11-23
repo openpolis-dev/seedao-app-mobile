@@ -1,9 +1,5 @@
 import React from "react";
-import CopyBox from "components/common/copy";
 import styled from "styled-components";
-import TwitterIcon from "assets/images/user/twitter.svg";
-import DiscordIcon from "assets/images/user/discord.svg";
-import EmailIcon from "assets/images/user/email.svg";
 import Avatar from "components/common/avatar";
 
 const EmptyUserCard = () => {
