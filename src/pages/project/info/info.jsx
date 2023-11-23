@@ -56,7 +56,7 @@ const DescBox = styled.div`
 
 const ContentBlock = styled.div`
   border-top: 1px solid rgba(217, 217, 217, 0.5);
-  padding-top: 30px;
+  padding-top: 20px;
   margin: 0 20px 20px;
 `;
 
@@ -68,7 +68,7 @@ const TitleAll = styled.div`
 `;
 
 const MBox = styled.div`
-  padding: 30px 24px 0;
+  padding: 20px 20px 0;
 `;
 
 export default function ProjectInfo() {
