@@ -120,7 +120,7 @@
     "Google": "Google",
     "current": "current",
     "more": "View All",
-    "levelTips": "距离升级{{level}}还需",
+    "levelTips": "距离升级到LV{{level}}还需",
     "ModifiedSuccess": "Modified Successfully",
     "ModifiedFailed": "Modified Failed",
     "IncorrectLink": "{{media}}: required the correct link",
