@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from "react";
 import styled from "styled-components";
-import { House, Person } from "react-bootstrap-icons";
 import { NavLink, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 

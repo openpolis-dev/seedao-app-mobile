@@ -5,7 +5,7 @@ import AppIcon from "assets/Imgs/install/app.png";
 import ShareIcon from "assets/Imgs/install/share.svg";
 import AddIcon from "assets/Imgs/install/add.svg";
 import { useTranslation } from "react-i18next";
-import {X} from "react-bootstrap-icons";
+import CloseImg from "../assets/Imgs/close-circle.svg";
 
 console.log("[isAndroid]:", isAndroid);
 console.log("[isiOS]:", isIOS);
@@ -99,7 +99,7 @@ export default function InstallCheck() {
               <div className="header">
                 {t("Install.IosTitle")}
                 <div className="close" onClick={()=>handleClose()}>
-                  <X />
+                  <img src={CloseImg} alt=""/>
                 </div>
               </div>
               <div className="bottom">

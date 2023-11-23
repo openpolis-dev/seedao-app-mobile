@@ -2,7 +2,6 @@ import Layout from "../components/layout/layout";
 import styled from "styled-components";
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
-import {ChevronRight} from "react-bootstrap-icons";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import store from "../store";
@@ -78,31 +77,26 @@ export default function Setting() {
                 </div>
                 <div>
                     <span>{returnLan()}</span>
-                    <ChevronRight />
                 </div>
             </Item>
             <Item onClick={()=>toGo("/privacy")}>
                 <div>{t('mobile.my.privacy')}</div>
-                <ChevronRight />
             </Item>
             <Item onClick={()=>toGo()}>
                 <div>{t('mobile.my.version')}</div>
                 <div>
                     <span>  {process.env.REACT_APP_APP_VERSION} Build {process.env.REACT_APP_BUILD_ID?.slice(0, 6)}.
                         {process.env.REACT_APP_COMMIT_RE?.slice(0, 6)}</span>
-                    <ChevronRight />
                 </div>
 
             </Item>
             {
                 !!userToken?.token &&  <Item onClick={()=>logout()}>
                     <div>{t('mobile.my.logout')}</div>
-                    <ChevronRight />
                 </Item>
             }
             <Item onClick={upgradeSW}>
                 <div>upgrade</div>
-                <ChevronRight />
             </Item>
         </Box>
     </Layout>

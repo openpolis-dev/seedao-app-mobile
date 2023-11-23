@@ -5,13 +5,13 @@ import { getUser, updateUser } from "../api/user";
 // import { useAuthContext, AppActionType } from 'providers/authProvider';
 import { useTranslation } from "react-i18next";
 // import useToast, { ToastType } from 'hooks/useToast';
-import { Upload, X } from "react-bootstrap-icons";
 import { useSelector } from "react-redux";
 import store from "../store";
 import { saveAccount, saveLoading, saveUserToken, saveWalletType } from "../store/reducer";
 import { useDisconnect } from "wagmi";
 import { useNavigate } from "react-router-dom";
 import useToast from "hooks/useToast";
+import CloseImg from "../assets/Imgs/close-circle.svg";
 
 const InputGroup = styled.div``;
 
@@ -79,24 +79,6 @@ const MidBox = styled.div`
   gap: 60px;
 `;
 
-const ButtonBox = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  bottom: 50px;
-  left: 0;
-  button {
-    width: 89%;
-    height: 44px;
-    background: #eeeef4;
-    border-radius: 16px;
-    border: 0;
-    font-size: 14px;
-    color: #000;
-  }
-`;
 
 const ConfirmBox = styled.div`
   color: var(--primary-color);
@@ -291,13 +273,14 @@ export default function ProfileEdit() {
                   {!avatar && (
                     <div>
                       <input id="fileUpload" type="file" hidden accept=".jpg, .jpeg, .png" />
-                      {<Upload />}
+                      {/*{<Upload />}*/}
+                      <div>upload</div>
                     </div>
                   )}
                   {!!avatar && (
                     <ImgBox onClick={() => removeUrl()}>
                       <div className="del">
-                        <X className="iconTop" />
+                        <img src={CloseImg} alt=""/>
                       </div>
                       <img src={avatar} alt="" />
                     </ImgBox>
