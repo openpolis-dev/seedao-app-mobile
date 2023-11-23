@@ -1,8 +1,9 @@
 import BannerImg from "assets/Imgs/banner.png";
+import Demo1 from "assets/Imgs/demo/va.jpg";
 
 const banner = [
   {
-    img: "https://img0.baidu.com/it/u=741268616,1401664941&fm=253&fmt=auto&app=138&f=JPEG?w=748&h=500",
+    img: Demo1,
     link: "https://mp.weixin.qq.com/s/GUq1rbN_caplHpg_02vc9g",
     name: "伊斯坦布尔回声: 我们心中的瓦猫",
     desc: "2023年12月16日 — 2024年1月1日",
