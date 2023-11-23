@@ -29,7 +29,7 @@ const BannerLi = styled.div`
   padding: 24px 0;
 `;
 const TitleBox = styled.div`
-  font-size: 15px;
+  font-size: 17px;
   font-family: Poppins-SemiBold;
   font-weight: 600;
   color: #ffffff;
