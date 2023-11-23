@@ -14,6 +14,7 @@ export default function InstallCheck() {
   const { t } = useTranslation();
   const [isInstalled, setIsInstalled] = useState(true);
   const [show, setShow] = useState(true);
+  const [canInstall, setCanInstall] = useState(false);
 
   useEffect(() => {
     if (window.navigator?.standalone === true || window.matchMedia("(display-mode: standalone)").matches) {
@@ -29,6 +30,7 @@ export default function InstallCheck() {
   const handleBeforeInstallPromptEvent = (event) => {
     event.preventDefault();
     deferredPrompt.current = event;
+    setCanInstall(true);
   };
 
   useEffect(() => {
@@ -72,7 +74,7 @@ export default function InstallCheck() {
   if (isAndroid) {
     return (
       <>
-        {show && (
+        {show && canInstall && (
           <AndroidBox>
             <div className="left">
               <img src={AppIcon} alt="" />
