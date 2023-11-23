@@ -97,9 +97,19 @@ const DlBox = styled.div`
         opacity: 0.8;
       }
     }
-  
- 
 `
+
+const LineBox = styled.div`
+  margin-right: 20px;
+  display: flex;
+  align-items: flex-start;
+  font-size: 14px;
+  .time{
+    flex-shrink: 0;
+    margin-right: 14px;
+  }
+`
+
 
 export default function CalendarItem({detail}){
     const { t,i18n } = useTranslation();
@@ -167,7 +177,11 @@ export default function CalendarItem({detail}){
                 {
                     showList.map((innerItem,innerIndex)=><li key={`events_${detail.day}_${innerIndex}}`}>
                         <EventBox onClick={()=>handleShow(innerIndex,innerItem.event.description,innerItem.event.location)}>
-                            <span>{getTime(innerItem)} {innerItem.event.summary}</span>
+                            <LineBox>
+                                <div className="time">{getTime(innerItem)} </div>
+                                <div>{innerItem.event.summary}</div>
+                            </LineBox>
+
                             {
                                 !innerItem.status && (!!innerItem.event.description || !!innerItem.event.location) && <img src={currentDay===detail.day ?PlusWhite:PlusImg} alt=""/>
                             }
