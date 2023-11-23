@@ -6,7 +6,7 @@ import { RectangularSkeleton } from "components/common/skeleton";
 export default function ProjectOrGuildItem({ data, onClickItem }) {
   const { t } = useTranslation();
   return (
-    <Item>
+    <Item onClick={() => onClickItem(data.id)}>
       <ImageBox>{data.logo && <img src={data.logo} alt="" />}</ImageBox>
       <RightBox className="_right">
         <div>
@@ -14,7 +14,7 @@ export default function ProjectOrGuildItem({ data, onClickItem }) {
           <DescBox>{data.desc}</DescBox>
         </div>
         <div>
-          <LookButton onClick={() => onClickItem(data.id)}>{t("Buttons.Check")}</LookButton>
+          <LookButton>{t("Buttons.Check")}</LookButton>
         </div>
       </RightBox>
     </Item>
