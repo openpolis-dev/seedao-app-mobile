@@ -100,7 +100,7 @@ const DlBox = styled.div`
 `
 
 const LineBox = styled.div`
-  margin-right: 20px;
+  margin-right: 30px;
   display: flex;
   align-items: flex-start;
   font-size: 14px;
