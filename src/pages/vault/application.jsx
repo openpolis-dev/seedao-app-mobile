@@ -42,7 +42,7 @@ export default function ApplicationDetailPage() {
     handleSNS();
   }, [data]);
 
-  
+
 
   const formatSNS = (wallet) => {
     const sns = snsMap[wallet] || wallet;
@@ -192,12 +192,17 @@ const ApplyIntroRowItem = styled(RowItem)`
 `;
 const LayoutOuter = styled.div`
   width: 100%;
-  height: 100%;
-  position: fixed;
+  height: 100vh;
+  position: absolute;
   left: 0;
   top: 0;
   z-index: 9999;
+  box-sizing: border-box;
   background-color: #fff;
+
+  .tabBarBox{
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 `;
 const UserBox = styled.div`
   display: flex;

@@ -96,7 +96,7 @@ export default function TabBar() {
     return [checkIsActive(governance_list), checkIsActive(home_list), checkIsActive(explore_list)];
   }, [pathname]);
   return (
-    <Box>
+    <Box className="tabBarBox">
       <ItemBox>
         <NavLink className={active_tabs[0]} to="/governance">
           <dl>
