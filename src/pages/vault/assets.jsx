@@ -143,7 +143,7 @@ export default function Assets() {
       // store.dispatch(saveLoading(false));
     }
     setTotalSigner([...new Set(users)].length);
-    setTotalBalance(_total.toFixed(2));
+    setTotalBalance(formatNumber(_total));
     setVaultsMap(vaults_map);
   };
 
@@ -223,7 +223,7 @@ export default function Assets() {
     >
       <TopBox>
         <TotalAssets>
-          <div className="value">${formatNumber(Number(totalBalance))}</div>
+          <div className="value">${getShortDisplay(totalBalance, 2)}</div>
           <div className="label">{t("Vault.TotalAssets")}</div>
         </TotalAssets>
         <WalletBox>
@@ -231,7 +231,7 @@ export default function Assets() {
             <WalletItem key={index}>
               <WalletItemLeft>
                 <div className="name">{t(v.name)}</div>
-                <CopyBox style={{ width: "65px" }} text={v.address} >
+                <CopyBox style={{ width: "65px" }} text={v.address}>
                   <Addr>{PublicJs.AddressToShow(v.address, 4)}</Addr>
                 </CopyBox>
                 <img src={v.icon} alt="" onClick={() => linkTo(v)} />
