@@ -370,4 +370,7 @@ const WalletBox = styled.ul`
 const Addr = styled.div`
   font-size: 12px;
   margin-right: 9px;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 `;
