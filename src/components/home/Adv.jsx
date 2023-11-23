@@ -1,8 +1,11 @@
 import styled from "styled-components";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import { Autoplay,Pagination } from "swiper/modules";
 import banner from "../../constant/banner";
+
+import 'swiper/css';
+import "swiper/css/pagination";
 
 import "swiper/css";
 import { useTranslation } from "react-i18next";
@@ -11,6 +14,13 @@ const BannerBox = styled.div`
   width: 100%;
   img {
     width: 100%;
+  }
+  .mySwiper{
+    padding-bottom: 30px;
+    margin-bottom: -20px;
+  }
+  .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet{
+    background: var(--primary-color);
   }
 `;
 
@@ -77,7 +87,9 @@ export default function Adv() {
   return (
     <BannerBox>
       <Swiper
-        modules={[Autoplay]}
+        modules={[Autoplay,Pagination]}
+        pagination={true}
+        className="mySwiper"
         autoplay={{
           delay: 5000,
           disableOnInteraction: false,
