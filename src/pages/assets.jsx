@@ -9,7 +9,7 @@ import axios from "axios";
 import { getTreasury } from "../api/treasury";
 import { ethers } from "ethers";
 
-import { formatNumber } from "../utils/number";
+import {formatNumber, getShortDisplay} from "../utils/number";
 import PublicJs from "../utils/publicJs";
 import CopyBox from "../components/common/copy";
 import VAULTS from "constant/vault";
@@ -239,7 +239,7 @@ export default function Assets() {
                   {vaultsMap[v.id]?.threshold || 0}/{vaultsMap[v.id]?.total || 0}
                 </div>
               </WalletItemLeft>
-              <WalletItemValue>${formatNumber(vaultsMap[v.id]?.balance || 0.0)}</WalletItemValue>
+              <WalletItemValue>${getShortDisplay(vaultsMap[v.id]?.balance || 0.0)}</WalletItemValue>
             </WalletItem>
           ))}
         </WalletBox>
