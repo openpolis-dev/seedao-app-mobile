@@ -239,7 +239,7 @@ const ButtonBox = styled.div`
   button {
     width: 89%;
     height: 44px;
-    background: #eeeef4;
+    background: #fff;
     border-radius: 16px;
     border: 0;
     font-size: 14px;
