@@ -7,11 +7,9 @@ import { useSelector } from "react-redux";
 import { saveLoading, saveUserToken } from "../store/reducer";
 import { getUser } from "../api/user";
 import Avatar from "components/common/avatar";
-import CopyBox from "components/common/copy";
 import useParseSNS from "hooks/useParseSNS";
 import publicJs from "../utils/publicJs";
 import {useNavigate} from "react-router-dom";
-import {ChevronLeft} from "react-bootstrap-icons";
 import PublicJs from "../utils/publicJs";
 import SbtCatMobile from "../components/profile/sbtCatMobile";
 

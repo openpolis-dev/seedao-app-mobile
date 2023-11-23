@@ -6,10 +6,6 @@ import { getUser, updateUser } from "../api/user";
 import { useTranslation } from "react-i18next";
 // import useToast, { ToastType } from 'hooks/useToast';
 import { Upload, X } from "react-bootstrap-icons";
-// import { ContainerPadding } from 'assets/styles/global';
-// import useParseSNS from 'hooks/useParseSNS';
-// import CopyBox from 'components/copy';
-import copyIcon from "assets/images/copy.svg";
 import { useSelector } from "react-redux";
 import store from "../store";
 import { saveAccount, saveLoading, saveUserToken, saveWalletType } from "../store/reducer";
@@ -18,8 +14,7 @@ import { useNavigate } from "react-router-dom";
 import useToast from "hooks/useToast";
 
 const InputGroup = styled.div``;
-const Button = styled.div``;
-const Form = styled.div``;
+
 
 const HeadBox = styled.div`
   display: flex;
@@ -303,20 +298,6 @@ export default function ProfileEdit() {
       rightOperation={<ConfirmBox onClick={saveProfile}>{t("General.confirm")}</ConfirmBox>}
     >
       <CardBox>
-        {/*<HeadBox>*/}
-
-        {/*  <InfoBox>*/}
-        {/*    /!*<div className="wallet">{sns}</div>*!/*/}
-        {/*    <div className="wallet">*/}
-        {/*      /!*<div>{userData?.wallet}</div>*!/*/}
-        {/*      /!*{userData?.wallet && (*!/*/}
-        {/*      /!*  <CopyBox text={userData?.wallet} dir="right">*!/*/}
-        {/*      /!*    <img src={copyIcon} alt="" style={{ position: 'relative', top: '-2px' }} />*!/*/}
-        {/*      /!*  </CopyBox>*!/*/}
-        {/*      /!*)}*!/*/}
-        {/*    </div>*/}
-        {/*  </InfoBox>*/}
-        {/*</HeadBox>*/}
 
         <MidBox>
           <UlBox>
@@ -365,24 +346,6 @@ export default function ProfileEdit() {
                 <input type="text" placeholder="" value={email} onChange={(e) => handleInput(e, "email")} />
               </InputBox>
             </li>
-
-            {/*<li>*/}
-            {/*  <div className="title">{t('My.Discord')}</div>*/}
-            {/*  <InputBox>*/}
-            {/*    <Form.Control type="text" placeholder="" value={discord} onChange={(e) => handleInput(e, 'discord')} />*/}
-            {/*  </InputBox>*/}
-            {/*</li>*/}
-            {/*<li>*/}
-            {/*  <div className="title">{t('My.Twitter')}</div>*/}
-            {/*  <InputBox>*/}
-            {/*    <Form.Control*/}
-            {/*      type="text"*/}
-            {/*      placeholder="eg, https://twitter.com/..."*/}
-            {/*      value={twitter}*/}
-            {/*      onChange={(e) => handleInput(e, 'twitter')}*/}
-            {/*    />*/}
-            {/*  </InputBox>*/}
-            {/*</li>*/}
             <li>
               <div className="title">{t("My.Twitter")}</div>
               <InputBox>
