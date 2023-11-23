@@ -67,7 +67,7 @@ export default function ProposalThread() {
                   {data.user_title?.name && <UserTag bg={data.user_title.background}>{data.user_title?.name}</UserTag>}
                 </div>
                 <div className="right">
-                  <span className="date">{formatTime(new Date(data?.updated_at || ""))}</span>
+                  <span className="date">{formatTime(new Date(data?.updated_at || ""), "-")}</span>
                 </div>
               </User>
             </ThreadHeader>
