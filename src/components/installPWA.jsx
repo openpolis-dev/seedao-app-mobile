@@ -154,6 +154,9 @@ const AndroidBox = styled.div`
     background-color: var(--primary-color);
     color: #fff;
     font-size: 14px;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
   }
   .lineRht {
     display: flex;
@@ -169,6 +172,9 @@ const AndroidBox = styled.div`
     color: var(--primary-color);
     margin-left: 10px;
     font-size: 14px;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
   }
 `;
 
