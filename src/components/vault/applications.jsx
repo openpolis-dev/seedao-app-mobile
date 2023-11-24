@@ -231,7 +231,7 @@ export default function ApplicationsSection({ handleBg }) {
               <ItemBox>
                 <ContentInnerBox>
                   <LeftBox>
-                    <Avatar size="34px" src={data.traget_user_avatar} />
+                    <Avatar size="34px" src={data.target_user_avatar} />
                     <div>
                       <div className="wallet">{formatSNS(data.target_user_wallet)}</div>
                       <div>

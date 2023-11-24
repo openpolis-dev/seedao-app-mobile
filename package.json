@@ -57,9 +57,10 @@
     "fs": "0.0.1-security"
   },
   "scripts": {
+    "config": "node ./writeManifest.js",
     "dev": "react-scripts start",
     "start": "npm run dev",
-    "build:online": "react-scripts build",
+    "build:online": "npm run config && react-scripts build",
     "build": "REACT_APP_ENV_VERSION=dev npm run build:online",
     "build:dev": "npm run build",
     "build:preview": "REACT_APP_ENV_VERSION=preview npm run build:online",

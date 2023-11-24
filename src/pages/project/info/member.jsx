@@ -9,7 +9,7 @@ import UserList from "components/userList";
 import { useParseSNSList } from "hooks/useParseSNS";
 import UserModal from "components/userModal";
 
-export default function ProjectMember() {
+export default function ProjectMember({id}) {
   const { t } = useTranslation();
   const {
     state: { data },
@@ -18,6 +18,7 @@ export default function ProjectMember() {
   const [members, setMembers] = useState([]);
   const [sponsors, setSponsors] = useState([]);
   const [user, setUser] = useState();
+
 
   const uniqueUsers = useMemo(() => {
     return Array.from(new Set([...members, ...sponsors]));
@@ -40,6 +41,7 @@ export default function ProjectMember() {
       sponsors.map((item)=>{
         userData[item].title= t("Guild.Moderator");
       })
+      console.log("===sponsors===",sponsors)
       setUserMap(userData);
     } catch (error) {
       console.error("getUsersInfo error:", error);
@@ -55,11 +57,15 @@ export default function ProjectMember() {
   }, [userMap, members, sponsors]);
 
   useEffect(() => {
+    getUsersInfo(Array.from(new Set([...members, ...sponsors])));
+  }, [members,sponsors]);
+
+  useEffect(() => {
     const members = data?.members || [];
     const sponsors = data?.sponsors || [];
     setMembers(members.map((m) => m.toLowerCase()));
     setSponsors(sponsors.map((m) => m.toLowerCase()));
-    getUsersInfo(Array.from(new Set([...members, ...sponsors])));
+
   }, [data]);
   const showUser = (u) => {
     setUser(u);
