@@ -18,7 +18,7 @@ export default function ProjectMember({id}) {
   const [members, setMembers] = useState([]);
   const [sponsors, setSponsors] = useState([]);
   const [user, setUser] = useState();
-
+  const [useArr, setUserArr] = useState([]);
 
   const uniqueUsers = useMemo(() => {
     return Array.from(new Set([...members, ...sponsors]));
@@ -41,7 +41,7 @@ export default function ProjectMember({id}) {
       sponsors.map((item)=>{
         userData[item].title= t("Guild.Moderator");
       })
-      console.log("===sponsors===",sponsors)
+
       setUserMap(userData);
     } catch (error) {
       console.error("getUsersInfo error:", error);
@@ -49,12 +49,22 @@ export default function ProjectMember({id}) {
       store.dispatch(saveLoading(false));
     }
   };
-  const { memberUsers, sponsorUsers } = useMemo(() => {
-    return {
-      memberUsers: members.map((m) => userMap[m]),
-      sponsorUsers: sponsors.map((s) => userMap[s]),
-    };
-  }, [userMap, members, sponsors]);
+  // const { memberUsers, sponsorUsers } = useMemo(() => {
+  //   return {
+  //     memberUsers: members.map((m) => userMap[m]),
+  //     sponsorUsers: sponsors.map((s) => userMap[s]),
+  //   };
+  // }, [userMap, members, sponsors]);
+
+  useEffect(() => {
+    if(!userMap)return;
+    let arr =[];
+    for (const key in userMap) {
+      arr.push(userMap[key])
+    }
+    setUserArr(arr)
+
+  }, [userMap]);
 
   useEffect(() => {
     getUsersInfo(Array.from(new Set([...members, ...sponsors])));
@@ -73,7 +83,7 @@ export default function ProjectMember({id}) {
   return (
     <MemberContent>
       {user && <UserModal user={{ ...user, sns: nameMap[user?.wallet] }} handleClose={() => setUser(undefined)} />}
-      <UserList data={[...sponsorUsers, ...memberUsers]} nameMap={nameMap} onChooseUser={showUser} />
+      <UserList data={[...useArr]} nameMap={nameMap} onChooseUser={showUser} />
     </MemberContent>
   );
 }
