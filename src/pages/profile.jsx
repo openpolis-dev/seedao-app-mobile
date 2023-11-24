@@ -4,7 +4,7 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import store from "../store";
 import { useSelector } from "react-redux";
-import {saveAccount, saveLoading, saveUserToken, saveWalletType} from "../store/reducer";
+import { clearLogin, saveLoading, saveUserToken } from "../store/reducer";
 import { getUser } from "../api/user";
 import Avatar from "components/common/avatar";
 import useParseSNS from "hooks/useParseSNS";
@@ -18,6 +18,7 @@ import Twitter from "../assets/Imgs/social/twitter.svg";
 import MirrorImg from "../assets/Imgs/social/mirror.svg";
 import GithubImg from "../assets/Imgs/social/github.svg"
 import {useDisconnect} from "wagmi";
+import { clearStorage } from "utils/auth";
 
 const Box = styled.div`
   padding: 20px;
@@ -133,16 +134,14 @@ const ProgressOuter = styled.div`
 const FstLine = styled.div`
     display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
   .lft{
     display: flex;
     align-items: center;
+    margin-right: 10px;
   }
   .rht{
     display: flex;
     align-items: center;
-    color: #9a9a9a;
     font-size: 11px;
   }
 `
@@ -150,10 +149,15 @@ const FstLine = styled.div`
 const LevelBox = styled.div`
   text-transform: uppercase;
   padding-right: 10px;
-  font-size: 12px;
   font-family: Poppins-ExtraBold;
   font-weight: normal;
   font-style: italic;
+  font-size: 14px;
+  
+  line-height: 18px;
+  background: linear-gradient(90deg, #EFBC80 0%, #FFDA93 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `
 
 const SCRBox = styled.div`
@@ -502,12 +506,11 @@ export default function Profile() {
   };
 
   const logout = () => {
-    store.dispatch(saveAccount(null));
-    store.dispatch(saveUserToken(null));
-    store.dispatch(saveWalletType(null));
+    store.dispatch(clearLogin());
     if (walletType === "metamask") {
       disconnect();
     }
+    clearStorage();
     // store.dispatch(saveLogout(true));
     navigate("/login");
   };
@@ -558,9 +561,9 @@ export default function Profile() {
                 <div>{formatNumber(detail?.level?.scr_to_next_lv)} SCR</div>
               </div>
             </FstLine>
-            <ProgressBox width={detail?.level?.upgrade_percent}>
-              <div className="inner" />
-            </ProgressBox>
+            {/*<ProgressBox width={detail?.level?.upgrade_percent}>*/}
+            {/*  <div className="inner" />*/}
+            {/*</ProgressBox>*/}
           </ProgressOuter>
         </Box>
         {!!list.length && (

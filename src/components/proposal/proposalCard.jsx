@@ -70,14 +70,14 @@ export default function ProposalCard({ data }) {
   return (
     <CardBox key={data.id}>
       <div onClick={openProposal}>
-        <Title>{data.title}</Title>
+        <Title line={2}>{data.title}</Title>
         {/*<ProposalContent line={2} dangerouslySetInnerHTML={{ __html: content }}></ProposalContent>*/}
-        <ProposalContent line={2} >{PublicJs.filterTags(content)}</ProposalContent>
+        <ProposalContent line={2}>{PublicJs.filterTags(content)}</ProposalContent>
 
         <CardFooter>
           <div className="left">
             <UserAvatar src={data.user.photo_url} alt="" />
-            <div className={data.user?.user_title?.name?"name":"nameAll"}>{data.user.username}</div>
+            <div className={data.user?.user_title?.name ? "name" : "nameAll"}>{data.user.username}</div>
             {data.user?.user_title?.name && (
               <UserTag bg={data.user.user_title.background}>{data.user.user_title?.name}</UserTag>
             )}
@@ -114,6 +114,7 @@ const CardFooter = styled.div`
       width: 10vw;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
       height: 24px;
       line-height: 24px;
     }
