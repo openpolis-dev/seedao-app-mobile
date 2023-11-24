@@ -8,11 +8,14 @@ import publicJs from "utils/publicJs";
 import useQuerySNS from "hooks/useQuerySNS";
 import { useSelector } from "react-redux";
 import UserModal from "components/userModal";
+import Avatar from "components/common/avatar";
 
 const MemberAvatar = ({ user, onSelect }) => {
   return (
     <MemberAvatarStyle line={1}>
-      <AvatarBox onClick={onSelect}>{user.avatar && <img src={user.avatar} alt="" />}</AvatarBox>
+      <AvatarBox onClick={onSelect}>
+        <Avatar src={user.avatar} size="44px" />
+      </AvatarBox>
       <div className="sns">{user.sns}</div>
       <div className="name">{user.name}</div>
     </MemberAvatarStyle>
