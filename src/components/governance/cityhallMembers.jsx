@@ -14,7 +14,7 @@ const MemberAvatar = ({ user, onSelect }) => {
   return (
     <MemberAvatarStyle line={1}>
       <AvatarBox onClick={onSelect}>
-        <Avatar src={user.avatar}/>
+        <Avatar src={user.avatar} size="44px" />
       </AvatarBox>
       <div className="sns">{user.sns}</div>
       <div className="name">{user.name}</div>
