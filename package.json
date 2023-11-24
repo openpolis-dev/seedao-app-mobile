@@ -57,7 +57,6 @@
     "fs": "0.0.1-security"
   },
   "scripts": {
-    "eject": "react-scripts eject",
     "config": "node ./writeManifest.js",
     "dev": "react-scripts start",
     "start": "npm run dev",
