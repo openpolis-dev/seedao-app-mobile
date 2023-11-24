@@ -38,9 +38,12 @@ export default function GuildMember() {
         userData[r.wallet || ""] = r;
       });
 
+
       sponsors.map((item)=>{
         userData[item].title= t("Guild.Moderator");
       })
+      console.error("===sponsors==",sponsors)
+
       setUserMap(userData);
     } catch (error) {
       console.error("getUsersInfo error:", error);
@@ -56,11 +59,15 @@ export default function GuildMember() {
   }, [userMap, members, sponsors]);
 
   useEffect(() => {
+    getUsersInfo(Array.from(new Set([...members, ...sponsors])));
+  }, [members,sponsors]);
+
+  useEffect(() => {
     const members = data?.members || [];
     const sponsors = data?.sponsors || [];
     setMembers(members.map((m) => m.toLowerCase()));
     setSponsors(sponsors.map((m) => m.toLowerCase()));
-    getUsersInfo(Array.from(new Set([...members, ...sponsors])));
+
   }, [data]);
   const showUser = (u) => {
     setUser(u);
