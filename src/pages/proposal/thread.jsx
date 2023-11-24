@@ -76,7 +76,11 @@ export default function ProposalThread() {
               {enableQuill && data?.first_post.content && <QuillViewer content={data?.first_post.content} />}
             </BtmBox>
 
-            {data.polls[0] && <ProposalVoteProgress poll={data.polls[0]} />}
+            {data.polls[0] && (
+              <VoteBox>
+                <ProposalVoteProgress poll={data.polls[0]} />
+              </VoteBox>
+            )}
           </>
         )}
       </ProposalContainer>
@@ -148,3 +152,9 @@ const UserTag = styled.span`
   color: #fff;
   flex-shrink: 0;
 `;
+
+const VoteBox = styled.div`
+  margin-inline: 20px;
+  border-top: 1px solid var(--border-color-1);
+  padding-top: 20px;
+`

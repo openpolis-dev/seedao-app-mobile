@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import publicJs from "utils/publicJs";
+import VoteIcon from "assets/Imgs/vote.svg";
 
 const VoteType = {
   Open: "open",
@@ -22,44 +23,54 @@ export default function ProposalVoteProgress({ poll }) {
   }, [poll, t]);
 
   return (
-    <CardStyle>
+    <>
       <VoteHead>
-        <VoteHeadLeft>{poll.title}</VoteHeadLeft>
-        {poll.arweave && (
-          <ExportButton href={`https://arweave.net/tx/${poll.arweave}/data.csv`}>{t("Proposal.Export")}</ExportButton>
-        )}
+        {poll.title}
+        {voteStatusTag}
       </VoteHead>
-      <VoteBody>
-        <TotalVoters>
-          <span>
-            {t("Proposal.TotalVotes")}: {poll.totalVotes}
-          </span>
-          <span className="dot">·</span>
-          {voteStatusTag}
-        </TotalVoters>
-        {poll.options.map((option, index) => (
-          <VoteOption key={index}>
-            <OptionContent>{option.html}</OptionContent>
-            <VoteOptionBottom>
-              <ProgressBar percent={option.percent}>
-                <div className="inner"></div>
-              </ProgressBar>
-              <span>{option.percent}%</span>
-              <span className="voters">({option.voters})</span>
-            </VoteOptionBottom>
-          </VoteOption>
-        ))}
-      </VoteBody>
-      <VoteFooter>
-        <VoteNFT>
-          <span>
-            {t("Proposal.PollNFT")}: {publicJs.AddressToShow(poll.address, 6)}
-          </span>
-          {poll.token_id && <span>Token Id: {poll.token_id}</span>}
-        </VoteNFT>
-        {poll.alias && <Alias>{poll.alias}</Alias>}
-      </VoteFooter>
-    </CardStyle>
+      <CardStyle>
+        <VoteBody>
+          <TotalVoters>
+            <TotalVotersLeft>
+              <img src={VoteIcon} alt="" />
+              <span>
+                {t("Proposal.TotalVotes")}: {poll.totalVotes}
+              </span>
+            </TotalVotersLeft>
+            {poll.arweave && (
+              <ExportButton href={`https://arweave.net/tx/${poll.arweave}/data.csv`}>
+                {t("Proposal.Export")}
+              </ExportButton>
+            )}
+          </TotalVoters>
+          {poll.options.map((option, index) => (
+            <VoteOption key={index}>
+              <OptionContent>
+                <span>{option.html}</span>
+                <div>
+                  <span>{option.percent}%</span>
+                  <span className="voters">({option.voters})</span>
+                </div>
+              </OptionContent>
+              <VoteOptionBottom>
+                <ProgressBar percent={option.percent}>
+                  <div className="inner"></div>
+                </ProgressBar>
+              </VoteOptionBottom>
+            </VoteOption>
+          ))}
+        </VoteBody>
+        <VoteFooter>
+          <VoteNFT>
+            <span>
+              {t("Proposal.PollNFT")}: {poll.address}
+            </span>
+            {poll.token_id && <span>Token Id: {poll.token_id}</span>}
+          </VoteNFT>
+          {poll.alias && <Alias>{poll.alias}</Alias>}
+        </VoteFooter>
+      </CardStyle>
+    </>
   );
 }
 
@@ -67,70 +78,98 @@ const CardStyle = styled.div`
   font-size: 14px;
   color: var(--bs-body-color_active);
   border-radius: 16px;
-  background-color: var(--background-color);
+  background-color: var(--background-color-1);
   border: 1px solid var(--border-color-1);
   margin-bottom: 20px;
+  overflow: hidden;
 `;
 
 const VoteHead = styled.div`
-  display: flex;
-  justify-content: space-between;
-  height: 40px;
-  line-height: 40px;
-  padding-inline: 20px;
+  font-family: Poppins-Medium;
+  font-size: 14px;
+  line-height: 26px;
+  margin-bottom: 15px;
 `;
 
-const VoteHeadLeft = styled.div``;
-
 const ExportButton = styled.a`
-  color: var(--primary-color);
-  font-family: Poppins-SemiBold, Poppins;
+  line-height: 22px;
+  height: 22px;
+  border-radius: 28px;
+  border: 1px solid #bbbbbb;
+  padding-inline: 13px;
+  margin-top: 11px;
+  font-size: 12px;
 `;
 
 const VoteBody = styled.div`
-  padding-inline: 20px;
-  border-top: 1px solid var(--border-color-1);
-  border-bottom: 1px solid var(--border-color-1);
-  padding-bottom: 14px;
+  padding-bottom: 25px;
 `;
 const VoteFooter = styled.div`
-  padding-inline: 20px;
-  display: flex;
-  justify-content: space-between;
-  line-height: 36px;
+  padding: 10px 10px 12px;
+  border-top: 1px solid var(--border-color-1);
 `;
 
 const VoteNFT = styled.div`
-  span {
-    margin-right: 20px;
-  }
+  font-size: 8px;
+  color: var(--font-light-color);
+  display: flex;
+  justify-content: space-between;
 `;
 
 const TotalVoters = styled.div`
-  margin-top: 14px;
-  margin-bottom: 9px;
-  .dot {
-    margin-inline: 4px;
+  background-color: var(--background-color-2);
+  height: 44px;
+  display: flex;
+  justify-content: space-between;
+  line-height: 44px;
+  padding-left: 13px;
+  padding-right: 11px;
+  border-bottom: 1px solid var(--border-color-1);
+`;
+
+const TotalVotersLeft = styled.div`
+  font-family: Poppins-Medium;
+  font-weight: 500;
+  color: #000000;
+  font-size: 12px;
+  img {
+    margin-right: 6px;
+    position: relative;
+    top: 1px;
   }
 `;
 
-const CloseTag = styled.span`
-  color: red;
+const StatusTag = styled.span`
+  font-size: 10px;
+  line-height: 20px;
+  padding-inline: 9px;
+  border-radius: 6px;
+  color: #fff;
+  height: 20px;
+  display: inline-block;
+  margin-left: 8px;
+  position: relative;
+  bottom: 2px;
+`;
+
+const CloseTag = styled(StatusTag)`
+  background-color: #ff7193;
 `;
 const OpenTag = styled.span`
-  color: var(--bs-body-color);
+  background-color: #2dc45e;
 `;
 
 const VoteOption = styled.div`
-  margin-top: 12px;
+  margin-top: 20px;
+  padding-inline: 10px;
 `;
 
 const ProgressBar = styled.div`
-  width: 76%;
-  height: 8px;
-  border-radius: 16px;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
   box-sizing: border-box;
-  background-color: var(--background-color-1);
+  background-color: #ececec;
   overflow: hidden;
   .inner {
     width: ${(props) => props.percent}%;
@@ -149,9 +188,15 @@ const VoteOptionBottom = styled.div`
 `;
 
 const OptionContent = styled.div`
-  font-size: 16px;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
 `;
 
 const Alias = styled.div`
-  color: var(--primary-color);
+  font-size: 8px;
+  margin-top: 2px;
+  line-height: 14px;
+  text-decoration: underline;
 `;
