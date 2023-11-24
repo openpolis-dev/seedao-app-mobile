@@ -3,6 +3,9 @@ export const clearStorage = () => {
   localStorage.removeItem('SEEDAO_USER');
   localStorage.removeItem('sdn_user_id');
   localStorage.removeItem('SEEDAO_USER_DATA');
+  localStorage.removeItem("joyid-address");
+  localStorage.removeItem("joyid-status");
+  localStorage.removeItem("joyid-msg");
 };
 
 export const checkTokenValid = (token, expireAt) => {

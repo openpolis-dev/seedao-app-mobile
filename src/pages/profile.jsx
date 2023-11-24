@@ -4,7 +4,7 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import store from "../store";
 import { useSelector } from "react-redux";
-import {saveAccount, saveLoading, saveUserToken, saveWalletType} from "../store/reducer";
+import { clearLogin, saveLoading, saveUserToken } from "../store/reducer";
 import { getUser } from "../api/user";
 import Avatar from "components/common/avatar";
 import useParseSNS from "hooks/useParseSNS";
@@ -18,6 +18,7 @@ import Twitter from "../assets/Imgs/social/twitter.svg";
 import MirrorImg from "../assets/Imgs/social/mirror.svg";
 import GithubImg from "../assets/Imgs/social/github.svg"
 import {useDisconnect} from "wagmi";
+import { clearStorage } from "utils/auth";
 
 const Box = styled.div`
   padding: 20px;
@@ -502,12 +503,11 @@ export default function Profile() {
   };
 
   const logout = () => {
-    store.dispatch(saveAccount(null));
-    store.dispatch(saveUserToken(null));
-    store.dispatch(saveWalletType(null));
+    store.dispatch(clearLogin());
     if (walletType === "metamask") {
       disconnect();
     }
+    clearStorage();
     // store.dispatch(saveLogout(true));
     navigate("/login");
   };
