@@ -20,6 +20,7 @@ import RouterChecker from "./components/routerChecker";
 import useToast from "hooks/useToast";
 import { useEffect } from "react";
 import EventHandler from "components/eventHandler";
+import getConfig from "constant/envCofnig";
 
 
 const chains = [mainnet]
@@ -37,7 +38,8 @@ function App() {
     const { Toast, showToast } = useToast();
 
     useEffect(() => {
-        showToast(`load ${new Date().getTime() - window.START_TIME}ms`);
+        ["dev", "test"].includes(getConfig().REACT_APP_APP_VERSION) &&
+          showToast(`load ${new Date().getTime() - window.START_TIME}ms`);
     }, [])
 
   return (
