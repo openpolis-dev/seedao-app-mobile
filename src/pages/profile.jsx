@@ -453,6 +453,9 @@ export default function Profile() {
       case 'NODE_S4':
         str = t('roles.NODE_S4');
         break;
+      case 'NODE_S5':
+        str = t('roles.NODE_S5');
+        break;
       case 'CITYHALL_S1':
         str = t('roles.CITYHALL_S1');
         break;

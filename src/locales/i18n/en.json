@@ -20,22 +20,22 @@
   "Explore": {
     "Head": "Explore",
     "ProjectTitle": "Project",
-    "ProjectDescription": "看看小伙伴们整的活儿",
+    "ProjectDescription": "All the projects in SeeDAO",
     "GuildTitle": "Guild",
-    "GuildDescription": "来这里寻找小伙伴吧",
+    "GuildDescription": "All the guilds in SeeDAO",
     "ResourceApply": "Apply Now",
-    "ResourceApplyDesc": "薅羊毛专区",
+    "ResourceApplyDesc": "Resoureces for all SeeDAO community members",
     "OfflineEvent": "Events",
-    "OfflineEventDesc": "面基面基网友面基",
+    "OfflineEventDesc": "Events for SeeDAO community",
     "PubTitle": "SeeDAO Pub",
-    "PubDesc": "悬赏酒馆悬赏酒馆悬赏酒馆"
+    "PubDesc": "The funny place for SeeDAO community"
   },
   "Governance": {
     "Head": "Governance",
     "Vault": "Vault",
-    "VaultDesc": "SeeDAO的荷包",
+    "VaultDesc": "SeeDAO Vaults",
     "Proposal": "Proposal",
-    "ProposalDesc": "一起投票把钱花出去",
+    "ProposalDesc": "SeeDAO Governance Proposals",
     "GovernanceRule": "Governance Rules",
     "GovernanceRuleDesc": "Check out rules",
     "MetaRule": "SeeDAO Meta Rules",
@@ -76,13 +76,13 @@
     "Detail": "Project Detail"
   },
   "home": {
-    "title": "城邦日历",
-    "tips": "看看今天有什么安排吧",
-    "apps": "城邦应用",
-    "appTips": "这里是所有的城邦应用啦",
+    "title": "See Calendar",
+    "tips": "Things for today",
+    "apps": "Polis Apps",
+    "appTips": "All the applications in our polis",
     "SeeU": "SeeU Network",
-    "events": "城邦活动",
-    "more": "查看内容"
+    "events": "Events",
+    "more": "View"
   },
   "Install": {
     "IosTitle": "Add to Home Screen",
@@ -120,7 +120,7 @@
     "Google": "Google",
     "current": "current",
     "more": "View All",
-    "levelTips": "距离升级到LV{{level}}还需",
+    "levelTips": "To LV{{level}} you need",
     "ModifiedSuccess": "Modified Successfully",
     "ModifiedFailed": "Modified Failed",
     "IncorrectLink": "{{media}}: required the correct link",
@@ -136,14 +136,16 @@
   },
   "roles": {
     "SGN_HOLDER": "SGN Holder",
-    "NODE_S1": "SeeDAO Node S1",
-    "NODE_S2": "SeeDAO Node S2",
-    "NODE_S3": "SeeDAO Node S3",
-    "NODE_S4": "SeeDAO Node S4",
+    "NODE_S1": "S1 Node",
+    "NODE_S2": "S2 Node",
+    "NODE_S3": "S3 Node",
+    "NODE_S4": "S4 Node",
+    "NODE_S5": "S5 Node",
     "CITYHALL_S1": "Cityhall S1",
     "CITYHALL_S2": "Cityhall S2",
     "CITYHALL_S3": "Cityhall S3",
     "CITYHALL_S4": "Cityhall S4",
+    "CITYHALL_S5": "Cityhall S5",
     "CONTRIBUTOR_L1": "L1 Contributor",
     "CONTRIBUTOR_L2": "L2 Contributor",
     "CONTRIBUTOR_L3": "L3 Contributor",
@@ -203,7 +205,7 @@
     "Season": "Season",
     "BudgetSource": "Budget Source",
     "State": "State",
-    "Items": "事项",
+    "Items": "Item",
     "Comment": "Comment",
     "ApplyDate": "Apply Time",
     "ApplyIntro": "Apply Intro",
@@ -219,13 +221,13 @@
   },
   "Calendar": {
     "Calendar": "Calendar",
-    "more": "剩余{{item}}项"
+    "more": "remain {{item}}"
   },
   "Msg": {
     "SnsNotFound": "SNS Not Found",
     "InvalidAddress": "Invalid Address"
   },
   "GovernanceNodeResult": {
-    "SCRSeasonRankFilename": "{{season}} SCR Rank"
+    "SCRSeasonRankFilename": "{{season}} SCR Ranking"
   }
 }
