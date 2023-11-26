@@ -134,14 +134,16 @@ const ProgressOuter = styled.div`
 const FstLine = styled.div`
     display: flex;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
   .lft{
     display: flex;
     align-items: center;
-    margin-right: 10px;
   }
   .rht{
     display: flex;
     align-items: center;
+    color: #9a9a9a;
     font-size: 11px;
   }
 `
@@ -149,15 +151,10 @@ const FstLine = styled.div`
 const LevelBox = styled.div`
   text-transform: uppercase;
   padding-right: 10px;
+  font-size: 12px;
   font-family: Poppins-ExtraBold;
   font-weight: normal;
   font-style: italic;
-  font-size: 14px;
-  
-  line-height: 18px;
-  background: linear-gradient(90deg, #EFBC80 0%, #FFDA93 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 `
 
 const SCRBox = styled.div`
@@ -567,9 +564,9 @@ export default function Profile() {
                 <div>{formatNumber(detail?.level?.scr_to_next_lv)} SCR</div>
               </div>
             </FstLine>
-            {/*<ProgressBox width={detail?.level?.upgrade_percent}>*/}
-            {/*  <div className="inner" />*/}
-            {/*</ProgressBox>*/}
+            <ProgressBox width={detail?.level?.upgrade_percent}>
+              <div className="inner" />
+            </ProgressBox>
           </ProgressOuter>
         </Box>
         {!!list.length && (
