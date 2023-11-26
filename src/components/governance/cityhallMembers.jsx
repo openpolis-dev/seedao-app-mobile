@@ -11,13 +11,24 @@ import UserModal from "components/userModal";
 import Avatar from "components/common/avatar";
 
 const MemberAvatar = ({ user, onSelect }) => {
+  const reFormat = () =>{
+    if(user.sns === user.wallet){
+      return  publicJs.AddressToShow(user.wallet,10)
+    }else{
+      return user.sns;
+    }
+  }
+
   return (
     <MemberAvatarStyle line={1}>
       <AvatarBox onClick={onSelect}>
         <Avatar src={user.avatar} size="44px" />
       </AvatarBox>
-      <div className="sns">{user.sns}</div>
-      <div className="name">{user.name}</div>
+      <div className="rhtBox">
+        <div className="sns">{reFormat()}</div>
+        <div className="name">{user.name}</div>
+      </div>
+
     </MemberAvatarStyle>
   );
 };
@@ -131,29 +142,30 @@ const GroupName = styled.div`
 `;
 
 const GroupMembers = styled.div`
-  width: 100%;
   min-height: 100px;
   background: #ffffff;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.02);
   border-radius: 16px;
   display: flex;
-  padding-block: 15px;
-  gap: 10px;
-  flex-wrap: wrap;
-  & > div {
-    width: 30%;
-  }
+  box-sizing: border-box;
+  padding:20px;
+  flex-direction: column;
+
 `;
 
 const MemberAvatarStyle = styled.div`
   display: flex;
-  flex-direction: column;
+  
   font-size: 12px;
-  align-items: center;
-  text-align: center;
-
+  align-items: flex-start;
+  margin-top: 20px;
+  &:first-child{
+    margin-top: 0;
+  }
+.rhtBox{
+  flex-grow: 1;
+}
   .sns {
-    width: 100%;
     margin-top: 8px;
     margin-bottom: 4px;
     line-height: 21px;
@@ -180,6 +192,7 @@ const AvatarBox = styled.div`
   height: 44px;
   border-radius: 50%;
   overflow: hidden;
+  flex-shrink: 0;
   img {
     width: 100%;
     height: 100%;

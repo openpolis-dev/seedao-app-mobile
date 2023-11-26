@@ -7,7 +7,6 @@ import banner from "../../constant/banner";
 import 'swiper/css';
 import "swiper/css/pagination";
 
-import "swiper/css";
 import { useTranslation } from "react-i18next";
 
 const BannerBox = styled.div`
