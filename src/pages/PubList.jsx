@@ -6,10 +6,10 @@ import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
 import React, {useEffect, useMemo, useState} from "react";
-import {saveLoading} from "../store/reducer";
+import {saveLoading,saveDetail} from "../store/reducer";
 import {publicList} from "../api/publicData";
 import styled from "styled-components";
-import {EventCardSkeleton} from "../components/eventCard";
+import {EventCardSkeleton} from "../components/event/eventCard";
 import store from "../store";
 
 
@@ -132,7 +132,15 @@ export default function PubList(){
     }, []);
 
     const ToGo = (id) => {
-        navigate(`/pubDetail/${id}`);
+        let obj={
+            type:"pub",
+            id,
+            title:t("Pub.DetailTitle"),
+            bgColor:"#fff",
+            headColor:"#1A1323"
+        }
+        store.dispatch(saveDetail(obj));
+        // navigate(`/pubDetail/${id}`);
     };
     const returnStatus = (str) => {
         let cStr = '';

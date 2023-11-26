@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { publicList } from '../../api/publicData';
 import ExploreSection from "components/exploreSection";
-import {EventCardSkeleton} from "../eventCard";
+import {EventCardSkeleton} from "../event/eventCard";
 
 const Box = styled.div`
     padding-top: 20px;

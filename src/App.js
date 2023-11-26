@@ -19,8 +19,9 @@ import InstallCheck from "components/installPWA";
 import RouterChecker from "./components/routerChecker";
 import useToast from "hooks/useToast";
 import { useEffect } from "react";
-import EventHandler from "components/eventHandler";
+import EventHandler from "components/event/eventHandler";
 import getConfig from "constant/envCofnig";
+import DetailModal from "./components/detailModal";
 
 
 const chains = [mainnet]
@@ -55,7 +56,6 @@ function App() {
                 </PersistGate>
             </Provider>
             <GlobalStyle />
-
             <Web3Modal
                 defaultChain={mainnet}
                 projectId={projectId} ethereumClient={ethereumClient}

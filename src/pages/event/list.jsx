@@ -2,12 +2,12 @@ import styled from "styled-components";
 import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect, useMemo } from "react";
-import EventCard, { EventCardSkeleton } from "components/eventCard";
+import EventCard, { EventCardSkeleton } from "components/event/eventCard";
 import { getSeeuEventList } from "api/event";
 import InfiniteScroll from "react-infinite-scroll-component";
 import NoItem from "components/noItem";
 import store from "store";
-import { saveLoading } from "store/reducer";
+import {saveDetail, saveLoading} from "store/reducer";
 import { useSelector } from "react-redux";
 import Loading from "components/common/loading";
 import { useNavigate } from "react-router-dom";
@@ -47,7 +47,17 @@ export default function EventListPage() {
   }, []);
 
   const openEvent = (id) => {
-    navigate(`/event/view?id=${id}`);
+
+    let obj={
+      type:"event",
+      id,
+      title:t("Event.DetailTitle"),
+      bgColor:"#fff",
+      headColor:"#1A1323"
+    }
+    store.dispatch(saveDetail(obj));
+
+    // navigate(`/event/view?id=${id}`);
   };
   return (
     <Layout title={t("Event.ListTitle")}>

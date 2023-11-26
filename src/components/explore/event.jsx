@@ -3,7 +3,7 @@ import ExploreSection from "components/exploreSection";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { getSeeuEventList } from "api/event";
-import EventCard, { EventCardSkeleton } from "components/eventCard";
+import EventCard, { EventCardSkeleton } from "components/event/eventCard";
 import { useNavigate } from "react-router-dom";
 
 export default function ExploreEventSection() {

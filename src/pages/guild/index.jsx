@@ -8,7 +8,7 @@ import Tab from "components/common/tab";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ProjectOrGuildItemDetail from "components/projectOrGuild/projectOrGuildItemDetail";
 import store from "store";
-import { saveLoading } from "store/reducer";
+import {saveDetail, saveLoading} from "store/reducer";
 import Loading from "components/common/loading";
 import NoItem from "components/noItem";
 
@@ -95,7 +95,17 @@ export default function Guild() {
   };
 
   const openDetail = (id) => {
-    navigate(`/guild/info/${id}`);
+    // navigate(`/guild/info/${id}`);
+
+    let obj={
+      type:"guild",
+      id,
+      title:t("Guild.Detail"),
+      bgColor:"#fff",
+      headColor:"#1A1323"
+    }
+    store.dispatch(saveDetail(obj));
+
   };
 
   const getCurrentList = (useGlobalLoading) => {

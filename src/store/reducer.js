@@ -31,8 +31,11 @@ const mainSlice = createSlice({
         updateSNSmap(state, action) {
             state.snsMap = action.payload;
         },
-        saveProposalCategories(state, action) { 
+        saveProposalCategories(state, action) {
             state.proposalCategories = action.payload;
+        },
+        saveDetail(state, action) {
+            state.detail = action.payload;
         }
     },
 });
@@ -41,6 +44,7 @@ export const {
     clearLogin,
     saveAccount,
     saveLoading,
+    saveDetail,
     // saveContract,
     saveSigner,
     saveWalletType,

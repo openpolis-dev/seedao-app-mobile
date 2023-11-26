@@ -8,7 +8,7 @@ import Tab from "components/common/tab";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ProjectOrGuildItemDetail from "components/projectOrGuild/projectOrGuildItemDetail";
 import store from "store";
-import { saveLoading } from "store/reducer";
+import {saveDetail, saveLoading} from "store/reducer";
 import NoItem from "components/noItem";
 
 export default function Project() {
@@ -89,7 +89,17 @@ export default function Project() {
   };
 
   const openDetail = (id) => {
-    navigate(`/project/info/${id}`);
+
+    let obj={
+      type:"project",
+      id,
+      title:t("Project.Detail"),
+      bgColor:"#fff",
+      headColor:"#1A1323"
+    }
+    store.dispatch(saveDetail(obj));
+
+    // navigate(`/project/info/${id}`);
   };
 
   const getCurrentList = () => {
