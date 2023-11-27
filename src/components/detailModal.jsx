@@ -24,7 +24,7 @@ const Box = styled.div`
   box-sizing: border-box;
   background-color: #fff;
   overflow-y: auto;
-  padding-bottom: 80px;
+  padding-top: env(safe-area-inset-top);
 `
 
 const Back = styled.div`
@@ -52,6 +52,7 @@ const InnerBox = styled.div`
   width: 100vw;
   padding-inline: 20px;
   padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 `;
 
 const Mid = styled.div`
@@ -73,32 +74,31 @@ const OperateBox = styled.div`
 `;
 
 const ProTop = styled.div`
-  margin-top: 50px;
+  //margin-top: 50px;
+  padding: 50px 0 80px;
 `
 export default function DetailModal(){
     const { t } = useTranslation();
     const detailShow = useSelector((state) => state.detail);
-    const backTop = () =>{
-        store.dispatch(saveDetail(null));
-    }
-
-
     const [noHead, setNoHead] = useState(true);
+
     useEffect(() => {
         const container = document.querySelector("#proInner");
-        console.log("==========container",container)
         container && container.addEventListener("scroll", ScrollHeight);
         return () => {
             container && container.removeEventListener("scroll", ScrollHeight);
         };
     }, [detailShow]);
 
+
     const ScrollHeight = () => {
         const container = document.querySelector("#proInner");
-        console.error(container.scrollTop)
-
         setNoHead(container?.scrollTop > 10);
     };
+
+    const backTop = () =>{
+        store.dispatch(saveDetail(null));
+    }
 
     // const formatTitle = () =>{
     //
@@ -130,7 +130,7 @@ export default function DetailModal(){
                         <OperateBox></OperateBox>
                     </InnerBox>
                 }
-
+                <ProTop>
                 {
                     detailShow?.type === 'pub' && <PubInner id={detailShow?.id} />
                 }
@@ -138,14 +138,15 @@ export default function DetailModal(){
                     detailShow?.type === 'event' && <EventInner id={detailShow?.id} />
                 }
                 {
-                    detailShow?.type === 'project' && <ProTop><ProjectInner id={detailShow?.id} /></ProTop>
+                    detailShow?.type === 'project' && <ProjectInner id={detailShow?.id} />
                 }
                 {
-                    detailShow?.type === 'guild' && <ProTop><GuildInner id={detailShow?.id}  /></ProTop>
+                    detailShow?.type === 'guild' && <GuildInner id={detailShow?.id}  />
                 }
                 {
                     detailShow?.type === 'proposal' && <Proposalnner id={detailShow?.id}  />
                 }
+                </ProTop>
     </Box>
     }
 </>
