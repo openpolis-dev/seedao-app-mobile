@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import {useSelector} from "react-redux";
-import ProjectProvider from "../pages/project/info/provider";
-import GuildProvider, {useGuildContext} from "../pages/guild/info/provider";
 import BackSVG from "./svgs/back";
 import Loading from "./layout/loading";
 import store from "../store";
@@ -12,6 +10,8 @@ import EventInner from "./event/EventInner";
 import ProjectInner from "./project/ProjectInner";
 import GuildInner from "./guild/GuildInner";
 import {useTranslation} from "react-i18next";
+import Proposalnner from "./proposal/Proposalnner";
+import {useEffect, useState} from "react";
 
 
 const Box = styled.div`
@@ -78,12 +78,27 @@ const ProTop = styled.div`
 export default function DetailModal(){
     const { t } = useTranslation();
     const detailShow = useSelector((state) => state.detail);
-    // const {
-    //     state: { data },
-    // } = useGuildContext();
     const backTop = () =>{
         store.dispatch(saveDetail(null));
     }
+
+
+    const [noHead, setNoHead] = useState(true);
+    useEffect(() => {
+        const container = document.querySelector("#proInner");
+        console.log("==========container",container)
+        container && container.addEventListener("scroll", ScrollHeight);
+        return () => {
+            container && container.removeEventListener("scroll", ScrollHeight);
+        };
+    }, [detailShow]);
+
+    const ScrollHeight = () => {
+        const container = document.querySelector("#proInner");
+        console.error(container.scrollTop)
+
+        setNoHead(container?.scrollTop > 10);
+    };
 
     // const formatTitle = () =>{
     //
@@ -99,20 +114,23 @@ export default function DetailModal(){
     return <>
         {
         detailShow != null &&<Box>
-                <InnerBox $bgColor={detailShow.bgColor}>
-                    <Back onClick={() => backTop()}>
-                        <BackSVG color={detailShow.headColor} />
-                    </Back>
-                    <HeaderBox $headColor={detailShow.headColor}>
-                        <Mid>
-                            <span>{detailShow.title}</span>
-                            <LoadingBox>
-                                <Loading />
-                            </LoadingBox>
-                        </Mid>
-                    </HeaderBox>
-                    <OperateBox></OperateBox>
-                </InnerBox>
+                {
+                    (  detailShow?.type !== 'proposal' || (detailShow?.type === 'proposal' && noHead) )&&  <InnerBox $bgColor={detailShow.bgColor}>
+                        <Back onClick={() => backTop()}>
+                            <BackSVG color={detailShow.headColor} />
+                        </Back>
+                        <HeaderBox $headColor={detailShow.headColor}>
+                            <Mid>
+                                <span>{detailShow.title}</span>
+                                <LoadingBox>
+                                    <Loading />
+                                </LoadingBox>
+                            </Mid>
+                        </HeaderBox>
+                        <OperateBox></OperateBox>
+                    </InnerBox>
+                }
+
                 {
                     detailShow?.type === 'pub' && <PubInner id={detailShow?.id} />
                 }
@@ -124,6 +142,9 @@ export default function DetailModal(){
                 }
                 {
                     detailShow?.type === 'guild' && <ProTop><GuildInner id={detailShow?.id}  /></ProTop>
+                }
+                {
+                    detailShow?.type === 'proposal' && <Proposalnner id={detailShow?.id}  />
                 }
     </Box>
     }
