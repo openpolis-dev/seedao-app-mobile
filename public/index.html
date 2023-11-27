@@ -29,6 +29,12 @@
   </head>
   <body>
     <script>
+
+      document.body.addEventListener('touchmove', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }, {passive: false})
+
       // DEBUG
       window.START_TIME = new Date().getTime();
     </script>
