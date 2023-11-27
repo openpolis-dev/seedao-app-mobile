@@ -97,8 +97,6 @@ export default function DetailModal(){
     // }
 
     return <>
-        <ProjectProvider>
-            <GuildProvider>
         {
         detailShow != null &&<Box>
                 <InnerBox $bgColor={detailShow.bgColor}>
@@ -129,7 +127,5 @@ export default function DetailModal(){
                 }
     </Box>
     }
-            </GuildProvider>
-        </ProjectProvider>
 </>
 }

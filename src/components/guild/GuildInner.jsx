@@ -2,7 +2,7 @@ import SipTag from "../sipTag";
 import GuildMember from "../../pages/guild/info/member";
 import {MdPreview} from "md-editor-rt";
 import {GUILD_ACTIONS, useGuildContext} from "../../pages/guild/info/provider";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import store from "../../store";
 import {saveLoading} from "../../store/reducer";
 import {getGuildById} from "../../api/guild";
@@ -71,11 +71,7 @@ const MBox = styled.div`
 `;
 
 export default function GuildInner({id}){
-
-    const {
-        state: { data },
-        dispatch,
-    } = useGuildContext();
+    const [data,setData] = useState();
 
 
     useEffect(() => {
@@ -84,7 +80,8 @@ export default function GuildInner({id}){
             try {
                 const data = await getGuildById(id);
                 console.log(`[pro-${id}]`, data);
-                dispatch({ type: GUILD_ACTIONS.SET_DATA, payload: data.data });
+                setData(data.data)
+                // dispatch({ type: GUILD_ACTIONS.SET_DATA, payload: data.data });
             } catch (error) {
                 console.error(error);
             } finally {
@@ -93,13 +90,13 @@ export default function GuildInner({id}){
         };
         if (id) {
             getProjectData();
-            dispatch({ type: GUILD_ACTIONS.SET_ID, payload: Number(id) });
+            // dispatch({ type: GUILD_ACTIONS.SET_ID, payload: Number(id) });
         }
-    }, [id, dispatch]);
+    }, [id]);
 
     return    <>
         <FlexBox>
-            <ImgBlock>{data?.logo && <img src={data.logo} alt="" />}</ImgBlock>
+            <ImgBlock>{data?.logo && <img src={data?.logo} alt="" />}</ImgBlock>
             <TitleBox>{data?.name}</TitleBox>
         </FlexBox>
 
@@ -111,7 +108,7 @@ export default function GuildInner({id}){
         </ProposalsBox>
         <MBox>
             <TitleAll>{t("Guild.Members")}</TitleAll>
-            <GuildMember />
+            <GuildMember data={data} />
         </MBox>
 
         <ContentBlock>

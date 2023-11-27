@@ -9,11 +9,8 @@ import UserList from "components/userList";
 import { useParseSNSList } from "hooks/useParseSNS";
 import UserModal from "components/userModal";
 
-export default function GuildMember() {
+export default function GuildMember({data}) {
   const { t } = useTranslation();
-  const {
-    state: { data },
-  } = useGuildContext();
   const [userMap, setUserMap] = useState({});
   const [members, setMembers] = useState([]);
   const [sponsors, setSponsors] = useState([]);

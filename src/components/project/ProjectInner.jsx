@@ -2,7 +2,7 @@ import SipTag from "../sipTag";
 import ProjectMember from "../../pages/project/info/member";
 import {MdPreview} from "md-editor-rt";
 import {PROJECT_ACTIONS, useProjectContext} from "../../pages/project/info/provider";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import store from "../../store";
 import {saveLoading} from "../../store/reducer";
 import {getProjectById} from "../../api/project";
@@ -70,11 +70,7 @@ const MBox = styled.div`
 
 export default function ProjectInner({id}){
     const { t } = useTranslation();
-    const {
-        state: { data },
-        dispatch,
-    } = useProjectContext();
-
+    const [data,setData] = useState();
 
     useEffect(() => {
         const getProjectData = async () => {
@@ -82,7 +78,7 @@ export default function ProjectInner({id}){
             try {
                 const data = await getProjectById(id);
                 console.log(`[pro-${id}]`, data);
-                dispatch({ type: PROJECT_ACTIONS.SET_DATA, payload: data?.data });
+                setData(data.data)
             } catch (error) {
                 console.error(error);
             } finally {
@@ -91,9 +87,9 @@ export default function ProjectInner({id}){
         };
         if (id) {
             getProjectData();
-            dispatch({ type: PROJECT_ACTIONS.SET_ID, payload: Number(id) });
+            // dispatch({ type: PROJECT_ACTIONS.SET_ID, payload: Number(id) });
         }
-    }, [id, dispatch]);
+    }, [id]);
 
     return <>
         <FlexBox>
@@ -109,7 +105,7 @@ export default function ProjectInner({id}){
     </ProposalsBox>
     <MBox>
         <TitleAll>{t("Project.Members")}</TitleAll>
-        <ProjectMember />
+        <ProjectMember data={data} />
     </MBox>
 
     <ContentBlock>
