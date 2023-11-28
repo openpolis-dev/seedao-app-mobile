@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Animation from '../components/sns/animation';
-import LogoImg from '../assets/Imgs/snsLogo.svg';
+import Animation from 'components/sns/animation';
+import LogoImg from 'assets/Imgs/snsLogo.svg';
 
 const Box = styled.div`
   width: 100vw;

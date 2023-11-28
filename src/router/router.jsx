@@ -26,8 +26,8 @@ const PubList = lazy(() => import("../pages/PubList"));
 const EventList = lazy(() => import("pages/event/list"));
 const EventInfoPage = lazy(() => import("pages/event/detail"));
 const RankingPage = lazy(() => import("pages/ranking"));
-const SNSEntrancePage = lazy(() => import("pages/sns"))
-const RegisterSNS = lazy(() => import("pages/snsRegister"))
+const SNSEntrancePage = lazy(() => import("pages/sns/entrance"))
+const RegisterSNS = lazy(() => import("pages/sns/register"))
 
 // import Home from "../pages/home";
 // import Login from "../pages/login";
