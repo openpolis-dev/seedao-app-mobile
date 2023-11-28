@@ -14,3 +14,13 @@ export const PROPOSAL_CATEGORIES = [
     ],
   },
 ];
+
+export const SELECT_WALLET = "SEEDAO_WALLET";
+
+export const Wallet = {
+  METAMASK_INJECTED: 'METAMASK_INJECTED',
+  METAMASK: 'METAMASK',
+  UNIPASS: 'UNIPASS',
+  JOYID: 'JOYID',
+  JOYID_WEB: 'JOYID_WEB',
+}
