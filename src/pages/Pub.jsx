@@ -109,7 +109,7 @@ const Tit = styled.li`
 `;
 
 
-export default function Pub(){
+export default function Hub(){
     const navigate = useNavigate();
     const [list, setList] = useState([]);
     const { t } = useTranslation();

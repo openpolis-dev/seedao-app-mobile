@@ -159,7 +159,7 @@ export default function PubList(){
         return cStr;
     };
 
-    return   <Layout title={t("Pub.ListTitle")}>
+    return   <Layout title={t("Hub.ListTitle")}>
         <InfiniteScroll
             scrollableTarget="inner"
             dataLength={list.length}

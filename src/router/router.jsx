@@ -53,7 +53,7 @@ const RegisterSNS = lazy(() => import("pages/snsRegister"))
 // import Explore from "../pages/explore";
 // import Governance from "pages/governance";
 
-// import Pub from "../pages/Pub";
+// import Hub from "../pages/Hub";
 // import PubDetail from "../pages/PubDetail";
 // import PubList from "../pages/PubList";
 // import EventList from "pages/event/list";
@@ -86,9 +86,9 @@ function RouterLink() {
         <Route path="/event/view" element={<EventInfoPage />} />
         <Route path="/ranking" element={<RankingPage />} />
 
-        <Route path="/pub" element={<Pub />} />
-        <Route path="/pubList" element={<PubList />} />
-        <Route path="/pubDetail/:id" element={<PubDetail />} />
+        <Route path="/hub" element={<Pub />} />
+        <Route path="/hubList" element={<PubList />} />
+        <Route path="/hubDetail/:id" element={<PubDetail />} />
 
         <Route path="/calendar" element={<Calendar />} />
 

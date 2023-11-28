@@ -132,7 +132,7 @@ const FlexLine = styled.div`
     padding-bottom: 10px;
   }
 `
-export default function Pub() {
+export default function Hub() {
 
     const navigate = useNavigate();
     const [list, setList] = useState([]);
@@ -221,7 +221,7 @@ export default function Pub() {
         <>
             {
                 !!list?.length && <Box>
-                    <TitleBox>{t("Explore.PubTitle")}</TitleBox>
+                    <TitleBox>{t("Explore.HubTitle")}</TitleBox>
                     <UlBox>
                         {list?.map((item, index) => (
                             <li className="libox" key={index} onClick={() => ToGo(item.id)}>

@@ -435,8 +435,8 @@ export default function Profile() {
   const switchRoles = (role) => {
     let str = '';
     switch (role) {
-      case 'SGN_HOLDER':
-        str = t('roles.SGN_HOLDER');
+      case 'SEED_HOLDER':
+        str = t('roles.SEED_HOLDER');
         break;
       case 'NODE_S1':
         str = t('roles.NODE_S1');

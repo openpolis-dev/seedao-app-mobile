@@ -27,8 +27,8 @@
     "ResourceApplyDesc": "Resoureces for all SeeDAO community members",
     "OfflineEvent": "Events",
     "OfflineEventDesc": "Events for SeeDAO community",
-    "PubTitle": "SeeDAO Pub",
-    "PubDesc": "The funny place for SeeDAO community"
+    "HubTitle": "SeeDAO Hub",
+    "HubDesc": "The funny place for SeeDAO community"
   },
   "Governance": {
     "Head": "Governance",
@@ -52,8 +52,8 @@
     "CalendarReviewDesc": "Add events in community calendar.",
     "Community": "Community Conf Speech",
     "CommunityDesc": "Share your idea in community weekly conf.",
-    "Pub": "Pub",
-    "PubDesc": "The events hub for SeeDAO community.",
+    "Hub": "Hub",
+    "HubDesc": "The events hub for SeeDAO community.",
     "Seed": "SEED",
     "SeedDesc": "To claim your SeeDAO SEED NFT",
     "Media": "Media Resources",
@@ -125,7 +125,6 @@
     "ModifiedFailed": "Modified Failed",
     "IncorrectLink": "{{media}}: required the correct link",
     "IncorrectEmail": "Please enter the correct email information",
-    "IncorrectGoogle": "Please enter the correct Google email",
     "IncorrectMirror": "Please enter the correct Mirror link",
     "EmptySBT": "Not Owning SBT",
     "EditTitle": "Edit Profile",
@@ -135,7 +134,7 @@
     "SeeU": "SeeU Network"
   },
   "roles": {
-    "SGN_HOLDER": "SGN Holder",
+    "SEED_HOLDER": "SEED Holder",
     "NODE_S1": "S1 Node",
     "NODE_S2": "S2 Node",
     "NODE_S3": "S3 Node",
@@ -171,9 +170,9 @@
     "ListTitle": "Events",
     "DetailTitle": "Event Detail"
   },
-  "Pub": {
-    "ListTitle": "SeeDAO Pub",
-    "DetailTitle": "Pub Detail"
+  "Hub": {
+    "ListTitle": "SeeDAO Hub",
+    "DetailTitle": "Hub Detail"
   },
   "Vault": {
     "TotalAssets": "Total Assets",
@@ -199,7 +198,7 @@
     "SupplySeed": "Sent SEED",
     "SendDetail": "Detail",
     "Applicant": "Applicant",
-    "Receiver": "Receiver",
+    "Recipient": "Recipient",
     "Auditor": "Auditor",
     "OutVault": "Out-Vault",
     "Season": "Season",
@@ -213,11 +212,11 @@
     "TransactionId": "Transaction ID",
     "TransactionDate": "Transaction Time",
     "SelectSeason": "Season",
-    "AllSeasons": "All Season",
+    "AllSeasons": "All Seasons",
     "SelectStatus": "Status",
     "AllStatus": "All Status",
     "SelectAsset": "Asset",
-    "AllAssets": "All Asset Type"
+    "AllAssets": "All Asset Types"
   },
   "Calendar": {
     "Calendar": "Calendar",

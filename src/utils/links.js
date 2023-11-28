@@ -46,11 +46,11 @@ const links = {
       hiddenFields: ["name", "sns", "wallet"],
     },
     {
-      name: "Resources.Pub",
+      name: "Resources.Hub",
       link: "https://tally.so/r/mDKbqb",
       id: "resource-community",
       icon: RImg3,
-      desc: "Resources.PubDesc",
+      desc: "Resources.HubDesc",
       hideTitle: 0,
       hiddenFields: ["name", "sns", "wallet", "seed"],
     },
@@ -265,10 +265,10 @@ const links = {
     },
     // {
     //   id: 'module-pub',
-    //   name: 'apps.Pub',
+    //   name: 'apps.Hub',
     //   link: '/pub',
     //   icon: '',
-    //   desc: 'apps.PubDesc',
+    //   desc: 'apps.HubDesc',
     // },
     // {
     //   id: 'online',
