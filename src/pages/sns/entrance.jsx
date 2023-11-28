@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Animation from 'components/sns/animation';
 import LogoImg from 'assets/Imgs/snsLogo.svg';
+import { useTranslation } from 'react-i18next';
 
 const Box = styled.div`
   width: 100vw;
@@ -57,17 +58,18 @@ const ButtonBox = styled.div`
   font-size: 14px;
 `;
 export default function SNSEntrancePage() {
+  const { t } = useTranslation();
     return (
-        <Box>
-            <TopBox>
-                <img src={LogoImg} alt="" />
-                <TitleBox>INVOLVED IN SEEDAO IN YOUR NAME</TitleBox>
-                <TipBox>SeeDAO Name Service（SNS）is your unique symbol at seedao</TipBox>
-                <Link to="/sns/register">
-                    <ButtonBox>Started</ButtonBox>
-                </Link>
-            </TopBox>
-            <Animation />
-        </Box>
+      <Box>
+        <TopBox>
+          <img src={LogoImg} alt="" />
+          <TitleBox>{t("SNS.EntranceTitle")}</TitleBox>
+          <TipBox>{t("SNS.EntranceDesc")}</TipBox>
+          <Link to="/sns/register">
+            <ButtonBox>{t("SNS.Started")}</ButtonBox>
+          </Link>
+        </TopBox>
+        <Animation />
+      </Box>
     );
 }
