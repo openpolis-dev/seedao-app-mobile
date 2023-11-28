@@ -24,18 +24,18 @@
     "GuildTitle": "公会",
     "GuildDescription": "来这里寻找小伙伴吧",
     "ResourceApply": "资源申请",
-    "ResourceApplyDesc": "薅羊毛专区",
+    "ResourceApplyDesc": "城邦资源汇集专区",
     "OfflineEvent": "城邦活动",
-    "OfflineEventDesc": "面基面基网友面基",
-    "PubTitle": "悬赏酒馆",
-    "PubDesc": "悬赏酒馆悬赏酒馆悬赏酒馆"
+    "OfflineEventDesc": "城邦活动信息汇集",
+    "HubTitle": "酒馆",
+    "HubDesc": "城邦需求资源对接信息汇集"
   },
   "Governance": {
     "Head": "治理",
     "Vault": "金库",
-    "VaultDesc": "SeeDAO的荷包",
+    "VaultDesc": "城邦各个金库",
     "Proposal": "提案",
-    "ProposalDesc": "一起投票把钱花出去",
+    "ProposalDesc": "城邦治理提案",
     "GovernanceRule": "治理规则",
     "GovernanceRuleDesc": "查看规则 参与治理",
     "MetaRule": "SeeDAO 元规则",
@@ -52,8 +52,8 @@
     "CalendarReviewDesc": "申请向社区日历添加日历信息",
     "Community": "社区大会申请",
     "CommunityDesc": "申请在社区大会分享想法和信息",
-    "Pub": "酒馆加入申请",
-    "PubDesc": "申请向酒馆添加需要发布的信息",
+    "Hub": "酒馆加入申请",
+    "HubDesc": "申请向酒馆添加需要发布的信息",
     "Seed": "SEED获取申请",
     "SeedDesc": "申请获取SeeDAO Seed NFT",
     "Media": "媒体资源申请",
@@ -79,7 +79,7 @@
     "title": "城邦日历",
     "tips": "看看今天有什么安排吧",
     "apps": "城邦应用",
-    "appTips": "这里是所有的城邦应用啦",
+    "appTips": "这里是所有的城邦应用",
     "SeeU": "SeeU Network",
     "events": "城邦活动",
     "more": "查看内容"
@@ -108,7 +108,7 @@
     "MyProfile": "我的信息",
     "MyAccount": "我的账户",
     "logout": "退出登录",
-    "Bio": "简介",
+    "Bio": "个人简介",
     "Exit": "退出",
     "Name": "昵称",
     "Email": "邮箱地址",
@@ -125,7 +125,6 @@
     "ModifiedFailed": "修改失败",
     "IncorrectLink": "{{media}}：请填写正确的信息",
     "IncorrectEmail": "请填写正确的Email信息",
-    "IncorrectGoogle": "请填写正确的Google email信息",
     "IncorrectMirror": "请填写正确的Mirror链接",
     "EmptySBT": "您还未拥有SBT",
     "EditTitle": "编辑个人资料",
@@ -135,7 +134,7 @@
     "SeeU": "SeeU Network"
   },
   "roles": {
-    "SGN_HOLDER": "SGN持有者",
+    "SEED_HOLDER": "SEED持有者",
     "NODE_S1": "S1节点",
     "NODE_S2": "S2节点",
     "NODE_S3": "S3节点",
@@ -171,8 +170,8 @@
     "ListTitle": "城邦活动",
     "DetailTitle": "活动详情"
   },
-  "Pub": {
-    "ListTitle": "悬赏酒馆",
+  "Hub": {
+    "ListTitle": "酒馆",
     "DetailTitle": "酒馆详情"
   },
   "Vault": {
@@ -199,7 +198,7 @@
     "SupplySeed": "已发放SEED",
     "SendDetail": "发放详情",
     "Applicant": "申请人",
-    "Receiver": "接收人",
+    "Recipient": "接收人",
     "Auditor": "审核人",
     "OutVault": "支出金库",
     "Season": "季度",

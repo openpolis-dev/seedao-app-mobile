@@ -260,7 +260,7 @@ export default function PubDetail() {
         return cStr;
     };
     return (
-        <Layout title={t("Pub.DetailTitle")}>
+        <Layout title={t("Hub.DetailTitle")}>
             <Box>
                 {!!imgUrl && (
                     <ImgBox>

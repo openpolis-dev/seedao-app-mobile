@@ -114,7 +114,7 @@ const TypeBox = styled(TagBox)`
 `;
 
 
-export default function Pub() {
+export default function Hub() {
     const navigate = useNavigate();
     const [list, setList] = useState([]);
     const { t } = useTranslation();
@@ -203,7 +203,7 @@ export default function Pub() {
     };
 
     return (<Box>
-                <ExploreSection title={t("Explore.PubTitle")} desc={t("Explore.PubDesc")} moreLink="/pubList">
+                <ExploreSection title={t("Explore.HubTitle")} desc={t("Explore.HubDesc")} moreLink="/pubList">
                 <UlBox>
                     {
                         loading? (

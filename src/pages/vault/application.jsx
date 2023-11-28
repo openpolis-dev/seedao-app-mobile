@@ -55,7 +55,7 @@ export default function ApplicationDetailPage() {
         <AssetBox>{data.asset_display}</AssetBox>
         <SectionBlock>
           <RowItem>
-            <div className="label">{t("Application.Receiver")}</div>
+            <div className="label">{t("Application.Recipient")}</div>
             <UserComp avatar={""} sns={formatSNS(data.target_user_wallet.toLowerCase())} />
           </RowItem>
           <RowItem>

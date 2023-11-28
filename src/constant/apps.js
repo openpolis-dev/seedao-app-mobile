@@ -51,10 +51,10 @@ const apps =  [
     },
     // {
     //   id: 'module-pub',
-    //   name: 'apps.Pub',
+    //   name: 'apps.Hub',
     //   link: '/pub',
     //   icon: '',
-    //   desc: 'apps.PubDesc',
+    //   desc: 'apps.HubDesc',
     // },
     // {
     //   id: 'online',

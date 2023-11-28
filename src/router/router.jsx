@@ -20,7 +20,7 @@ const Calendar = lazy(() => import("../pages/calendar"));
 const ProfileEdit = lazy(() => import("../pages/profileEdit"));
 const Explore = lazy(() => import("../pages/explore"));
 const Governance = lazy(() => import("pages/governance"));
-const Pub = lazy(() => import("../pages/Pub"));
+const Hub = lazy(() => import("../pages/Hub"));
 const PubDetail = lazy(() => import("../pages/PubDetail"));
 const PubList = lazy(() => import("../pages/PubList"));
 const EventList = lazy(() => import("pages/event/list"));
@@ -51,7 +51,7 @@ const RankingPage = lazy(() => import("pages/ranking"));
 // import Explore from "../pages/explore";
 // import Governance from "pages/governance";
 
-// import Pub from "../pages/Pub";
+// import Hub from "../pages/Hub";
 // import PubDetail from "../pages/PubDetail";
 // import PubList from "../pages/PubList";
 // import EventList from "pages/event/list";
@@ -84,7 +84,7 @@ function RouterLink() {
         <Route path="/event/view" element={<EventInfoPage />} />
         <Route path="/ranking" element={<RankingPage />} />
 
-        <Route path="/pub" element={<Pub />} />
+        <Route path="/pub" element={<Hub />} />
         <Route path="/pubList" element={<PubList />} />
         <Route path="/pubDetail/:id" element={<PubDetail />} />
 
