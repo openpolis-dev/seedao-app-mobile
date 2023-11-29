@@ -57,10 +57,10 @@ export default function Project() {
       const id = prevPath.split("/project/info/")[1];
       const element = document.querySelector(`#inner`)
       const targetElement = document.querySelector(`#project_${id}`);
-      // console.log(element,targetElement)
+      const screenHeight = window.innerHeight;
       if (targetElement) {
         element.scrollTo({
-          top: height - 250,
+          top: height - screenHeight * 0.5,
           behavior: 'auto',
         });
       }
