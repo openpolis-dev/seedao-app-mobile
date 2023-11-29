@@ -131,7 +131,8 @@
     "Avatar": "Avatar"
   },
   "apps": {
-    "SeeU": "SeeU Network"
+    "SeeU": "SeeU Network",
+    "SNS": "SNS"
   },
   "roles": {
     "SEED_HOLDER": "SEED Holder",

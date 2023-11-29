@@ -131,7 +131,8 @@
     "Avatar": "头像"
   },
   "apps": {
-    "SeeU": "SeeU Network"
+    "SeeU": "SeeU Network",
+    "SNS": "SNS"
   },
   "roles": {
     "SEED_HOLDER": "SEED持有者",
