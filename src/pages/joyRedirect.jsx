@@ -44,17 +44,17 @@ export default function JoyIDRedirect() {
   };
 
   useEffect(() => {
-    console.log("action:", action);
+    console.log("===> joyid redirect action:", action);
 
     let res = "";
     try {
       res = sendTransactionCallback();
+      console.log("===> joyid redirect res:", res);
       if (res && res.tx) {
         switch (action) {
           case "sns-commit":
             handleCommitData(res.tx);
             navigate("/sns/register");
-
             break;
           case "sns-register":
             handleRegisterData(res.tx);
@@ -66,6 +66,7 @@ export default function JoyIDRedirect() {
           default:
             break;
         }
+        return;
       }
     } catch (error) {
       console.error(error);
@@ -78,11 +79,13 @@ export default function JoyIDRedirect() {
         case "sns-register":
           navigate("/sns/register");
           break;
+        case "sns-switch":
+          navigate("/sns/user");
+          break;
         default:
           break;
       }
     }
-    console.log("===res:", res);
   }, []);
 
   return <></>;

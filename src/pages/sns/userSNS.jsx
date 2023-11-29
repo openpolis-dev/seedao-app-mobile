@@ -8,25 +8,42 @@ import NoItem from "components/noItem";
 import { ethers } from "ethers";
 import Layout from "components/layout/layout";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import store from "store";
+import { saveLoading } from "store/reducer";
+import getConfig from "constant/envCofnig";
+const networkConfig = getConfig().NETWORK;
 
 export default function UserSNS() {
   const { t } = useTranslation();
-
+  const { state } = useLocation();
+  console.log("====state", state);
   const account = useSelector((state) => state.account);
 
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState();
   const [snsList, setSnsList] = useState([]);
   const [userSNS, setUserSNS] = useState("");
+  const [loadingName, setLoadingName] = useState(false);
 
-  useEffect(() => {
+  const getCurrentName = (showLoading) => {
     if (account) {
-      sns.name(account).then((r) => {
-        setUserSNS(r || account);
-      });
+      showLoading && setLoadingName(true);
+      sns
+        .name(account)
+        .then((r) => {
+          setUserSNS(r || account);
+        })
+        .finally(() => {
+          showLoading && setLoadingName(false);
+        });
     } else {
       setUserSNS(account);
     }
+  };
+
+  useEffect(() => {
+    getCurrentName();
   }, [account]);
 
   useEffect(() => {
@@ -34,7 +51,8 @@ export default function UserSNS() {
       if (!account) {
         return;
       }
-      setLoading(true);
+      store.dispatch(saveLoading(true));
+
       fetch(`${builtin.INDEXER_HOST}/sns/list_by_wallet/${ethers.utils.getAddress(account)}`)
         .then((res) => res.json())
         .then((res) => {
@@ -44,7 +62,7 @@ export default function UserSNS() {
           console.error("Can't get sns list", err);
         })
         .finally(() => {
-          setLoading(false);
+          store.dispatch(saveLoading(false));
         });
     };
     getSNSList();
@@ -52,14 +70,48 @@ export default function UserSNS() {
   const list = snsList.filter((item) => item !== userSNS);
   const handleCloseModal = (newSNS) => {
     setShowModal(undefined);
+    newSNS && setUserSNS(newSNS);
   };
+
+  useEffect(() => {
+    if (!account || !state) {
+      return;
+    }
+
+    let timer;
+    const timerFunc = () => {
+      setLoading(true);
+      const provider = new ethers.providers.StaticJsonRpcProvider(networkConfig.rpc);
+      provider.getTransactionReceipt(state).then((r) => {
+        console.log("[tx-status]", r);
+        if (r && r.status === 1) {
+          // means tx success
+          clearInterval(timer);
+          setLoading(false);
+          getCurrentName(true);
+          // refresh data
+        } else if (r && r.status === 2) {
+          // means tx failed
+          clearInterval(timer);
+          setLoading(false);
+        }
+      });
+    };
+    timer = setInterval(timerFunc, 1500);
+    return () => timer && clearInterval(timer);
+  }, [state, account]);
+
   return (
     <Layout title={t("SNS.MySNS")}>
       <ContainerWrapper>
-        <CurrentUsed>{userSNS || account}</CurrentUsed>
-        {loading ? (
-          <Loading />
-        ) : !!snsList.length ? (
+        <CurrentUsed>
+          {loadingName ? (
+            <img className="loading" src={LoadingImg} alt="" style={{ width: "20px" }} />
+          ) : (
+            userSNS || account
+          )}
+        </CurrentUsed>
+        {!!snsList.length ? (
           <NameList>
             {list.map((item) => (
               <li key={item}>
@@ -71,33 +123,61 @@ export default function UserSNS() {
         ) : (
           <NoItem />
         )}
+        {loading && <Loading text={t("SNS.Switching")} />}
       </ContainerWrapper>
       {showModal && <SwitchModal select={showModal} handleClose={handleCloseModal} />}
     </Layout>
   );
 }
 
-const Loading = () => {
+const Loading = ({ text }) => {
   return (
     <LoadingStyle>
-      <img src={LoadingImg} alt="" />
+      <LoadingBox>
+        <img src={LoadingImg} alt="" className="loading" />
+        <div>{text}</div>
+      </LoadingBox>
     </LoadingStyle>
   );
 };
 
 const LoadingStyle = styled.div`
-  width: 100%;
-  height: 100px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 999;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  position: relative;
 
   img {
     user-select: none;
     width: 40px;
     height: 40px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+  }
+`;
+
+const LoadingBox = styled.div`
+  width: 120px;
+  height: 120px;
+  background-color: rgba(0, 0, 0, 0.75);
+  text-align: center;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+`;
+
+const ContainerWrapper = styled.div`
+  padding-top: 24px;
+  box-sizing: border-box;
+  padding-inline: 20px;
+  img.loading {
     animation: rotate 1s infinite linear;
   }
   @keyframes rotate {
@@ -110,19 +190,11 @@ const LoadingStyle = styled.div`
   }
 `;
 
-const ContainerWrapper = styled.div`
-  padding-top: 24px;
-  box-sizing: border-box;
-  padding-inline: 20px;
-`;
-
 const CurrentUsed = styled.div`
   font-size: 14px;
-  font-family: Poppins, Poppins;
   font-weight: 400;
-  color: var(--bs-primary);
+  color: var(--primary-color);
   line-height: 68px;
-  padding-inline: 33px;
   border-bottom: 1px solid var(--border-color-1);
 `;
 
@@ -140,8 +212,11 @@ const NameList = styled.ul`
 const PrimaryOutlinedButton = styled.span`
   display: inline-block;
   height: 28px;
+  padding-inline: 12px;
   border-radius: 29px;
   line-height: 27px;
   text-align: center;
   border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  font-size: 13px;
 `;

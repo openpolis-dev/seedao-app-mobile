@@ -249,6 +249,7 @@
     "Step2Intro": "完成第二笔交易来获得该 SNS",
     "InputTip": "*请输入4-15位数字（0～9）、小写字母（a～z）或特殊字符（ ! $ ( ) * + - _ ）",
     "Switch": "切换",
-    "MySNS": "我的 SNS"
+    "MySNS": "我的 SNS",
+    "Switching": "正在切换..."
   }
 }

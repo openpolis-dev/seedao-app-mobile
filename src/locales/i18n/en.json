@@ -249,6 +249,7 @@
     "Step2Intro": "Complete a second transaction to secure your SNS",
     "InputTip": "*Please input 4-15 numbers(0-9)、lower letter(a-z) or special( ! $ ( ) * + - _ )",
     "Switch": "Switch",
-    "MySNS": "My SNS"
+    "MySNS": "My SNS",
+    "Switching": "Switching"
   }
 }
