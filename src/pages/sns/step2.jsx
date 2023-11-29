@@ -75,39 +75,18 @@ export default function RegisterSNSStep2() {
     if (!account) {
       return;
     }
-    dispatchSNS({ type: ACTIONS.SHOW_LOADING });
     try {
       console.log(sns, account, builtin.PUBLIC_RESOLVER_ADDR, secret);
-      const tx = sendTransaction(
+      const tx = await sendTransaction(
         buildRegisterData(sns, account, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret)),
       );
-      // const d = { ...localData };
-      // const wallet = localStorage.getItem(SELECT_WALLET);
-      // let txHash;
-      // if (wallet && wallet === Wallet.JOYID_WEB) {
-      //   txHash = await sendTransaction({
-      //     to: builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR,
-      //     from: account,
-      //     value: "0",
-      //     data: buildRegisterData(sns, account, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret)),
-      //   });
-      //   console.log("joyid txHash:", txHash);
-      //   d[account].registerHash = txHash;
-      // } else {
-      //   const tx = await contract.register(
-      //     sns,
-      //     account,
-      //     builtin.PUBLIC_RESOLVER_ADDR,
-      //     ethers.utils.formatBytes32String(secret),
-      //   );
-      //   console.log("tx:", tx);
-      //   d[account].registerHash = tx.hash;
-      // }
-      // d[account].step = "register";
-      // d[account].stepStatus = "pending";
-      // dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(d) });
-      // go to step3
-      // dispatchSNS({ type: ACTIONS.ADD_STEP });
+      if (tx && tx.hash) {
+        const d = { ...localData };
+        d[account].registerHash = tx.hash;
+        d[account].step = "register";
+        d[account].stepStatus = "pending";
+        dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(d) });
+      }
     } catch (error) {
       dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
       console.error("register failed", error);

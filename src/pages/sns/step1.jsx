@@ -133,40 +133,25 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         builtin.PUBLIC_RESOLVER_ADDR,
         ethers.utils.formatBytes32String(_s),
       );
-      dispatchSNS({ type: ACTIONS.SHOW_LOADING });
       console.log("===", builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR, account, buildCommitData(_commitment));
 
-      const tx = sendTransaction(buildCommitData(_commitment), _s, searchVal);
+      const tx = await sendTransaction(buildCommitData(_commitment), _s, searchVal);
       console.log("tx:", tx);
-      // commit
-      // dispatchSNS({ type: ACTIONS.SHOW_LOADING });
-      // const wallet = localStorage.getItem(SELECT_WALLET);
-      // let txHash;
-      // if (wallet && wallet === Wallet.JOYID_WEB) {
-      //   txHash = await sendTransaction({
-      //     to: builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR,
-      //     from: account,
-      //     value: "0",
-      //     data: buildCommitData(commitment),
-      //   });
-      //   console.log("joyid txHash:", txHash);
-      // } else {
-      //   const tx = await contract.commit(commitment);
-      //   console.log("tx:", tx);
-      //   txHash = tx.hash;
-      // }
-      // // record to localstorage
-      // const data = { ...localData };
-      // data[account] = {
-      //   sns: searchVal,
-      //   step: "commit",
-      //   commitHash: txHash,
-      //   stepStatus: "pending",
-      //   timestamp: 0,
-      //   secret: _s,
-      //   registerHash: "",
-      // };
-      // dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(data) });
+      if (tx && tx.hash) {
+        // record to localstorage
+        const data = { ...localData };
+        data[account] = {
+          sns: searchVal,
+          step: "commit",
+          commitHash: tx.hash,
+          stepStatus: "pending",
+          timestamp: 0,
+          secret: _s,
+          registerHash: "",
+        };
+        dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(data) });
+      }
+      
     } catch (error) {
       console.error("mint failed", error);
       dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
