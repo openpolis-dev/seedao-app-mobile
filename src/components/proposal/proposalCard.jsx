@@ -5,10 +5,10 @@ import { formatDate } from "utils/time";
 import { MultiLineStyle } from "assets/styles/common";
 import PublicJs from "../../utils/publicJs";
 import store from "../../store";
-import {saveDetail} from "../../store/reducer";
+import {saveCache, saveDetail} from "../../store/reducer";
 import {useTranslation} from "react-i18next";
 
-export default function ProposalCard({ data }) {
+export default function ProposalCard({ data,StorageList }) {
   const navigate = useNavigate();
   const [content, setContent] = useState("");
   const { t } = useTranslation();
@@ -67,19 +67,10 @@ export default function ProposalCard({ data }) {
   }, [data?.first_post.content]);
 
   const openProposal = () => {
-    let obj={
-      type:"proposal",
-      id:data.id,
-      title:t("Proposal.ProposalDetail"),
-      bgColor:"#fff",
-      headColor:"#1A1323"
-    }
-    store.dispatch(saveDetail(obj));
-
-
-
-    // navigate(`/proposal/thread/${data.id}`);
+    StorageList(data.id)
+    navigate(`/proposal/thread/${data.id}`);
   };
+
 
 
   return (

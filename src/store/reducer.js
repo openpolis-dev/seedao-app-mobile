@@ -38,6 +38,17 @@ const mainSlice = createSlice({
         },
         saveDetail(state, action) {
             state.detail = action.payload;
+        },
+        saveCache(state,action){
+            state.cache = action.payload;
+        },
+        savePath(state,action){
+            let arr =[...state.currentpath];
+            arr.push(action.payload);
+            if(arr.length>2){
+                arr.shift()
+            }
+            state.currentpath = arr;
         }
     },
 });
@@ -47,6 +58,8 @@ export const {
     saveAccount,
     saveLoading,
     saveDetail,
+    savePath,
+    saveCache,
     // saveContract,
     saveSigner,
     saveWalletType,

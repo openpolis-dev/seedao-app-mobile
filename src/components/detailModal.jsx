@@ -12,6 +12,7 @@ import GuildInner from "./guild/GuildInner";
 import {useTranslation} from "react-i18next";
 import Proposalnner from "./proposal/Proposalnner";
 import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 
 const Box = styled.div`
@@ -75,7 +76,7 @@ const OperateBox = styled.div`
 
 const ProTop = styled.div`
   //margin-top: 50px;
-  padding: 50px 0 80px;
+  padding: 30px 0 80px;
 `
 export default function DetailModal(){
     const { t } = useTranslation();
@@ -89,6 +90,20 @@ export default function DetailModal(){
             container && container.removeEventListener("scroll", ScrollHeight);
         };
     }, [detailShow]);
+
+    // useEffect(() => {
+    //     window.addEventListener('popstate', function(event) {
+    //         // 处理回退事件的逻辑
+    //         console.log('回退事件触发---');
+    //          event.preventDefault();
+    //          event.stopPropagation();
+    //          event.stopImmediatePropagation();
+    //          console.log(window.history)
+    //         navigate(1)
+    //         // window.history.pushState(null, null, document.URL);
+    //         store.dispatch(saveDetail(null));
+    //     });
+    // }, []);
 
 
     const ScrollHeight = () => {

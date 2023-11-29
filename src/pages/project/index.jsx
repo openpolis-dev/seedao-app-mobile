@@ -8,8 +8,10 @@ import Tab from "components/common/tab";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ProjectOrGuildItemDetail from "components/projectOrGuild/projectOrGuildItemDetail";
 import store from "store";
-import {saveDetail, saveLoading} from "store/reducer";
+import {saveCache, saveDetail, saveLoading} from "store/reducer";
 import NoItem from "components/noItem";
+import useCurrentPath from "../../hooks/useCurrentPath";
+import {useSelector} from "react-redux";
 
 export default function Project() {
   const { t } = useTranslation();
@@ -20,6 +22,8 @@ export default function Project() {
   const [pageCur, setPageCur] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [total, setTotal] = useState(1);
+  const prevPath = useCurrentPath();
+  const cache = useSelector(state => state.cache);
 
   useEffect(() => {
     const _list = [
@@ -38,6 +42,31 @@ export default function Project() {
     ];
     setList(_list);
   }, [t]);
+
+  useEffect(()=>{
+
+    if(!prevPath || prevPath?.indexOf("/project/info") === -1 || cache?.type!== "project" )return;
+
+    const { activeTab, proList, pageCur,height} = cache;
+
+    setActiveTab(activeTab)
+    setProList(proList);
+    setPageCur(pageCur);
+
+    setTimeout(()=>{
+      const id = prevPath.split("/project/info/")[1];
+      const element = document.querySelector(`#inner`)
+      const targetElement = document.querySelector(`#project_${id}`);
+      // console.log(element,targetElement)
+      if (targetElement) {
+        element.scrollTo({
+          top: height - 250,
+          behavior: 'auto',
+        });
+      }
+    },0)
+  },[prevPath])
+
 
   const handleTabChange = (v) => {
     setActiveTab(v);
@@ -88,18 +117,23 @@ export default function Project() {
     setPageCur(page);
   };
 
-  const openDetail = (id) => {
-
+  const StorageList = (id) =>{
+    const targetElement = document.querySelector(`#project_${id}`);
+    const height =targetElement.offsetTop;
     let obj={
       type:"project",
-      id,
-      title:t("Project.Detail"),
-      bgColor:"#fff",
-      headColor:"#1A1323"
+      activeTab,
+      proList,
+      pageCur,
+      height
     }
-    store.dispatch(saveDetail(obj));
+    store.dispatch(saveCache(obj))
+  }
 
-    // navigate(`/project/info/${id}`);
+
+  const openDetail = (id) => {
+    StorageList(id);
+    navigate(`/project/info/${id}`);
   };
 
   const getCurrentList = () => {
@@ -130,7 +164,9 @@ export default function Project() {
           {proList.length === 0 && <NoItem />}
           <ProjectList>
             {proList.map((item) => (
-              <ProjectOrGuildItemDetail key={item.id} data={item} onClickItem={openDetail} />
+                <div  key={item.id} id={`project_${item.id}`} >
+                <ProjectOrGuildItemDetail key={item.id} data={item} onClickItem={openDetail} />
+                </div>
             ))}
           </ProjectList>
         </InfiniteScroll>

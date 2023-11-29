@@ -6,11 +6,12 @@ import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
 import React, {useEffect, useMemo, useState} from "react";
-import {saveLoading,saveDetail} from "../store/reducer";
+import {saveLoading, saveDetail, saveCache} from "../store/reducer";
 import {publicList} from "../api/publicData";
 import styled from "styled-components";
 import {EventCardSkeleton} from "../components/event/eventCard";
 import store from "../store";
+import useCurrentPath from "../hooks/useCurrentPath";
 
 
 const UlBox = styled.div`
@@ -98,7 +99,34 @@ export default function PubList(){
     const [total, setTotal] = useState(0);
 
     const [pageCur, setPageCur] = useState(1);
-    const [pageSize, setPageSize] = useState(6);
+    const [pageSize, setPageSize] = useState(12);
+    const prevPath = useCurrentPath();
+    const cache = useSelector(state => state.cache);
+
+
+    useEffect(()=>{
+
+        if(!prevPath || prevPath?.indexOf("/hubDetail") === -1 || cache?.type!== "hub" )return;
+
+        const { list, pageCur,height} = cache;
+
+        setList(list);
+        setPageCur(pageCur);
+
+        setTimeout(()=>{
+            const id = prevPath.split("/hubDetail/")[1];
+            const element = document.querySelector(`#inner`)
+            const targetElement = document.querySelector(`#hub_${id}`);
+            const screenHeight = window.innerHeight;
+            // console.log(element,targetElement)
+            if (targetElement) {
+                element.scrollTo({
+                    top: height - screenHeight * 0.6,
+                    behavior: 'auto',
+                });
+            }
+        },0)
+    },[prevPath])
 
     const hasMore = useMemo(() => {
         return list.length < total;
@@ -128,19 +156,36 @@ export default function PubList(){
     };
 
     useEffect(() => {
+        // if(list.length)return;
         getList();
     }, []);
 
-    const ToGo = (id) => {
+
+
+
+    const StorageList = (id) =>{
+        const targetElement = document.querySelector(`#hub_${id}`);
+        const height =targetElement.offsetTop;
         let obj={
-            type:"pub",
-            id,
-            title:t("Pub.DetailTitle"),
-            bgColor:"#fff",
-            headColor:"#1A1323"
+            type:"hub",
+            list,
+            pageCur,
+            height
         }
-        store.dispatch(saveDetail(obj));
-        // navigate(`/pubDetail/${id}`);
+        store.dispatch(saveCache(obj))
+    }
+
+    const ToGo = (id) => {
+        // let obj={
+        //     type:"pub",
+        //     id,
+        //     title:t("Pub.DetailTitle"),
+        //     bgColor:"#fff",
+        //     headColor:"#1A1323"
+        // }
+        // store.dispatch(saveDetail(obj));
+        StorageList(id);
+        navigate(`/hubDetail/${id}`);
     };
     const returnStatus = (str) => {
         let cStr = '';
@@ -166,6 +211,7 @@ export default function PubList(){
             next={getList}
             hasMore={hasMore}
             loader={<Loading />}
+
         >
             {!loading && list.length === 0 && <NoItem />}
 
@@ -179,7 +225,7 @@ export default function PubList(){
                         }
                     </>:
                         list?.map((item, index) => (
-                        <li className="libox" key={index} onClick={() => ToGo(item.id)}>
+                        <li className="libox" key={index} onClick={() => ToGo(item.id)}  id={`hub_${item.id}`}>
                             <InnerBox>
                                 <div className="imgBox">
                                     <img src={item?.cover?.file?.url || item?.cover?.external.url} alt="" />

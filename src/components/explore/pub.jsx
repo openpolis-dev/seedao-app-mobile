@@ -182,7 +182,7 @@ export default function Hub() {
     };
 
     const ToGo = (id) => {
-        navigate(`/pubDetail/${id}`);
+        navigate(`/hubDetail/${id}`);
     };
 
     const returnStatus = (str) => {
@@ -203,7 +203,7 @@ export default function Hub() {
     };
 
     return (<Box>
-                <ExploreSection title={t("Explore.HubTitle")} desc={t("Explore.HubDesc")} moreLink="/pubList">
+                <ExploreSection title={t("Explore.HubTitle")} desc={t("Explore.HubDesc")} moreLink="/hubList">
                 <UlBox>
                     {
                         loading? (

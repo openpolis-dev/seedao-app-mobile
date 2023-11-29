@@ -14,7 +14,7 @@ export default function PubDetail() {
 
 
     return (
-        <Layout title={t("Pub.DetailTitle")}>
+        <Layout title={t("Hub.DetailTitle")}>
             <PubInner id={id} />
         </Layout>
     );
