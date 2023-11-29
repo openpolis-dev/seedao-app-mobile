@@ -2,6 +2,7 @@ import styled from "styled-components";
 import apps from "../../constant/apps";
 import {useTranslation} from "react-i18next";
 import {useMemo} from "react";
+import { useNavigate } from "react-router-dom";
 
 const Box = styled.div`
     background: #fff;
@@ -65,14 +66,20 @@ const UlBox = styled.div`
 `
 
 export default function AppList(){
-    const { t } = useTranslation();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
     const events = useMemo(() => {
         return apps.map((item) => ({ ...item, name: t(item.name) }));
     }, [t]);
 
     const handleClickEvent = (data) => {
-        const {link} = data;
-        window.open(link, '_blank');
+      const { link } = data;
+      if (data.id.startsWith("module-")) {
+        navigate(link);
+      } else {
+        window.open(link, "_blank");
+        
+      }
     };
 
     return <Box>
