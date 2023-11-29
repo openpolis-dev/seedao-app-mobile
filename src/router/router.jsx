@@ -28,6 +28,7 @@ const EventInfoPage = lazy(() => import("pages/event/detail"));
 const RankingPage = lazy(() => import("pages/ranking"));
 const SNSEntrancePage = lazy(() => import("pages/sns/entrance"))
 const RegisterSNS = lazy(() => import("pages/sns/register"))
+const JoyIDRedirect = lazy(() => import("pages/joyRedirect"))
 
 // import Home from "../pages/home";
 // import Login from "../pages/login";
@@ -101,9 +102,10 @@ function RouterLink() {
 
         {/*<Route path="/message" element={<MessagePage />} />*/}
 
-
         <Route path="/sns" element={<SNSEntrancePage />} />
         <Route path="/sns/register" element={<RegisterSNS />} />
+        {/* redirect */}
+        <Route path="/redirect" element={<JoyIDRedirect />} />
       </Routes>
       {/*<EventHandler />*/}
     </>

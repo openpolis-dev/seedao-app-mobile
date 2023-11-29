@@ -11,6 +11,12 @@ const LOCAL = {
   REACT_APP_APP_VERSION: `A ${VERSION}`,
   REACT_APP_THEME_ENABLE: true,
   SNS_RPC_URL: "https://eth-sepolia.g.alchemy.com/v2/HlAZ4I_XHDrPWs2x8L_7e6_3PQri91Il",
+  JOY_ID_URL: "https://testnet.joyid.dev",
+  NETWORK: {
+    name: "Sepolia",
+    chainId: 11155111,
+    rpc: "https://ethereum-sepolia.blockpi.network/v1/rpc/public",
+  },
 };
 const DEVELOPMENT = {
   ...LOCAL,
@@ -33,6 +39,7 @@ const PRODUCTION = {
   REACT_APP_APP_VERSION: `B ${VERSION}`,
   REACT_APP_THEME_ENABLE: false,
   REACT_APP_ONESIGNAL_ID: "eda76843-e1a4-40a5-aa01-3d860d9cfa5c",
+  // JOY_ID_URL: 'https://app.joy.id',
 };
 
 export default function getConfig() {

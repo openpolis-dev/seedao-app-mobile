@@ -10,6 +10,10 @@ import { sendTransaction } from "@joyid/evm";
 import { SELECT_WALLET, Wallet } from "utils/constant";
 import ABI from "assets/abi/snsRegister.json";
 import { useSelector } from "react-redux";
+import getConfig from "constant/envCofnig";
+import useTransaction from "hooks/useTransaction";
+
+const networkConfig = getConfig().NETWORK;
 
 const buildRegisterData = (sns, account, resolveAddress, secret) => {
   const iface = new ethers.utils.Interface(ABI);
@@ -20,10 +24,9 @@ export default function RegisterSNSStep2() {
   const { t } = useTranslation();
 
   const account = useSelector((state) => state.account);
-  const provider = useSelector((state) => state.provider);
 
   const {
-    state: { localData, contract, sns },
+    state: { localData, sns },
     dispatch: dispatchSNS,
   } = useSNSContext();
   const { toast } = useToast();
@@ -31,6 +34,8 @@ export default function RegisterSNSStep2() {
   const startTimeRef = useRef(0);
   const [leftTime, setLeftTime] = useState(0);
   const [secret, setSecret] = useState("");
+
+  const sendTransaction = useTransaction("sns-register");
 
   useEffect(() => {
     const parseLocalData = () => {
@@ -73,32 +78,34 @@ export default function RegisterSNSStep2() {
     dispatchSNS({ type: ACTIONS.SHOW_LOADING });
     try {
       console.log(sns, account, builtin.PUBLIC_RESOLVER_ADDR, secret);
-      const d = { ...localData };
-
-      const wallet = localStorage.getItem(SELECT_WALLET);
-      let txHash;
-      if (wallet && wallet === Wallet.JOYID_WEB) {
-        txHash = await sendTransaction({
-          to: builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR,
-          from: account,
-          value: "0",
-          data: buildRegisterData(sns, account, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret)),
-        });
-        console.log("joyid txHash:", txHash);
-        d[account].registerHash = txHash;
-      } else {
-        const tx = await contract.register(
-          sns,
-          account,
-          builtin.PUBLIC_RESOLVER_ADDR,
-          ethers.utils.formatBytes32String(secret),
-        );
-        console.log("tx:", tx);
-        d[account].registerHash = tx.hash;
-      }
-      d[account].step = "register";
-      d[account].stepStatus = "pending";
-      dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(d) });
+      const tx = sendTransaction(
+        buildRegisterData(sns, account, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret)),
+      );
+      // const d = { ...localData };
+      // const wallet = localStorage.getItem(SELECT_WALLET);
+      // let txHash;
+      // if (wallet && wallet === Wallet.JOYID_WEB) {
+      //   txHash = await sendTransaction({
+      //     to: builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR,
+      //     from: account,
+      //     value: "0",
+      //     data: buildRegisterData(sns, account, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret)),
+      //   });
+      //   console.log("joyid txHash:", txHash);
+      //   d[account].registerHash = txHash;
+      // } else {
+      //   const tx = await contract.register(
+      //     sns,
+      //     account,
+      //     builtin.PUBLIC_RESOLVER_ADDR,
+      //     ethers.utils.formatBytes32String(secret),
+      //   );
+      //   console.log("tx:", tx);
+      //   d[account].registerHash = tx.hash;
+      // }
+      // d[account].step = "register";
+      // d[account].stepStatus = "pending";
+      // dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(d) });
       // go to step3
       // dispatchSNS({ type: ACTIONS.ADD_STEP });
     } catch (error) {
@@ -110,7 +117,7 @@ export default function RegisterSNSStep2() {
   };
 
   useEffect(() => {
-    if (!account || !localData || !provider) {
+    if (!account || !localData) {
       return;
     }
     const hash = localData[account]?.registerHash;
@@ -124,6 +131,7 @@ export default function RegisterSNSStep2() {
         return;
       }
       console.log(localData, account);
+      const provider = new ethers.providers.StaticJsonRpcProvider(networkConfig.rpc);
       provider.getTransactionReceipt(hash).then((r) => {
         console.log("r:", r);
         const _d = { ...localData };
@@ -144,7 +152,7 @@ export default function RegisterSNSStep2() {
     };
     timer = setInterval(timerFunc, 1000);
     return () => timer && clearInterval(timer);
-  }, [localData, account, provider]);
+  }, [localData, account]);
 
   return (
     <Container>

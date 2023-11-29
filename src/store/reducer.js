@@ -1,5 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import InitState from './initState';
+import { SELECT_WALLET } from 'utils/constant';
 
 const mainSlice = createSlice({
     name: 'main',
@@ -9,6 +10,7 @@ const mainSlice = createSlice({
             state.account = null;
             state.userToken = null;
             state.walletType = null;
+            localStorage.removeItem(SELECT_WALLET);
         },
         saveAccount(state, action) {
             state.account = action.payload;

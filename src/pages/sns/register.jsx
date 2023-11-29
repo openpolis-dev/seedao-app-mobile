@@ -12,13 +12,15 @@ import getConfig from "constant/envCofnig";
 import { useSelector } from "react-redux";
 import Layout from "components/layout/layout";
 import UserIcon from "assets/Imgs/sns/user.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+
+const networkConfig = getConfig().NETWORK;
 
 const RegisterSNSWrapper = () => {
-  const networkConfig = getConfig().NETWORK;
+  const { state } = useLocation();
+  console.log("====state", state);
 
   const account = useSelector((state) => state.account);
-  const provider = useSelector((state) => state.provider);
 
   const {
     state: { step, localData, loading },
@@ -28,31 +30,13 @@ const RegisterSNSWrapper = () => {
   console.log("step", step);
 
   useEffect(() => {
-    console.log("222provider", provider);
     const initContract = async () => {
-      // check network
-      if (!provider?.getNetwork) {
-        return;
-      }
-      const network = await provider.getNetwork();
-      if (network?.chainId !== networkConfig.chainId) {
-        // switch network;
-        try {
-          await provider.send("wallet_switchEthereumChain", [
-            { chainId: ethers.utils.hexValue(networkConfig.chainId) },
-          ]);
-          return;
-        } catch (error) {
-          console.error("switch network error", error);
-          return;
-        }
-      }
-      console.log("signer", provider.getSigner(account));
-      const _contract = new ethers.Contract(builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR, ABI, provider.getSigner(account));
+      const provider = new ethers.providers.StaticJsonRpcProvider(networkConfig.rpc);
+      const _contract = new ethers.Contract(builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR, ABI, provider);
       dispatchSNS({ type: ACTIONS.SET_CONTRACT, payload: _contract });
     };
-    provider && initContract();
-  }, [provider, provider?.getNetwork]);
+    initContract();
+  }, []);
 
   useEffect(() => {
     console.log("account", account);
@@ -121,7 +105,7 @@ const RegisterSNSWrapper = () => {
     >
       <Container>
         <StepContainer>
-          {step === 1 && <RegisterSNSStep1 />}
+          {step === 1 && <RegisterSNSStep1 sns={state?.sns} />}
           {step === 2 && <RegisterSNSStep2 />}
           {step === 3 && <FinishedComponent />}
         </StepContainer>

@@ -18,6 +18,10 @@ import usePushPermission from "hooks/usePushPermission";
 import JoyidImg from "../../assets/Imgs/joyid.png";
 import ArrImg from "../../assets/Imgs/arrow.svg";
 import OneSignal from "react-onesignal";
+import getConfig from "constant/envCofnig";
+import { SELECT_WALLET, Wallet } from "utils/constant";
+
+const CONFIG = getConfig();
 
 export default function Joyid(){
 
@@ -27,7 +31,6 @@ export default function Joyid(){
     const [msg,setMsg] = useState();
     const [result,setResult] = useState(null);
     const handlePermission = usePushPermission();
-    const JOY_ID_URL ="https://app.joy.id";
     useEffect(() => {
         const redirectHome = () => {
             const _address = localStorage.getItem("joyid-address");
@@ -94,14 +97,14 @@ export default function Joyid(){
             let nonce = await getMyNonce(account);
             const eip55Addr = ethers.utils.getAddress(account);
 
-            const siweMessage = createSiweMessage(eip55Addr, 1, nonce, 'Welcome to SeeDAO!');
+            const siweMessage = createSiweMessage(eip55Addr, CONFIG.NETWORK.chainId, nonce, "Welcome to SeeDAO!");
             setMsg(siweMessage)
             localStorage.setItem("joyid-msg",siweMessage)
 
             const url = buildRedirectUrl("sign-message");
             signMessageWithRedirect(url, siweMessage, account, {
-                joyidAppURL: `${JOY_ID_URL}/?prefer=login`,
-                state: msg,
+              joyidAppURL: `${CONFIG.JOY_ID_URL}/?prefer=login`,
+              state: msg,
             });
         }catch (e){
             console.error("onSignMessageRedirect",e)
@@ -115,11 +118,11 @@ export default function Joyid(){
             localStorage.setItem("joyid-status", "login");
             const url = buildRedirectUrl("connect");
             connectWithRedirect(url, {
-                joyidAppURL: `${JOY_ID_URL}/?prefer=login`,
+              joyidAppURL: `${CONFIG.JOY_ID_URL}/?prefer=login`,
               rpcURL: "https://eth.llamarpc.com",
               network: {
-                chainId: 1,
-                name: "Ethereum Mainnet",
+                chainId: CONFIG.NETWORK.chainId,
+                name: CONFIG.NETWORK.name,
               },
             });
         });
@@ -143,11 +146,12 @@ export default function Joyid(){
             const now = Date.now();
             rt.data.token_exp = now + rt.data.token_exp * 1000;
             store.dispatch(saveUserToken(rt.data));
-            store.dispatch(saveWalletType("joyid"));
+            store.dispatch(saveWalletType(Wallet.JOYID));
             ReactGA.event("login_success",{
                 type: "joyid",
                 account:"account:"+account
             });
+            localStorage.setItem(SELECT_WALLET, Wallet.JOYID);
             setResult(rt.data)
             try {
               await OneSignal.login(account.toLocaleLowerCase());

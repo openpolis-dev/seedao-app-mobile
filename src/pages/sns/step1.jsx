@@ -11,10 +11,13 @@ import { isAvailable } from "@seedao/sns-safe";
 import { builtin } from "@seedao/sns-js";
 import { getRandomCode } from "utils/index";
 import useToast from "hooks/useToast";
-import { sendTransaction } from "@joyid/evm";
 import { SELECT_WALLET, Wallet } from "utils/constant";
 import ABI from "assets/abi/snsRegister.json";
 import { useSelector } from "react-redux";
+import useTransaction from "hooks/useTransaction";
+import getConfig from "constant/envCofnig";
+
+const networkConfig = getConfig().NETWORK;
 
 const AvailableStatus = {
   DEFAULT: "default",
@@ -27,16 +30,16 @@ const buildCommitData = (commitment) => {
   return iface.encodeFunctionData("commit", [commitment]);
 };
 
-export default function RegisterSNSStep1() {
+export default function RegisterSNSStep1({ sns: _sns }) {
   const { t } = useTranslation();
-  const [val, setVal] = useState();
-  const [searchVal, setSearchVal] = useState("");
+  const [val, setVal] = useState(_sns || "");
+  const [searchVal, setSearchVal] = useState(_sns || "");
   const [isPending, setPending] = useState(false);
   const [availableStatus, setAvailable] = useState(AvailableStatus.DEFAULT);
   const [randomSecret, setRandomSecret] = useState("");
+  const sendTransaction = useTransaction("sns-commit");
 
   const account = useSelector((state) => state.account);
-  const provider = useSelector((state) => state.provider);
 
   const {
     dispatch: dispatchSNS,
@@ -122,42 +125,48 @@ export default function RegisterSNSStep1() {
     try {
       const _s = getRandomCode();
       setRandomSecret(_s);
+      localStorage.setItem("sns-secret", _s);
       // get commitment
-      const commitment = await contract.makeCommitment(
+      const _commitment = await contract.makeCommitment(
         searchVal,
         account,
         builtin.PUBLIC_RESOLVER_ADDR,
         ethers.utils.formatBytes32String(_s),
       );
-      // commit
       dispatchSNS({ type: ACTIONS.SHOW_LOADING });
-      const wallet = localStorage.getItem(SELECT_WALLET);
-      let txHash;
-      if (wallet && wallet === Wallet.JOYID_WEB) {
-        txHash = await sendTransaction({
-          to: builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR,
-          from: account,
-          value: "0",
-          data: buildCommitData(commitment),
-        });
-        console.log("joyid txHash:", txHash);
-      } else {
-        const tx = await contract.commit(commitment);
-        console.log("tx:", tx);
-        txHash = tx.hash;
-      }
-      // record to localstorage
-      const data = { ...localData };
-      data[account] = {
-        sns: searchVal,
-        step: "commit",
-        commitHash: txHash,
-        stepStatus: "pending",
-        timestamp: 0,
-        secret: _s,
-        registerHash: "",
-      };
-      dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(data) });
+      console.log("===", builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR, account, buildCommitData(_commitment));
+
+      const tx = sendTransaction(buildCommitData(_commitment), _s, searchVal);
+      console.log("tx:", tx);
+      // commit
+      // dispatchSNS({ type: ACTIONS.SHOW_LOADING });
+      // const wallet = localStorage.getItem(SELECT_WALLET);
+      // let txHash;
+      // if (wallet && wallet === Wallet.JOYID_WEB) {
+      //   txHash = await sendTransaction({
+      //     to: builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR,
+      //     from: account,
+      //     value: "0",
+      //     data: buildCommitData(commitment),
+      //   });
+      //   console.log("joyid txHash:", txHash);
+      // } else {
+      //   const tx = await contract.commit(commitment);
+      //   console.log("tx:", tx);
+      //   txHash = tx.hash;
+      // }
+      // // record to localstorage
+      // const data = { ...localData };
+      // data[account] = {
+      //   sns: searchVal,
+      //   step: "commit",
+      //   commitHash: txHash,
+      //   stepStatus: "pending",
+      //   timestamp: 0,
+      //   secret: _s,
+      //   registerHash: "",
+      // };
+      // dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(data) });
     } catch (error) {
       console.error("mint failed", error);
       dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
@@ -166,24 +175,26 @@ export default function RegisterSNSStep1() {
   };
 
   useEffect(() => {
-    if (!account || !localData || !provider) {
+    if (!account || !localData) {
       return;
     }
     const hash = localData[account]?.commitHash;
-    console.log(localData[account], hash);
+    console.log("???", localData[account], hash);
     if (!hash || localData[account]?.stepStatus === "failed") {
       return;
     }
     let timer;
     const timerFunc = () => {
+      console.log(">>>>", localData, account);
+
       if (!account || !localData) {
         return;
       }
-      console.log(localData, account);
 
       if (!hash) {
         return;
       }
+      const provider = new ethers.providers.StaticJsonRpcProvider(networkConfig.rpc);
       provider.getTransactionReceipt(hash).then((r) => {
         console.log("r:", r);
         const _d = { ...localData };
@@ -207,7 +218,7 @@ export default function RegisterSNSStep1() {
     };
     timer = setInterval(timerFunc, 1000);
     return () => timer && clearInterval(timer);
-  }, [localData, account, provider]);
+  }, [localData, account]);
   return (
     <Container>
       <ContainerWrapper>
@@ -298,12 +309,10 @@ const InputBox = styled.div`
 `;
 
 const InputStyled = styled.input`
-  width: unset;
-  /* min-width: 117px; */
+  width: 117px;
   height: 100%;
   border: none;
   padding: 0;
-  max-width: calc(100% - 56px);
   background-color: transparent;
   &:focus-visible {
     outline: none;
