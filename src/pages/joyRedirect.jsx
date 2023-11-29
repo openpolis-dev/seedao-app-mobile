@@ -53,14 +53,19 @@ export default function JoyIDRedirect() {
         switch (action) {
           case "sns-commit":
             handleCommitData(res.tx);
+            navigate("/sns/register");
+
             break;
           case "sns-register":
             handleRegisterData(res.tx);
+            navigate("/sns/register");
+            break;
+          case "sns-switch":
+            navigate("/sns/user", { state: res.tx });
             break;
           default:
             break;
         }
-        navigate("/sns/register");
       }
     } catch (error) {
       console.error(error);

@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import NiceIcon from "assets/Imgs/sns/nice.svg";
-import { useSNSContext } from "./snsProvider";
+import { ACTIONS, useSNSContext } from "./snsProvider";
 import { useEffect } from "react";
 import Layout from "components/layout/layout";
 
@@ -10,29 +10,29 @@ export default function FinishedComponent() {
 
   const {
     state: { sns },
+    dispatch: dispatchSNS,
   } = useSNSContext();
 
   useEffect(() => {
     localStorage.removeItem("sns");
-    // TODO set global sns
-    // dispatch({ type: AppActionType.SET_SNS, payload: `${sns}.seedao` });
+    dispatchSNS({ type: ACTIONS.SET_LOCAL_DATA, payload: undefined });
   }, []);
-    return (
-      <Layout title="SNS">
-        <Container>
-          <ContainerTop bg={"light"}>
-            <img src={NiceIcon} alt="" />
-          </ContainerTop>
-          <ContainerBottom>
-            <div className="title">{sns}.seedao</div>
-            <div className="success">{t("SNS.FinishSucess")}</div>
-          </ContainerBottom>
-        </Container>
-      </Layout>
-    );
+  return (
+    <Layout title="SNS">
+      <Container>
+        <ContainerTop bg={"light"}>
+          <img src={NiceIcon} alt="" />
+        </ContainerTop>
+        <ContainerBottom>
+          <div className="title">{sns}.seedao</div>
+          <div className="success">{t("SNS.FinishSucess")}</div>
+        </ContainerBottom>
+      </Container>
+    </Layout>
+  );
 }
 const Container = styled.div`
-    padding-top: 65px;
+  padding-top: 65px;
 `;
 
 const ContainerTop = styled.div`

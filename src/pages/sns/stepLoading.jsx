@@ -77,6 +77,7 @@ const LoadingContainer = styled.div`
     font-size: 24px;
     margin-bottom: 44px;
     color: var(--font-color);
+    text-align: center;
   }
   .step-container {
     display: flex;
