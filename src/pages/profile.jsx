@@ -12,7 +12,7 @@ import publicJs from "../utils/publicJs";
 import {useNavigate} from "react-router-dom";
 import PublicJs from "../utils/publicJs";
 import SbtCatMobile from "../components/profile/sbtCatMobile";
-
+import CopyBox from "../components/common/copy";
 import EmailImg from "../assets/Imgs/social/email.svg";
 import Twitter from "../assets/Imgs/social/twitter.svg";
 import MirrorImg from "../assets/Imgs/social/mirror.svg";
@@ -535,8 +535,10 @@ export default function Profile() {
               <div className="name">{detail?.nickname}</div>
               <div className="sns">{sns}</div>
               <FlexLine>
+                <CopyBox text={detail?.wallet}>
+                  <div>{publicJs.AddressToShow(detail?.wallet)}</div>
+                </CopyBox>
 
-                <div>{publicJs.AddressToShow(detail?.wallet)}</div>
                 {/*<RhtBox>*/}
                 {/*  <CopyBox text={detail?.wallet} />*/}
                 {/*</RhtBox>*/}
