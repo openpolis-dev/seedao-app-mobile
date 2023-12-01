@@ -36,7 +36,7 @@ export default function SwitchModal({ select, handleClose }) {
       <ModalContent>
         <SelectSNS>{select}</SelectSNS>
         <Content>
-          <img src={networkConfig} alt="" />
+          <img src={networkConfig.icon} alt="" />
           <span>{account}</span>
         </Content>
         <Footer>
@@ -91,6 +91,7 @@ const SelectSNS = styled.div`
 const Footer = styled.div`
   margin-top: 61px;
   margin-bottom: 30px;
+  padding-inline: 20px;
 `;
 
 const Content = styled.div`

@@ -108,7 +108,7 @@ export default function UserSNS() {
           {loadingName ? (
             <img className="loading" src={LoadingImg} alt="" style={{ width: "20px" }} />
           ) : (
-            userSNS || account
+            userSNS
           )}
         </CurrentUsed>
         {!!snsList.length ? (
