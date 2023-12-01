@@ -33,13 +33,12 @@ export default function UserSNS() {
       sns
         .name(account)
         .then((r) => {
-          setUserSNS(r || account);
+          setUserSNS(r);
         })
         .finally(() => {
           showLoading && setLoadingName(false);
         });
     } else {
-      setUserSNS(account);
     }
   };
 
