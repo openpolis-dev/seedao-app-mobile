@@ -145,6 +145,9 @@ const FstLine = styled.div`
     align-items: center;
     color: #9a9a9a;
     font-size: 11px;
+    &>div:last-child{
+      padding-left: 5px;
+    }
   }
 `
 
@@ -557,8 +560,7 @@ export default function Profile() {
               <div className="lft">
                 <LevelBox>LV {detail?.level?.current_lv}</LevelBox>
                 <SCRBox>
-                  {t("My.current")}
-                  {detail?.scr?.amount} SCR
+                  {t("My.current")}{" "}{detail?.scr?.amount} SCR
                 </SCRBox>
               </div>
               <div className="rht">
