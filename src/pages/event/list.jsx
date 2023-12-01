@@ -2,15 +2,16 @@ import styled from "styled-components";
 import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect, useMemo } from "react";
-import EventCard, { EventCardSkeleton } from "components/eventCard";
+import EventCard, { EventCardSkeleton } from "components/event/eventCard";
 import { getSeeuEventList } from "api/event";
 import InfiniteScroll from "react-infinite-scroll-component";
 import NoItem from "components/noItem";
 import store from "store";
-import { saveLoading } from "store/reducer";
+import {saveCache, saveDetail, saveLoading} from "store/reducer";
 import { useSelector } from "react-redux";
 import Loading from "components/common/loading";
 import { useNavigate } from "react-router-dom";
+import useCurrentPath from "../../hooks/useCurrentPath";
 
 const PageSize = 20;
 
@@ -22,6 +23,35 @@ export default function EventListPage() {
   const [list, setList] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+
+  const prevPath = useCurrentPath();
+  const cache = useSelector(state => state.cache);
+
+
+  useEffect(()=>{
+
+    if(!prevPath || prevPath?.indexOf("/event/view") === -1 || cache?.type!== "event" )return;
+
+    const { list, page,height,id} = cache;
+
+    setList(list);
+    setPage(page);
+
+    setTimeout(()=>{
+      const element = document.querySelector(`#inner`)
+      const targetElement = document.querySelector(`#event_${id}`);
+      const screenHeight = window.innerHeight;
+      // console.log(element,targetElement)
+      if (targetElement) {
+        element.scrollTo({
+          top: height - screenHeight * 0.6,
+          behavior: 'auto',
+        });
+      }
+    },0)
+  },[prevPath])
+
+
 
   const hasMore = useMemo(() => {
     return list.length < total;
@@ -46,7 +76,22 @@ export default function EventListPage() {
     getList();
   }, []);
 
+  const StorageList = (id) =>{
+    const targetElement = document.querySelector(`#event_${id}`);
+    const height =targetElement.offsetTop;
+    let obj={
+      type:"event",
+      id,
+      list,
+      page,
+      height
+    }
+    store.dispatch(saveCache(obj))
+  }
+
+
   const openEvent = (id) => {
+    StorageList(id);
     navigate(`/event/view?id=${id}`);
   };
   return (
@@ -71,9 +116,10 @@ export default function EventListPage() {
             </>
           ) : (
             list.map((p) => (
-              <EventItem key={p.id}>
+              <EventItem key={p.id} id={`event_${p.id}`}>
                 <EventCard event={p} handleClick={openEvent} />
               </EventItem>
+
             ))
           )}
         </EventList>

@@ -15,7 +15,7 @@ import {
 const persistConfig = {
     key: 'root',
     storage,
-    blacklist:['loading',"signer"]
+    blacklist:['loading',"signer","detail","currentpath","cache"]
 }
 const persistedReducer = persistReducer(persistConfig, mainReducer)
 

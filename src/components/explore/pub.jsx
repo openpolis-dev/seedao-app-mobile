@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { publicList } from '../../api/publicData';
 import ExploreSection from "components/exploreSection";
-import {EventCardSkeleton} from "../eventCard";
+import {EventCardSkeleton} from "../event/eventCard";
 
 const Box = styled.div`
     padding-top: 20px;
@@ -182,7 +182,7 @@ export default function Hub() {
     };
 
     const ToGo = (id) => {
-        navigate(`/pubDetail/${id}`);
+        navigate(`/hubDetail/${id}`);
     };
 
     const returnStatus = (str) => {
@@ -203,7 +203,7 @@ export default function Hub() {
     };
 
     return (<Box>
-                <ExploreSection title={t("Explore.HubTitle")} desc={t("Explore.HubDesc")} moreLink="/pubList">
+                <ExploreSection title={t("Explore.HubTitle")} desc={t("Explore.HubDesc")} moreLink="/hubList">
                 <UlBox>
                     {
                         loading? (

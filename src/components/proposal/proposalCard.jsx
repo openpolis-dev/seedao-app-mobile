@@ -4,10 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { formatDate } from "utils/time";
 import { MultiLineStyle } from "assets/styles/common";
 import PublicJs from "../../utils/publicJs";
+import store from "../../store";
+import {saveCache, saveDetail} from "../../store/reducer";
+import {useTranslation} from "react-i18next";
 
-export default function ProposalCard({ data }) {
+export default function ProposalCard({ data,StorageList }) {
   const navigate = useNavigate();
   const [content, setContent] = useState("");
+  const { t } = useTranslation();
 
   const handleContent = async () => {
     let delta = [];
@@ -63,8 +67,10 @@ export default function ProposalCard({ data }) {
   }, [data?.first_post.content]);
 
   const openProposal = () => {
+    StorageList(data.id)
     navigate(`/proposal/thread/${data.id}`);
   };
+
 
 
   return (

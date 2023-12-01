@@ -1,5 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import InitState from './initState';
+import { SELECT_WALLET } from 'utils/constant';
 
 const mainSlice = createSlice({
     name: 'main',
@@ -9,6 +10,7 @@ const mainSlice = createSlice({
             state.account = null;
             state.userToken = null;
             state.walletType = null;
+            localStorage.removeItem(SELECT_WALLET);
         },
         saveAccount(state, action) {
             state.account = action.payload;
@@ -31,8 +33,22 @@ const mainSlice = createSlice({
         updateSNSmap(state, action) {
             state.snsMap = action.payload;
         },
-        saveProposalCategories(state, action) { 
+        saveProposalCategories(state, action) {
             state.proposalCategories = action.payload;
+        },
+        saveDetail(state, action) {
+            state.detail = action.payload;
+        },
+        saveCache(state,action){
+            state.cache = action.payload;
+        },
+        savePath(state,action){
+            let arr =[...state.currentpath];
+            arr.push(action.payload);
+            if(arr.length>2){
+                arr.shift()
+            }
+            state.currentpath = arr;
         }
     },
 });
@@ -41,6 +57,9 @@ export const {
     clearLogin,
     saveAccount,
     saveLoading,
+    saveDetail,
+    savePath,
+    saveCache,
     // saveContract,
     saveSigner,
     saveWalletType,

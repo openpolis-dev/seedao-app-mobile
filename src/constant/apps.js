@@ -5,6 +5,7 @@ import DaolinkIcon from '../assets/Imgs/home/DAOlink.png';
 import Cascad3Icon from '../assets/Imgs/home/Cascad3.png';
 import Wormhole3Icon from '../assets/Imgs/home/Wormhole3.png';
 import SeeUImg from '../assets/Imgs/home/seeuNetwork.png';
+import SNSImg from "../assets/Imgs/home/SNS.jpg";
 
 const apps =  [
     {
@@ -69,6 +70,13 @@ const apps =  [
         link: 'https://seeu.network/',
         icon: SeeUImg,
         desc: 'apps.SeeUDesc',
+    },
+    {
+      id: "module-sns",
+      name: "apps.SNS",
+      link: "/sns/register",
+      icon: SNSImg,
+      desc: "apps.SNSDesc",
     },
 ];
  export default apps;

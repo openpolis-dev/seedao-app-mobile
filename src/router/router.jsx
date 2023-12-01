@@ -1,3 +1,4 @@
+import UserSNS from "pages/sns/userSNS";
 import React from "react";
 import { lazy } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
@@ -6,9 +7,9 @@ import { Route, Routes, Navigate } from "react-router-dom";
 const Home = lazy(() => import("../pages/home"));
 const Login = lazy(() => import("../pages/login"));
 const Project = lazy(() => import("pages/project"));
-const ProjectInfoRoot = lazy(() => import("pages/project/info"));
+const ProjectInfoRoot = lazy(() => import("pages/project/info/info"));
 const Guild = lazy(() => import("pages/guild"));
-const GuildInfoRoot = lazy(() => import("pages/guild/info"));
+const GuildInfoRoot = lazy(() => import("pages/guild/info/info"));
 const Proposal = lazy(() => import("../pages/proposal"));
 const ProposalCategory = lazy(() => import("pages/proposal/category"));
 const ProposalThread = lazy(() => import("pages/proposal/thread"));
@@ -26,6 +27,9 @@ const PubList = lazy(() => import("../pages/PubList"));
 const EventList = lazy(() => import("pages/event/list"));
 const EventInfoPage = lazy(() => import("pages/event/detail"));
 const RankingPage = lazy(() => import("pages/ranking"));
+const SNSEntrancePage = lazy(() => import("pages/sns/entrance"))
+const RegisterSNS = lazy(() => import("pages/sns/register"))
+const JoyIDRedirect = lazy(() => import("pages/joyRedirect"))
 
 // import Home from "../pages/home";
 // import Login from "../pages/login";
@@ -98,6 +102,12 @@ function RouterLink() {
         {/* <Route path="/privacy" element={<Privacy />} /> */}
 
         {/*<Route path="/message" element={<MessagePage />} />*/}
+
+        <Route path="/sns" element={<SNSEntrancePage />} />
+        <Route path="/sns/register" element={<RegisterSNS />} />
+        <Route path="/sns/user" element={<UserSNS />} />
+        {/* redirect */}
+        <Route path="/redirect" element={<JoyIDRedirect />} />
       </Routes>
       {/*<EventHandler />*/}
     </>

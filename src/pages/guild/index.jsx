@@ -1,16 +1,19 @@
 import styled from "styled-components";
 import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
-import { useEffect, useMemo, useState } from "react";
+import {useEffect, useMemo, useState} from "react";
 import { getMyGuilds, getGuilds } from "api/guild";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Tab from "components/common/tab";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ProjectOrGuildItemDetail from "components/projectOrGuild/projectOrGuildItemDetail";
 import store from "store";
-import { saveLoading } from "store/reducer";
+import { saveLoading} from "store/reducer";
 import Loading from "components/common/loading";
 import NoItem from "components/noItem";
+import {useSelector} from "react-redux";
+import useCurrentPath from "../../hooks/useCurrentPath";
+import {saveCache} from "store/reducer";
 
 export default function Guild() {
   const { t } = useTranslation();
@@ -21,6 +24,9 @@ export default function Guild() {
   const [pageCur, setPageCur] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [total, setTotal] = useState(1);
+  const prevPath = useCurrentPath();
+  const cache = useSelector(state => state.cache);
+
 
   useEffect(() => {
     const _list = [
@@ -35,6 +41,30 @@ export default function Guild() {
     ];
     setList(_list);
   }, [t]);
+
+  useEffect(()=>{
+
+    if(!prevPath || prevPath?.indexOf("/guild/info") === -1 || cache?.type!== "guild" )return;
+
+    const { activeTab, proList, pageCur,height} = cache;
+
+    setActiveTab(activeTab)
+    setProList(proList);
+    setPageCur(pageCur);
+
+    setTimeout(()=>{
+      const id = prevPath.split("/guild/info/")[1];
+      const element = document.querySelector(`#inner`)
+      const targetElement = document.querySelector(`#guild_${id}`);
+      const screenHeight = window.innerHeight;
+      if (targetElement) {
+        element.scrollTo({
+          top: height - screenHeight * 0.5,
+          behavior: 'auto',
+        });
+      }
+    },0)
+  },[prevPath])
 
   const handleTabChange = (v) => {
     setActiveTab(v);
@@ -94,7 +124,22 @@ export default function Guild() {
     }
   };
 
+
+  const StorageList = (id) =>{
+    const targetElement = document.querySelector(`#guild_${id}`);
+    const height =targetElement.offsetTop;
+    let obj={
+      type:"guild",
+      activeTab,
+      proList,
+      pageCur,
+      height
+    }
+    store.dispatch(saveCache(obj))
+  }
+
   const openDetail = (id) => {
+    StorageList(id);
     navigate(`/guild/info/${id}`);
   };
 
@@ -109,6 +154,8 @@ export default function Guild() {
   useEffect(() => {
     getCurrentList(true);
   }, [activeTab]);
+
+
 
   return (
     <Layout title={t("Guild.Guild")}>
@@ -126,7 +173,9 @@ export default function Guild() {
           {proList.length === 0 && <NoItem />}
           <ProjectList>
             {proList.map((item) => (
-              <ProjectOrGuildItemDetail key={item.id} data={item} onClickItem={openDetail} />
+                <div  key={item.id} id={`guild_${item.id}`} >
+                  <ProjectOrGuildItemDetail data={item} onClickItem={openDetail} />
+                </div>
             ))}
           </ProjectList>
         </InfiniteScroll>

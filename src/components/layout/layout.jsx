@@ -2,9 +2,13 @@ import styled from "styled-components";
 import Header from "./header";
 import TabBar from "./tabBar";
 import { useSelector } from "react-redux";
-import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+
+import {useEffect, useRef} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+
 import StickyHeader from "./StickyHeader";
+import {savePath} from "../../store/reducer";
+import store from "store";
 
 const OuterBox = styled.div`
   width: 100%;
@@ -55,18 +59,27 @@ export default function Layout({
   handleBack,
 }) {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const userToken = useSelector((state) => state.userToken);
   const innerRef = useRef();
 
+  const location = useLocation();
+
   useEffect(() => {
-    if (!userToken?.token) {
+    store.dispatch(savePath(location.pathname))
+  }, [location]);
+
+  useEffect(() => {
+    console.log("pathname", pathname);
+    if (!userToken?.token && pathname !== "/sns") {
       navigate("/login");
     }
-  }, [userToken]);
+  }, [userToken, pathname]);
 
   useEffect(() => {
     document.querySelector("body").style.background = bgColor || "#FFFFFF";
   }, [bgColor]);
+
 
   return (
     <OuterBox>

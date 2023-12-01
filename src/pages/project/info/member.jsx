@@ -9,11 +9,8 @@ import UserList from "components/userList";
 import { useParseSNSList } from "hooks/useParseSNS";
 import UserModal from "components/userModal";
 
-export default function ProjectMember({id}) {
+export default function ProjectMember({data}) {
   const { t } = useTranslation();
-  const {
-    state: { data },
-  } = useProjectContext();
   const [userMap, setUserMap] = useState({});
   const [members, setMembers] = useState([]);
   const [sponsors, setSponsors] = useState([]);
@@ -75,7 +72,6 @@ export default function ProjectMember({id}) {
     const sponsors = data?.sponsors || [];
     setMembers(members.map((m) => m.toLowerCase()));
     setSponsors(sponsors.map((m) => m.toLowerCase()));
-
   }, [data]);
   const showUser = (u) => {
     setUser(u);

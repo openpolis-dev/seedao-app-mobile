@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Loading from "./loading";
 import { useNavigate } from "react-router-dom";
 import BackSVG from "components/svgs/back";
+import DetailModal from "../detailModal";
 
 const Back = styled.div`
   position: absolute;
@@ -59,6 +60,7 @@ export default function Header({ title, bgColor, headColor, rightOperation, hand
       <Back onClick={() => backTop()}>
         <BackSVG color={headColor} />
       </Back>
+        <DetailModal />
       <HeaderBox $headColor={headColor}>
         <Mid>
           <span>{title}</span>

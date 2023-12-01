@@ -120,7 +120,7 @@
     "Google": "Google",
     "current": "当前",
     "more": "查看全部",
-    "levelTips": "距离升级到LV{{level}}还需",
+    "levelTips": "距离升级到 LV{{level}} 还需",
     "ModifiedSuccess": "修改成功",
     "ModifiedFailed": "修改失败",
     "IncorrectLink": "{{media}}：请填写正确的信息",
@@ -131,7 +131,8 @@
     "Avatar": "头像"
   },
   "apps": {
-    "SeeU": "SeeU Network"
+    "SeeU": "SeeU Network",
+    "SNS": "SNS"
   },
   "roles": {
     "SEED_HOLDER": "SEED持有者",
@@ -228,5 +229,28 @@
   },
   "GovernanceNodeResult": {
     "SCRSeasonRankFilename": "{{season}} 积分榜"
+  },
+  "SNS": {
+    "EntranceTitle": "以你之名参与 SeeDAO",
+    "EntranceDesc": "SNS是你在 SeeDAO 中的独有身份，一个名字，连接你在 SeeDAO 生态中的所有应用和场景。",
+    "Started": "开始",
+    "Step1Title": "你的 SeeDAO 名字",
+    "Step1Desc": "SeeDAO 中的身份，一个名字，连接你在 SeeDAO 生态中的所有应用和场景。",
+    "Available": "可注册",
+    "Uavailable": "不可注册",
+    "FreeMint": "免费 mint",
+    "SpentMint": "{{money}} mint",
+    "TimerTitle": "快要完成了",
+    "TimerDesc": "计时器帮助你避免被抢注，你所选的名字将被锁定，直至你完成第二笔交易。",
+    "Finish": "已完成",
+    "FinishSucess": "注册成功！",
+    "StepLoadingTitle": "注册SNS需要三步",
+    "Step1Intro": "完成一笔交易并开始计时",
+    "StepMiddleIntro": "等待60秒倒计时结束",
+    "Step2Intro": "完成第二笔交易获得 SNS",
+    "InputTip": "*请输入4-15位数字（0～9）、小写字母（a～z）或特殊字符（ ! $ ( ) * + - _ ）",
+    "Switch": "切换",
+    "MySNS": "我的 SNS",
+    "Switching": "正在切换..."
   }
 }

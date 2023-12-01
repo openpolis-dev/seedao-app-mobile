@@ -15,6 +15,9 @@ import usePushPermission from "hooks/usePushPermission";
 import MetamaskLogo from "../../assets/Imgs/METAmask.svg";
 import ArrImg from "../../assets/Imgs/arrow.svg";
 import OneSignal from "react-onesignal";
+import { SELECT_WALLET, Wallet } from "utils/constant";
+import getConfig from "constant/envCofnig";
+const network = getConfig().NETWORK;
 
 // https://github.com/MetaMask/metamask-sdk/issues/381
 // https://github.com/MetaMask/metamask-mobile/issues/7165
@@ -25,7 +28,6 @@ export default function  Metamask(){
     const { open } = useWeb3Modal();
     const { isConnected,address } = useAccount();
     const { disconnect } = useDisconnect();
-    const { chain, chains } = useNetwork();
     const [msg,setMsg] = useState();
     const [signInfo,setSignInfo] = useState();
     const [result,setResult] = useState(null);
@@ -33,7 +35,8 @@ export default function  Metamask(){
 
 
     const handlePermission = usePushPermission();
-    const signer = useEthersSigner({chainId:chain});
+    const signer = useEthersSigner({ chainId: network.chainId });
+    console.log("signer: ", signer);
 
     useEffect(()=>{
         if(!signInfo) return;
@@ -108,9 +111,11 @@ export default function  Metamask(){
             const now = Date.now();
             rt.data.token_exp = now + rt.data.token_exp * 1000;
             store.dispatch(saveUserToken(rt.data));
-            store.dispatch(saveWalletType("metamask"));
+            store.dispatch(saveWalletType(Wallet.METAMASK));
             store.dispatch(saveAccount(address))
             store.dispatch(saveLoading(false));
+
+            localStorage.setItem(SELECT_WALLET, Wallet.METAMASK);
 
             try {
                await OneSignal.login(address.toLocaleLowerCase());

@@ -6,12 +6,14 @@ import ProposalCard from "components/proposal/proposalCard";
 import { getProposalsBySubCategory } from "api/proposal";
 import InfiniteScroll from "react-infinite-scroll-component";
 import store from "store";
-import { saveLoading } from "store/reducer";
+import {saveCache, saveLoading} from "store/reducer";
 import Loading from "components/common/loading";
 import { useTranslation } from "react-i18next";
 import NoItem from "../../components/noItem";
 import ProposalSubNav from "components/proposal/proposalSubNav";
 import useProposalCategory from "hooks/useProposalCategory";
+import useCurrentPath from "../../hooks/useCurrentPath";
+import {useSelector} from "react-redux";
 
 export default function ProposalCategory() {
   const { id } = useParams();
@@ -25,6 +27,35 @@ export default function ProposalCategory() {
   const [category, setcategory] = useState(state);
 
   const ProposalNav = useProposalCategory(Number(id));
+
+
+  const prevPath = useCurrentPath();
+  const cache = useSelector(state => state.cache);
+
+
+  useEffect(()=>{
+
+    if(!prevPath || prevPath?.indexOf("/proposal/thread") === -1 || cache?.type!== "proposal" )return;
+
+    const { category, page,height} = cache;
+
+    setcategory(category);
+    setPage(page);
+
+    setTimeout(()=>{
+      const id = prevPath.split("/proposal/thread/")[1];
+      const element = document.querySelector(`#inner`)
+      const targetElement = document.querySelector(`#pro_${id}`);
+      const screenHeight = window.innerHeight;
+      // console.log(element,targetElement)
+      if (targetElement) {
+        element.scrollTo({
+          top: height - screenHeight * 0.6,
+          behavior: 'auto',
+        });
+      }
+    },0)
+  },[prevPath])
 
   const getProposals = async (init) => {
     const _id = Number(id);
@@ -58,6 +89,18 @@ export default function ProposalCategory() {
     }
   };
 
+  const StorageList = (id) =>{
+    const targetElement = document.querySelector(`#pro_${id}`);
+    const height =targetElement.offsetTop;
+    let obj={
+      type:"proposal",
+      category,
+      page,
+      height
+    }
+    store.dispatch(saveCache(obj))
+  }
+
   useEffect(() => {
     id && getProposals(true);
   }, [id, orderType]);
@@ -77,7 +120,10 @@ export default function ProposalCategory() {
         >
           {proposals.length === 0 && <NoItem />}
           {proposals.map((p) => (
-            <ProposalCard key={p.id} data={p} />
+              <div id={`pro_${p.id}`} key={p.id}>
+                <ProposalCard data={p} StorageList={StorageList}  />
+              </div>
+
           ))}
         </InfiniteScroll>
       </ProposalBox>

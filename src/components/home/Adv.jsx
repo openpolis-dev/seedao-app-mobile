@@ -7,7 +7,6 @@ import banner from "../../constant/banner";
 import 'swiper/css';
 import "swiper/css/pagination";
 
-import "swiper/css";
 import { useTranslation } from "react-i18next";
 
 const BannerBox = styled.div`
@@ -17,10 +16,12 @@ const BannerBox = styled.div`
   }
   .mySwiper{
     padding-bottom: 30px;
-    margin-bottom: -20px;
+    margin-bottom: -30px;
   }
   .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet{
-    background: var(--primary-color);
+    //background: var(--primary-color);
+    background: #fff;
+    margin-bottom: 25px;
   }
 `;
 
