@@ -8,13 +8,14 @@ import NoItem from "components/noItem";
 import { ethers } from "ethers";
 import Layout from "components/layout/layout";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import getConfig from "constant/envCofnig";
 const networkConfig = getConfig().NETWORK;
 
 export default function UserSNS() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { state } = useLocation();
   console.log("====state", state);
@@ -101,15 +102,15 @@ export default function UserSNS() {
     return () => timer && clearInterval(timer);
   }, [state, account]);
 
+  const handleBack = () => {
+    navigate("/sns/register");
+  };
+
   return (
-    <Layout title={t("SNS.MySNS")}>
+    <Layout title={t("SNS.MySNS")} handleBack={handleBack}>
       <ContainerWrapper>
         <CurrentUsed>
-          {loadingName ? (
-            <img className="loading" src={LoadingImg} alt="" style={{ width: "20px" }} />
-          ) : (
-            userSNS
-          )}
+          {loadingName ? <img className="loading" src={LoadingImg} alt="" style={{ width: "20px" }} /> : userSNS}
         </CurrentUsed>
         {!!snsList.length ? (
           <NameList>
