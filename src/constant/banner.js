@@ -1,5 +1,6 @@
 import BannerImg from "assets/Imgs/banner.png";
-import Demo1 from "assets/Imgs/demo/va.jpg";
+import Demo1 from "assets/Imgs/demo/img.jpg";
+import Demo2 from "assets/Imgs/demo/demo2.jpg";
 
 const banner = [
   {
@@ -8,11 +9,17 @@ const banner = [
     name: "伊斯坦布尔回声: 我们心中的瓦猫",
     desc: "2023年12月16日 — 2024年1月1日",
   },
+  // {
+  //   img: "https://img2.baidu.com/it/u=3012806272,1276873993&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500",
+  //   link: "https://mp.weixin.qq.com/s/4Ic_uZ3m5ijlpILsZ8SjHw",
+  //   name: "S2E11 | SeeDAO城邦新闻",
+  //   desc: "各位小伙伴们，大家好！本周城邦新闻的主要内容有",
+  // },
   {
-    img: "https://img2.baidu.com/it/u=3012806272,1276873993&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500",
-    link: "https://mp.weixin.qq.com/s/4Ic_uZ3m5ijlpILsZ8SjHw",
-    name: "S2E11 | SeeDAO城邦新闻",
-    desc: "各位小伙伴们，大家好！本周城邦新闻的主要内容有",
+    img: Demo2,
+    link: "https://mp.weixin.qq.com/s/xtQChgi7auo21_B3x2V9hA",
+    name: "SeeDAO第五届节点共识大会即将召开 !！",
+    desc: "12 月 1 日 ~ 12 月 3 日",
   },
   {
     img: BannerImg,
