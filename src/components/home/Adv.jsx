@@ -19,7 +19,9 @@ const BannerBox = styled.div`
     margin-bottom: -20px;
   }
   .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet{
-    background: var(--primary-color);
+    //background: var(--primary-color);
+    background: #fff;
+    margin-bottom: 25px;
   }
 `;
 
