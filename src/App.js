@@ -56,7 +56,7 @@ function App() {
             </Provider>
             <GlobalStyle />
             <Web3Modal
-                defaultChain={mainnet}
+                defaultChain={getConfig().NETWORK.chainId === 1 ? mainnet : sepolia}
                 projectId={projectId} ethereumClient={ethereumClient}
                        explorerRecommendedWalletIds={[
                            'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96',
