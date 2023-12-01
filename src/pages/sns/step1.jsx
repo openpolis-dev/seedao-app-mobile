@@ -338,7 +338,7 @@ const OperateBox = styled.div`
   width: 100%;
 `;
 
-const MintButton = styled.span`
+const MintButton = styled.button`
   display: inline-block;
   width: 100%;
   height: 40px;
@@ -348,6 +348,11 @@ const MintButton = styled.span`
   border-radius: 16px;
   color: #fff;
   font-size: 14px;
+  &:disabled {
+    background: var(--primary-color);
+    border-color: transparent;
+    opacity: 0.4;
+  }
 `;
 
 const Loading = styled.img`

@@ -212,7 +212,7 @@ const CircleBox = styled.div`
   }
 `;
 
-const FinishButton = styled.span`
+const FinishButton = styled.button`
   display: inline-block;
   margin-top: 26px;
   width: 100%;
@@ -223,4 +223,9 @@ const FinishButton = styled.span`
   border-radius: 16px;
   color: #fff;
   font-size: 14px;
+  &:disabled {
+    background: var(--primary-color);
+    border-color: transparent;
+    opacity: 0.4;
+  }
 `;
