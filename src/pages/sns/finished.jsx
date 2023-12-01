@@ -15,10 +15,15 @@ export default function FinishedComponent() {
 
   useEffect(() => {
     localStorage.removeItem("sns");
-    dispatchSNS({ type: ACTIONS.SET_LOCAL_DATA, payload: undefined });
   }, []);
+
+  const goStep1 = () => {
+    dispatchSNS({ type: ACTIONS.SET_STEP, payload: 1 });
+    dispatchSNS({ type: ACTIONS.SET_LOCAL_DATA, payload: undefined });
+  };
+
   return (
-    <Layout title="SNS">
+    <Layout title="SNS" handleBack={goStep1}>
       <Container>
         <ContainerTop bg={"light"}>
           <img src={NiceIcon} alt="" />
