@@ -16,7 +16,7 @@ const BannerBox = styled.div`
   }
   .mySwiper{
     padding-bottom: 30px;
-    margin-bottom: -35px;
+    margin-bottom: -30px;
   }
   .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet{
     //background: var(--primary-color);
