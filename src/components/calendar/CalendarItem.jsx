@@ -195,7 +195,7 @@ export default function CalendarItem({detail}){
                                 {
                                     !!innerItem.event.description &&<div className="line">
                                         <div className="lft">
-                                            <img src={currentDay===index?TitleWhite:TitleImg} alt=""/>
+                                            <img src={currentDay===detail.day ?TitleWhite:TitleImg} alt=""/>
                                         </div>
                                         <div className="location"  dangerouslySetInnerHTML={{__html: innerItem.event.description}}></div>
                                     </div>
@@ -203,7 +203,7 @@ export default function CalendarItem({detail}){
                                 {
                                     !!innerItem.event.location &&<div className="line">
                                         <div className="lft">
-                                            <img src={currentDay===index?LocationWhite:LocationImg} alt=""/>
+                                            <img src={currentDay===detail.day?LocationWhite:LocationImg} alt=""/>
                                         </div>
                                         <div className="location">{innerItem.event.location}</div>
                                     </div>
