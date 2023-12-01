@@ -5,6 +5,9 @@ import { builtin } from "@seedao/sns-js";
 import { useSelector } from "react-redux";
 import ABI from "assets/abi/snsRegister.json";
 import useTransaction from "hooks/useTransaction";
+import getConfig from "constant/envCofnig";
+
+const networkConfig = getConfig().NETWORK;
 
 const buildSwitchData = (sns) => {
   const iface = new ethers.utils.Interface(ABI);
@@ -32,7 +35,10 @@ export default function SwitchModal({ select, handleClose }) {
       <ModalMask />
       <ModalContent>
         <SelectSNS>{select}</SelectSNS>
-        <Content>{account}</Content>
+        <Content>
+          <img src={networkConfig} alt="" />
+          <span>{account}</span>
+        </Content>
         <Footer>
           <PrimaryButton onClick={handleSwitch}>{t("General.confirm")}</PrimaryButton>
           <CancelButton onClick={() => handleClose()}>{t("General.cancel")}</CancelButton>

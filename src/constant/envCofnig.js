@@ -1,3 +1,4 @@
+import EthereumIcon from "assets/Imgs/network/ethereum.png";
 const VERSION = '0.0.1';
 
 const LOCAL = {
@@ -16,6 +17,7 @@ const LOCAL = {
     name: "Sepolia",
     chainId: 11155111,
     rpc: "https://ethereum-sepolia.blockpi.network/v1/rpc/public",
+    icon: EthereumIcon,
   },
 };
 const DEVELOPMENT = {
