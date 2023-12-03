@@ -197,7 +197,7 @@ export default function Hub() {
     };
 
     const ToGo = (id) => {
-        navigate(`/pubDetail/${id}`);
+        navigate(`/hubDetail/${id}`);
     };
 
     const returnStatus = (str) => {
