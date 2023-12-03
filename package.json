@@ -55,13 +55,18 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "fs": "0.0.1-security"
+    "compression-webpack-plugin": "^10.0.0",
+    "customize-cra": "^1.0.0",
+    "fs": "0.0.1-security",
+    "progress-bar-webpack-plugin": "^2.1.0",
+    "react-app-rewired": "^2.2.1",
+    "webpack-bundle-analyzer": "^4.10.1"
   },
   "scripts": {
     "config": "node ./writeManifest.js",
     "dev": "react-scripts start",
     "start": "npm run dev",
-    "build:online": "npm run config && react-scripts build",
+    "build:online": "npm run config && react-app-rewired build",
     "build": "REACT_APP_ENV_VERSION=dev npm run build:online",
     "build:dev": "npm run build",
     "build:preview": "REACT_APP_ENV_VERSION=preview npm run build:online",
