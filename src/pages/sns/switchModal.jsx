@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import ABI from "assets/abi/snsRegister.json";
 import useTransaction from "hooks/useTransaction";
 import getConfig from "constant/envCofnig";
+import { useNavigate } from "react-router-dom";
 
 const networkConfig = getConfig().NETWORK;
 
@@ -16,14 +17,17 @@ const buildSwitchData = (sns) => {
 
 export default function SwitchModal({ select, handleClose }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const account = useSelector((state) => state.account);
 
   const handleTransaction = useTransaction("sns-switch");
 
   const handleSwitch = async () => {
     try {
-      const tx = handleTransaction(buildSwitchData(select));
-      await tx.wait();
+      const tx = await handleTransaction(buildSwitchData(select));
+      if (tx.hash) {
+        navigate("/sns/user", { state: tx.hash });
+      }
       handleClose(select);
     } catch (error) {
       console.error(error);
