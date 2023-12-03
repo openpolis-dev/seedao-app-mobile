@@ -223,6 +223,7 @@ const FinishButton = styled.button`
   border-radius: 16px;
   color: #fff;
   font-size: 14px;
+  border-width: 0;
   &:disabled {
     background: var(--primary-color);
     border-color: transparent;
