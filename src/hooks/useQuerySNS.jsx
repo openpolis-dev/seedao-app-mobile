@@ -39,7 +39,7 @@ export default function useQuerySNS() {
     const _snsMap = { ...snsMap };
     if (_to_be_queried.length) {
       try {
-        const data = await sns.names(_to_be_queried, getConfig().SNS_RPC_URL);
+        const data = await sns.names(_to_be_queried);
         data.forEach((d, idx) => {
           _snsMap[_to_be_queried[idx]] = d || _to_be_queried[idx];
         });
