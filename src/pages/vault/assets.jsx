@@ -16,6 +16,7 @@ import VAULTS from "constant/vault";
 import CardIcon1 from "assets/Imgs/vault/cardIcon1.svg";
 import CardIcon2 from "assets/Imgs/vault/cardIcon2.svg";
 import ApplicantsSection from "components/vault/applications";
+import getConfig from "constant/envCofnig";
 
 export default function Assets() {
   const { t } = useTranslation();
@@ -151,17 +152,14 @@ export default function Assets() {
     // store.dispatch(saveLoading(true));
     setStatus3(true);
     try {
-      const url = "https://restapi.nftscan.com/api/v2/statistics/collection/0x30093266e34a816a53e302be3e59a93b52792fd4";
-      // const {XAPIKEY} = AppConfig;
-      const res = await axios.get(url, {
-        headers: {
-          "X-API-KEY": "laP3Go52WW4oBXdt7zhJ7aoj",
-        },
-      });
-      setNftData({
-        floorPrice: res.data?.data?.floor_price || 0,
-        totalSupply: res.data?.data?.items_total || 0,
-      });
+      fetch(`${getConfig().INDEXER_ENDPOINT}/insight/erc721/total_supply/0x30093266E34a816a53e302bE3e59a93B52792FD4`)
+        .then((res) => res.json())
+        .then((r) => {
+          setNftData({
+            floorPrice: "0",
+            totalSupply: r.totalSupply,
+          });
+        });
     } catch (error) {
       console.error("getFloorPrice error", error);
     } finally {
