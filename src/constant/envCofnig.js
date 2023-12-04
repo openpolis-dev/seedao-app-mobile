@@ -18,6 +18,7 @@ const LOCAL = {
     rpc: "https://eth-goerli.g.alchemy.com/v2/MATWeLJN1bEGTjSmtyLedn0i34o1ISLD",
     icon: EthereumIcon,
   },
+  INDEXER_ENDPOINT: "https://test-spp-indexer.seedao.tech",
 };
 const DEVELOPMENT = {
   ...LOCAL,
