@@ -13,3 +13,7 @@ export const getShortDisplay = (v, num) => {
   }
   return res;
 };
+
+Number.prototype.format = function (n = 2) {
+  return getShortDisplay(formatNumber(this), n);
+};
