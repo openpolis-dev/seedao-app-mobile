@@ -92,7 +92,7 @@ export default function RankingPage() {
           setAllList(
             data.records.map((item) => ({
               ...item,
-              total_display: formatNumber(Number(getShortDisplay(item.season_total_credit, 2))),
+              total_display: Number(item.season_total_credit).format(),
             })),
           );
 
@@ -206,7 +206,7 @@ export default function RankingPage() {
             <NumberBox>{getRankNum(idx)}</NumberBox>
             <ItemBox style={{ flex: 3, width: 0, marginLeft: "4px" }}>{formatSNS(item.wallet)}</ItemBox>
             <ItemBox style={{ flex: 2, textAlign: "right" }}>
-              {formatNumber(Number(item.seasons_credit?.find((s) => s.season_name === currentSeason)?.total || 0))}
+              {Number(item.seasons_credit?.find((s) => s.season_name === currentSeason)?.total).format()}
             </ItemBox>
             <ItemBox style={{ flex: 2, textAlign: "right" }}>{item.total_display}</ItemBox>
           </li>

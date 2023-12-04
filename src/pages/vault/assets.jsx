@@ -42,7 +42,7 @@ export default function Assets() {
     token_used_amount: 0,
   });
 
-  const [totalSCR, setTotalSCR] = useState("0");
+  const [totalSCR, setTotalSCR] = useState("0.00");
   const { SCR_CONTRACT } = AppConfig;
   const SCR_PRICE = 0.3;
 
@@ -197,7 +197,7 @@ export default function Assets() {
         provider,
       );
       const supply = await contract.totalSupply();
-      setTotalSCR(ethers.utils.formatEther(supply));
+      setTotalSCR(Number(ethers.utils.formatEther(supply)).format());
     } catch (error) {
       console.error("getSCR error", error);
     } finally {
@@ -249,12 +249,12 @@ export default function Assets() {
         <FlexBox>
           <CardItem>
             <img src={CardIcon1} alt="" />
-            <Num>{Number(totalSCR).format()}</Num>
+            <Num>{totalSCR}</Num>
             <Tit>{t("Vault.SupplySCR")}</Tit>
           </CardItem>
           <CardItem>
             <img src={CardIcon2} alt="" />
-            <Num>{Number(nftData.totalSupply).format()}</Num>
+            <Num>{nftData.totalSupply}</Num>
             <Tit>{t("Vault.SupplySeed")}</Tit>
           </CardItem>
         </FlexBox>

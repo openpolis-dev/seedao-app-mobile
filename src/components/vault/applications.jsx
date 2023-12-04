@@ -103,6 +103,7 @@ export default function ApplicationsSection({ handleBg }) {
         reviewer_name: item.reviewer_wallet?.toLocaleLowerCase(),
         receiver_name: item.target_user_wallet?.toLocaleLowerCase(),
       }));
+      console.log("_list", _list);
       setList(init ? _list : [...list, ..._list]);
       setPage(_page + 1);
     } catch (error) {
@@ -240,7 +241,7 @@ export default function ApplicationsSection({ handleBg }) {
                     </div>
                   </LeftBox>
                   <RightBox>
-                    <div className="value">{`${data.asset_display}`}</div>
+                    <div className="value">{data.asset_display}</div>
                     <div className="from">{t("Governance.Cityhall", { season: data.season_name })}</div>
                   </RightBox>
                 </ContentInnerBox>
