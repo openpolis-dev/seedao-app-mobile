@@ -62,6 +62,7 @@ const RegisterSNSWrapper = () => {
       }
       const v = localData[account];
       if (!v) {
+        dispatchSNS({ type: ACTIONS.SET_STEP, payload: 1 });
         return;
       }
       dispatchSNS({ type: ACTIONS.SET_SNS, payload: v.sns });
