@@ -38,7 +38,7 @@ export default function useTransaction(action) {
       return sendTransactionAsync(params);
     } else if (wallet === Wallet.JOYID) {
       return handleJoyID(params, secret, sns);
-    } else if (wallet === 'unipass') {
+    } else if (wallet === Wallet.UNIPASS) {
       return uniWallet.sendTransaction(params);
     }
   };
