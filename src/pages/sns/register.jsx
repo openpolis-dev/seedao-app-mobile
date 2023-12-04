@@ -12,11 +12,12 @@ import getConfig from "constant/envCofnig";
 import { useSelector } from "react-redux";
 import Layout from "components/layout/layout";
 import UserIcon from "assets/Imgs/sns/user.svg";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const networkConfig = getConfig().NETWORK;
 
 const RegisterSNSWrapper = () => {
+  const navigate = useNavigate();
   const { state } = useLocation();
   console.log("====state", state);
 
@@ -61,6 +62,7 @@ const RegisterSNSWrapper = () => {
       }
       const v = localData[account];
       if (!v) {
+        dispatchSNS({ type: ACTIONS.SET_STEP, payload: 1 });
         return;
       }
       dispatchSNS({ type: ACTIONS.SET_SNS, payload: v.sns });
@@ -95,6 +97,9 @@ const RegisterSNSWrapper = () => {
   return (
     <Layout
       title="SNS"
+      handleBack={() => {
+        navigate("/home");
+      }}
       rightOperation={
         step === 1 && (
           <Link to="/sns/user">

@@ -119,7 +119,7 @@ export default function Joyid(){
             const url = buildRedirectUrl("connect");
             connectWithRedirect(url, {
               joyidAppURL: `${CONFIG.JOY_ID_URL}/?prefer=login`,
-              rpcURL: "https://eth.llamarpc.com",
+              rpcURL: CONFIG.NETWORK.rpc,
               network: {
                 chainId: CONFIG.NETWORK.chainId,
                 name: CONFIG.NETWORK.name,

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Metamask from "../components/login/metamask";
 import Joyid from "../components/login/joyid";
-import Unipass from "../components/login/unipass";
+import Unipass from "../components/login/unipassPopup";
 import {useState} from "react";
 import SwitchLan from "../components/common/switchLan";
 import AppConfig from "../AppConfig";

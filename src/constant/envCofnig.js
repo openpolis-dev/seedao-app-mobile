@@ -11,12 +11,11 @@ const LOCAL = {
   REACT_APP_ONESIGNAL_ID: "9c6122e1-3de4-4c03-8e68-9f357e9ca1ae",
   REACT_APP_APP_VERSION: `A ${VERSION}`,
   REACT_APP_THEME_ENABLE: true,
-  SNS_RPC_URL: "https://eth-sepolia.g.alchemy.com/v2/HlAZ4I_XHDrPWs2x8L_7e6_3PQri91Il",
   JOY_ID_URL: "https://testnet.joyid.dev",
   NETWORK: {
-    name: "Sepolia",
-    chainId: 11155111,
-    rpc: "https://ethereum-sepolia.blockpi.network/v1/rpc/public",
+    name: "Goerli",
+    chainId: 5,
+    rpc: "https://eth-goerli.g.alchemy.com/v2/MATWeLJN1bEGTjSmtyLedn0i34o1ISLD",
     icon: EthereumIcon,
   },
 };

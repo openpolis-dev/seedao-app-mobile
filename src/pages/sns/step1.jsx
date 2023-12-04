@@ -137,13 +137,14 @@ export default function RegisterSNSStep1({ sns: _sns }) {
 
       const tx = await sendTransaction(buildCommitData(_commitment), _s, searchVal);
       console.log("tx:", tx);
-      if (tx && tx.hash) {
+      const hash = (tx && tx.hash) || tx
+      if (hash) {
         // record to localstorage
         const data = { ...localData };
         data[account] = {
           sns: searchVal,
           step: "commit",
-          commitHash: tx.hash,
+          commitHash: hash,
           stepStatus: "pending",
           timestamp: 0,
           secret: _s,
@@ -239,7 +240,6 @@ export default function RegisterSNSStep1({ sns: _sns }) {
 
 const Container = styled.div`
   width: 100%;
-  padding-inline: 20px;
   box-sizing: border-box;
   text-align: center;
   position: relative;
@@ -348,6 +348,7 @@ const MintButton = styled.button`
   border-radius: 16px;
   color: #fff;
   font-size: 14px;
+  border-width: 0;
   &:disabled {
     background: var(--primary-color);
     border-color: transparent;

@@ -13,10 +13,10 @@ import {
 } from 'redux-persist'
 
 const persistConfig = {
-    key: 'root',
-    storage,
-    blacklist:['loading',"signer","detail","currentpath","cache"]
-}
+  key: "root",
+  storage,
+  blacklist: ["loading", "signer", "detail", "currentpath", "cache", "snsMap"],
+};
 const persistedReducer = persistReducer(persistConfig, mainReducer)
 
 const store = configureStore({

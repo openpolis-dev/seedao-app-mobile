@@ -10,11 +10,12 @@
     "@joyid/evm": "^0.2.4",
     "@metamask/sdk": "^0.7.1",
     "@reduxjs/toolkit": "^1.9.6",
-    "@seedao/sns-js": "^0.5.8",
+    "@seedao/sns-js": "^0.6.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@unipasswallet/ethereum-provider": "^1.1.11",
+    "@unipasswallet/popup-sdk": "^1.1.11",
     "@web3modal/ethereum": "^2.7.1",
     "@web3modal/react": "^2.7.1",
     "axios": "^1.5.1",
@@ -55,13 +56,18 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "fs": "0.0.1-security"
+    "compression-webpack-plugin": "^10.0.0",
+    "customize-cra": "^1.0.0",
+    "fs": "0.0.1-security",
+    "progress-bar-webpack-plugin": "^2.1.0",
+    "react-app-rewired": "^2.2.1",
+    "webpack-bundle-analyzer": "^4.10.1"
   },
   "scripts": {
     "config": "node ./writeManifest.js",
     "dev": "react-scripts start",
     "start": "npm run dev",
-    "build:online": "npm run config && react-scripts build",
+    "build:online": "npm run config && react-app-rewired build",
     "build": "REACT_APP_ENV_VERSION=dev npm run build:online",
     "build:dev": "npm run build",
     "build:preview": "REACT_APP_ENV_VERSION=preview npm run build:online",
