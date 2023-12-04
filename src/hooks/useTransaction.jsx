@@ -23,6 +23,11 @@ export default function useTransaction(action) {
     const url = buildRedirectUrl();
     sendTransactionWithRedirect(url, params, account, {
       joyidAppURL: `${CONFIG.JOY_ID_URL}`,
+      rpcURL: CONFIG.NETWORK.rpc,
+      network: {
+        chainId: CONFIG.NETWORK.chainId,
+        name: CONFIG.NETWORK.name,
+      },
     });
   };
 
