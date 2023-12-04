@@ -4,6 +4,7 @@ import { Wallet } from "utils/constant";
 import { builtin } from "@seedao/sns-js";
 import { sendTransactionWithRedirect } from "@joyid/evm";
 import getConfig from "constant/envCofnig";
+import { uniWallet } from "components/login/unipassPopup";
 
 const CONFIG = getConfig();
 
@@ -32,12 +33,13 @@ export default function useTransaction(action) {
       value: "0",
       data,
     };
+    console.log("wallet:", wallet);
     if (wallet === Wallet.METAMASK) {
       return sendTransactionAsync(params);
     } else if (wallet === Wallet.JOYID) {
       return handleJoyID(params, secret, sns);
-    } else if (wallet === Wallet.UNIPASS) {
-      // TODO
+    } else if (wallet === 'unipass') {
+      return uniWallet.sendTransaction(params);
     }
   };
   return handleTransaction;

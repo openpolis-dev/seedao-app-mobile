@@ -25,8 +25,9 @@ export default function SwitchModal({ select, handleClose }) {
   const handleSwitch = async () => {
     try {
       const tx = await handleTransaction(buildSwitchData(select));
-      if (tx.hash) {
-        navigate("/sns/user", { state: tx.hash });
+      const hash = (tx && tx.hash) || tx;
+      if (hash) {
+        navigate("/sns/user", { state: hash });
       }
       handleClose(select);
     } catch (error) {

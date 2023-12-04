@@ -80,9 +80,10 @@ export default function RegisterSNSStep2() {
       const tx = await sendTransaction(
         buildRegisterData(sns, account, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret)),
       );
-      if (tx && tx.hash) {
+      const hash = (tx && tx.hash) || tx
+      if (hash) {
         const d = { ...localData };
-        d[account].registerHash = tx.hash;
+        d[account].registerHash = hash;
         d[account].step = "register";
         d[account].stepStatus = "pending";
         dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(d) });

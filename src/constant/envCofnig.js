@@ -14,9 +14,9 @@ const LOCAL = {
   SNS_RPC_URL: "https://eth-sepolia.g.alchemy.com/v2/HlAZ4I_XHDrPWs2x8L_7e6_3PQri91Il",
   JOY_ID_URL: "https://testnet.joyid.dev",
   NETWORK: {
-    name: "Sepolia",
-    chainId: 11155111,
-    rpc: "https://ethereum-sepolia.blockpi.network/v1/rpc/public",
+    name: "Goerli",
+    chainId: 5,
+    rpc: "https://eth-goerli.g.alchemy.com/v2/MATWeLJN1bEGTjSmtyLedn0i34o1ISLD",
     icon: EthereumIcon,
   },
 };
