@@ -14,7 +14,7 @@ import GlobalStyle from "./utils/GlobalStyle";
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum';
 import { Web3Modal } from '@web3modal/react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import { mainnet, sepolia } from "wagmi/chains";
+import { mainnet, goerli } from "wagmi/chains";
 import InstallCheck from "components/installPWA";
 import RouterChecker from "./components/routerChecker";
 import useToast from "hooks/useToast";
@@ -22,7 +22,7 @@ import { useEffect } from "react";
 import EventHandler from "components/event/eventHandler";
 import getConfig from "constant/envCofnig";
 
-const chains = getConfig().NETWORK.chainId === 1 ? [mainnet] : [sepolia, mainnet];
+const chains = getConfig().NETWORK.chainId === 1 ? [mainnet] : [goerli, mainnet];
 
 const projectId = 'da76ddd6c7d31632ed7fc9b88e28a410'
 
@@ -56,7 +56,7 @@ function App() {
             </Provider>
             <GlobalStyle />
             <Web3Modal
-                defaultChain={getConfig().NETWORK.chainId === 1 ? mainnet : sepolia}
+                defaultChain={getConfig().NETWORK.chainId === 1 ? mainnet : goerli}
                 projectId={projectId} ethereumClient={ethereumClient}
                        explorerRecommendedWalletIds={[
                            'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96',
