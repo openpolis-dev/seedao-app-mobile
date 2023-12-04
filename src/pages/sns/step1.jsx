@@ -240,7 +240,6 @@ export default function RegisterSNSStep1({ sns: _sns }) {
 
 const Container = styled.div`
   width: 100%;
-  padding-inline: 20px;
   box-sizing: border-box;
   text-align: center;
   position: relative;
