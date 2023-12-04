@@ -98,7 +98,7 @@ export default function ApplicationsSection({ handleBg }) {
         ...item,
         created_date: formatTime(item.created_at),
         transactions: item.transaction_ids.split(","),
-        asset_display: formatNumber(Number(item.amount)) + " " + item.asset_name,
+        asset_display: Number(item.amount).format() + " " + item.asset_name,
         submitter_name: item.submitter_wallet?.toLocaleLowerCase(),
         reviewer_name: item.reviewer_wallet?.toLocaleLowerCase(),
         receiver_name: item.target_user_wallet?.toLocaleLowerCase(),

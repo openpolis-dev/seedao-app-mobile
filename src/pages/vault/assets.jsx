@@ -239,7 +239,7 @@ export default function Assets() {
                   {vaultsMap[v.id]?.threshold || 0}/{vaultsMap[v.id]?.total || 0}
                 </div>
               </WalletItemLeft>
-              <WalletItemValue>${getShortDisplay(vaultsMap[v.id]?.balance || 0.0, 2)}</WalletItemValue>
+              <WalletItemValue>${getShortDisplay(vaultsMap[v.id]?.balance || 0.00, 2)}</WalletItemValue>
             </WalletItem>
           ))}
         </WalletBox>
@@ -249,12 +249,12 @@ export default function Assets() {
         <FlexBox>
           <CardItem>
             <img src={CardIcon1} alt="" />
-            <Num>{formatNumber(totalSCR)}</Num>
+            <Num>{Number(totalSCR).format()}</Num>
             <Tit>{t("Vault.SupplySCR")}</Tit>
           </CardItem>
           <CardItem>
             <img src={CardIcon2} alt="" />
-            <Num>{formatNumber(nftData.totalSupply)}</Num>
+            <Num>{Number(nftData.totalSupply).format()}</Num>
             <Tit>{t("Vault.SupplySeed")}</Tit>
           </CardItem>
         </FlexBox>
