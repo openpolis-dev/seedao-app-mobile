@@ -85,6 +85,7 @@ const List = styled.div`
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
+  min-height: 900px;
 `;
 
 const EventItem = styled.div`

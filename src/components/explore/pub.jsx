@@ -143,7 +143,7 @@ export default function Hub() {
                 behavior: 'auto',
             });
             store.dispatch(saveCache(null))
-        },400)
+        },0)
     },[prevPath])
 
     useEffect(() => {
