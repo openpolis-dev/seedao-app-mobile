@@ -12,7 +12,7 @@ import Avatar from "components/common/avatar";
 
 const MemberAvatar = ({ user, onSelect }) => {
   const reFormat = () =>{
-    if(user.sns === user.wallet){
+    if(user.sns.toLowerCase() === user.wallet.toLowerCase()){
       return  publicJs.AddressToShow(user.wallet,10)
     }else{
       return user.sns;
