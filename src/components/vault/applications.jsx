@@ -99,9 +99,9 @@ export default function ApplicationsSection({ handleBg }) {
         created_date: formatTime(item.created_at),
         transactions: item.transaction_ids.split(","),
         asset_display: Number(item.amount).format() + " " + item.asset_name,
-        submitter_name: item.submitter_wallet?.toLocaleLowerCase(),
-        reviewer_name: item.reviewer_wallet?.toLocaleLowerCase(),
-        receiver_name: item.target_user_wallet?.toLocaleLowerCase(),
+        submitter_name: item.submitter_wallet,
+        reviewer_name: item.reviewer_wallet,
+        receiver_name: item.target_user_wallet,
       }));
       console.log("_list", _list);
       setList(init ? _list : [...list, ..._list]);
@@ -150,8 +150,8 @@ export default function ApplicationsSection({ handleBg }) {
   };
 
   const formatSNS = (wallet) => {
-    const sns = snsMap[wallet] || wallet;
-    return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns, 6);
+    const sns = snsMap[wallet.toLocaleLowerCase()] || wallet;
+    return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns);
   };
 
   const trailingActions = (item) => (

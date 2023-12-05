@@ -46,7 +46,7 @@ export default function ApplicationDetailPage() {
 
   const formatSNS = (wallet) => {
     const sns = snsMap[wallet] || wallet;
-    return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns, 6);
+    return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns);
   };
 
   return (
@@ -56,7 +56,7 @@ export default function ApplicationDetailPage() {
         <SectionBlock>
           <RowItem>
             <div className="label">{t("Application.Recipient")}</div>
-            <UserComp avatar={""} sns={formatSNS(data.target_user_wallet.toLowerCase())} />
+            <UserComp avatar={data.target_user_avatar} sns={formatSNS(data.target_user_wallet.toLowerCase())} />
           </RowItem>
           <RowItem>
             <div className="label">{t("Application.OutVault")}</div>
@@ -179,6 +179,8 @@ const RowItem = styled.div`
   }
   .value {
     max-width: 70%;
+    word-wrap: break-word;
+    text-align: right;
   }
 `;
 const ApplyIntroRowItem = styled(RowItem)`
