@@ -5,6 +5,11 @@ import { useTranslation } from 'react-i18next';
 import { publicList } from '../../api/publicData';
 import ExploreSection from "components/exploreSection";
 import {EventCardSkeleton} from "../event/eventCard";
+import PublicJs from "../../utils/publicJs";
+import useCurrentPath from "../../hooks/useCurrentPath";
+import {useSelector} from "react-redux";
+import store from "../../store";
+import {saveCache} from "../../store/reducer";
 
 const Box = styled.div`
     padding-top: 20px;
@@ -119,31 +124,48 @@ export default function Hub() {
     const [list, setList] = useState([]);
     const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
-    const [pageCur, setPageCur] = useState(1);
-    const [pageSize, setPageSize] = useState(6);
 
+    const prevPath = useCurrentPath();
+    const cache = useSelector(state => state.cache);
+
+
+    useEffect(()=>{
+
+        if(!prevPath || prevPath?.indexOf("/hubDetail") === -1 || cache?.type!== "explore_hub" )return;
+
+        const { list, height} = cache;
+        setList(list);
+        setLoading(false);
+        setTimeout(()=>{
+            const element = document.querySelector(`#inner`)
+            element.scrollTo({
+                top: height,
+                behavior: 'auto',
+            });
+            store.dispatch(saveCache(null))
+        },400)
+    },[prevPath])
 
     useEffect(() => {
+        if(cache?.type === "explore_hub") return;
         getList();
-    }, [pageCur]);
+    }, []);
 
 
 
     const getList = async () => {
         const obj = {
-            page: pageCur,
-            size: pageSize,
+            page: 1,
+            size: 6,
         };
 
         setLoading(true);
         try {
             let result = await publicList(obj);
 
-            const { rows, page, size } = result.data;
+            const { rows } = result.data;
 
             setList(rows);
-            setPageSize(size);
-            setPageCur(page);
         } catch (e) {
             console.error(e);
         } finally {
@@ -151,37 +173,9 @@ export default function Hub() {
         }
     };
 
-    const returnColor = (str) => {
-        let colorStr = '';
-        switch (str.trim()) {
-            case '项目招募 | Project Recruitment':
-            case '项目招募':
-                colorStr = 'type1';
-                break;
-            case '外部招募 | external recruitment':
-                colorStr = 'type2';
-                break;
-            case '公会招募  | Guild Recruitment':
-                colorStr = 'type3';
-                break;
-            case '个人组队 | Team recruitment':
-                colorStr = 'type4';
-                break;
-            case '市政厅招募 | City hall recruitment':
-                colorStr = 'type5';
-                break;
-            case '新手任务':
-                colorStr = 'type6';
-                break;
-            case '孵化器Workshop':
-            default:
-                colorStr = 'type7';
-                break;
-        }
-        return colorStr;
-    };
 
     const ToGo = (id) => {
+        PublicJs.StorageList("explore_hub",list)
         navigate(`/hubDetail/${id}`);
     };
 

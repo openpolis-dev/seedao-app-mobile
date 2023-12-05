@@ -5,6 +5,11 @@ import { useEffect, useState } from "react";
 import { getSeeuEventList } from "api/event";
 import EventCard, { EventCardSkeleton } from "components/event/eventCard";
 import { useNavigate } from "react-router-dom";
+import PublicJs from "../../utils/publicJs";
+import useCurrentPath from "../../hooks/useCurrentPath";
+import {useSelector} from "react-redux";
+import store from "../../store";
+import {saveCache} from "../../store/reducer";
 
 export default function ExploreEventSection() {
   const navigate = useNavigate();
@@ -12,21 +17,44 @@ export default function ExploreEventSection() {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
 
+  const prevPath = useCurrentPath();
+  const cache = useSelector(state => state.cache);
+
+
+  useEffect(()=>{
+
+    if(!prevPath || prevPath?.indexOf("/event/view") === -1 || cache?.type!== "explore_event" )return;
+    const { list, height} = cache;
+    setList(list);
+    setLoading(false);
+    setTimeout(()=>{
+      const element = document.querySelector(`#inner`)
+      element.scrollTo({
+        top: height,
+        behavior: 'auto',
+      });
+      store.dispatch(saveCache(null))
+    },0)
+  },[prevPath])
+
   useEffect(() => {
-    const getList = async () => {
-      setLoading(true);
-      try {
-        const res = await getSeeuEventList({ currentPage: 1, pageSize: 6 });
-        setList(res.data.data);
-        setLoading(false);
-      } catch (error) {
-        //  TODO toast
-        console.error(error);
-      }
-    };
+    if(cache?.type === "explore_event") return;
     getList();
   }, []);
+
+  const getList = async () => {
+    setLoading(true);
+    try {
+      const res = await getSeeuEventList({ currentPage: 1, pageSize: 6 });
+      setList(res.data.data);
+      setLoading(false);
+    } catch (error) {
+      //  TODO toast
+      console.error(error);
+    }
+  };
   const openEvent = (id) => {
+    PublicJs.StorageList("explore_event",list)
     navigate(`/event/view?id=${id}`);
   };
   return (
@@ -43,7 +71,7 @@ export default function ExploreEventSection() {
           </>
         ) : (
           list.map((item, index) => (
-            <EventItem key={index}>
+            <EventItem key={index}  id={`explore_event_${item.id}}`}>
               <EventCard event={item} handleClick={openEvent} />
             </EventItem>
           ))

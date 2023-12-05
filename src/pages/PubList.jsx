@@ -117,11 +117,9 @@ export default function PubList(){
             const id = prevPath.split("/hubDetail/")[1];
             const element = document.querySelector(`#inner`)
             const targetElement = document.querySelector(`#hub_${id}`);
-            const screenHeight = window.innerHeight;
-            // console.log(element,targetElement)
             if (targetElement) {
                 element.scrollTo({
-                    top: height - screenHeight * 0.6,
+                    top: height,
                     behavior: 'auto',
                 });
             }
@@ -164,8 +162,8 @@ export default function PubList(){
 
 
     const StorageList = (id) =>{
-        const targetElement = document.querySelector(`#hub_${id}`);
-        const height =targetElement.offsetTop;
+        const element = document.querySelector(`#inner`)
+        const height =element.scrollTop;
         let obj={
             type:"hub",
             list,

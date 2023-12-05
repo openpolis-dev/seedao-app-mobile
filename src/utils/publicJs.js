@@ -1,6 +1,8 @@
 import {SiweMessage} from 'siwe';
 import AppConfig from '../AppConfig';
 import axios from 'axios';
+import store from "../store";
+import {saveCache} from "../store/reducer";
 
 const AddressToShow = (address, num = 4) => {
   if (!address) {
@@ -108,9 +110,21 @@ const filterTags = (html) => {
   return unicodeHexDecodedStr.replace(/(<([^>]+)>)/ig, '');
 }
 
+const StorageList = (type,list) =>{
+  const element = document.querySelector(`#inner`)
+  const height =element.scrollTop;
+  let obj={
+    type,
+    list,
+    height
+  }
+  store.dispatch(saveCache(obj))
+}
+
 export default {
   AddressToShow,
   createSiweMessage,
+  StorageList,
   getImage,
   filterTags
 };

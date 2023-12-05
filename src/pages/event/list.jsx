@@ -40,11 +40,10 @@ export default function EventListPage() {
     setTimeout(()=>{
       const element = document.querySelector(`#inner`)
       const targetElement = document.querySelector(`#event_${id}`);
-      const screenHeight = window.innerHeight;
       // console.log(element,targetElement)
       if (targetElement) {
         element.scrollTo({
-          top: height - screenHeight * 0.6,
+          top: height,
           behavior: 'auto',
         });
       }
@@ -77,8 +76,8 @@ export default function EventListPage() {
   }, []);
 
   const StorageList = (id) =>{
-    const targetElement = document.querySelector(`#event_${id}`);
-    const height =targetElement.offsetTop;
+    const element = document.querySelector(`#inner`)
+    const height =element.scrollTop;
     let obj={
       type:"event",
       id,

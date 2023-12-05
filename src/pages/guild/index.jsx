@@ -22,7 +22,7 @@ export default function Guild() {
   const [activeTab, setActiveTab] = useState(0);
   const [proList, setProList] = useState([]);
   const [pageCur, setPageCur] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(1);
   const prevPath = useCurrentPath();
   const cache = useSelector(state => state.cache);
@@ -42,12 +42,16 @@ export default function Guild() {
     setList(_list);
   }, [t]);
 
+  useEffect(() => {
+    if(cache?.type==="guild" && cache?.pageCur>pageCur)return;
+    getCurrentList(true);
+  }, [activeTab,cache]);
+
   useEffect(()=>{
 
     if(!prevPath || prevPath?.indexOf("/guild/info") === -1 || cache?.type!== "guild" )return;
 
     const { activeTab, proList, pageCur,height} = cache;
-
     setActiveTab(activeTab)
     setProList(proList);
     setPageCur(pageCur);
@@ -56,14 +60,15 @@ export default function Guild() {
       const id = prevPath.split("/guild/info/")[1];
       const element = document.querySelector(`#inner`)
       const targetElement = document.querySelector(`#guild_${id}`);
-      const screenHeight = window.innerHeight;
       if (targetElement) {
         element.scrollTo({
-          top: height - screenHeight * 0.5,
+          top: height,
           behavior: 'auto',
         });
       }
+      store.dispatch(saveCache(null))
     },0)
+
   },[prevPath])
 
   const handleTabChange = (v) => {
@@ -94,7 +99,7 @@ export default function Guild() {
       setProList([...proList, ...rows]);
       setPageSize(size);
       setTotal(total);
-      setPageCur(page);
+      setPageCur(page+1);
     } catch (error) {
       console.error(error);
     } finally {
@@ -126,8 +131,8 @@ export default function Guild() {
 
 
   const StorageList = (id) =>{
-    const targetElement = document.querySelector(`#guild_${id}`);
-    const height =targetElement.offsetTop;
+    const element = document.querySelector(`#inner`)
+    const height =element.scrollTop;
     let obj={
       type:"guild",
       activeTab,
@@ -151,9 +156,7 @@ export default function Guild() {
     }
   };
 
-  useEffect(() => {
-    getCurrentList(true);
-  }, [activeTab]);
+
 
 
 
