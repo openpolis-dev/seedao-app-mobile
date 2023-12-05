@@ -15,7 +15,7 @@ import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { Web3Modal } from '@web3modal/react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet, goerli } from "wagmi/chains";
-import InstallCheck from "components/installPWA";
+import InstallCheck from "components/thirdInstallPWA";
 import RouterChecker from "./components/routerChecker";
 import useToast from "hooks/useToast";
 import { useEffect } from "react";
