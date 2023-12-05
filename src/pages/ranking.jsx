@@ -81,7 +81,7 @@ export default function RankingPage() {
 
   const formatSNS = (wallet) => {
     const sns = dataMap[wallet] || wallet;
-    return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns, 6);
+    return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns);
   };
   useEffect(() => {
     const getList = () => {

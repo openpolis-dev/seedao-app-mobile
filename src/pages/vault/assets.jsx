@@ -230,7 +230,7 @@ export default function Assets() {
               <WalletItemLeft>
                 <div className="name">{t(v.name)}</div>
                 <CopyBox style={{ width: "65px" }} text={v.address}>
-                  <Addr>{PublicJs.AddressToShow(v.address, 4)}</Addr>
+                  <Addr>{PublicJs.AddressToShow(v.address)}</Addr>
                 </CopyBox>
                 <img src={v.icon} alt="" onClick={() => linkTo(v)} />
                 <div className="signer">

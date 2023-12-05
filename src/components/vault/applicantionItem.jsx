@@ -22,7 +22,7 @@ export default function ApplicationItem({ data, onCheck }) {
           <LeftBox>
             <img src="" alt="" />
             <div>
-              <div className="wallet">{publicJs.AddressToShow(data.target_user_wallet, 4)}</div>
+              <div className="wallet">{publicJs.AddressToShow(data.target_user_wallet)}</div>
               <div>
                 <ApplicationStatusTag status={data.status} />
               </div>
