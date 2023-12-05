@@ -20,6 +20,7 @@ export default function UserSNS() {
   const { state } = useLocation();
   console.log("====state", state);
   const account = useSelector((state) => state.account);
+  const globalLoading = useSelector((state) => state.loading);
 
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState();
@@ -97,6 +98,7 @@ export default function UserSNS() {
         }
       });
     };
+    timerFunc();
     timer = setInterval(timerFunc, 1500);
     return () => timer && clearInterval(timer);
   }, [state, account]);
@@ -108,20 +110,24 @@ export default function UserSNS() {
   return (
     <Layout title={t("SNS.MySNS")} handleBack={handleBack}>
       <ContainerWrapper>
-        <CurrentUsed>
-          {loadingName ? <img className="loading" src={LoadingImg} alt="" style={{ width: "20px" }} /> : userSNS}
-        </CurrentUsed>
         {!!snsList.length ? (
-          <NameList>
-            {list.map((item) => (
-              <li key={item}>
-                <span>{item}</span>
-                <PrimaryOutlinedButton onClick={() => setShowModal(item)}>{t("SNS.Switch")}</PrimaryOutlinedButton>
-              </li>
-            ))}
-          </NameList>
+          <>
+            <CurrentUsed>
+              {loadingName ? <img className="loading" src={LoadingImg} alt="" style={{ width: "20px" }} /> : userSNS}
+            </CurrentUsed>
+            <NameList>
+              {list.map((item) => (
+                <li key={item}>
+                  <span>{item}</span>
+                  {userSNS && (
+                    <PrimaryOutlinedButton onClick={() => setShowModal(item)}>{t("SNS.Switch")}</PrimaryOutlinedButton>
+                  )}
+                </li>
+              ))}
+            </NameList>
+          </>
         ) : (
-          <NoItem />
+          !globalLoading && <NoItem />
         )}
         {loading && <Loading text={t("SNS.Switching")} />}
       </ContainerWrapper>
