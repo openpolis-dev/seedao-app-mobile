@@ -167,7 +167,6 @@ const MemberAvatarStyle = styled.div`
 }
   .sns {
     margin-top: 8px;
-    margin-bottom: 4px;
     line-height: 21px;
     color: var(--font-color-1);
     box-sizing: border-box;
@@ -175,6 +174,7 @@ const MemberAvatarStyle = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-size: 16px;
   }
   .name {
     width: 100%;
