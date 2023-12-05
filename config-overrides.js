@@ -9,9 +9,10 @@ const addCompression = () => (config) => {
   if (isEnvProduction) {
     config.plugins.push(
       new CompressionWebpackPlugin({
+        algorithm: "brotliCompress",
         test: /\.(css|js)$/,
         threshold: 1024,
-        minRatio: 0.9,
+        minRatio: 0.8,
       }),
     );
   }
