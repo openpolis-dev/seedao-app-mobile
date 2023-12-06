@@ -87,7 +87,7 @@
   "Install": {
     "IosTitle": "添加到主屏幕",
     "IosStep1": "1) 点击 菜单栏上的'分享' 按钮",
-    "IosStep2": "2) 点击 '添加到主屏幕'",
+    "IosStep2": "2) 点击 '安装应用' 或 '添加到主屏幕'",
     "AndroidInstall": "安装"
   },
   "Proposal": {
