@@ -37,9 +37,10 @@ export default function ProposalCategory() {
 
     if(!prevPath || prevPath?.indexOf("/proposal/thread") === -1 || cache?.type!== "proposal" )return;
 
-    const { category, page,height} = cache;
+    const { proposals,category, page,height} = cache;
 
     setcategory(category);
+    setProposals(proposals);
     setPage(page);
 
     setTimeout(()=>{
@@ -52,20 +53,21 @@ export default function ProposalCategory() {
           behavior: 'auto',
         });
       }
+      store.dispatch(saveCache(null))
     },0)
   },[prevPath])
 
-  const getProposals = async (init) => {
+  const getProposals = async () => {
     const _id = Number(id);
     // console.log("_id", _id);
     if (!_id) {
       return;
     }
     store.dispatch(saveLoading(true));
-    const _page = init ? 1 : page;
+    // const _page = init ? 1 : page;
     try {
       const res = await getProposalsBySubCategory({
-        page: _page,
+        page: page,
         per_page: pageSize,
         category_index_id: _id,
         sort: orderType,
@@ -76,10 +78,10 @@ export default function ProposalCategory() {
         setcategory(t("Proposal.Governance"));
       }
 
-      console.log(res);
-      setProposals( init ? res.data.threads : [...proposals, ...res.data.threads]);
+      // setProposals( init ? res.data.threads : [...proposals, ...res.data.threads]);
+      setProposals( [...proposals, ...res.data.threads]);
       setHasMore(res.data.threads.length >= pageSize);
-      setPage(_page + 1);
+      setPage(page + 1);
     } catch (error) {
       console.error(error);
     } finally {
@@ -94,14 +96,18 @@ export default function ProposalCategory() {
       type:"proposal",
       category,
       page,
+      proposals,
       height
     }
     store.dispatch(saveCache(obj))
   }
 
   useEffect(() => {
+    console.error(cache?.page,page)
+
+    if(cache?.type==="proposal" && cache?.page>page)return;
     id && getProposals(true);
-  }, [id, orderType]);
+  }, [id, orderType,cache]);
   return (
     <Layout title={category} headBgColor="var(--background-color)" bgColor="var(--background-color)">
       <HeadBox>

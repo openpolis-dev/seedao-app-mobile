@@ -18,7 +18,7 @@ export default function ProposalCard({ data,StorageList }) {
     try {
       delta = JSON.parse(data.first_post.content);
     } catch (e) {
-      console.info("illegal json:" + data.first_post.content);
+      console.info("illegal json" );
     }
 
     const text = [];
