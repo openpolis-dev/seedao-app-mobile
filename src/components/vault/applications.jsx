@@ -107,7 +107,6 @@ export default function ApplicationsSection({ handleBg }) {
         reviewer_name: item.reviewer_wallet,
         receiver_name: item.target_user_wallet,
       }));
-      console.log("_list", _list);
       setList(init ? _list : [...list, ..._list]);
       setPage(_page + 1);
     } catch (error) {
@@ -117,6 +116,7 @@ export default function ApplicationsSection({ handleBg }) {
   };
 
   useEffect(() => {
+    if(cache?.type==="assets" && cache?.page>page)return;
     getRecords(true);
   }, [selectAsset, selectSeason, selectStatus, searchVal]);
 
@@ -132,14 +132,13 @@ export default function ApplicationsSection({ handleBg }) {
 
     setTimeout(()=>{
       const element = document.querySelector(`#inner`)
-      const targetElement = document.querySelector(`#assets_${id}`);
+      // const targetElement = document.querySelector(`#assets_${id}`);
       console.log(height)
-      if (targetElement) {
         element.scrollTo({
           top: height ,
           behavior: 'auto',
         });
-      }
+
     },0)
   },[prevPath])
 
