@@ -6,7 +6,7 @@ export default function InstallCheck() {
   useEffect(() => {
     const tag = document.querySelector("pwa-install");
     if (tag) {
-      tag.showDialog();
+      tag.showDialog(true);
     }
   }, []);
 
