@@ -1,6 +1,6 @@
-import BannerImg from "assets/Imgs/banner.png";
-import Demo1 from "assets/Imgs/demo/img.jpg";
-import Demo2 from "assets/Imgs/demo/demo2.jpg";
+import BannerImg from "assets/Imgs/banner.webp";
+import Demo1 from "assets/Imgs/demo/img.webp";
+import Demo2 from "assets/Imgs/demo/demo2.webp";
 
 const banner = [
   {
