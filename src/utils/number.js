@@ -1,4 +1,5 @@
 export const formatNumber = (num) => {
+  if (isNaN(num)) return "0";
   return (num >= 0 ? "" : "-") + Math.abs(num).toLocaleString("en-US");
 };
 
