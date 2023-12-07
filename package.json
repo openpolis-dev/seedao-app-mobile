@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@emotion/react": "^11.11.1",
     "@ericz1803/react-google-calendar": "^4.3.1",
     "@ethersproject/shims": "^5.7.0",
     "@joyid/evm": "^0.2.4",
@@ -32,7 +31,6 @@
     "quill-mention": "^3.1.0",
     "quilljs-markdown": "^1.2.0",
     "react": "^18.2.0",
-    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
     "react-ga4": "^2.1.0",
     "react-i18next": "^13.2.2",
@@ -53,8 +51,7 @@
     "swiper": "^11.0.4",
     "ua-parser-js": "^1.0.36",
     "vconsole": "^3.15.1",
-    "wagmi": "^1.4.2",
-    "web-vitals": "^2.1.4"
+    "wagmi": "^1.4.2"
   },
   "devDependencies": {
     "compression-webpack-plugin": "^10.0.0",
@@ -69,7 +66,7 @@
     "dev": "react-scripts start",
     "start": "npm run dev",
     "build:online": "npm run config && react-app-rewired build",
-    "build": "REACT_APP_ENV_VERSION=dev npm run build:online",
+    "build": "ANALYZER=true REACT_APP_ENV_VERSION=dev npm run build:online",
     "build:dev": "npm run build",
     "build:preview": "REACT_APP_ENV_VERSION=preview npm run build:online",
     "build:prod": "REACT_APP_ENV_VERSION=prod npm run build:online"
