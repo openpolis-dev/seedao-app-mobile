@@ -6,8 +6,6 @@ import { ACTIONS, useSNSContext } from "./snsProvider";
 import { builtin } from "@seedao/sns-js";
 import useToast from "hooks/useToast";
 import { ethers } from "ethers";
-import { sendTransaction } from "@joyid/evm";
-import { SELECT_WALLET, Wallet } from "utils/constant";
 import ABI from "assets/abi/snsRegister.json";
 import { useSelector } from "react-redux";
 import getConfig from "constant/envCofnig";

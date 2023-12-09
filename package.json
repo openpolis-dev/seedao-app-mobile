@@ -6,7 +6,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@ericz1803/react-google-calendar": "^4.3.1",
     "@ethersproject/shims": "^5.7.0",
-    "@joyid/evm": "^0.2.4",
+    "@joyid/evm": "^0.2.6",
     "@khmyznikov/pwa-install": "^0.2.7",
     "@metamask/sdk": "^0.7.1",
     "@reduxjs/toolkit": "^1.9.6",
