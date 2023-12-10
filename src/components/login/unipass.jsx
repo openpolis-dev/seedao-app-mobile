@@ -10,7 +10,7 @@ import { getNonce, login } from "../../api/user";
 import AppConfig from "../../AppConfig";
 import ReactGA from "react-ga4";
 import usePushPermission from "hooks/usePushPermission";
-import UnipassLogo from "../../assets/Imgs/unipass.png";
+import UnipassLogo from "../../assets/Imgs/unipass.svg";
 import ArrImg from "../../assets/Imgs/arrow.svg";
 import OneSignal from "react-onesignal";
 

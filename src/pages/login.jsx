@@ -58,7 +58,7 @@ const BtnList = styled.ul`
       height: 56px;
       img {
         //width: 56px;
-        height: 6vh;
+        width: 100%;
       }
       &.metamask {
         img {
