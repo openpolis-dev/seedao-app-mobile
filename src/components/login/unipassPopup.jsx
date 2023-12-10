@@ -124,7 +124,7 @@ export default function Unipass() {
         <div className="logo">
           <img src={UnipassLogo} alt="" />
         </div>
-        <span>Unipass</span>
+        <span>UniPass</span>
       </dt>
       <img src={ArrImg} alt="" />
     </dl>
