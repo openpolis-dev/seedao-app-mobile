@@ -37,7 +37,7 @@ const RegisterSNSWrapper = () => {
       const _contract = new ethers.Contract(builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR, CONTROLLER_ABI, provider);
       dispatchSNS({ type: ACTIONS.SET_CONTROLLER_CONTRACT, payload: _contract });
       const _register_contract = new ethers.Contract(builtin.SEEDAO_MINTER_ADDR, MINTER_ABI, provider);
-      dispatchSNS({ type: ACTIONS.SET_CONTROLLER_CONTRACT, payload: _contract });
+      dispatchSNS({ type: ACTIONS.SET_MINTER_CONTRACT, payload: _register_contract });
     };
     initContract();
   }, []);
