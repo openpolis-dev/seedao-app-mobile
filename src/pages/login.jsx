@@ -5,9 +5,6 @@ import { useTranslation } from "react-i18next";
 import Metamask from "../components/login/metamask";
 import Joyid from "../components/login/joyid";
 import Unipass from "../components/login/unipassPopup";
-import {useState} from "react";
-import SwitchLan from "../components/common/switchLan";
-import AppConfig from "../AppConfig";
 
 const Box = styled.div`
   width: 100%;
@@ -83,7 +80,7 @@ const BtnList = styled.ul`
 
 
 export default function Login() {
-  const { t,i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Layout noHeader noTab>
