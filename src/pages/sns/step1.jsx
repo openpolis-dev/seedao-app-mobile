@@ -11,7 +11,6 @@ import { isAvailable } from "@seedao/sns-safe";
 import { builtin } from "@seedao/sns-js";
 import { getRandomCode } from "utils/index";
 import useToast from "hooks/useToast";
-import { SELECT_WALLET, Wallet } from "utils/constant";
 import ABI from "assets/abi/SeeDAORegistrarController.json";
 import { useSelector } from "react-redux";
 import useTransaction from "hooks/useTransaction";

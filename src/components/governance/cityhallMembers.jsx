@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useEffect, useMemo, useState } from "react";
-import { MultiLineStyle } from "assets/styles/common";
 import { getCityHallDetail } from "api/cityhall";
 import { getUsers } from "api/user";
 import publicJs from "utils/publicJs";

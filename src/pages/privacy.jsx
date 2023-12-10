@@ -2,7 +2,7 @@ import Layout from "../components/layout/layout";
 import {useTranslation} from "react-i18next";
 import AppConfig from "../AppConfig";
 export default function Privacy(){
-    const {t,i18n} = useTranslation();
+    const {t} = useTranslation();
 
     const privacyUrl = AppConfig.privacy;
 

@@ -1,12 +1,11 @@
 import Layout from "../../components/layout/layout";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import store from "../../store";
 import { saveLoading } from "../../store/reducer";
 import AppConfig from "../../AppConfig";
 import axios from "axios";
-import { getTreasury } from "../../api/treasury";
 import { ethers } from "ethers";
 
 import {formatNumber, getShortDisplay} from "../../utils/number";
@@ -22,7 +21,6 @@ export default function Assets() {
   const { t } = useTranslation();
 
   const [totalBalance, setTotalBalance] = useState("0.00");
-  const [totalSigner, setTotalSigner] = useState(0);
   const [vaultsMap, setVaultsMap] = useState({});
   const [nftData, setNftData] = useState({
     floorPrice: 0,
@@ -32,24 +30,9 @@ export default function Assets() {
   const [status1, setStatus1] = useState(false);
   const [status2, setStatus2] = useState(false);
   const [status3, setStatus3] = useState(false);
-  const [status4, setStatus4] = useState(false);
-
-  const [asset, setAsset] = useState({
-    token_remain_amount: 0,
-    token_total_amount: 0,
-    credit_remain_amount: 0,
-    credit_total_amount: 0,
-    credit_used_amount: 0,
-    token_used_amount: 0,
-  });
 
   const [totalSCR, setTotalSCR] = useState("0.00");
   const { SCR_CONTRACT } = AppConfig;
-  const SCR_PRICE = 0.3;
-
-  const SCRValue = useMemo(() => {
-    return Number(totalSCR) * SCR_PRICE;
-  }, [totalSCR]);
 
   const SAFE_CHAIN = {
     [1]: {
@@ -71,36 +54,14 @@ export default function Assets() {
   };
 
   useEffect(() => {
-    getAssets();
     getVaultsInfo();
     getFloorPrice();
     getSCR();
   }, []);
 
   useEffect(() => {
-    store.dispatch(saveLoading(status1 || status2 || status3 || status4));
-  }, [status1, status2, status3, status4]);
-
-  const getAssets = async () => {
-    // store.dispatch(saveLoading(true));
-    setStatus4(true);
-    try {
-      const res = await getTreasury();
-      setAsset({
-        token_remain_amount: Number(res.data.token_remain_amount),
-        token_total_amount: Number(res.data.token_total_amount),
-        credit_remain_amount: Number(res.data.credit_remain_amount),
-        credit_used_amount: Number(res.data.credit_used_amount),
-        credit_total_amount: Number(res.data.credit_total_amount),
-        token_used_amount: Number(res.data.token_used_amount),
-      });
-    } catch (error) {
-      console.error("getTreasury error", error);
-    } finally {
-      setStatus4(false);
-      // store.dispatch(saveLoading(false));
-    }
-  };
+    store.dispatch(saveLoading(status1 || status2 || status3));
+  }, [status1, status2, status3]);
 
   const getVaultsInfo = async () => {
     const vaults_map = {};
@@ -143,7 +104,7 @@ export default function Assets() {
       setStatus1(false);
       // store.dispatch(saveLoading(false));
     }
-    setTotalSigner([...new Set(users)].length);
+    // setTotalSigner([...new Set(users)].length);
     setTotalBalance(formatNumber(_total));
     setVaultsMap(vaults_map);
   };

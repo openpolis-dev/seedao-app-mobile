@@ -64,10 +64,6 @@ const LineBox = styled.div`
     text-align: right;
   }
 `;
-const RhtBox = styled.div`
-  font-size: 20px;
-  padding-top: 7px;
-`;
 
 const AvatarBox = styled.div`
   display: flex;
@@ -317,9 +313,9 @@ export default function Profile() {
   const walletType = useSelector((state) => state.walletType);
 
   const [roles, setRoles] = useState([]);
-  const [discord, setDiscord] = useState('');
+  // const [discord, setDiscord] = useState('');
   const [twitter, setTwitter] = useState('');
-  const [wechat, setWechat] = useState('');
+  // const [wechat, setWechat] = useState('');
   const [mirror, setMirror] = useState('');
   const [github, setGithub] = useState('');
   const [seed, setSeed] = useState([]);
@@ -370,8 +366,8 @@ export default function Profile() {
         mapArr.set(item.network, item.identity);
       });
       setTwitter(mapArr.get('twitter') ?? '');
-      setDiscord(mapArr.get('discord') ?? '');
-      setWechat(mapArr.get('wechat') ?? '');
+      // setDiscord(mapArr.get('discord') ?? '');
+      // setWechat(mapArr.get('wechat') ?? '');
       setMirror(mapArr.get('mirror') ?? '');
       setGithub(mapArr.get('github') ?? '');
       setSeed(rt.data.seed || []);
@@ -429,10 +425,6 @@ export default function Profile() {
       return "0";
     }
     return Number(amount).toLocaleString("en-US");
-  }
-
-  const backTop = () =>{
-    navigate(-1)
   }
 
   const switchRoles = (role) => {

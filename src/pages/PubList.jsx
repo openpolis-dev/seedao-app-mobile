@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
 import React, {useEffect, useMemo, useState} from "react";
-import {saveLoading, saveDetail, saveCache} from "../store/reducer";
+import {saveLoading, saveCache} from "../store/reducer";
 import {publicList} from "../api/publicData";
 import styled from "styled-components";
 import {EventCardSkeleton} from "../components/event/eventCard";

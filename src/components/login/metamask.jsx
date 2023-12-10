@@ -1,7 +1,7 @@
 
 import {useEffect, useState} from "react";
 import { useWeb3Modal } from "@web3modal/react";
-import { useAccount, useDisconnect, useNetwork } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 import {useEthersSigner } from '../../utils/ethersNew';
 import store from "../../store";
 import {saveLoading,saveAccount,saveUserToken,saveWalletType} from "../../store/reducer";

@@ -7,7 +7,7 @@ import { getSeeuEventList } from "api/event";
 import InfiniteScroll from "react-infinite-scroll-component";
 import NoItem from "components/noItem";
 import store from "store";
-import {saveCache, saveDetail, saveLoading} from "store/reducer";
+import {saveCache, saveLoading} from "store/reducer";
 import { useSelector } from "react-redux";
 import Loading from "components/common/loading";
 import { useNavigate } from "react-router-dom";
