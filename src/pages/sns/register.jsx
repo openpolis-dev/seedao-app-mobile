@@ -6,7 +6,8 @@ import SNSProvider, { ACTIONS, useSNSContext } from "./snsProvider";
 import { useEffect } from "react";
 import { ethers } from "ethers";
 import StepLoading from "./stepLoading";
-import ABI from "assets/abi/snsRegister.json";
+import CONTROLLER_ABI from "assets/abi/SeeDAORegistrarController.json";
+import MINTER_ABI from "assets/abi/SeeDAOMinter.json";
 import { builtin } from "@seedao/sns-js";
 import getConfig from "constant/envCofnig";
 import { useSelector } from "react-redux";
@@ -33,8 +34,10 @@ const RegisterSNSWrapper = () => {
   useEffect(() => {
     const initContract = async () => {
       const provider = new ethers.providers.StaticJsonRpcProvider(networkConfig.rpc);
-      const _contract = new ethers.Contract(builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR, ABI, provider);
-      dispatchSNS({ type: ACTIONS.SET_CONTRACT, payload: _contract });
+      const _contract = new ethers.Contract(builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR, CONTROLLER_ABI, provider);
+      dispatchSNS({ type: ACTIONS.SET_CONTROLLER_CONTRACT, payload: _contract });
+      const _register_contract = new ethers.Contract(builtin.SEEDAO_MINTER_ADDR, MINTER_ABI, provider);
+      dispatchSNS({ type: ACTIONS.SET_CONTROLLER_CONTRACT, payload: _contract });
     };
     initContract();
   }, []);

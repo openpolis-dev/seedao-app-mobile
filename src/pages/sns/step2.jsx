@@ -6,7 +6,7 @@ import { ACTIONS, useSNSContext } from "./snsProvider";
 import { builtin } from "@seedao/sns-js";
 import useToast from "hooks/useToast";
 import { ethers } from "ethers";
-import ABI from "assets/abi/snsRegister.json";
+import ABI from "assets/abi/SeeDAOMinter.json";
 import { useSelector } from "react-redux";
 import getConfig from "constant/envCofnig";
 import useTransaction from "hooks/useTransaction";

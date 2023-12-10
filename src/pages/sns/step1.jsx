@@ -12,7 +12,7 @@ import { builtin } from "@seedao/sns-js";
 import { getRandomCode } from "utils/index";
 import useToast from "hooks/useToast";
 import { SELECT_WALLET, Wallet } from "utils/constant";
-import ABI from "assets/abi/snsRegister.json";
+import ABI from "assets/abi/SeeDAORegistrarController.json";
 import { useSelector } from "react-redux";
 import useTransaction from "hooks/useTransaction";
 import getConfig from "constant/envCofnig";
@@ -43,7 +43,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
 
   const {
     dispatch: dispatchSNS,
-    state: { contract, localData },
+    state: { controllerContract, localData },
   } = useSNSContext();
 
   const { toast } = useToast();
@@ -62,7 +62,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         return;
       }
       // onchain check
-      const res1 = await contract.available(v);
+      const res1 = await controllerContract.available(v);
       console.log("online check", v, res1);
 
       if (!res1) {
@@ -78,7 +78,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
       setPending(false);
     }
   };
-  const onChangeVal = useCallback(debounce(handleSearchAvailable, 1000), [contract]);
+  const onChangeVal = useCallback(debounce(handleSearchAvailable, 1000), [controllerContract]);
 
   const handleInput = (v) => {
     // check login status
@@ -90,7 +90,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
     if (v?.length > 15) {
       return;
     }
-    if (!contract) {
+    if (!controllerContract) {
       // TODO check login status?
       return;
     }
@@ -127,7 +127,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
       setRandomSecret(_s);
       localStorage.setItem("sns-secret", _s);
       // get commitment
-      const _commitment = await contract.makeCommitment(
+      const _commitment = await controllerContract.makeCommitment(
         searchVal,
         account,
         builtin.PUBLIC_RESOLVER_ADDR,

@@ -3,7 +3,8 @@ import React, { useReducer, createContext, useContext } from "react";
 export const ACTIONS = {
   SET_STEP: "set_step",
   ADD_STEP: "add_step",
-  SET_CONTRACT: "set_contract",
+  SET_CONTROLLER_CONTRACT: "set_controller_contract",
+  SET_MINTER_CONTRACT: "set_minter_contract",
   SET_LOCAL_DATA: "set_local_data",
   SHOW_LOADING: "show_loading",
   CLOSE_LOADING: "close_loading",
@@ -26,8 +27,10 @@ const reducer = (state, action) => {
       return { ...state, step: state.step + 1 };
     case ACTIONS.SET_STEP:
       return { ...state, step: action.payload };
-    case ACTIONS.SET_CONTRACT:
-      return { ...state, contract: action.payload };
+    case ACTIONS.SET_CONTROLLER_CONTRACT:
+      return { ...state, controllerContract: action.payload };
+    case ACTIONS.SET_MINTER_CONTRACT:
+      return { ...state, minterContract: action.payload };
     case ACTIONS.SET_LOCAL_DATA:
       return { ...state, localData: action.payload };
     case ACTIONS.SHOW_LOADING:

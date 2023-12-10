@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ethers } from "ethers";
 import { builtin } from "@seedao/sns-js";
 import { useSelector } from "react-redux";
-import ABI from "assets/abi/snsRegister.json";
+import ABI from "assets/abi/SeeDAORegistrarController.json";
 import useTransaction from "hooks/useTransaction";
 import getConfig from "constant/envCofnig";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ const networkConfig = getConfig().NETWORK;
 
 const buildSwitchData = (sns) => {
   const iface = new ethers.utils.Interface(ABI);
-  return iface.encodeFunctionData("setDefaultAddr", [sns.replace(".seedao", ""), builtin.PUBLIC_RESOLVER_ADDR]);
+  return iface.encodeFunctionData("setDefaultName", [sns.replace(".seedao", ""), builtin.PUBLIC_RESOLVER_ADDR]);
 };
 
 export default function SwitchModal({ select, handleClose }) {
