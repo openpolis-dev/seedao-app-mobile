@@ -155,10 +155,10 @@ const LevelBox = styled.div`
   text-transform: uppercase;
   padding-right: 10px;
   font-size: 12px;
-  font-family: Poppins-ExtraBold;
+  font-family: Poppins-SemiBold;
   font-weight: normal;
   font-style: italic;
-`
+`;
 
 const SCRBox = styled.div`
   font-size: 12px;

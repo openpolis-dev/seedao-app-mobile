@@ -192,7 +192,7 @@ const CircleBox = styled.div`
   position: relative;
   .number {
     font-size: 44px;
-    font-family: "Poppins-Bold";
+    font-family: "Poppins-SemiBold";
     font-weight: bold;
     color: ${(props) => props.color};
     position: absolute;

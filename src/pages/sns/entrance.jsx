@@ -28,9 +28,9 @@ const TitleBox = styled.div`
   margin: 43px 0 15px;
   font-size: 38px;
   font-weight: 900;
-  color: #3F3F3F;
+  color: #3f3f3f;
   line-height: 50px;
-  font-family: 'Poppins-Bold';
+  font-family: "Poppins-SemiBold";
   text-align: center;
 `;
 

@@ -8,7 +8,7 @@ const Box = styled.div`
   height: 100vh;
   overflow: hidden;
     .calendar-title{
-        font-family: 'Jost-ExtraBold';
+        font-family: 'Poppins-SemiBold';
     }
   .innerDay{
     height: 100%;
