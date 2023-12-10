@@ -8,6 +8,7 @@ import useQuerySNS from "hooks/useQuerySNS";
 import { useSelector } from "react-redux";
 import UserModal from "components/userModal";
 import Avatar from "components/common/avatar";
+import { formatAddress } from "utils/address";
 
 const MemberAvatar = ({ user, onSelect }) => {
   const reFormat = () =>{
@@ -62,10 +63,10 @@ export default function CityhallMembers() {
       if (user) {
         return {
           ...user,
-          sns: snsMap[w.toLowerCase()] || w.toLowerCase(),
+          sns: snsMap[w.toLowerCase()] || formatAddress(w, 10),
         };
       } else {
-        return { sns: w.toLowerCase() };
+        return { sns: formatAddress(w, 10) };
       }
     });
   };
