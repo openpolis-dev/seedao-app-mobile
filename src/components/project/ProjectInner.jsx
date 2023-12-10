@@ -1,7 +1,6 @@
 import SipTag from "../sipTag";
 import ProjectMember from "../../pages/project/info/member";
 import {MdPreview} from "md-editor-rt";
-import {PROJECT_ACTIONS, useProjectContext} from "../../pages/project/info/provider";
 import {useEffect, useState} from "react";
 import store from "../../store";
 import {saveLoading} from "../../store/reducer";

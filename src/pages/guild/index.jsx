@@ -3,7 +3,7 @@ import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
 import {useEffect, useMemo, useState} from "react";
 import { getMyGuilds, getGuilds } from "api/guild";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import Tab from "components/common/tab";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ProjectOrGuildItemDetail from "components/projectOrGuild/projectOrGuildItemDetail";
