@@ -31,8 +31,8 @@ const addAnalyzer = () => (config) => {
 const splitChunks = () => (config) => {
   config.optimization.splitChunks = {
     chunks: "all",
-    minSize: 10000,
-    maxSize: 50000,
+    minSize: 100000,
+    maxSize: 500000,
     minChunks: 2,
     maxAsyncRequests: 30,
     maxInitialRequests: 30,
