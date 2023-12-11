@@ -1,13 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import { useTranslation } from "react-i18next";
 import { RectangularSkeleton } from "components/common/skeleton";
+import DefaultLogo from "assets/Imgs/defaultLogo.png";
 
 export default function ProjectOrGuildItemDetail({ data, onClickItem }) {
-  const { t } = useTranslation();
   return (
-    <Item  onClick={() => onClickItem(data.id)}>
-      <ImageBox>{data.logo && <img src={data.logo} alt="" />}</ImageBox>
+    <Item onClick={() => onClickItem(data.id)}>
+      <ImageBox>
+        <img src={data.logo || DefaultLogo} alt="" />
+      </ImageBox>
       <RightBox className="_right">
         <div>
           <Title>{data.name}</Title>
