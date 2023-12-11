@@ -130,9 +130,13 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         builtin.PUBLIC_RESOLVER_ADDR,
         ethers.utils.formatBytes32String(_s),
       );
-      console.log("===", builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR, account, buildCommitData(_commitment));
 
-      const tx = await sendTransaction(buildCommitData(_commitment), _s, searchVal);
+      const tx = await sendTransaction(
+        builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR,
+        buildCommitData(_commitment),
+        _s,
+        searchVal,
+      );
       console.log("tx:", tx);
       const hash = (tx && tx.hash) || tx
       if (hash) {

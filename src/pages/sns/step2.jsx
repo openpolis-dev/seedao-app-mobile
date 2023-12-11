@@ -6,7 +6,7 @@ import { ACTIONS, useSNSContext } from "./snsProvider";
 import { builtin } from "@seedao/sns-js";
 import useToast from "hooks/useToast";
 import { ethers } from "ethers";
-import ABI from "assets/abi/SeeDAOMinter.json";
+import ABI from "assets/abi/SeeDAOActivityMinter.json";
 import { useSelector } from "react-redux";
 import useTransaction from "hooks/useTransaction";
 
@@ -74,7 +74,13 @@ export default function RegisterSNSStep2() {
     try {
       console.log(sns, account, builtin.PUBLIC_RESOLVER_ADDR, secret);
       const tx = await sendTransaction(
-        buildRegisterData(sns, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret), ethers.constants.AddressZero),
+        builtin.SEEDAO_ACTIVITY_MINTER_ADDR,
+        buildRegisterData(
+          sns,
+          builtin.PUBLIC_RESOLVER_ADDR,
+          ethers.utils.formatBytes32String(secret),
+          ethers.constants.AddressZero,
+        ),
       );
       const hash = (tx && tx.hash) || tx
       if (hash) {

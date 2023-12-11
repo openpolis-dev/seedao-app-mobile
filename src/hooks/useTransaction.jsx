@@ -30,14 +30,14 @@ export default function useTransaction(action) {
     });
   };
 
-  const handleTransaction = (data, secret, sns) => {
+  const handleTransaction = (contractAddress, data, secret, sns) => {
     const params = {
-      to: builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR,
+      to: contractAddress,
       from: account,
       value: "0",
       data,
     };
-    console.log("wallet:", wallet);
+    console.log("use wallet:", wallet);
     if (wallet === Wallet.METAMASK) {
       return sendTransactionAsync(params);
     } else if (wallet === Wallet.JOYID) {
