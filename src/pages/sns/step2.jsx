@@ -13,9 +13,9 @@ import useTransaction from "hooks/useTransaction";
 
 const networkConfig = getConfig().NETWORK;
 
-const buildRegisterData = (sns, resolveAddress, secret) => {
+const buildRegisterData = (sns, resolveAddress, secret, address) => {
   const iface = new ethers.utils.Interface(ABI);
-  return iface.encodeFunctionData("register", [sns, resolveAddress, secret]);
+  return iface.encodeFunctionData("register", [sns, resolveAddress, secret, address]);
 };
 
 export default function RegisterSNSStep2() {
