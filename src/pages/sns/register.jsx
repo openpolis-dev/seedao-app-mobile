@@ -23,6 +23,7 @@ const RegisterSNSWrapper = () => {
   console.log("====state", state);
 
   const account = useSelector((state) => state.account);
+  const rpc = useSelector((state) => state.rpc);
 
   const {
     state: { step, localData, loading },
@@ -33,14 +34,14 @@ const RegisterSNSWrapper = () => {
 
   useEffect(() => {
     const initContract = async () => {
-      const provider = new ethers.providers.StaticJsonRpcProvider(networkConfig.rpc);
+      const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
       const _contract = new ethers.Contract(builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR, CONTROLLER_ABI, provider);
       dispatchSNS({ type: ACTIONS.SET_CONTROLLER_CONTRACT, payload: _contract });
       const _register_contract = new ethers.Contract(builtin.SEEDAO_MINTER_ADDR, MINTER_ABI, provider);
       dispatchSNS({ type: ACTIONS.SET_MINTER_CONTRACT, payload: _register_contract });
     };
-    initContract();
-  }, []);
+    rpc && initContract();
+  }, [rpc]);
 
   useEffect(() => {
     console.log("account", account);

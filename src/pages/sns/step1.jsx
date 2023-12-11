@@ -14,9 +14,6 @@ import useToast from "hooks/useToast";
 import ABI from "assets/abi/SeeDAORegistrarController.json";
 import { useSelector } from "react-redux";
 import useTransaction from "hooks/useTransaction";
-import getConfig from "constant/envCofnig";
-
-const networkConfig = getConfig().NETWORK;
 
 const AvailableStatus = {
   DEFAULT: "default",
@@ -39,6 +36,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
   const sendTransaction = useTransaction("sns-commit");
 
   const account = useSelector((state) => state.account);
+  const rpc = useSelector((state) => state.rpc);
 
   const {
     dispatch: dispatchSNS,
@@ -170,18 +168,16 @@ export default function RegisterSNSStep1({ sns: _sns }) {
     }
     let timer;
     const timerFunc = () => {
-      console.log(">>>>", localData, account);
-
-      if (!account || !localData) {
+      if (!account || !localData || !rpc) {
         return;
       }
 
       if (!hash) {
         return;
       }
-      const provider = new ethers.providers.StaticJsonRpcProvider(networkConfig.rpc);
+      const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
       provider.getTransactionReceipt(hash).then((r) => {
-        console.log("r:", r);
+        console.log("check tx status:", r);
         const _d = { ...localData };
         if (r && r.status === 1) {
           // means tx success
@@ -203,7 +199,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
     };
     timer = setInterval(timerFunc, 1000);
     return () => timer && clearInterval(timer);
-  }, [localData, account]);
+  }, [localData, account, rpc]);
   return (
     <Container>
       <ContainerWrapper>

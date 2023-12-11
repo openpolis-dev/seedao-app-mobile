@@ -21,6 +21,7 @@ import useToast from "hooks/useToast";
 import { useEffect } from "react";
 import EventHandler from "components/event/eventHandler";
 import getConfig from "constant/envCofnig";
+import ChooseRPC from "components/chooseRPC";
 
 const chains = getConfig().NETWORK.chainId === 1 ? [mainnet] : [goerli, mainnet];
 
@@ -50,6 +51,7 @@ function App() {
                     <Router>
                         <RouterLink />
                         <RouterChecker />
+                        <ChooseRPC />
                     </Router>
                     <EventHandler />
                 </PersistGate>

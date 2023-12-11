@@ -8,10 +8,7 @@ import useToast from "hooks/useToast";
 import { ethers } from "ethers";
 import ABI from "assets/abi/SeeDAOMinter.json";
 import { useSelector } from "react-redux";
-import getConfig from "constant/envCofnig";
 import useTransaction from "hooks/useTransaction";
-
-const networkConfig = getConfig().NETWORK;
 
 const buildRegisterData = (sns, resolveAddress, secret, address) => {
   const iface = new ethers.utils.Interface(ABI);
@@ -22,6 +19,7 @@ export default function RegisterSNSStep2() {
   const { t } = useTranslation();
 
   const account = useSelector((state) => state.account);
+  const rpc = useSelector((state) => state.rpc);
 
   const {
     state: { localData, sns },
@@ -105,13 +103,13 @@ export default function RegisterSNSStep2() {
     }
     let timer;
     const timerFunc = () => {
-      if (!account || !localData) {
+      if (!account || !localData || !rpc) {
         return;
       }
       console.log(localData, account);
-      const provider = new ethers.providers.StaticJsonRpcProvider(networkConfig.rpc);
+      const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
       provider.getTransactionReceipt(hash).then((r) => {
-        console.log("r:", r);
+        console.log("check tx status:", r);
         const _d = { ...localData };
         if (r && r.status === 1) {
           // means tx success
@@ -130,7 +128,7 @@ export default function RegisterSNSStep2() {
     };
     timer = setInterval(timerFunc, 1000);
     return () => timer && clearInterval(timer);
-  }, [localData, account]);
+  }, [localData, account, rpc]);
 
   return (
     <Container>

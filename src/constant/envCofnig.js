@@ -15,7 +15,11 @@ const LOCAL = {
   NETWORK: {
     name: "Goerli",
     chainId: 5,
-    rpc: "https://eth-goerli.g.alchemy.com/v2/MATWeLJN1bEGTjSmtyLedn0i34o1ISLD",
+    rpcs: [
+      "https://eth-goerli.g.alchemy.com/v2/MATWeLJN1bEGTjSmtyLedn0i34o1ISLD",
+      "https://rpc.ankr.com/eth_goerli",
+      "https://endpoints.omniatech.io/v1/eth/goerli/public",
+    ],
     icon: EthereumIcon,
   },
   INDEXER_ENDPOINT: "https://test-spp-indexer.seedao.tech",

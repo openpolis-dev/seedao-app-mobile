@@ -11,16 +11,15 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import store from "store";
 import { saveLoading } from "store/reducer";
-import getConfig from "constant/envCofnig";
-const networkConfig = getConfig().NETWORK;
 
 export default function UserSNS() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { state } = useLocation();
-  console.log("====state", state);
+
   const account = useSelector((state) => state.account);
   const globalLoading = useSelector((state) => state.loading);
+  const rpc = useSelector((state) => state.rpc);
 
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState();
@@ -75,14 +74,14 @@ export default function UserSNS() {
   };
 
   useEffect(() => {
-    if (!account || !state) {
+    if (!account || !state || !rpc) {
       return;
     }
 
     let timer;
     const timerFunc = () => {
       setLoading(true);
-      const provider = new ethers.providers.StaticJsonRpcProvider(networkConfig.rpc);
+      const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
       provider.getTransactionReceipt(state).then((r) => {
         console.log("[tx-status]", r);
         if (r && r.status === 1) {
@@ -101,7 +100,7 @@ export default function UserSNS() {
     timerFunc();
     timer = setInterval(timerFunc, 1500);
     return () => timer && clearInterval(timer);
-  }, [state, account]);
+  }, [state, account, rpc]);
 
   const handleBack = () => {
     navigate("/sns/register");

@@ -10,4 +10,5 @@ export default {
   cache: null,
   currentpath: [],
   proposalCategories: [],
+  rpc: "",
 };

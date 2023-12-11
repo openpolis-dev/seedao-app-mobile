@@ -49,6 +49,9 @@ const mainSlice = createSlice({
                 arr.shift()
             }
             state.currentpath = arr;
+        },
+        saveRPC(state,action){
+            state.rpc = action.payload;
         }
     },
 });
@@ -65,6 +68,7 @@ export const {
     saveWalletType,
     saveUserToken,
     updateSNSmap,
-    saveProposalCategories
+    saveProposalCategories,
+    saveRPC
 } = mainSlice.actions;
 export default mainSlice.reducer;

@@ -7,10 +7,13 @@ import { ethers } from "ethers";
 
 export default function useQuerySNS() {
   const snsMap = useSelector((state) => state.snsMap);
+  const rpc = useSelector((state) => state.rpc);
+
+  const chooseRPC = rpc || getConfig().NETWORK.rpcs[0];
 
   const querySNS = async (wallet) => {
     try {
-      const data = await sns.name(wallet);
+      const data = await sns.name(wallet, chooseRPC);
       return data;
     } catch (error) {
       return "";
@@ -40,7 +43,7 @@ export default function useQuerySNS() {
     const _snsMap = { ...snsMap };
     if (_to_be_queried.length) {
       try {
-        const data = await sns.names(_to_be_queried);
+        const data = await sns.names(_to_be_queried, chooseRPC);
         data.forEach((d, idx) => {
           _snsMap[_to_be_queried[idx]] = d || ethers.utils.getAddress(_to_be_queried[idx]);
         });

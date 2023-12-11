@@ -2,7 +2,8 @@ import {SiweMessage} from 'siwe';
 import AppConfig from '../AppConfig';
 import axios from 'axios';
 import store from "../store";
-import {saveCache} from "../store/reducer";
+import { saveCache } from "../store/reducer";
+import { ethers } from 'ethers';
 
 const AddressToShow = (address, num = 4) => {
   if (!address) {
@@ -121,10 +122,29 @@ const StorageList = (type,list) =>{
   store.dispatch(saveCache(obj))
 }
 
+
+const checkRPCavailable = (rpc_list, network) => {
+  return Promise.any(
+    rpc_list.map((r) => {
+      const provider = new ethers.providers.JsonRpcProvider(r, network);
+      try {
+        provider.getBlock("latest");
+        return r;
+      } catch (error) {
+        throw Error(`[rpc] not available - ${r}`);
+      }
+    }),
+  ).then((result) => {
+    console.log("[rpc] choose", result);
+    return result;
+  });
+};
+
 export default {
   AddressToShow,
   createSiweMessage,
   StorageList,
   getImage,
-  filterTags
+  filterTags,
+  checkRPCavailable,
 };
