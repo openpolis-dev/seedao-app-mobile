@@ -91,7 +91,7 @@ export default function UserSNS() {
           setLoading(false);
           getCurrentName(true);
           // refresh data
-        } else if (r && r.status === 2) {
+        } else if (r && (r.status === 2 || r.status === 0)) {
           // means tx failed
           clearInterval(timer);
           setLoading(false);

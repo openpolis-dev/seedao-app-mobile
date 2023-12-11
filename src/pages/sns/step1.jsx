@@ -192,7 +192,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
             dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
             clearInterval(timer);
           });
-        } else if (r && r.status === 2) {
+        } else if (r && (r.status === 2 || r.status === 0)) {
           // means tx failed
           _d[account].stepStatus = "failed";
           dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(_d) });
