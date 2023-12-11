@@ -10,9 +10,9 @@ import ABI from "assets/abi/SeeDAOActivityMinter.json";
 import { useSelector } from "react-redux";
 import useTransaction from "hooks/useTransaction";
 
-const buildRegisterData = (sns, resolveAddress, secret, address) => {
+const buildRegisterData = (sns, resolveAddress, secret) => {
   const iface = new ethers.utils.Interface(ABI);
-  return iface.encodeFunctionData("register", [sns, resolveAddress, secret, address]);
+  return iface.encodeFunctionData("onboardingActivity", [sns, resolveAddress, secret]);
 };
 
 export default function RegisterSNSStep2() {
@@ -75,14 +75,9 @@ export default function RegisterSNSStep2() {
       console.log(sns, account, builtin.PUBLIC_RESOLVER_ADDR, secret);
       const tx = await sendTransaction(
         builtin.SEEDAO_ACTIVITY_MINTER_ADDR,
-        buildRegisterData(
-          sns,
-          builtin.PUBLIC_RESOLVER_ADDR,
-          ethers.utils.formatBytes32String(secret),
-          ethers.constants.AddressZero,
-        ),
+        buildRegisterData(sns, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret)),
       );
-      const hash = (tx && tx.hash) || tx
+      const hash = (tx && tx.hash) || tx;
       if (hash) {
         const d = { ...localData };
         d[account].registerHash = hash;
