@@ -76,7 +76,7 @@ export default function RegisterSNSStep2() {
     try {
       console.log(sns, account, builtin.PUBLIC_RESOLVER_ADDR, secret);
       const tx = await sendTransaction(
-        buildRegisterData(sns, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret)),
+        buildRegisterData(sns, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret), ethers.constants.AddressZero),
       );
       const hash = (tx && tx.hash) || tx
       if (hash) {
