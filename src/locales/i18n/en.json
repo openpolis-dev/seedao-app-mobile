@@ -188,7 +188,7 @@
     "Export": "Export"
   },
   "Application": {
-    "Check": "Check",
+    "Check": "View",
     "ToBeReviewed": "To Be Reviewed",
     "Rejected": "Rejected",
     "ToBeIssued": "To Be Issued",
@@ -233,7 +233,7 @@
   "SNS": {
     "EntranceTitle": "INVOLVED IN SEEDAO IN YOUR NAME",
     "EntranceDesc": "SNS is your identity based on blockchain in SeeDAO",
-    "Started": "Start",
+    "Start": "Start",
     "Step1Title": "Your name in SeeDAO",
     "Step1Desc": "Your identity across SeeDAO, one name for all your SeeDAO ecosystem apps and scenarios.",
     "Available": "Available",

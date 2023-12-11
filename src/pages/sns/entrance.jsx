@@ -66,7 +66,7 @@ export default function SNSEntrancePage() {
           <TitleBox>{t("SNS.EntranceTitle")}</TitleBox>
           <TipBox>{t("SNS.EntranceDesc")}</TipBox>
           <Link to="/sns/register">
-            <ButtonBox>{t("SNS.Started")}</ButtonBox>
+            <ButtonBox>{t("SNS.Start")}</ButtonBox>
           </Link>
         </TopBox>
         <Animation />
