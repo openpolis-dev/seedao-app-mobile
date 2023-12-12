@@ -128,7 +128,6 @@ export default function ApplicationsSection({ handleBg }) {
     setTimeout(()=>{
       const element = document.querySelector(`#inner`)
       // const targetElement = document.querySelector(`#assets_${id}`);
-      console.log(height)
         element.scrollTo({
           top: height ,
           behavior: 'auto',
