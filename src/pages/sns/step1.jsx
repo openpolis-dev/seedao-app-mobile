@@ -162,11 +162,10 @@ export default function RegisterSNSStep1({ sns: _sns }) {
   };
 
   useEffect(() => {
-    if (!account || !localData) {
+    if (!account || !localData || !rpc) {
       return;
     }
     const hash = localData[account]?.commitHash;
-    console.log("???", localData[account], hash);
     if (!hash || localData[account]?.stepStatus === "failed") {
       return;
     }
@@ -179,11 +178,17 @@ export default function RegisterSNSStep1({ sns: _sns }) {
       if (!hash) {
         return;
       }
+      let hasResult = false;
       const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
       provider.getTransactionReceipt(hash).then((r) => {
+        if (hasResult) {
+          clearInterval(timer);
+          return;
+        }
         console.log("check tx status:", r);
         const _d = { ...localData };
         if (r && r.status === 1) {
+          hasResult = true;
           // means tx success
           _d[account].stepStatus = "success";
           provider.getBlock(r.blockNumber).then((block) => {
@@ -193,6 +198,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
             clearInterval(timer);
           });
         } else if (r && (r.status === 2 || r.status === 0)) {
+          hasResult = true;
           // means tx failed
           _d[account].stepStatus = "failed";
           dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(_d) });
@@ -201,7 +207,8 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         }
       });
     };
-    timer = setInterval(timerFunc, 1000);
+    timerFunc();
+    timer = setInterval(timerFunc, 2000);
     return () => timer && clearInterval(timer);
   }, [localData, account, rpc]);
 

@@ -188,13 +188,13 @@ export default function RegisterSNSStep2() {
           clearInterval(timer);
           return;
         }
-        hasResult = true;
         const _d = { ...localData };
         if (_d[account].stepStatus === "approve_success") {
           clearInterval(timer);
           return;
         }
         if (r && r.status === 1) {
+          hasResult = true;
           // means tx success
           if (_d[account].stepStatus === "approving") {
             _d[account].stepStatus = "approve_success";
@@ -209,6 +209,7 @@ export default function RegisterSNSStep2() {
           }
         } else if (r && (r.status === 2 || r.status === 0)) {
           // means tx failed
+          hasResult = true;
           _d[account].stepStatus = "failed";
           dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(_d) });
           dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
@@ -216,7 +217,8 @@ export default function RegisterSNSStep2() {
         }
       });
     };
-    timer = setInterval(timerFunc, 1000);
+    timerFunc();
+    timer = setInterval(timerFunc, 2000);
     return () => timer && clearInterval(timer);
   }, [localData, account, rpc, secret]);
 
