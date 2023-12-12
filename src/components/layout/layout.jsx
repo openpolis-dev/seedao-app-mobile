@@ -3,7 +3,7 @@ import Header from "./header";
 import TabBar from "./tabBar";
 import { useSelector } from "react-redux";
 
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 
 import StickyHeader from "./StickyHeader";
@@ -30,7 +30,6 @@ const OuterBox = styled.div`
 const InnerBox = styled.div`
   /* flex-grow: 1; */
   width: 100%;
-  //height: ${(props) => `calc(100% - ${props.sticky === "true" ? props.notab : 0})`};
   height: ${(props) => `calc(100% - ${props.$sticky === "true" ? props.$notab : 0})`};
   padding-top: ${(props) => props.$paddingtop};
   padding-bottom: ${(props) => props.$notab};
@@ -63,6 +62,8 @@ export default function Layout({
   const userToken = useSelector((state) => state.userToken);
   const innerRef = useRef();
 
+  const [pwaBtm,setPwaBtm] = useState(false);
+
   const location = useLocation();
 
   useEffect(() => {
@@ -70,11 +71,25 @@ export default function Layout({
   }, [location]);
 
   useEffect(() => {
-    console.log("pathname", pathname);
+    const userAgent = navigator.userAgent;
+    const isMobile = /Mobile/.test(userAgent);
+    const isPWA = window.navigator.standalone;
+
+
+      setPwaBtm(isMobile && !isPWA)
+
+  }, []);
+
+  useEffect(() => {
     if (!userToken?.token && pathname !== "/sns") {
       navigate("/login");
     }
   }, [userToken, pathname]);
+
+
+  useEffect(() => {
+
+  }, []);
 
   useEffect(() => {
     document.querySelector("body").style.background = bgColor || "#FFFFFF";
@@ -101,7 +116,7 @@ export default function Layout({
       <InnerBox
         id="inner"
         ref={innerRef}
-        $notab={noTab ? 0 : "70px"}
+        $notab={noTab ? 0 : (pwaBtm?"120px":"70px")}
         $sticky="true"
         $paddingtop={noHeader || sticky ? "0" : "47px"}
       >
