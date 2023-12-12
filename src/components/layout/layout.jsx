@@ -82,6 +82,9 @@ export default function Layout({
 
   useEffect(() => {
     if (!userToken?.token && pathname !== "/sns") {
+      if (pathname === "/sns/register") {
+        localStorage.setItem("==sns==", "1");
+      }
       navigate("/login");
     }
   }, [userToken, pathname]);

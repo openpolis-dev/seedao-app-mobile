@@ -165,8 +165,9 @@ export default function Joyid(){
     }
 
     useEffect(()=>{
-        if(!result)return;
-        navigate('/home');
+        if (!result) return;
+        const toSNS = localStorage.getItem(`==sns==`) === "1";
+        navigate(toSNS ? '/sns/register' : '/home');
 
     },[result])
 

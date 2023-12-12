@@ -115,7 +115,8 @@ export default function Unipass() {
 
   useEffect(() => {
     if (!result) return;
-    navigate("/home");
+    const toSNS = localStorage.getItem(`==sns==`) === "1";
+    navigate(toSNS ? "/sns/register" : "/home");
   }, [result]);
 
   return (
