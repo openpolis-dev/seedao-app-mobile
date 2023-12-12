@@ -78,7 +78,9 @@ const ConfirmButton = styled(BasicButton)`
   background-color: var(--primary-color);
   color: #fff;
 `;
-const CancelButton = styled(BasicButton)``;
+const CancelButton = styled(BasicButton)`
+  color: var(--primary-color);
+`;
 
 const TextContent = styled.div`
   text-align: center;

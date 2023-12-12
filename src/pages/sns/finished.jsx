@@ -45,7 +45,7 @@ export default function FinishedComponent() {
   );
 }
 const Container = styled.div`
-  padding-top: 65px;
+  padding-top: 50px;
 `;
 
 const ContainerTop = styled.div`
