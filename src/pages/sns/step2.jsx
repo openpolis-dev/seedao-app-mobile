@@ -24,9 +24,9 @@ const buildApproveData = () => {
   ]);
 };
 
-const buildRegisterData = (sns, resolveAddress, secret) => {
+const buildRegisterData = (sns, secret) => {
   const iface = new ethers.utils.Interface(ABI);
-  return iface.encodeFunctionData("register", [sns, resolveAddress, secret, PAY_TOKEN.address]);
+  return iface.encodeFunctionData("register", [sns, builtin.PUBLIC_RESOLVER_ADDR, secret, PAY_TOKEN.address]);
 };
 
 const buildWhiteListRegisterData = (sns, resolveAddress, secret, proof) => {
@@ -41,7 +41,7 @@ export default function RegisterSNSStep2() {
   const rpc = useSelector((state) => state.rpc);
 
   const {
-    state: { localData, sns, userProof, minterContract },
+    state: { localData, sns, userProof },
     dispatch: dispatchSNS,
   } = useSNSContext();
   const { toast } = useToast();
@@ -86,12 +86,31 @@ export default function RegisterSNSStep2() {
 
   const progress = (leftTime / 60) * 100;
 
+  const handleContinueMint = async () => {
+    try {
+      const tx = await handleTransaction(
+        builtin.SEEDAO_MINTER_ADDR,
+        buildRegisterData(sns, ethers.utils.formatBytes32String(secret)),
+      );
+      const hash = (tx && tx.hash) || tx;
+      if (hash) {
+        const d = { ...localData };
+        d[account].registerHash = hash;
+        d[account].step = "register";
+        d[account].stepStatus = "pending";
+        dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(d) });
+      }
+    } catch (error) {
+      dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
+    }
+  };
+
   const handleRegister = async () => {
     if (!account) {
       return;
     }
+    dispatchSNS({ type: ACTIONS.SHOW_LOADING });
     try {
-      console.log(userProof, sns, account, builtin.PUBLIC_RESOLVER_ADDR, secret);
       let tx;
       if (userProof) {
         // whitelist
@@ -104,6 +123,14 @@ export default function RegisterSNSStep2() {
             userProof,
           ),
         );
+        const hash = (tx && tx.hash) || tx;
+        if (hash) {
+          const d = { ...localData };
+          d[account].registerHash = hash;
+          d[account].step = "register";
+          d[account].stepStatus = "pending";
+          dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(d) });
+        }
       } else {
         // approve
         const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
@@ -113,22 +140,17 @@ export default function RegisterSNSStep2() {
         const not_enough = approve_balance.lt(ethers.utils.parseUnits(String(PAY_NUMBER), PAY_TOKEN.decimals));
         if (not_enough) {
           tx = await handleTransaction(PAY_TOKEN.address, buildApproveData(), "approving");
-          // joyid will redirect and not execute the bottom code
+          const hash = (tx && tx.hash) || tx;
+          if (hash) {
+            const d = { ...localData };
+            d[account].registerHash = hash;
+            d[account].step = "register";
+            d[account].stepStatus = "approving";
+            dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(d) });
+          }
+        } else {
+          handleContinueMint();
         }
-        // pay mint -- other wallet will execute this method
-        tx = await handleTransaction(
-          builtin.SEEDAO_MINTER_ADDR,
-          buildRegisterData(sns, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret)),
-        );
-      }
-
-      const hash = (tx && tx.hash) || tx;
-      if (hash) {
-        const d = { ...localData };
-        d[account].registerHash = hash;
-        d[account].step = "register";
-        d[account].stepStatus = "pending";
-        dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(d) });
       }
     } catch (error) {
       dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
@@ -138,45 +160,51 @@ export default function RegisterSNSStep2() {
     }
   };
 
-  const handleContinueMint = async () => {
-    // pay mint continue -- joyid
-    handleTransaction(
-      builtin.SEEDAO_MINTER_ADDR,
-      buildRegisterData(sns, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret)),
-    );
-  };
-
   useEffect(() => {
-    if (!account || !localData) {
+    if (!account || !localData || !rpc || !secret) {
       return;
     }
     const hash = localData[account]?.registerHash;
-    console.log(localData[account], hash);
     if (!hash || localData[account]?.stepStatus === "failed") {
       return;
     }
     let timer;
+    let hasResult = false;
+    const _d = { ...localData };
+    if (_d[account].stepStatus === "approve_success") {
+      handleContinueMint();
+      return;
+    }
     const timerFunc = () => {
-      if (!account || !localData || !rpc) {
+      if (!account || !localData) {
         return;
       }
-      console.log(localData, account);
       const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
       provider.getTransactionReceipt(hash).then((r) => {
         console.log("check tx status:", r);
+        if (hasResult) {
+          clearInterval(timer);
+          return;
+        }
+        hasResult = true;
         const _d = { ...localData };
+        if (_d[account].stepStatus === "approve_success") {
+          clearInterval(timer);
+          return;
+        }
         if (r && r.status === 1) {
           // means tx success
           if (_d[account].stepStatus === "approving") {
             _d[account].stepStatus = "approve_success";
             dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(_d) });
+            clearInterval(timer);
             handleContinueMint();
           } else {
             _d[account].stepStatus = "success";
             dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
             dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(_d) });
+            clearInterval(timer);
           }
-          clearInterval(timer);
         } else if (r && (r.status === 2 || r.status === 0)) {
           // means tx failed
           _d[account].stepStatus = "failed";
@@ -188,7 +216,7 @@ export default function RegisterSNSStep2() {
     };
     timer = setInterval(timerFunc, 1000);
     return () => timer && clearInterval(timer);
-  }, [localData, account, rpc]);
+  }, [localData, account, rpc, secret]);
 
   return (
     <Container>

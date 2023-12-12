@@ -120,6 +120,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
     }
     // mint
     try {
+      dispatchSNS({ type: ACTIONS.SHOW_LOADING });
       const _s = getRandomCode();
       setRandomSecret(_s);
       localStorage.setItem("sns-secret", _s);
