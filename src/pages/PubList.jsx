@@ -123,6 +123,7 @@ export default function PubList(){
                     behavior: 'auto',
                 });
             }
+            store.dispatch(saveCache(null))
         },0)
     },[prevPath])
 
@@ -155,8 +156,10 @@ export default function PubList(){
 
     useEffect(() => {
         // if(list.length)return;
+
+        if(cache?.type==="hub" && cache?.pageCur>pageCur)return;
         getList();
-    }, []);
+    }, [cache]);
 
 
 
