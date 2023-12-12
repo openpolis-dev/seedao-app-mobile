@@ -30,7 +30,7 @@ export default function FinishedComponent() {
           <img src={NiceIcon} alt="" />
         </ContainerTop>
         <ContainerBottom>
-          <div className="title">{t("SNS.FinishSucess", { sns: `e1red${sns}.seedao` })}</div>
+          <div className="title">{t("SNS.FinishSucess", { sns: `${sns}.seedao` })}</div>
           <div>
             <HomeLink to="/home">
               <LinkBox>{t("SNS.Polis")}</LinkBox>
