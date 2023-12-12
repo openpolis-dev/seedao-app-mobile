@@ -4,6 +4,7 @@ import NiceIcon from "assets/Imgs/sns/nice.svg";
 import { ACTIONS, useSNSContext } from "./snsProvider";
 import { useEffect } from "react";
 import Layout from "components/layout/layout";
+import { Link } from "react-router-dom";
 
 export default function FinishedComponent() {
   const { t } = useTranslation();
@@ -29,8 +30,15 @@ export default function FinishedComponent() {
           <img src={NiceIcon} alt="" />
         </ContainerTop>
         <ContainerBottom>
-          <div className="title">{sns}.seedao</div>
-          <div className="success">{t("SNS.FinishSucess")}</div>
+          <div className="title">{t("SNS.FinishSucess", { sns: `e1red${sns}.seedao` })}</div>
+          <div>
+            <HomeLink to="/home">
+              <LinkBox>{t("SNS.Polis")}</LinkBox>
+            </HomeLink>
+            <ContributeLink href="https://discord.com/channels/841189467128594442/1183811608967921795" target="_blank">
+              <LinkBox>{t("SNS.PolisContribute")}</LinkBox>
+            </ContributeLink>
+          </div>
         </ContainerBottom>
       </Container>
     </Layout>
@@ -48,17 +56,27 @@ const ContainerBottom = styled.div`
   padding-top: 34px;
 
   .title {
-    font-family: "Poppins-SemiBold";
-    font-size: 34px;
-    font-weight: 600;
-    line-height: 42px;
-    letter-spacing: 1;
-  }
-  .success {
     font-family: "Poppins-Medium";
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--sns-font-color);
-    margin-top: 16px;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1;
+    width: 70%;
+    margin: 0 auto;
+    margin-bottom: 30px;
   }
 `;
+
+const LinkBox = styled.div`
+  width: 70%;
+  height: 50px;
+  color: #000;
+  border-radius: 8px;
+  line-height: 50px;
+  text-align: center;
+  margin: 20px auto;
+  background: linear-gradient(207deg, #f7e1ed 10%, #f8fff8 58%, #e9deff 100%);
+`;
+
+const HomeLink = styled(Link)``;
+
+const ContributeLink = styled.a``;

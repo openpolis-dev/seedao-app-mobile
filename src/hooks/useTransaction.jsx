@@ -1,7 +1,6 @@
 import { useSendTransaction } from "wagmi";
 import { useSelector } from "react-redux";
 import { Wallet } from "utils/constant";
-import { builtin } from "@seedao/sns-js";
 import { sendTransactionWithRedirect } from "@joyid/evm";
 import getConfig from "constant/envCofnig";
 import { uniWallet } from "components/login/unipassPopup";
@@ -46,5 +45,5 @@ export default function useTransaction(action) {
       return uniWallet.sendTransaction(params);
     }
   };
-  return handleTransaction;
+  return { handleTransaction };
 }

@@ -9,13 +9,12 @@ import StepLoading from "./stepLoading";
 import CONTROLLER_ABI from "assets/abi/SeeDAORegistrarController.json";
 import MINTER_ABI from "assets/abi/SeeDAOMinter.json";
 import { builtin } from "@seedao/sns-js";
-import getConfig from "constant/envCofnig";
 import { useSelector } from "react-redux";
 import Layout from "components/layout/layout";
 import UserIcon from "assets/Imgs/sns/user.svg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
-const networkConfig = getConfig().NETWORK;
+import whiteList from "constant/whitelist.json";
+import HelperIcon from "assets/Imgs/sns/helper.svg";
 
 const RegisterSNSWrapper = () => {
   const navigate = useNavigate();
@@ -26,11 +25,43 @@ const RegisterSNSWrapper = () => {
   const rpc = useSelector((state) => state.rpc);
 
   const {
-    state: { step, localData, loading },
+    state: { step, localData, loading, controllerContract },
     dispatch: dispatchSNS,
   } = useSNSContext();
 
-  console.log("step", step);
+  const checkUserStatus = async () => {
+    try {
+      const hasReached = await controllerContract.maxOwnedNumberReached(account);
+      dispatchSNS({ type: ACTIONS.SET_HAS_REACHED, payload: hasReached });
+    } catch (error) {
+      console.error("query maxOwnedNumberReached failed", error);
+    }
+  };
+
+  useEffect(() => {
+    const checkUserInwhitelist = async () => {
+      try {
+        const isInWhitelist = whiteList.proofs.find(
+          (item) => item.address.toLocaleLowerCase() === account?.toLocaleLowerCase(),
+        );
+        if (isInWhitelist) {
+          dispatchSNS({ type: ACTIONS.SET_USER_PROOF, payload: isInWhitelist.proof });
+        }
+      } catch (error) {
+        console.error("checkUserInwhitelist failed", error);
+      }
+    };
+    if (account && controllerContract) {
+      checkUserStatus();
+      checkUserInwhitelist();
+    }
+  }, [account, controllerContract]);
+
+  useEffect(() => {
+    if (account && controllerContract && step === 3) {
+      checkUserStatus();
+    }
+  }, [account, controllerContract, step]);
 
   useEffect(() => {
     const initContract = async () => {
@@ -44,8 +75,6 @@ const RegisterSNSWrapper = () => {
   }, [rpc]);
 
   useEffect(() => {
-    console.log("account", account);
-    console.log("localData", localData);
     if (account && !localData) {
       const localsns = localStorage.getItem("sns") || "";
       let data;
@@ -87,7 +116,7 @@ const RegisterSNSWrapper = () => {
           return;
         } else {
           dispatchSNS({ type: ACTIONS.SET_STEP, payload: 2 });
-          if (v.stepStatus === "pending") {
+          if (v.stepStatus === "pending" || v.stepStatus === "approving" || v.stepStatus === "approve_success") {
             dispatchSNS({ type: ACTIONS.SHOW_LOADING });
           }
           return;
@@ -118,6 +147,9 @@ const RegisterSNSWrapper = () => {
           {step === 2 && <RegisterSNSStep2 />}
           {step === 3 && <FinishedComponent />}
         </StepContainer>
+        <HelperBox href="https://seedao.notion.site/SNS-1a2e97530715430abc115967f219d05b?pvs=4" target="_blank">
+          <img src={HelperIcon} alt="" />
+        </HelperBox>
         {loading && <StepLoading />}
       </Container>
     </Layout>
@@ -142,4 +174,20 @@ const StepContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+
+const HelperBox = styled.a`
+  display: inline-block;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  position: absolute;
+  bottom: 100px;
+  right: 20px;
+  box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.1);
+  img {
+    width: 100%;
+  }
 `;

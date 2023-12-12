@@ -243,7 +243,9 @@
     "TimerTitle": "Almost here",
     "TimerDesc": "This timer helps prevent others from registering the name before you do. Your name is not registered until you’ve completed the second transaction.",
     "Finish": "Continue",
-    "FinishSucess": "Registered successfully!",
+    "FinishSucess": "Congrats {{sns}} to walk in Polis",
+    "Polis": "Polis",
+    "PolisContribute": "Contribute Polis",
     "StepLoadingTitle": "Three steps to get your SNS",
     "Step1Intro": "Complete the transaction and start counting",
     "StepMiddleIntro": "Wait 60 seconds for the timer to complete",
@@ -251,6 +253,9 @@
     "InputTip": "*Please input 4-15 numbers(0-9)、lower letter(a-z) or special( ! $ ( ) * + - _ )",
     "Switch": "Switch",
     "MySNS": "My SNS",
-    "Switching": "Switching"
+    "Switching": "Switching",
+    "HadSNS": "Already have SNS",
+    "CancelRegister": "Give up registration",
+    "CancelTip": "Give up means you'll start to register from step one"
   }
 }

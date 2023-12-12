@@ -6,13 +6,32 @@ import { ACTIONS, useSNSContext } from "./snsProvider";
 import { builtin } from "@seedao/sns-js";
 import useToast from "hooks/useToast";
 import { ethers } from "ethers";
-import ABI from "assets/abi/SeeDAOActivityMinter.json";
+import ABI from "assets/abi/SeeDAOMinter.json";
 import { useSelector } from "react-redux";
 import useTransaction from "hooks/useTransaction";
+import getConfig from "constant/envCofnig";
+import { erc20ABI } from "wagmi";
+
+const networkConfig = getConfig().NETWORK;
+const PAY_TOKEN = networkConfig.tokens[0];
+const PAY_NUMBER = 5;
+
+const buildApproveData = () => {
+  const iface = new ethers.utils.Interface(erc20ABI);
+  return iface.encodeFunctionData("approve", [
+    builtin.SEEDAO_MINTER_ADDR,
+    ethers.utils.parseUnits(String(PAY_NUMBER), PAY_TOKEN.decimals),
+  ]);
+};
 
 const buildRegisterData = (sns, resolveAddress, secret) => {
   const iface = new ethers.utils.Interface(ABI);
-  return iface.encodeFunctionData("onboardingActivity", [sns, resolveAddress, secret]);
+  return iface.encodeFunctionData("register", [sns, resolveAddress, secret, PAY_TOKEN.address]);
+};
+
+const buildWhiteListRegisterData = (sns, resolveAddress, secret, proof) => {
+  const iface = new ethers.utils.Interface(ABI);
+  return iface.encodeFunctionData("registerWithWhitelist", [sns, resolveAddress, secret, 0, proof]);
 };
 
 export default function RegisterSNSStep2() {
@@ -22,7 +41,7 @@ export default function RegisterSNSStep2() {
   const rpc = useSelector((state) => state.rpc);
 
   const {
-    state: { localData, sns },
+    state: { localData, sns, userProof, minterContract },
     dispatch: dispatchSNS,
   } = useSNSContext();
   const { toast } = useToast();
@@ -31,7 +50,7 @@ export default function RegisterSNSStep2() {
   const [leftTime, setLeftTime] = useState(0);
   const [secret, setSecret] = useState("");
 
-  const sendTransaction = useTransaction("sns-register");
+  const { handleTransaction } = useTransaction("sns-register");
 
   useEffect(() => {
     const parseLocalData = () => {
@@ -72,11 +91,37 @@ export default function RegisterSNSStep2() {
       return;
     }
     try {
-      console.log(sns, account, builtin.PUBLIC_RESOLVER_ADDR, secret);
-      const tx = await sendTransaction(
-        builtin.SEEDAO_ACTIVITY_MINTER_ADDR,
-        buildRegisterData(sns, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret)),
-      );
+      console.log(userProof, sns, account, builtin.PUBLIC_RESOLVER_ADDR, secret);
+      let tx;
+      if (userProof) {
+        // whitelist
+        tx = await handleTransaction(
+          builtin.SEEDAO_MINTER_ADDR,
+          buildWhiteListRegisterData(
+            sns,
+            builtin.PUBLIC_RESOLVER_ADDR,
+            ethers.utils.formatBytes32String(secret),
+            userProof,
+          ),
+        );
+      } else {
+        // approve
+        const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
+        const tokenContract = new ethers.Contract(PAY_TOKEN.address, erc20ABI, provider);
+        // check approve balance
+        const approve_balance = await tokenContract.allowance(account, builtin.SEEDAO_MINTER_ADDR);
+        const not_enough = approve_balance.lt(ethers.utils.parseUnits(String(PAY_NUMBER), PAY_TOKEN.decimals));
+        if (not_enough) {
+          tx = await handleTransaction(PAY_TOKEN.address, buildApproveData(), "approving");
+          // joyid will redirect and not execute the bottom code
+        }
+        // pay mint -- other wallet will execute this method
+        tx = await handleTransaction(
+          builtin.SEEDAO_MINTER_ADDR,
+          buildRegisterData(sns, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret)),
+        );
+      }
+
       const hash = (tx && tx.hash) || tx;
       if (hash) {
         const d = { ...localData };
@@ -91,6 +136,14 @@ export default function RegisterSNSStep2() {
       toast.danger(error?.reason || error?.data?.message || "error");
     } finally {
     }
+  };
+
+  const handleContinueMint = async () => {
+    // pay mint continue -- joyid
+    handleTransaction(
+      builtin.SEEDAO_MINTER_ADDR,
+      buildRegisterData(sns, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret)),
+    );
   };
 
   useEffect(() => {
@@ -114,9 +167,15 @@ export default function RegisterSNSStep2() {
         const _d = { ...localData };
         if (r && r.status === 1) {
           // means tx success
-          _d[account].stepStatus = "success";
-          dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(_d) });
-          dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
+          if (_d[account].stepStatus === "approving") {
+            _d[account].stepStatus = "approve_success";
+            dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(_d) });
+            handleContinueMint();
+          } else {
+            _d[account].stepStatus = "success";
+            dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
+            dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(_d) });
+          }
           clearInterval(timer);
         } else if (r && (r.status === 2 || r.status === 0)) {
           // means tx failed

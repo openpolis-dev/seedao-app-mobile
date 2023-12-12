@@ -33,14 +33,14 @@ export default function RegisterSNSStep1({ sns: _sns }) {
   const [isPending, setPending] = useState(false);
   const [availableStatus, setAvailable] = useState(AvailableStatus.DEFAULT);
   const [randomSecret, setRandomSecret] = useState("");
-  const sendTransaction = useTransaction("sns-commit");
+  const { handleTransaction } = useTransaction("sns-commit");
 
   const account = useSelector((state) => state.account);
   const rpc = useSelector((state) => state.rpc);
 
   const {
     dispatch: dispatchSNS,
-    state: { controllerContract, localData },
+    state: { controllerContract, localData, hasReached, userProof },
   } = useSNSContext();
 
   const { toast } = useToast();
@@ -131,14 +131,14 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         ethers.utils.formatBytes32String(_s),
       );
 
-      const tx = await sendTransaction(
+      const tx = await handleTransaction(
         builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR,
         buildCommitData(_commitment),
         _s,
         searchVal,
       );
       console.log("tx:", tx);
-      const hash = (tx && tx.hash) || tx
+      const hash = (tx && tx.hash) || tx;
       if (hash) {
         // record to localstorage
         const data = { ...localData };
@@ -153,7 +153,6 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         };
         dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(data) });
       }
-      
     } catch (error) {
       console.error("mint failed", error);
       dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
@@ -204,6 +203,26 @@ export default function RegisterSNSStep1({ sns: _sns }) {
     timer = setInterval(timerFunc, 1000);
     return () => timer && clearInterval(timer);
   }, [localData, account, rpc]);
+
+  const showButton = () => {
+    if (hasReached) {
+      return (
+        <MintButton variant="primary" disabled={true}>
+          {t("SNS.HadSNS")}
+        </MintButton>
+      );
+    } else {
+      return (
+        <MintButton
+          variant="primary"
+          disabled={isPending || availableStatus !== AvailableStatus.OK}
+          onClick={handleMint}
+        >
+          {userProof ? t("SNS.FreeMint") : t("SNS.SpentMint", { money: "5 USDT" })}
+        </MintButton>
+      );
+    }
+  };
   return (
     <Container>
       <ContainerWrapper>
@@ -222,16 +241,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
           </SearchRight>
         </SearchBox>
         <Tip>{t("SNS.InputTip")}</Tip>
-        <OperateBox>
-          {/* <MintButton variant="primary" onClick={handleMint}> */}
-          <MintButton
-            variant="primary"
-            onClick={handleMint}
-            disabled={isPending || availableStatus !== AvailableStatus.OK}
-          >
-            {t("SNS.FreeMint")}
-          </MintButton>
-        </OperateBox>
+        <OperateBox>{showButton()}</OperateBox>
       </ContainerWrapper>
     </Container>
   );
@@ -379,3 +389,4 @@ const Tip = styled.div`
   margin-top: 8px;
   text-align: left;
 `;
+

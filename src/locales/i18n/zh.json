@@ -243,7 +243,9 @@
     "TimerTitle": "快要完成了",
     "TimerDesc": "等待是为帮助你避免SNS名字被抢注，完成第二笔交易才能最终获得SNS。",
     "Finish": "继续",
-    "FinishSucess": "注册成功！",
+    "FinishSucess": "恭喜{{sns}}正式进入SeeDAO数字城邦",
+    "Polis": "城邦观光",
+    "PolisContribute": "共建城邦",
     "StepLoadingTitle": "注册SNS需要三步",
     "Step1Intro": "完成第一笔交易后开始计时",
     "StepMiddleIntro": "等待60秒倒计时结束",
@@ -251,6 +253,9 @@
     "InputTip": "*请输入4-15位数字（0～9）、小写字母（a～z）或特殊字符（ ! $ ( ) * + - _ ）",
     "Switch": "切换",
     "MySNS": "我的 SNS",
-    "Switching": "正在切换..."
+    "Switching": "正在切换...",
+    "HadSNS": "已拥有SNS",
+    "CancelRegister": "放弃注册",
+    "CancelTip": "放弃后，注册流程将从第一步开始"
   }
 }

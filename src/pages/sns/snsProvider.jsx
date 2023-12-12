@@ -10,6 +10,8 @@ export const ACTIONS = {
   CLOSE_LOADING: "close_loading",
   SET_SNS: "set_sns",
   SET_STORAGE: "set_storage",
+  SET_HAS_REACHED: 'set_has_reached',
+  SET_USER_PROOF: 'set_user_proof',
 };
 
 const INIT_STATE = { step: 0, sns: "" };
@@ -40,6 +42,10 @@ const reducer = (state, action) => {
     case ACTIONS.SET_STORAGE:
       localStorage.setItem("sns", action.payload);
       return { ...state, localData: action.payload ? JSON.parse(action.payload) : undefined };
+    case ACTIONS.SET_HAS_REACHED:
+      return { ...state, hasReached: action.payload };
+    case ACTIONS.SET_USER_PROOF:
+      return { ...state, userProof: action.payload };
     default:
       throw new Error(`Unknown type: ${action.type}`);
   }

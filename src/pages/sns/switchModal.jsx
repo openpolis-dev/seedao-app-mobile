@@ -20,11 +20,11 @@ export default function SwitchModal({ select, handleClose }) {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
 
-  const sendTransaction = useTransaction("sns-switch");
+  const { handleTransaction } = useTransaction("sns-switch");
 
   const handleSwitch = async () => {
     try {
-      const tx = await sendTransaction(builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR, buildSwitchData(select));
+      const tx = await handleTransaction(builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR, buildSwitchData(select));
       const hash = (tx && tx.hash) || tx;
       if (hash) {
         navigate("/sns/user", { state: hash });
