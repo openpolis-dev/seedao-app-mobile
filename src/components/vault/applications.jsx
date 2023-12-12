@@ -50,16 +50,11 @@ export default function ApplicationsSection({ handleBg }) {
   const [keyword, setKeyword] = useState("");
   const [searchVal, setSearchVal] = useState("");
 
-  const [snsMap, setSnsMap] = useState(new Map());
   const prevPath = useCurrentPath();
   const cache = useSelector(state => state.cache);
+  const snsMap = useSelector((state) => state.snsMap);
 
   const { getMultiSNS } = useQuerySNS();
-
-  const handleSNS = async (wallets) => {
-    const sns_map = await getMultiSNS(wallets);
-    setSnsMap(sns_map);
-  };
 
   const hasMore = useMemo(() => {
     return list.length < total;
@@ -96,7 +91,7 @@ export default function ApplicationsSection({ handleBg }) {
         item.applicant_wallet && _wallets.add(item.applicant_wallet);
         item.reviewer_wallet && _wallets.add(item.reviewer_wallet);
       });
-      handleSNS(Array.from(_wallets));
+      getMultiSNS(Array.from(_wallets));
 
       const _list = res.data.rows.map((item, idx) => ({
         ...item,
