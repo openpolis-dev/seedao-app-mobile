@@ -22,11 +22,11 @@ const MemberAvatar = ({ user, onSelect }) => {
   return (
     <MemberAvatarStyle line={1}>
       <AvatarBox onClick={onSelect}>
-        <Avatar src={user.avatar} size="44px" />
+        <Avatar src={user.avatar|| user?.sp?.avatar} size="44px" />
       </AvatarBox>
       <div className="rhtBox">
         <div className="sns">{reFormat()}</div>
-        <div className="name">{user.name}</div>
+        <div className="name">{user.name || user?.sp?.nickname}</div>
       </div>
 
     </MemberAvatarStyle>
@@ -60,6 +60,7 @@ export default function CityhallMembers() {
   const handleMembers = (members) => {
     return members.map((w) => {
       const user = userMap[w.toLowerCase()];
+
       if (user) {
         return {
           ...user,

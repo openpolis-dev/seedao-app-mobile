@@ -22,7 +22,7 @@ export default function UserCard({ user, sns, onChooseUser }) {
   return (
     <UserCardBox>
       <div className="left">
-        <Avatar src={user.avatar} onClick={onChooseUser} />
+        <Avatar src={user.avatar|| user.sp?.avatar} onClick={onChooseUser} />
       </div>
       <UserRight>{(user.wallet || sns) && <>{sns || user.wallet}</>}</UserRight>
         {

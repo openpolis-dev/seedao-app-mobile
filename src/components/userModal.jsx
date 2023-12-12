@@ -29,7 +29,7 @@ export default function UserModal({ user, handleClose }) {
     <UserModalModal>
       <UserModalMask onClick={handleClose} />
       <UserModalModalContent>
-        <AvatarBox src={user.avatar} alt="" size="84px" />
+        <AvatarBox src={user.avatar || user?.sp?.avatar} alt="" size="84px" />
         <SnsBox>
           <div className="sns">{getTitle(user.sns)}
             <div className="copySns" >
@@ -37,29 +37,42 @@ export default function UserModal({ user, handleClose }) {
             </div>
           </div>
         </SnsBox>
-        <NameBox>{user.name}</NameBox>
-        <BioBox>{user.bio}</BioBox>
+        <NameBox>{user.name || user.sp?.nickname}</NameBox>
+        <BioBox>{user.bio || user.sp?.bio}</BioBox>
         <SocialBox>
-          {user.twitter_profile && (
-            <a href={user.twitter_profile} target="_blank" rel="noopener noreferrer">
-              <img src={TwitterIcon} alt="" />
-            </a>
+
+          {
+            user.sp?.social_accounts?.map((item,index)=>(
+                <>
+                  {item.network === "twitter" && (
+                      <a href={item.identity} target="_blank" rel="noopener noreferrer">
+                        <img src={TwitterIcon} alt="" />
+                      </a>
+                  )}
+                  {user.network === "mirror" && (
+                      <a href={item.identity} target="_blank" rel="noopener noreferrer">
+                        <img src={MirrorIcon} alt="" />
+                      </a>
+                  )}
+
+
+
+                  {user.network === "github" && (
+                      <a href={item.identity} target="_blank" rel="noopener noreferrer">
+                        <img src={GithubIcon} alt="" />
+                      </a>
+                  )}
+                </>
+            ))
+          }
+          {(user.email || user.sp?.email) && (
+              <a href={`mailto:${user.email|| user.sp?.email}`} target="_blank" rel="noopener noreferrer">
+                <img src={EmailIcon} alt="" />
+              </a>
           )}
-          {user.mirror && (
-            <a href={user.mirror} target="_blank" rel="noopener noreferrer">
-              <img src={MirrorIcon} alt="" />
-            </a>
-          )}
-          {user.email && (
-            <a href={`mailto:${user.email}`} target="_blank" rel="noopener noreferrer">
-              <img src={EmailIcon} alt="" />
-            </a>
-          )}
-          {user.github_profile && (
-            <a href={user.github_profile} target="_blank" rel="noopener noreferrer">
-              <img src={GithubIcon} alt="" />
-            </a>
-          )}
+
+
+
         </SocialBox>
       </UserModalModalContent>
     </UserModalModal>

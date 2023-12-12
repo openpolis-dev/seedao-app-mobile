@@ -91,7 +91,9 @@ export default function ProposalCategory() {
 
   const StorageList = (id) =>{
     const element = document.querySelector(`#inner`)
-    const height =element.scrollTop;
+    const height = element.scrollTop;
+
+    console.error(height)
     let obj={
       type:"proposal",
       category,
@@ -103,7 +105,6 @@ export default function ProposalCategory() {
   }
 
   useEffect(() => {
-    console.error(cache?.page,page)
 
     if(cache?.type==="proposal" && cache?.page>page)return;
     id && getProposals(true);
@@ -127,7 +128,6 @@ export default function ProposalCategory() {
               <div id={`pro_${p.id}`} key={p.id}>
                 <ProposalCard data={p} StorageList={StorageList}  />
               </div>
-
           ))}
         </InfiniteScroll>
       </ProposalBox>
