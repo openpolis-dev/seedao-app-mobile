@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import useTransaction from "hooks/useTransaction";
 import getConfig from "constant/envCofnig";
 import { erc20ABI } from "wagmi";
+import CancelModal from "./cancelModal";
 
 const networkConfig = getConfig().NETWORK;
 const PAY_TOKEN = networkConfig.tokens[0];
@@ -49,6 +50,7 @@ export default function RegisterSNSStep2() {
   const startTimeRef = useRef(0);
   const [leftTime, setLeftTime] = useState(0);
   const [secret, setSecret] = useState("");
+  const [showCancelModal, setShowCancelModal] = useState(false);
 
   const { handleTransaction } = useTransaction("sns-register");
 
@@ -218,6 +220,12 @@ export default function RegisterSNSStep2() {
     return () => timer && clearInterval(timer);
   }, [localData, account, rpc, secret]);
 
+  const handleCancel = () => {
+    setShowCancelModal(false);
+    dispatchSNS({ type: ACTIONS.SET_STEP, payload: 1 });
+    dispatchSNS({ type: ACTIONS.SET_LOCAL_DATA, payload: undefined });
+  };
+
   return (
     <Container>
       <ContainerWrapper>
@@ -234,7 +242,9 @@ export default function RegisterSNSStep2() {
         <FinishButton onClick={handleRegister} disabled={!!leftTime}>
           {t("SNS.Finish")}
         </FinishButton>
+        <CancelButton onClick={() => setShowCancelModal(true)}>{t("SNS.CancelRegister")}</CancelButton>
       </ContainerWrapper>
+      {showCancelModal && <CancelModal handleClose={() => setShowCancelModal(false)} handleCancel={handleCancel} />}
     </Container>
   );
 }
@@ -314,4 +324,14 @@ const FinishButton = styled.button`
     border-color: transparent;
     opacity: 0.4;
   }
+`;
+
+const CancelButton = styled.span`
+  text-align: center;
+  display: block;
+  margin: 16px auto;
+  font-size: 12px;
+  cursor: pointer;
+  min-width: 100px;
+  max-width: 200px;
 `;
