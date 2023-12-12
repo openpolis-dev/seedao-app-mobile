@@ -153,7 +153,7 @@ export default function Assets() {
   };
 
   const linkTo = (v) => {
-    window.open(`https://app.safe.global/balances?safe=${SAFE_CHAIN[v.chainId].short}:${v.address}`);
+    window.open(`https://app.safe.global/balances?safe=${SAFE_CHAIN[v.chainId].short}:${v.wallet}`);
   };
 
   const handleBg = () => {
