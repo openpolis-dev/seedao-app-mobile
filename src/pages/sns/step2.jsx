@@ -42,7 +42,7 @@ export default function RegisterSNSStep2() {
   const rpc = useSelector((state) => state.rpc);
 
   const {
-    state: { localData, sns, userProof },
+    state: { localData, sns, userProof, hadMintByWhitelist },
     dispatch: dispatchSNS,
   } = useSNSContext();
   const { toast } = useToast();
@@ -114,7 +114,7 @@ export default function RegisterSNSStep2() {
     dispatchSNS({ type: ACTIONS.SHOW_LOADING });
     try {
       let tx;
-      if (userProof) {
+      if (userProof && !hadMintByWhitelist) {
         // whitelist
         tx = await handleTransaction(
           builtin.SEEDAO_MINTER_ADDR,
