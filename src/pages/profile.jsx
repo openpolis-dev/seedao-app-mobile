@@ -20,6 +20,7 @@ import GithubImg from "../assets/Imgs/social/github.svg"
 import {useDisconnect} from "wagmi";
 import { clearStorage } from "utils/auth";
 import getConfig from "constant/envCofnig";
+import VersionBox from "components/version";
 
 const Box = styled.div`
   padding: 20px;
@@ -654,18 +655,8 @@ export default function Profile() {
         <ButtonBox>
           <button onClick={() => logout()}>{t("My.logout")}</button>
         </ButtonBox>
-        <VersionBox>
-          {t("General.Version")} {getConfig().REACT_APP_APP_VERSION}{" "}
-          {process.env.REACT_APP_BUILD_ID?.slice(0, 6)}.{process.env.REACT_APP_COMMIT_REF?.slice(0, 6)}
-        </VersionBox>
+        <VersionBox />
       </Layout>
     </OuterBox>
   );
 }
-
-const VersionBox = styled.div`
-  text-align: center;
-  font-size: 12px;
-  color: var(--font-light-color);
-  margin-top: 20px;
-`;

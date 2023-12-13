@@ -5,11 +5,13 @@ import { useTranslation } from "react-i18next";
 import Metamask from "../components/login/metamask";
 import Joyid from "../components/login/joyid";
 import Unipass from "../components/login/unipassPopup";
+import VersionBox from "components/version";
 
 const Box = styled.div`
   width: 100%;
   height: var(--app-height);
   box-sizing: border-box;
+  position: relative;
 `;
 
 const LogoBox = styled.div`
@@ -101,7 +103,15 @@ export default function Login() {
             <Unipass />
           </li>
         </BtnList>
+        <HideVersionBox isShort />
       </Box>
     </Layout>
   );
 }
+
+const HideVersionBox = styled(VersionBox)`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: transparent !important;
+`;
