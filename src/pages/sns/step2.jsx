@@ -32,7 +32,7 @@ const buildRegisterData = (sns, secret) => {
 
 const buildWhiteListRegisterData = (sns, resolveAddress, secret, proof) => {
   const iface = new ethers.utils.Interface(ABI);
-  return iface.encodeFunctionData("registerWithWhitelist", [sns, resolveAddress, secret, 0, proof]);
+  return iface.encodeFunctionData("registerWithWhitelist", [sns, resolveAddress, secret, networkConfig.whitelistId, proof]);
 };
 
 export default function RegisterSNSStep2() {
