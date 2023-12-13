@@ -21,7 +21,7 @@ export const uniWallet = new UniPassPopupSDK({
   chainType: "polygon",
   returnEmail: false,
   storageType: "localStorage",
-  appSetting: {
+  appSettings: {
     appName: "SeeDAO",
     appIcon: `${window.location.origin}/icon192.png`,
   },
