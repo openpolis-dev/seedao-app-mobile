@@ -44,7 +44,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
 
   const {
     dispatch: dispatchSNS,
-    state: { controllerContract, localData, hasReached, userProof, hadMintByWhitelist, whitelistNotOpen },
+    state: { controllerContract, localData, hasReached, userProof, hadMintByWhitelist, whitelistIsOpen },
   } = useSNSContext();
 
   const { toast } = useToast();
@@ -225,7 +225,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
       );
     } else {
       if (userProof && !hadMintByWhitelist) {
-        if (whitelistNotOpen) {
+        if (!whitelistIsOpen) {
           return (
             <MintButton variant="primary" disabled={true}>
               {t("SNS.FreeMintNotOpen")}
