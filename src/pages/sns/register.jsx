@@ -133,13 +133,13 @@ const RegisterSNSWrapper = () => {
       handleBack={() => {
         navigate("/home");
       }}
-      rightOperation={
-        step === 1 && (
-          <Link to="/sns/user">
-            <img src={UserIcon} alt="" />
-          </Link>
-        )
-      }
+      // rightOperation={
+      //   step === 1 && (
+      //     <Link to="/sns/user">
+      //       <img src={UserIcon} alt="" />
+      //     </Link>
+      //   )
+      // }
     >
       <Container>
         <StepContainer>

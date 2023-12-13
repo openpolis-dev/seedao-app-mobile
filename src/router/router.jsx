@@ -1,4 +1,4 @@
-import UserSNS from "pages/sns/userSNS";
+// import UserSNS from "pages/sns/userSNS";
 import React from "react";
 import { lazy } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
@@ -105,7 +105,7 @@ function RouterLink() {
 
         <Route path="/sns" element={<SNSEntrancePage />} />
         <Route path="/sns/register" element={<RegisterSNS />} />
-        <Route path="/sns/user" element={<UserSNS />} />
+        {/* <Route path="/sns/user" element={<UserSNS />} /> */}
         {/* redirect */}
         <Route path="/redirect" element={<JoyIDRedirect />} />
       </Routes>
