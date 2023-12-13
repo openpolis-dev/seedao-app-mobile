@@ -10,7 +10,7 @@ import SNSImg from "../assets/Imgs/home/SNS.jpg";
 const apps =  [
     {
         id: 'Deschool',
-        name: 'Deschool',
+        name: 'DeSchool',
         link: 'https://deschool.app/origin/plaza',
         icon: DeschoolIcon,
         desc: 'apps.DeschoolDesc',
