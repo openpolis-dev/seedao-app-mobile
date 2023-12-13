@@ -9,6 +9,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import StickyHeader from "./StickyHeader";
 import {savePath} from "../../store/reducer";
 import store from "store";
+import { isInPWA } from "utils";
 
 const OuterBox = styled.div`
   width: 100%;
@@ -68,7 +69,7 @@ export default function Layout({
   useEffect(() => {
     const userAgent = navigator.userAgent;
     const isMobile = /Mobile/.test(userAgent);
-    const isPWA = window.navigator.standalone;
+    const isPWA = isInPWA();
 
 
       setPwaBtm(isMobile && !isPWA)
@@ -95,8 +96,7 @@ export default function Layout({
 
 
   return (
-    <OuterBox isPwa={window.navigator.standalone.toString()}>
-
+    <OuterBox isPwa={isInPWA().toString()}>
       {!noHeader ? (
         sticky ? (
           <StickyHeader title={title} bgColor={bgColor} scrollRef={innerRef} />
@@ -115,7 +115,7 @@ export default function Layout({
       <InnerBox
         id="inner"
         ref={innerRef}
-        $notab={noTab ? 0 : (pwaBtm?"120px":"70px")}
+        $notab={noTab ? 0 : pwaBtm ? "120px" : "70px"}
         $sticky="true"
         $paddingtop={noHeader || sticky ? "0" : "47px"}
       >

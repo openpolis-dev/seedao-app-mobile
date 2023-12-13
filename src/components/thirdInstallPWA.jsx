@@ -6,21 +6,12 @@ import { useTranslation } from "react-i18next";
 import ShareIcon from "assets/Imgs/install/share.svg";
 import AddIcon from "assets/Imgs/install/add.svg";
 import CloseImg from "../assets/Imgs/close-circle.svg";
+import { isInPWA } from "utils";
 
 export default function InstallCheck() {
   const { t } = useTranslation();
   const [show, setShow] = useState(true);
-  const [isInstalled, setIsInstalled] = useState(true);
-
-  useEffect(() => {
-    if (window.navigator?.standalone === true || window.matchMedia("(display-mode: standalone)").matches) {
-      console.log("isInstalled: true. Already in standalone mode");
-      setIsInstalled(true);
-    } else {
-      console.log("isInstalled: false");
-      setIsInstalled(false);
-    }
-  }, []);
+  const [isInstalled] = useState(isInPWA());
 
   const handleClose = () => {
     setShow(false);
