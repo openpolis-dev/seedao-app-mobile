@@ -32,7 +32,13 @@ const buildRegisterData = (sns, secret) => {
 
 const buildWhiteListRegisterData = (sns, resolveAddress, secret, proof) => {
   const iface = new ethers.utils.Interface(ABI);
-  return iface.encodeFunctionData("registerWithWhitelist", [sns, resolveAddress, secret, networkConfig.whitelistId, proof]);
+  return iface.encodeFunctionData("registerWithWhitelist", [
+    sns,
+    resolveAddress,
+    secret,
+    networkConfig.whitelistId,
+    proof,
+  ]);
 };
 
 export default function RegisterSNSStep2() {
@@ -90,6 +96,7 @@ export default function RegisterSNSStep2() {
 
   const handleContinueMint = async () => {
     try {
+      dispatchSNS({ type: ACTIONS.SHOW_LOADING });
       const tx = await handleTransaction(
         builtin.SEEDAO_MINTER_ADDR,
         buildRegisterData(sns, ethers.utils.formatBytes32String(secret)),
@@ -172,11 +179,6 @@ export default function RegisterSNSStep2() {
     }
     let timer;
     let hasResult = false;
-    const _d = { ...localData };
-    if (_d[account].stepStatus === "approve_success") {
-      handleContinueMint();
-      return;
-    }
     const timerFunc = () => {
       if (!account || !localData) {
         return;

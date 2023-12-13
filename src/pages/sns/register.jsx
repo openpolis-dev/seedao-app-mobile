@@ -82,7 +82,7 @@ const RegisterSNSWrapper = () => {
     };
     const checkHadMintByWhitelist = async () => {
       minterContract
-        .registeredWithWhitelist()
+        .registeredWithWhitelist(account)
         .then((r) => {
           dispatchSNS({ type: ACTIONS.SET_HAD_MINT_BY_WHITELIST, payload: r });
         })
@@ -155,7 +155,7 @@ const RegisterSNSWrapper = () => {
           return;
         } else {
           dispatchSNS({ type: ACTIONS.SET_STEP, payload: 2 });
-          if (v.stepStatus === "pending" || v.stepStatus === "approving" || v.stepStatus === "approve_success") {
+          if (v.stepStatus === "pending" || v.stepStatus === "approving") {
             dispatchSNS({ type: ACTIONS.SHOW_LOADING });
           }
           return;
