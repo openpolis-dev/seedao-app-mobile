@@ -255,7 +255,7 @@
     "MySNS": "My SNS",
     "Switching": "Switching",
     "HadSNS": "Already have SNS",
-    "CancelRegister": "Give up registration",
-    "CancelTip": "Give up means you'll start to register from step one"
+    "CancelRegister": "Cancel registration",
+    "CancelTip": "Cancel means you'll start to register from step one"
   }
 }
