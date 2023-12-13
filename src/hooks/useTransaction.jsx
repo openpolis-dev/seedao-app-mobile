@@ -10,6 +10,7 @@ const CONFIG = getConfig();
 export default function useTransaction(action) {
   const account = useSelector((state) => state.account);
   const wallet = useSelector((state) => state.walletType);
+  const rpc = useSelector((state) => state.rpc);
 
   const { sendTransactionAsync } = useSendTransaction();
 
@@ -22,10 +23,7 @@ export default function useTransaction(action) {
     const url = buildRedirectUrl();
     sendTransactionWithRedirect(url, params, account, {
       joyidAppURL: `${CONFIG.JOY_ID_URL}`,
-      network: {
-        chainId: CONFIG.NETWORK.chainId,
-        name: CONFIG.NETWORK.name,
-      },
+      rpcURL: rpc || CONFIG.NETWORK.rpcs[0],
     });
   };
 
