@@ -19,6 +19,11 @@ export default function InstallCheck() {
   };
 
   useEffect(() => {
+    const intallTips = sessionStorage.getItem("install-tips");
+    if (intallTips === "false") {
+      setShow(false);
+      return;
+    };
     const tag = document.querySelector("pwa-install");
     if (tag) {
       tag.showDialog();
