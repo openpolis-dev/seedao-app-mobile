@@ -90,7 +90,10 @@ export default function Login() {
         <LogoBox>
           <img src={LogoImg} alt="" />
         </LogoBox>
-        <Tips>{t("General.connect")}</Tips>
+        <Tips>
+          {t("General.connect")}
+          <HideVersionBox isShort />
+        </Tips>
         <BtnList>
           <li>
             <Metamask />
@@ -103,15 +106,12 @@ export default function Login() {
             <Unipass />
           </li>
         </BtnList>
-        <HideVersionBox isShort />
       </Box>
     </Layout>
   );
 }
 
 const HideVersionBox = styled(VersionBox)`
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  color: transparent !important;
+  color: #fff;
+  display: inline;
 `;
