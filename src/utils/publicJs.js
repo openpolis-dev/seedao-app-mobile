@@ -86,6 +86,7 @@ const getImage = async (img) => {
 
 
 const filterTags = (html) => {
+
   const decodedStr = html.replace(/&#(\d+);/g, function(match, dec) {
     return String.fromCharCode(dec);
   });
