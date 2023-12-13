@@ -15,6 +15,10 @@ import ABI from "assets/abi/SeeDAORegistrarController.json";
 import { useSelector } from "react-redux";
 import useTransaction from "hooks/useTransaction";
 
+import getConfig from "constant/envCofnig";
+const networkConfig = getConfig().NETWORK;
+const PAY_NUMBER = networkConfig.tokens[0].price;
+
 const AvailableStatus = {
   DEFAULT: "default",
   OK: "ok",
@@ -226,7 +230,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
           disabled={isPending || availableStatus !== AvailableStatus.OK}
           onClick={handleMint}
         >
-          {userProof ? t("SNS.FreeMint") : t("SNS.SpentMint", { money: "5 USDT" })}
+          {userProof ? t("SNS.FreeMint") : t("SNS.SpentMint", { money: `${PAY_NUMBER} USDT` })}
         </MintButton>
       );
     }

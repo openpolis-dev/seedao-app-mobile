@@ -1,5 +1,7 @@
 import EthereumIcon from "assets/Imgs/network/ethereum.png";
-const VERSION = '0.0.1';
+import PolygonIcon from "assets/Imgs/vault/polygon.svg";
+
+const VERSION = "0.0.1";
 
 const LOCAL = {
   REACT_APP_BASE_ENDPOINT: "https://test-api.seedao.tech",
@@ -13,19 +15,25 @@ const LOCAL = {
   REACT_APP_THEME_ENABLE: true,
   JOY_ID_URL: "https://testnet.joyid.dev",
   NETWORK: {
-    name: "Goerli",
-    chainId: 5,
-    rpcs: [
-      "https://eth-goerli.g.alchemy.com/v2/MATWeLJN1bEGTjSmtyLedn0i34o1ISLD",
-      "https://rpc.ankr.com/eth_goerli",
-      "https://endpoints.omniatech.io/v1/eth/goerli/public",
+    name: "Polygon",
+    chainId: 137,
+    // rpcs: [
+    //   "https://eth-goerli.g.alchemy.com/v2/MATWeLJN1bEGTjSmtyLedn0i34o1ISLD",
+    //   "https://rpc.ankr.com/eth_goerli",
+    //   "https://endpoints.omniatech.io/v1/eth/goerli/public",
+    // ],
+    rpc: [
+      "https://polygon-mainnet.g.alchemy.com/v2/-MLinGy2l91vLVZWXmRfNYf9DavMxaEA",
+      "https://polygon-pokt.nodies.app",
+      "https://polygon.llamarpc.com",
     ],
-    icon: EthereumIcon,
+    icon: PolygonIcon,
     tokens: [
       {
-        address: "0xC2C527C0CACF457746Bd31B2a698Fe89de2b6d49",
+        address: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
         name: "USDT",
         decimals: 6,
+        price: 1,
       },
     ],
   },
@@ -57,11 +65,11 @@ const PRODUCTION = {
 
 export default function getConfig() {
   switch (process.env.REACT_APP_ENV_VERSION) {
-    case 'prod':
+    case "prod":
       return PRODUCTION;
-    case 'preview':
+    case "preview":
       return PREVIEW;
-    case 'dev':
+    case "dev":
       return DEVELOPMENT;
     default:
       return LOCAL;
