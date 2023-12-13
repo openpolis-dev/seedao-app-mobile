@@ -13,7 +13,7 @@ const LOCAL = {
   REACT_APP_ONESIGNAL_ID: "9c6122e1-3de4-4c03-8e68-9f357e9ca1ae",
   REACT_APP_APP_VERSION: `A ${VERSION}`,
   REACT_APP_THEME_ENABLE: true,
-  JOY_ID_URL: "https://testnet.joyid.dev",
+  JOY_ID_URL: "https://app.joy.id",
   NETWORK: {
     name: "Polygon",
     chainId: 137,
@@ -22,7 +22,7 @@ const LOCAL = {
     //   "https://rpc.ankr.com/eth_goerli",
     //   "https://endpoints.omniatech.io/v1/eth/goerli/public",
     // ],
-    rpc: [
+    rpcs: [
       "https://polygon-mainnet.g.alchemy.com/v2/-MLinGy2l91vLVZWXmRfNYf9DavMxaEA",
       "https://polygon-pokt.nodies.app",
       "https://polygon.llamarpc.com",

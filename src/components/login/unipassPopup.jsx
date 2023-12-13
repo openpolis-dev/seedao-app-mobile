@@ -17,8 +17,8 @@ import { Wallet } from "utils/constant";
 const networkConfig = getConfig().NETWORK;
 
 export const uniWallet = new UniPassPopupSDK({
-  env: "test",
-  chainType: "eth",
+  env: "prod",
+  chainType: "polygon",
   returnEmail: false,
   storageType: "localStorage",
   appSetting: {
