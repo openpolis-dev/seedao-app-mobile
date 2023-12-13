@@ -103,7 +103,7 @@ export default function Joyid(){
 
             const url = buildRedirectUrl("sign-message");
             signMessageWithRedirect(url, siweMessage, account, {
-              joyidAppURL: `${CONFIG.JOY_ID_URL}/?prefer=login`,
+              joyidAppURL: `${CONFIG.JOY_ID_URL}`,
               state: msg,
               network: {
                 chainId: CONFIG.NETWORK.chainId,
