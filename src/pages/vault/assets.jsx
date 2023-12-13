@@ -15,8 +15,8 @@ import CardIcon2 from "assets/Imgs/vault/cardIcon2.svg";
 import ApplicantsSection from "components/vault/applications";
 import getConfig from "constant/envCofnig";
 import { getVaultBalance } from "api/publicData";
-import EthereumIcon from "assets/Imgs/vault/ethereum.svg";
-import PolygonIcon from "assets/Imgs/vault/polygon.svg";
+import EthereumIcon from "assets/Imgs/network/ethereum.webp";
+import PolygonIcon from "assets/Imgs/network/polygon.webp";
 
 const SAFE_CHAIN = {
   1: {
@@ -250,6 +250,7 @@ const WalletItemLeft = styled.div`
   color: rgba(255, 255, 255, 0.7);
   font-size: 12px;
   font-weight: 400;
+  align-items: center;
   .name {
     min-width: 120px;
     font-weight: 600;
@@ -262,6 +263,10 @@ const WalletItemLeft = styled.div`
   img {
     margin-right: 4px;
     margin-left: 9px;
+    width: 14px;
+    height: 14px;
+    position: relative;
+    top: -1px;
   }
 `;
 const WalletItemValue = styled.div`
