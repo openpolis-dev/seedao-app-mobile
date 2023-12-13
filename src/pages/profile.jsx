@@ -655,7 +655,8 @@ export default function Profile() {
           <button onClick={() => logout()}>{t("My.logout")}</button>
         </ButtonBox>
         <VersionBox>
-          {t("General.Version")} {getConfig().REACT_APP_APP_VERSION}
+          {t("General.Version")} {getConfig().REACT_APP_APP_VERSION}{" "}
+          {process.env.REACT_APP_BUILD_ID?.slice(0, 6)}.{process.env.REACT_APP_COMMIT_REF?.slice(0, 6)}
         </VersionBox>
       </Layout>
     </OuterBox>
