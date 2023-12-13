@@ -19,6 +19,7 @@ import MirrorImg from "../assets/Imgs/social/mirror.svg";
 import GithubImg from "../assets/Imgs/social/github.svg"
 import {useDisconnect} from "wagmi";
 import { clearStorage } from "utils/auth";
+import getConfig from "constant/envCofnig";
 
 const Box = styled.div`
   padding: 20px;
@@ -552,7 +553,7 @@ export default function Profile() {
               <div className="lft">
                 <LevelBox>LV {detail?.level?.current_lv}</LevelBox>
                 <SCRBox>
-                  {t("My.current")}{" "}{detail?.scr?.amount} SCR
+                  {t("My.current")} {detail?.scr?.amount} SCR
                 </SCRBox>
               </div>
               <div className="rht">
@@ -653,7 +654,17 @@ export default function Profile() {
         <ButtonBox>
           <button onClick={() => logout()}>{t("My.logout")}</button>
         </ButtonBox>
+        <VersionBox>
+          {t("General.Version")} {getConfig().REACT_APP_APP_VERSION}
+        </VersionBox>
       </Layout>
     </OuterBox>
   );
 }
+
+const VersionBox = styled.div`
+  text-align: center;
+  font-size: 12px;
+  color: var(--font-light-color);
+  margin-top: 20px;
+`;
