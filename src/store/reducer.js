@@ -52,6 +52,9 @@ const mainSlice = createSlice({
         },
         saveRPC(state,action){
             state.rpc = action.payload;
+        },
+        saveCurrentSeason(state, action) { 
+            state.currentSeason = action.payload;
         }
     },
 });
@@ -69,6 +72,7 @@ export const {
     saveUserToken,
     updateSNSmap,
     saveProposalCategories,
-    saveRPC
+    saveRPC,
+    saveCurrentSeason
 } = mainSlice.actions;
 export default mainSlice.reducer;
