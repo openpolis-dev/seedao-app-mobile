@@ -1,7 +1,7 @@
 import EthereumIcon from "assets/Imgs/network/ethereum.svg";
 import PolygonIcon from "assets/Imgs/network/polygon.svg";
 
-const VERSION = "0.0.1";
+const VERSION = "0.3.0";
 
 const LOCAL = {
   REACT_APP_BASE_ENDPOINT: "https://test-api.seedao.tech",
@@ -33,10 +33,10 @@ const LOCAL = {
         address: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
         name: "USDT",
         decimals: 6,
-        price: 1,
+        price: 5,
       },
     ],
-    whitelistId: 2,
+    whitelistId: 0,
   },
   INDEXER_ENDPOINT: "https://test-spp-indexer.seedao.tech",
 };
@@ -57,7 +57,7 @@ const PRODUCTION = {
   ...LOCAL,
   REACT_APP_BASE_ENDPOINT: "https://api.seedao.tech",
   REACT_APP_PUSH_ENDPOINT: "https://push-api.seedao.tech",
-  REACT_APP_JOYID_ENABLE: false,
+  REACT_APP_JOYID_ENABLE: true,
   REACT_APP_APP_VERSION: `B ${VERSION}`,
   REACT_APP_THEME_ENABLE: false,
   REACT_APP_ONESIGNAL_ID: "eda76843-e1a4-40a5-aa01-3d860d9cfa5c",
