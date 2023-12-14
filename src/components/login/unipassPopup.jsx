@@ -9,7 +9,7 @@ import { getNonce, login } from "../../api/user";
 import AppConfig from "../../AppConfig";
 import ReactGA from "react-ga4";
 import usePushPermission from "hooks/usePushPermission";
-import UnipassLogo from "../../assets/Imgs/unipass.png";
+import UnipassLogo from "../../assets/Imgs/unipass.svg";
 import ArrImg from "../../assets/Imgs/arrow.svg";
 import OneSignal from "react-onesignal";
 import getConfig from "constant/envCofnig";
@@ -17,11 +17,11 @@ import { Wallet } from "utils/constant";
 const networkConfig = getConfig().NETWORK;
 
 export const uniWallet = new UniPassPopupSDK({
-  env: "test",
-  chainType: "eth",
+  env: "prod",
+  chainType: "polygon",
   returnEmail: false,
   storageType: "localStorage",
-  appSetting: {
+  appSettings: {
     appName: "SeeDAO",
     appIcon: `${window.location.origin}/icon192.png`,
   },
@@ -115,7 +115,8 @@ export default function Unipass() {
 
   useEffect(() => {
     if (!result) return;
-    navigate("/home");
+    const toSNS = localStorage.getItem(`==sns==`) === "1";
+    navigate(toSNS ? "/sns/register" : "/home");
   }, [result]);
 
   return (
@@ -124,7 +125,7 @@ export default function Unipass() {
         <div className="logo">
           <img src={UnipassLogo} alt="" />
         </div>
-        <span>Unipass</span>
+        <span>UniPass</span>
       </dt>
       <img src={ArrImg} alt="" />
     </dl>

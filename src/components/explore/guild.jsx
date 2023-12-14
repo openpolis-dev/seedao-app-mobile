@@ -5,6 +5,11 @@ import { useTranslation } from "react-i18next";
 import ProjectOrGuildItem, { ProjectOrGuildItemSkeleton } from "components/projectOrGuild/projectOrGuildItem";
 import { useEffect, useState } from "react";
 import { getGuilds } from "api/guild";
+import store from "../../store";
+import {saveCache} from "../../store/reducer";
+import useCurrentPath from "../../hooks/useCurrentPath";
+import {useSelector} from "react-redux";
+import PublicJs from "../../utils/publicJs";
 
 export default function ExploreGuildSection() {
   const navigate = useNavigate();
@@ -13,24 +18,46 @@ export default function ExploreGuildSection() {
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
 
+  const prevPath = useCurrentPath();
+  const cache = useSelector(state => state.cache);
+
+
+  useEffect(()=>{
+
+    if(!prevPath || prevPath?.indexOf("/guild/info") === -1 || cache?.type!== "explore_guild" )return;
+
+    const { list, height} = cache;
+    setList(list);
+
+    setTimeout(()=>{
+      const element = document.querySelector(`#inner`)
+      element.scrollTo({
+        top: height,
+        behavior: 'auto',
+      });
+      store.dispatch(saveCache(null))
+    },0)
+  },[prevPath])
   const openDetail = (id) => {
+    PublicJs.StorageList("explore_guild",list)
     navigate(`/guild/info/${id}`);
   };
 
   useEffect(() => {
-    const getList = async () => {
-      setLoading(true);
-      try {
-        const res = await getGuilds({ page: 1, size: 3 });
-        setList(res.data.rows);
-        setLoading(false);
-      } catch (error) {
-        //  TODO toast
-        console.error(error);
-      }
-    };
+    if(cache?.type === "explore_guild") return;
     getList();
   }, []);
+  const getList = async () => {
+    setLoading(true);
+    try {
+      const res = await getGuilds({ page: 1, size: 3 });
+      setList(res.data.rows);
+      setLoading(false);
+    } catch (error) {
+      //  TODO toast
+      console.error(error);
+    }
+  };
   return (
     <ExploreSection title={t("Explore.GuildTitle")} desc={t("Explore.GuildDescription")} moreLink="/guild">
       <List>
@@ -41,7 +68,9 @@ export default function ExploreGuildSection() {
             <ProjectOrGuildItemSkeleton />
           </>
         ) : (
-          list.map((item) => <ProjectOrGuildItem data={item} key={item.id} onClickItem={openDetail} />)
+          list.map((item) => <div key={item.id} id={`explore_guild_${item.id}}`}>
+            <ProjectOrGuildItem data={item} key={item.id} onClickItem={openDetail} />
+          </div>)
         )}
       </List>
     </ExploreSection>

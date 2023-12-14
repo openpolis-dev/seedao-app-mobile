@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import { rrulestr } from 'rrule'
 import styled from "styled-components";
 import { Element, scroller,animateScroll } from 'react-scroll';

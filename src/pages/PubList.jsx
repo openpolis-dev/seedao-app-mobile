@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
 import React, {useEffect, useMemo, useState} from "react";
-import {saveLoading, saveDetail, saveCache} from "../store/reducer";
+import {saveLoading, saveCache} from "../store/reducer";
 import {publicList} from "../api/publicData";
 import styled from "styled-components";
 import {EventCardSkeleton} from "../components/event/eventCard";
@@ -117,14 +117,13 @@ export default function PubList(){
             const id = prevPath.split("/hubDetail/")[1];
             const element = document.querySelector(`#inner`)
             const targetElement = document.querySelector(`#hub_${id}`);
-            const screenHeight = window.innerHeight;
-            // console.log(element,targetElement)
             if (targetElement) {
                 element.scrollTo({
-                    top: height - screenHeight * 0.6,
+                    top: height,
                     behavior: 'auto',
                 });
             }
+            store.dispatch(saveCache(null))
         },0)
     },[prevPath])
 
@@ -157,15 +156,17 @@ export default function PubList(){
 
     useEffect(() => {
         // if(list.length)return;
+
+        if(cache?.type==="hub" && cache?.pageCur>pageCur)return;
         getList();
-    }, []);
+    }, [cache]);
 
 
 
 
     const StorageList = (id) =>{
-        const targetElement = document.querySelector(`#hub_${id}`);
-        const height =targetElement.offsetTop;
+        const element = document.querySelector(`#inner`)
+        const height =element.scrollTop;
         let obj={
             type:"hub",
             list,

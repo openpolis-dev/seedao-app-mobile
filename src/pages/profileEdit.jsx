@@ -1,14 +1,10 @@
 import Layout from "../components/layout/layout";
 import styled from "styled-components";
-import React, { ChangeEvent, useEffect, useState, FormEvent, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { getUser, updateUser } from "../api/user";
-// import { useAuthContext, AppActionType } from 'providers/authProvider';
 import { useTranslation } from "react-i18next";
-// import useToast, { ToastType } from 'hooks/useToast';
-import { useSelector } from "react-redux";
 import store from "../store";
-import { saveAccount, saveLoading, saveUserToken, saveWalletType } from "../store/reducer";
-import { useDisconnect } from "wagmi";
+import { saveLoading } from "../store/reducer";
 import { useNavigate } from "react-router-dom";
 import useToast from "hooks/useToast";
 import CloseImg from "../assets/Imgs/close-circle.svg";
@@ -105,7 +101,7 @@ export default function ProfileEdit() {
   const [avatar, setAvatar] = useState("");
   const [bio, setBio] = useState("");
   const [github, setGithub] = useState("");
-  const [wallet, setWallet] = useState("");
+  // const [wallet, setWallet] = useState("");
 
 
   const [height, setHeight] = useState("1em");
@@ -149,7 +145,7 @@ export default function ProfileEdit() {
       setGithub(mapArr.get("github") ?? "");
       setBio(bio);
       setAvatar(avatar);
-      setWallet(wallet);
+      // setWallet(wallet);
     } catch (e) {
       console.error(e);
     } finally {

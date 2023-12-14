@@ -4,62 +4,66 @@ import { useNavigate } from "react-router-dom";
 import { formatDate } from "utils/time";
 import { MultiLineStyle } from "assets/styles/common";
 import PublicJs from "../../utils/publicJs";
-import store from "../../store";
-import {saveCache, saveDetail} from "../../store/reducer";
 import {useTranslation} from "react-i18next";
 
 export default function ProposalCard({ data,StorageList }) {
   const navigate = useNavigate();
   const [content, setContent] = useState("");
-  const { t } = useTranslation();
 
   const handleContent = async () => {
     let delta = [];
+
     try {
       delta = JSON.parse(data.first_post.content);
-    } catch (e) {
-      console.info("illegal json:" + data.first_post.content);
-    }
 
-    const text = [];
-    let totalTextLength = 0;
+      const text = [];
+      let totalTextLength = 0;
 
-    for (let i = 0; i < delta.length; i++) {
-      // for videos and images
-      if (delta[i] && delta[i].insert && typeof delta[i].insert === "object") {
-        // delta.splice(i, 1)
-        // for text
-      } else if (delta[i] && delta[i].insert && typeof delta[i].insert === "string") {
-        // if we already have 6 lines or 200 characters. that's enough for preview
-        if (text.length >= 6 || totalTextLength > 200) {
-          continue;
-        }
-
-        // it's just newline and space.
-        if (delta[i].insert.match(/^[\n\s]+$/)) {
-          // if the previous line doesn't end with newline mark, we can add one newline mark
-          // otherwise just ignore it
-          if (!text[i - 1] || (typeof text[i - 1].insert === "string" && !text[i - 1].insert.match(/\n$/))) {
-            text.push({ insert: "\n" });
+      for (let i = 0; i < delta.length; i++) {
+        // for videos and images
+        if (delta[i] && delta[i].insert && typeof delta[i].insert === "object") {
+          // delta.splice(i, 1)
+          // for text
+        } else if (delta[i] && delta[i].insert && typeof delta[i].insert === "string") {
+          // if we already have 6 lines or 200 characters. that's enough for preview
+          if (text.length >= 6 || totalTextLength > 200) {
+            continue;
           }
-        } else {
-          // if text end with multiple newline mark, leave only one
-          if (delta[i].insert.match(/\n+$/)) {
-            delta[i].insert = delta[i].insert.replace(/\n+$/, "\n");
+
+          // it's just newline and space.
+          if (delta[i].insert.match(/^[\n\s]+$/)) {
+            // if the previous line doesn't end with newline mark, we can add one newline mark
+            // otherwise just ignore it
+            if (!text[i - 1] || (typeof text[i - 1].insert === "string" && !text[i - 1].insert.match(/\n$/))) {
+              text.push({ insert: "\n" });
+            }
+          } else {
+            // if text end with multiple newline mark, leave only one
+            if (delta[i].insert.match(/\n+$/)) {
+              delta[i].insert = delta[i].insert.replace(/\n+$/, "\n");
+            }
+            text.push(delta[i]);
+            totalTextLength = totalTextLength + delta[i].insert.length;
           }
-          text.push(delta[i]);
-          totalTextLength = totalTextLength + delta[i].insert.length;
         }
       }
+      // post content is always a json string of Delta, we need to convert it html
+      const QuillDeltaToHtmlConverter = await require("quill-delta-to-html");
+      const converter = new QuillDeltaToHtmlConverter.QuillDeltaToHtmlConverter(text, {});
+      let textContent = converter.convert();
+      if (textContent === "<p><br/></p>") {
+        textContent = "";
+      }
+      setContent(textContent);
+
+    } catch (e) {
+      let textContent =data.first_post.content;
+      setContent(textContent);
+
     }
-    // post content is always a json string of Delta, we need to convert it html
-    const QuillDeltaToHtmlConverter = await require("quill-delta-to-html");
-    const converter = new QuillDeltaToHtmlConverter.QuillDeltaToHtmlConverter(text, {});
-    let textContent = converter.convert();
-    if (textContent === "<p><br/></p>") {
-      textContent = "";
-    }
-    setContent(textContent);
+
+
+
   };
 
   useEffect(() => {
@@ -78,6 +82,7 @@ export default function ProposalCard({ data,StorageList }) {
       <div onClick={openProposal}>
         <Title line={2}>{data.title}</Title>
         {/*<ProposalContent line={2} dangerouslySetInnerHTML={{ __html: content }}></ProposalContent>*/}
+
         <ProposalContent line={2}>{PublicJs.filterTags(content)}</ProposalContent>
 
         <CardFooter>
@@ -101,9 +106,10 @@ export default function ProposalCard({ data,StorageList }) {
 const CardBox = styled.div`
   background: #fff;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.02);
-  padding: 16px;
+  padding: 16px ;
   border-radius: 16px;
   margin-bottom: 16px;
+  height: 140px;
 `;
 
 const CardFooter = styled.div`
@@ -153,6 +159,7 @@ const Title = styled.div`
   font-weight: 600;
   line-height: 24px;
   margin-bottom: 8px;
+  min-height: 48px;
   ${MultiLineStyle}
 `;
 

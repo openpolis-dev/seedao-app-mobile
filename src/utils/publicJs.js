@@ -1,8 +1,11 @@
 import {SiweMessage} from 'siwe';
 import AppConfig from '../AppConfig';
 import axios from 'axios';
+import store from "../store";
+import { saveCache } from "../store/reducer";
+import { ethers } from 'ethers';
 
-const AddressToShow = (address, num = 8) => {
+const AddressToShow = (address, num = 4) => {
   if (!address) {
     return "...";
   }
@@ -10,7 +13,7 @@ const AddressToShow = (address, num = 8) => {
     return address;
   }
 
-  const frontStr = address.substring(0, num);
+  const frontStr = address.substring(0, num + 2);
 
   const afterStr = address.substring(address.length - num, address.length);
 
@@ -83,6 +86,7 @@ const getImage = async (img) => {
 
 
 const filterTags = (html) => {
+
   const decodedStr = html.replace(/&#(\d+);/g, function(match, dec) {
     return String.fromCharCode(dec);
   });
@@ -108,9 +112,40 @@ const filterTags = (html) => {
   return unicodeHexDecodedStr.replace(/(<([^>]+)>)/ig, '');
 }
 
+const StorageList = (type,list) =>{
+  const element = document.querySelector(`#inner`)
+  const height =element.scrollTop;
+  let obj={
+    type,
+    list,
+    height
+  }
+  store.dispatch(saveCache(obj))
+}
+
+
+const checkRPCavailable = (rpc_list, network) => {
+  return Promise.any(
+    rpc_list.map((r) => {
+      const provider = new ethers.providers.JsonRpcProvider(r, network);
+      try {
+        provider.getBlock("latest");
+        return r;
+      } catch (error) {
+        throw Error(`[rpc] not available - ${r}`);
+      }
+    }),
+  ).then((result) => {
+    console.log("[rpc] choose", result);
+    return result;
+  });
+};
+
 export default {
   AddressToShow,
   createSiweMessage,
+  StorageList,
   getImage,
-  filterTags
+  filterTags,
+  checkRPCavailable,
 };

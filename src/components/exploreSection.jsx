@@ -61,6 +61,7 @@ const CheckButton = styled.span`
   font-family: Poppins-Regular, Poppins;
   font-weight: 400;
   color: var(--primary-color);
+  white-space: nowrap;
 `;
 
 const SectionBody = styled.div`

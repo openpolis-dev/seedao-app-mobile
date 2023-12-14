@@ -11,15 +11,15 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import store from "store";
 import { saveLoading } from "store/reducer";
-import getConfig from "constant/envCofnig";
-const networkConfig = getConfig().NETWORK;
 
 export default function UserSNS() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { state } = useLocation();
-  console.log("====state", state);
+
   const account = useSelector((state) => state.account);
+  const globalLoading = useSelector((state) => state.loading);
+  const rpc = useSelector((state) => state.rpc);
 
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState();
@@ -74,14 +74,14 @@ export default function UserSNS() {
   };
 
   useEffect(() => {
-    if (!account || !state) {
+    if (!account || !state || !rpc) {
       return;
     }
 
     let timer;
     const timerFunc = () => {
       setLoading(true);
-      const provider = new ethers.providers.StaticJsonRpcProvider(networkConfig.rpc);
+      const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
       provider.getTransactionReceipt(state).then((r) => {
         console.log("[tx-status]", r);
         if (r && r.status === 1) {
@@ -90,16 +90,17 @@ export default function UserSNS() {
           setLoading(false);
           getCurrentName(true);
           // refresh data
-        } else if (r && r.status === 2) {
+        } else if (r && (r.status === 2 || r.status === 0)) {
           // means tx failed
           clearInterval(timer);
           setLoading(false);
         }
       });
     };
+    timerFunc();
     timer = setInterval(timerFunc, 1500);
     return () => timer && clearInterval(timer);
-  }, [state, account]);
+  }, [state, account, rpc]);
 
   const handleBack = () => {
     navigate("/sns/register");
@@ -108,20 +109,24 @@ export default function UserSNS() {
   return (
     <Layout title={t("SNS.MySNS")} handleBack={handleBack}>
       <ContainerWrapper>
-        <CurrentUsed>
-          {loadingName ? <img className="loading" src={LoadingImg} alt="" style={{ width: "20px" }} /> : userSNS}
-        </CurrentUsed>
         {!!snsList.length ? (
-          <NameList>
-            {list.map((item) => (
-              <li key={item}>
-                <span>{item}</span>
-                <PrimaryOutlinedButton onClick={() => setShowModal(item)}>{t("SNS.Switch")}</PrimaryOutlinedButton>
-              </li>
-            ))}
-          </NameList>
+          <>
+            <CurrentUsed>
+              {loadingName ? <img className="loading" src={LoadingImg} alt="" style={{ width: "20px" }} /> : userSNS}
+            </CurrentUsed>
+            <NameList>
+              {list.map((item) => (
+                <li key={item}>
+                  <span>{item}</span>
+                  {userSNS && (
+                    <PrimaryOutlinedButton onClick={() => setShowModal(item)}>{t("SNS.Switch")}</PrimaryOutlinedButton>
+                  )}
+                </li>
+              ))}
+            </NameList>
+          </>
         ) : (
-          <NoItem />
+          !globalLoading && <NoItem />
         )}
         {loading && <Loading text={t("SNS.Switching")} />}
       </ContainerWrapper>

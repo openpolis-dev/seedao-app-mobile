@@ -11,7 +11,8 @@
     "cancel": "取消",
     "Edit": "编辑",
     "Empty": "空空如也",
-    "Copied": "已复制"
+    "Copied": "已复制",
+    "Version": "当前版本"
   },
   "Buttons": {
     "Check": "查看",
@@ -87,7 +88,7 @@
   "Install": {
     "IosTitle": "添加到主屏幕",
     "IosStep1": "1) 点击 菜单栏上的'分享' 按钮",
-    "IosStep2": "2) 点击 '添加到主屏幕'",
+    "IosStep2": "2) 点击 '安装应用' 或 '添加到主屏幕'",
     "AndroidInstall": "安装"
   },
   "Proposal": {
@@ -233,17 +234,20 @@
   "SNS": {
     "EntranceTitle": "获取你的 SNS，开始 SeeDAO 之旅",
     "EntranceDesc": "SNS 将是你在 SeeDAO 中的独有昵称，能够连接 SeeDAO 生态中的所有场景和应用。",
-    "Started": "开始",
+    "Start": "开始",
     "Step1Title": "获取你的SNS",
     "Step1Desc": "SNS 将是你在 SeeDAO 中的独有昵称，能够连接 SeeDAO 生态中的所有场景和应用。",
     "Available": "可注册",
     "Uavailable": "不可注册",
     "FreeMint": "免费 mint",
+    "FreeMintNotOpen": "免费 mint 未开启",
     "SpentMint": "{{money}} mint",
     "TimerTitle": "快要完成了",
     "TimerDesc": "等待是为帮助你避免SNS名字被抢注，完成第二笔交易才能最终获得SNS。",
     "Finish": "继续",
-    "FinishSucess": "注册成功！",
+    "FinishSucess": "恭喜{{sns}}正式进入SeeDAO数字城邦",
+    "Polis": "城邦观光",
+    "PolisContribute": "共建城邦",
     "StepLoadingTitle": "注册SNS需要三步",
     "Step1Intro": "完成第一笔交易后开始计时",
     "StepMiddleIntro": "等待60秒倒计时结束",
@@ -251,6 +255,9 @@
     "InputTip": "*请输入4-15位数字（0～9）、小写字母（a～z）或特殊字符（ ! $ ( ) * + - _ ）",
     "Switch": "切换",
     "MySNS": "我的 SNS",
-    "Switching": "正在切换..."
+    "Switching": "正在切换...",
+    "HadSNS": "您的 SNS 已达上限",
+    "CancelRegister": "取消注册",
+    "CancelTip": "取消后，注册流程将从第一步开始"
   }
 }

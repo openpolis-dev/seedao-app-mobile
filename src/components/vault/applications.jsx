@@ -20,9 +20,11 @@ import ApplicationStatusTag from "components/applicationStatusTag";
 import publicJs from "utils/publicJs";
 import sns from "@seedao/sns-js";
 import store from "store";
-import { saveLoading } from "store/reducer";
+import {saveCache, saveLoading} from "store/reducer";
 import useToast from "hooks/useToast";
 import Avatar from "components/common/avatar";
+import useCurrentPath from "../../hooks/useCurrentPath";
+import {useSelector} from "react-redux";
 
 export default function ApplicationsSection({ handleBg }) {
   const { t } = useTranslation();
@@ -48,14 +50,11 @@ export default function ApplicationsSection({ handleBg }) {
   const [keyword, setKeyword] = useState("");
   const [searchVal, setSearchVal] = useState("");
 
-  const [snsMap, setSnsMap] = useState(new Map());
+  const prevPath = useCurrentPath();
+  const cache = useSelector(state => state.cache);
+  const snsMap = useSelector((state) => state.snsMap);
 
   const { getMultiSNS } = useQuerySNS();
-
-  const handleSNS = async (wallets) => {
-    const sns_map = await getMultiSNS(wallets);
-    setSnsMap(sns_map);
-  };
 
   const hasMore = useMemo(() => {
     return list.length < total;
@@ -92,18 +91,17 @@ export default function ApplicationsSection({ handleBg }) {
         item.applicant_wallet && _wallets.add(item.applicant_wallet);
         item.reviewer_wallet && _wallets.add(item.reviewer_wallet);
       });
-      handleSNS(Array.from(_wallets));
+      getMultiSNS(Array.from(_wallets));
 
       const _list = res.data.rows.map((item, idx) => ({
         ...item,
         created_date: formatTime(item.created_at),
         transactions: item.transaction_ids.split(","),
         asset_display: Number(item.amount).format() + " " + item.asset_name,
-        submitter_name: item.submitter_wallet?.toLocaleLowerCase(),
-        reviewer_name: item.reviewer_wallet?.toLocaleLowerCase(),
-        receiver_name: item.target_user_wallet?.toLocaleLowerCase(),
+        submitter_name: item.submitter_wallet,
+        reviewer_name: item.reviewer_wallet,
+        receiver_name: item.target_user_wallet,
       }));
-      console.log("_list", _list);
       setList(init ? _list : [...list, ..._list]);
       setPage(_page + 1);
     } catch (error) {
@@ -113,9 +111,47 @@ export default function ApplicationsSection({ handleBg }) {
   };
 
   useEffect(() => {
+    if(cache?.type==="assets" && cache?.page>page)return;
     getRecords(true);
   }, [selectAsset, selectSeason, selectStatus, searchVal]);
+
+
+  useEffect(()=>{
+
+    if(!prevPath || prevPath?.indexOf("/assets/application") === -1 || cache?.type!== "assets" )return;
+
+    const { list, page,height,id} = cache;
+
+    setList(list);
+    setPage(page);
+
+    setTimeout(()=>{
+      const element = document.querySelector(`#inner`)
+      // const targetElement = document.querySelector(`#assets_${id}`);
+        element.scrollTo({
+          top: height ,
+          behavior: 'auto',
+        });
+
+    },0)
+  },[prevPath])
+
+
+  const StorageList = (item) =>{
+
+    const element = document.querySelector(`#inner`)
+    const height =element.scrollTop;
+    let obj={
+      type:"assets",
+      id:item.application_id,
+      list,
+      page,
+      height
+    }
+    store.dispatch(saveCache(obj))
+  }
   const openDetail = (item) => {
+    StorageList(item)
     navigate("/assets/application", { state: item });
   };
   const handleSearch = async () => {
@@ -150,8 +186,8 @@ export default function ApplicationsSection({ handleBg }) {
   };
 
   const formatSNS = (wallet) => {
-    const sns = snsMap[wallet] || wallet;
-    return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns, 6);
+    const sns = snsMap[wallet.toLocaleLowerCase()] || wallet;
+    return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns);
   };
 
   const trailingActions = (item) => (
@@ -228,7 +264,7 @@ export default function ApplicationsSection({ handleBg }) {
         <SwipeableList threshold={0.5} type={ListType.IOS}>
           {list.map((data, index) => (
             // <ApplicationItem data={item} key={index} onCheck={() => openDetail(item)} />
-            <SwipeableListItem trailingActions={trailingActions(data)} key={index}>
+            <SwipeableListItem trailingActions={trailingActions(data)} key={index}   id={`assets_${data.application_id}`}>
               <ItemBox>
                 <ContentInnerBox>
                   <LeftBox>

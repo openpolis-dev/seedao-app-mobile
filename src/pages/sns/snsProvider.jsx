@@ -3,15 +3,21 @@ import React, { useReducer, createContext, useContext } from "react";
 export const ACTIONS = {
   SET_STEP: "set_step",
   ADD_STEP: "add_step",
-  SET_CONTRACT: "set_contract",
+  SET_CONTROLLER_CONTRACT: "set_controller_contract",
+  SET_MINTER_CONTRACT: "set_minter_contract",
   SET_LOCAL_DATA: "set_local_data",
   SHOW_LOADING: "show_loading",
   CLOSE_LOADING: "close_loading",
   SET_SNS: "set_sns",
   SET_STORAGE: "set_storage",
+  SET_HAS_REACHED: 'set_has_reached',
+  SET_USER_PROOF: 'set_user_proof',
+  SET_HAD_MINT_BY_WHITELIST: 'set_had_mint_by_whitelist',
+  SET_WHITELIST_IS_OPEN: 'set_whitelist_is_open',
+  SET_MAX_OWNED_NUMBER: 'set_max_owned_number',
 };
 
-const INIT_STATE = { step: 0, sns: "" };
+const INIT_STATE = { step: 0, sns: "", maxOwnedNumber: 1 };
 
 const SNSContext = createContext({
   state: INIT_STATE,
@@ -26,8 +32,10 @@ const reducer = (state, action) => {
       return { ...state, step: state.step + 1 };
     case ACTIONS.SET_STEP:
       return { ...state, step: action.payload };
-    case ACTIONS.SET_CONTRACT:
-      return { ...state, contract: action.payload };
+    case ACTIONS.SET_CONTROLLER_CONTRACT:
+      return { ...state, controllerContract: action.payload };
+    case ACTIONS.SET_MINTER_CONTRACT:
+      return { ...state, minterContract: action.payload };
     case ACTIONS.SET_LOCAL_DATA:
       return { ...state, localData: action.payload };
     case ACTIONS.SHOW_LOADING:
@@ -37,6 +45,16 @@ const reducer = (state, action) => {
     case ACTIONS.SET_STORAGE:
       localStorage.setItem("sns", action.payload);
       return { ...state, localData: action.payload ? JSON.parse(action.payload) : undefined };
+    case ACTIONS.SET_HAS_REACHED:
+      return { ...state, hasReached: action.payload };
+    case ACTIONS.SET_USER_PROOF:
+      return { ...state, userProof: action.payload };
+    case ACTIONS.SET_HAD_MINT_BY_WHITELIST:
+      return { ...state, hadMintByWhitelist: action.payload };
+    case ACTIONS.SET_WHITELIST_IS_OPEN:
+      return { ...state, whitelistIsOpen: action.payload };
+    case ACTIONS.SET_MAX_OWNED_NUMBER:
+      return { ...state, maxOwnedNumber: action.payload };
     default:
       throw new Error(`Unknown type: ${action.type}`);
   }

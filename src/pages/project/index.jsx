@@ -20,7 +20,7 @@ export default function Project() {
   const [activeTab, setActiveTab] = useState(0);
   const [proList, setProList] = useState([]);
   const [pageCur, setPageCur] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(1);
   const prevPath = useCurrentPath();
   const cache = useSelector(state => state.cache);
@@ -43,12 +43,16 @@ export default function Project() {
     setList(_list);
   }, [t]);
 
+
+  useEffect(() => {
+    if(cache?.type==="project" && cache?.pageCur>pageCur)return;
+    getCurrentList(true);
+  }, [activeTab,cache]);
+
   useEffect(()=>{
 
     if(!prevPath || prevPath?.indexOf("/project/info") === -1 || cache?.type!== "project" )return;
-
     const { activeTab, proList, pageCur,height} = cache;
-
     setActiveTab(activeTab)
     setProList(proList);
     setPageCur(pageCur);
@@ -57,13 +61,13 @@ export default function Project() {
       const id = prevPath.split("/project/info/")[1];
       const element = document.querySelector(`#inner`)
       const targetElement = document.querySelector(`#project_${id}`);
-      const screenHeight = window.innerHeight;
       if (targetElement) {
         element.scrollTo({
-          top: height - screenHeight * 0.5,
+          top: height,
           behavior: 'auto',
         });
       }
+      store.dispatch(saveCache(null))
     },0)
   },[prevPath])
 
@@ -79,10 +83,10 @@ export default function Project() {
     return proList.length < total;
   }, [total, proList]);
 
-  const getList = async () => {
+  const getList = async (useGlobalLoading) => {
     if (activeTab > 2) return;
     const stt = activeTab === 1 ? "closed" : "";
-    store.dispatch(saveLoading(true));
+    useGlobalLoading && store.dispatch(saveLoading(true));
     const obj = {
       status: stt,
       page: pageCur,
@@ -114,12 +118,12 @@ export default function Project() {
     setProList([...proList, ...rows]);
     setPageSize(size);
     setTotal(total);
-    setPageCur(page);
+    setPageCur(page + 1);
   };
 
-  const StorageList = (id) =>{
-    const targetElement = document.querySelector(`#project_${id}`);
-    const height =targetElement.offsetTop;
+  const StorageList = () =>{
+    const element = document.querySelector(`#inner`)
+    const height =element.scrollTop;
     let obj={
       type:"project",
       activeTab,
@@ -129,24 +133,19 @@ export default function Project() {
     }
     store.dispatch(saveCache(obj))
   }
-
-
   const openDetail = (id) => {
     StorageList(id);
     navigate(`/project/info/${id}`);
   };
 
-  const getCurrentList = () => {
+  const getCurrentList = (useGlobalLoading) => {
     if (activeTab === 0) {
-      getList();
+      getList(useGlobalLoading);
     } else {
-      getMyList();
+      getMyList(useGlobalLoading);
     }
   };
 
-  useEffect(() => {
-    getCurrentList();
-  }, [activeTab]);
 
   return (
     <Layout title={t("Project.Projects")}>

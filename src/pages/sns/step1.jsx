@@ -11,13 +11,13 @@ import { isAvailable } from "@seedao/sns-safe";
 import { builtin } from "@seedao/sns-js";
 import { getRandomCode } from "utils/index";
 import useToast from "hooks/useToast";
-import { SELECT_WALLET, Wallet } from "utils/constant";
-import ABI from "assets/abi/snsRegister.json";
+import ABI from "assets/abi/SeeDAORegistrarController.json";
 import { useSelector } from "react-redux";
 import useTransaction from "hooks/useTransaction";
-import getConfig from "constant/envCofnig";
 
+import getConfig from "constant/envCofnig";
 const networkConfig = getConfig().NETWORK;
+const PAY_NUMBER = networkConfig.tokens[0].price;
 
 const AvailableStatus = {
   DEFAULT: "default",
@@ -37,13 +37,14 @@ export default function RegisterSNSStep1({ sns: _sns }) {
   const [isPending, setPending] = useState(false);
   const [availableStatus, setAvailable] = useState(AvailableStatus.DEFAULT);
   const [randomSecret, setRandomSecret] = useState("");
-  const sendTransaction = useTransaction("sns-commit");
+  const { handleTransaction } = useTransaction("sns-commit");
 
   const account = useSelector((state) => state.account);
+  const rpc = useSelector((state) => state.rpc);
 
   const {
     dispatch: dispatchSNS,
-    state: { contract, localData },
+    state: { controllerContract, localData, hasReached, userProof, hadMintByWhitelist, whitelistIsOpen },
   } = useSNSContext();
 
   const { toast } = useToast();
@@ -62,7 +63,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         return;
       }
       // onchain check
-      const res1 = await contract.available(v);
+      const res1 = await controllerContract.available(v);
       console.log("online check", v, res1);
 
       if (!res1) {
@@ -78,7 +79,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
       setPending(false);
     }
   };
-  const onChangeVal = useCallback(debounce(handleSearchAvailable, 1000), [contract]);
+  const onChangeVal = useCallback(debounce(handleSearchAvailable, 1000), [controllerContract]);
 
   const handleInput = (v) => {
     // check login status
@@ -90,7 +91,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
     if (v?.length > 15) {
       return;
     }
-    if (!contract) {
+    if (!controllerContract) {
       // TODO check login status?
       return;
     }
@@ -123,21 +124,26 @@ export default function RegisterSNSStep1({ sns: _sns }) {
     }
     // mint
     try {
+      dispatchSNS({ type: ACTIONS.SHOW_LOADING });
       const _s = getRandomCode();
       setRandomSecret(_s);
       localStorage.setItem("sns-secret", _s);
       // get commitment
-      const _commitment = await contract.makeCommitment(
+      const _commitment = await controllerContract.makeCommitment(
         searchVal,
         account,
         builtin.PUBLIC_RESOLVER_ADDR,
         ethers.utils.formatBytes32String(_s),
       );
-      console.log("===", builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR, account, buildCommitData(_commitment));
 
-      const tx = await sendTransaction(buildCommitData(_commitment), _s, searchVal);
+      const tx = await handleTransaction(
+        builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR,
+        buildCommitData(_commitment),
+        _s,
+        searchVal,
+      );
       console.log("tx:", tx);
-      const hash = (tx && tx.hash) || tx
+      const hash = (tx && tx.hash) || tx;
       if (hash) {
         // record to localstorage
         const data = { ...localData };
@@ -152,7 +158,6 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         };
         dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(data) });
       }
-      
     } catch (error) {
       console.error("mint failed", error);
       dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
@@ -161,30 +166,33 @@ export default function RegisterSNSStep1({ sns: _sns }) {
   };
 
   useEffect(() => {
-    if (!account || !localData) {
+    if (!account || !localData || !rpc) {
       return;
     }
     const hash = localData[account]?.commitHash;
-    console.log("???", localData[account], hash);
     if (!hash || localData[account]?.stepStatus === "failed") {
       return;
     }
     let timer;
     const timerFunc = () => {
-      console.log(">>>>", localData, account);
-
-      if (!account || !localData) {
+      if (!account || !localData || !rpc) {
         return;
       }
 
       if (!hash) {
         return;
       }
-      const provider = new ethers.providers.StaticJsonRpcProvider(networkConfig.rpc);
+      let hasResult = false;
+      const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
       provider.getTransactionReceipt(hash).then((r) => {
-        console.log("r:", r);
+        if (hasResult) {
+          clearInterval(timer);
+          return;
+        }
+        console.log("check tx status:", r);
         const _d = { ...localData };
         if (r && r.status === 1) {
+          hasResult = true;
           // means tx success
           _d[account].stepStatus = "success";
           provider.getBlock(r.blockNumber).then((block) => {
@@ -193,7 +201,8 @@ export default function RegisterSNSStep1({ sns: _sns }) {
             dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
             clearInterval(timer);
           });
-        } else if (r && r.status === 2) {
+        } else if (r && (r.status === 2 || r.status === 0)) {
+          hasResult = true;
           // means tx failed
           _d[account].stepStatus = "failed";
           dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(_d) });
@@ -202,9 +211,39 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         }
       });
     };
-    timer = setInterval(timerFunc, 1000);
+    timerFunc();
+    timer = setInterval(timerFunc, 2000);
     return () => timer && clearInterval(timer);
-  }, [localData, account]);
+  }, [localData, account, rpc]);
+
+  const showButton = () => {
+    if (hasReached) {
+      return (
+        <MintButton variant="primary" disabled={true}>
+          {t("SNS.HadSNS")}
+        </MintButton>
+      );
+    } else {
+      if (userProof && !hadMintByWhitelist) {
+        if (!whitelistIsOpen) {
+          return (
+            <MintButton variant="primary" disabled={true}>
+              {t("SNS.FreeMintNotOpen")}
+            </MintButton>
+          );
+        }
+      }
+      return (
+        <MintButton
+          variant="primary"
+          disabled={isPending || availableStatus !== AvailableStatus.OK}
+          onClick={handleMint}
+        >
+          {userProof && !hadMintByWhitelist ? t("SNS.FreeMint") : t("SNS.SpentMint", { money: `${PAY_NUMBER} USDT` })}
+        </MintButton>
+      );
+    }
+  };
   return (
     <Container>
       <ContainerWrapper>
@@ -223,16 +262,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
           </SearchRight>
         </SearchBox>
         <Tip>{t("SNS.InputTip")}</Tip>
-        <OperateBox>
-          {/* <MintButton variant="primary" onClick={handleMint}> */}
-          <MintButton
-            variant="primary"
-            onClick={handleMint}
-            disabled={isPending || availableStatus !== AvailableStatus.OK}
-          >
-            {t("SNS.FreeMint")}
-          </MintButton>
-        </OperateBox>
+        <OperateBox>{showButton()}</OperateBox>
       </ContainerWrapper>
     </Container>
   );
@@ -380,3 +410,4 @@ const Tip = styled.div`
   margin-top: 8px;
   text-align: left;
 `;
+

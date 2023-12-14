@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import { useProjectContext } from "./provider";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import { useEffect, useMemo, useState } from "react";

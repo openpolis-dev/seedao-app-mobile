@@ -1,7 +1,7 @@
 
 import {useEffect, useState} from "react";
 import { useWeb3Modal } from "@web3modal/react";
-import { useAccount, useDisconnect, useNetwork } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 import {useEthersSigner } from '../../utils/ethersNew';
 import store from "../../store";
 import {saveLoading,saveAccount,saveUserToken,saveWalletType} from "../../store/reducer";
@@ -88,7 +88,8 @@ export default function  Metamask(){
 
     useEffect(()=>{
         if(!result)return;
-        navigate('/home');
+        const toSNS = localStorage.getItem(`==sns==`) === "1";
+        navigate(toSNS ? "/sns/register" : "/home");
 
     },[result])
 

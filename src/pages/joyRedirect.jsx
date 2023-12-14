@@ -38,7 +38,7 @@ export default function JoyIDRedirect() {
     const data = getLocalData();
     const account = localStorage.getItem("joyid-address");
     data[account].step = "register";
-    data[account].stepStatus = "pending";
+    data[account].stepStatus = search.get("secret") || "pending";
     data[account].registerHash = hash;
     localStorage.setItem("sns", JSON.stringify(data));
   };

@@ -1,28 +1,64 @@
 import Layout from "../../components/layout/layout";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import store from "../../store";
 import { saveLoading } from "../../store/reducer";
 import AppConfig from "../../AppConfig";
-import axios from "axios";
-import { getTreasury } from "../../api/treasury";
 import { ethers } from "ethers";
 
-import {formatNumber, getShortDisplay} from "../../utils/number";
+import { getShortDisplay } from "../../utils/number";
 import PublicJs from "../../utils/publicJs";
 import CopyBox from "../../components/common/copy";
-import VAULTS from "constant/vault";
 import CardIcon1 from "assets/Imgs/vault/cardIcon1.svg";
 import CardIcon2 from "assets/Imgs/vault/cardIcon2.svg";
 import ApplicantsSection from "components/vault/applications";
 import getConfig from "constant/envCofnig";
+import { getVaultBalance } from "api/publicData";
+import EthereumIcon from "assets/Imgs/network/ethereum.webp";
+import PolygonIcon from "assets/Imgs/network/polygon.webp";
+
+const SAFE_CHAIN = {
+  1: {
+    short: "eth",
+    name: "Ethereum",
+  },
+  137: {
+    short: "matic",
+    name: "Polygon",
+  },
+};
+
+const getChainIcon = (chainId) => {
+  switch (chainId) {
+    case 1:
+      return EthereumIcon;
+    case 137:
+      return PolygonIcon;
+    default:
+      return "";
+  }
+};
+
+const getVaultName = (address) => {
+  switch (address) {
+    case "0x7FdA3253c94F09fE6950710E5273165283f8b283":
+      return "Vault.CommunityVault";
+    case "0x4876eaD85CE358133fb80276EB3631D192196e24":
+      return "Vault.CommunityVault";
+    case "0x70F97Ad9dd7E1bFf40c3374A497a7583B0fAdd25":
+      return "Vault.CityHallVault";
+    case "0x444C1Cf57b65C011abA9BaBEd05C6b13C11b03b5":
+      return "Vault.IncubatorVault";
+    default:
+      return "";
+  }
+};
 
 export default function Assets() {
   const { t } = useTranslation();
 
   const [totalBalance, setTotalBalance] = useState("0.00");
-  const [totalSigner, setTotalSigner] = useState(0);
   const [vaultsMap, setVaultsMap] = useState({});
   const [nftData, setNftData] = useState({
     floorPrice: 0,
@@ -32,124 +68,37 @@ export default function Assets() {
   const [status1, setStatus1] = useState(false);
   const [status2, setStatus2] = useState(false);
   const [status3, setStatus3] = useState(false);
-  const [status4, setStatus4] = useState(false);
-
-  const [asset, setAsset] = useState({
-    token_remain_amount: 0,
-    token_total_amount: 0,
-    credit_remain_amount: 0,
-    credit_total_amount: 0,
-    credit_used_amount: 0,
-    token_used_amount: 0,
-  });
 
   const [totalSCR, setTotalSCR] = useState("0.00");
   const { SCR_CONTRACT } = AppConfig;
-  const SCR_PRICE = 0.3;
+  const [wallets, setWallets] = useState([]);
 
-  const SCRValue = useMemo(() => {
-    return Number(totalSCR) * SCR_PRICE;
-  }, [totalSCR]);
-
-  const SAFE_CHAIN = {
-    [1]: {
-      short: "eth",
-      name: "Ethereum",
-    },
-    [137]: {
-      short: "matic",
-      name: "Polygon",
-    },
-  };
-
-  const getVaultBalance = async ({ chainId, address }) => {
-    return axios.get(`https://safe-client.safe.global/v1/chains/${chainId}/safes/${address}/balances/usd?trusted=true`);
-  };
-
-  const getVaultInfo = async ({ chainId, address }) => {
-    return axios.get(`https://safe-client.safe.global/v1/chains/${chainId}/safes/${address}`);
+  const getVaultData = async () => {
+    try {
+      setStatus1(true);
+      const res = await getVaultBalance();
+      setWallets(res.data.wallets);
+      let v = 0;
+      res.data.wallets.forEach((w) => (v += Number(w.fiatTotal)));
+      setTotalBalance(v.format());
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setStatus1(false);
+    }
   };
 
   useEffect(() => {
-    getAssets();
-    getVaultsInfo();
+    getVaultData();
     getFloorPrice();
     getSCR();
   }, []);
 
   useEffect(() => {
-    store.dispatch(saveLoading(status1 || status2 || status3 || status4));
-  }, [status1, status2, status3, status4]);
-
-  const getAssets = async () => {
-    // store.dispatch(saveLoading(true));
-    setStatus4(true);
-    try {
-      const res = await getTreasury();
-      setAsset({
-        token_remain_amount: Number(res.data.token_remain_amount),
-        token_total_amount: Number(res.data.token_total_amount),
-        credit_remain_amount: Number(res.data.credit_remain_amount),
-        credit_used_amount: Number(res.data.credit_used_amount),
-        credit_total_amount: Number(res.data.credit_total_amount),
-        token_used_amount: Number(res.data.token_used_amount),
-      });
-    } catch (error) {
-      console.error("getTreasury error", error);
-    } finally {
-      setStatus4(false);
-      // store.dispatch(saveLoading(false));
-    }
-  };
-
-  const getVaultsInfo = async () => {
-    const vaults_map = {};
-    const users = [];
-    let _total = 0;
-    // store.dispatch(saveLoading(true));
-    setStatus1(true);
-    try {
-      const reqs = VAULTS.map((item) => getVaultBalance(item));
-      const results = await Promise.allSettled(reqs);
-      results.forEach((res, index) => {
-        if (res.status === "fulfilled") {
-          const _v = Number(res.value.data?.fiatTotal || 0);
-          vaults_map[VAULTS[index].id] = {
-            balance: formatNumber(Number(res.value.data?.fiatTotal || 0)),
-          };
-          _total += _v;
-        }
-      });
-    } catch (error) {
-      console.error("getVaultBalance error", error);
-    }
-    try {
-      const reqs = VAULTS.map((item) => getVaultInfo(item));
-      const results = await Promise.allSettled(reqs);
-      results.forEach((res, index) => {
-        if (res.status === "fulfilled") {
-          const _id = VAULTS[index].id;
-          if (!vaults_map[_id]) {
-            vaults_map[_id] = {};
-          }
-          vaults_map[_id].total = res.value.data?.owners.length || 0;
-          vaults_map[_id].threshold = res.value.data?.threshold || 0;
-          users.push(...res.value.data?.owners.map((item) => item.value));
-        }
-      });
-    } catch (error) {
-      console.error("getVaultInfo error", error);
-    } finally {
-      setStatus1(false);
-      // store.dispatch(saveLoading(false));
-    }
-    setTotalSigner([...new Set(users)].length);
-    setTotalBalance(formatNumber(_total));
-    setVaultsMap(vaults_map);
-  };
+    store.dispatch(saveLoading(status1 || status2 || status3));
+  }, [status1, status2, status3]);
 
   const getFloorPrice = async () => {
-    // store.dispatch(saveLoading(true));
     setStatus3(true);
     try {
       fetch(`${getConfig().INDEXER_ENDPOINT}/insight/erc721/total_supply/0x30093266E34a816a53e302bE3e59a93B52792FD4`)
@@ -164,7 +113,6 @@ export default function Assets() {
       console.error("getFloorPrice error", error);
     } finally {
       setStatus3(false);
-      // store.dispatch(saveLoading(false));
     }
   };
 
@@ -205,12 +153,12 @@ export default function Assets() {
   };
 
   const linkTo = (v) => {
-    window.open(`https://app.safe.global/balances?safe=${SAFE_CHAIN[v.chainId].short}:${v.address}`);
+    window.open(`https://app.safe.global/balances?safe=${SAFE_CHAIN[v.chainId].short}:${v.wallet}`);
   };
 
   const handleBg = () => {
     document.querySelector("body").style.background = "var(--primary-color)";
-  }
+  };
 
   return (
     <Layout
@@ -225,19 +173,19 @@ export default function Assets() {
           <div className="label">{t("Vault.TotalAssets")}</div>
         </TotalAssets>
         <WalletBox>
-          {VAULTS.map((v, index) => (
-            <WalletItem key={index}>
+          {wallets.map((v) => (
+            <WalletItem key={v.wallet}>
               <WalletItemLeft>
-                <div className="name">{t(v.name)}</div>
-                <CopyBox style={{ width: "65px" }} text={v.address}>
-                  <Addr>{PublicJs.AddressToShow(v.address, 4)}</Addr>
+                <div className="name">{t(getVaultName(v.wallet))}</div>
+                <CopyBox style={{ width: "78px" }} text={v.wallet}>
+                  <Addr>{PublicJs.AddressToShow(v.wallet)}</Addr>
                 </CopyBox>
-                <img src={v.icon} alt="" onClick={() => linkTo(v)} />
+                <img src={getChainIcon(v.chainId)} alt="" onClick={() => linkTo(v)} />
                 <div className="signer">
-                  {vaultsMap[v.id]?.threshold || 0}/{vaultsMap[v.id]?.total || 0}
+                  {v.threshold}/{v.owners}
                 </div>
               </WalletItemLeft>
-              <WalletItemValue>${getShortDisplay(vaultsMap[v.id]?.balance || 0.00, 2)}</WalletItemValue>
+              <WalletItemValue>${Number(v.fiatTotal).format()}</WalletItemValue>
             </WalletItem>
           ))}
         </WalletBox>
@@ -265,7 +213,7 @@ export default function Assets() {
 const TopBox = styled.div`
   background: var(--primary-color);
   padding-bottom: 18px;
-`
+`;
 
 const TotalAssets = styled.div`
   text-align: center;
@@ -276,7 +224,7 @@ const TotalAssets = styled.div`
     color: #ffffff;
     line-height: 34px;
     padding-top: 8px;
-    font-family: 'Poppins-SemiBold';
+    font-family: "Poppins-SemiBold";
   }
   .label {
     font-size: 12px;
@@ -292,7 +240,7 @@ const WalletItem = styled.li`
   justify-content: space-between;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   line-height: 50px;
-  &:last-child{
+  &:last-child {
     border-bottom: 0;
   }
 `;
@@ -302,6 +250,7 @@ const WalletItemLeft = styled.div`
   color: rgba(255, 255, 255, 0.7);
   font-size: 12px;
   font-weight: 400;
+  align-items: center;
   .name {
     min-width: 120px;
     font-weight: 600;
@@ -314,13 +263,17 @@ const WalletItemLeft = styled.div`
   img {
     margin-right: 4px;
     margin-left: 9px;
+    width: 14px;
+    height: 14px;
+    position: relative;
+    top: -1px;
   }
 `;
 const WalletItemValue = styled.div`
   font-size: 15px;
   font-weight: 500;
   color: #ff7193;
-  font-family: 'Poppins-Medium';
+  font-family: "Poppins-Medium";
 `;
 
 const BottomBox = styled.div`
@@ -337,7 +290,7 @@ const Num = styled.div`
   color: #424242;
   line-height: 26px;
   margin-top: 5px;
-  font-family: 'Poppins-SemiBold';
+  font-family: "Poppins-SemiBold";
 `;
 const Tit = styled.div`
   font-size: 12px;

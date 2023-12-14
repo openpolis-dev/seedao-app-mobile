@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useEffect, useMemo, useState } from "react";
-import { MultiLineStyle } from "assets/styles/common";
 import { getCityHallDetail } from "api/cityhall";
 import { getUsers } from "api/user";
 import publicJs from "utils/publicJs";
@@ -9,10 +8,11 @@ import useQuerySNS from "hooks/useQuerySNS";
 import { useSelector } from "react-redux";
 import UserModal from "components/userModal";
 import Avatar from "components/common/avatar";
+import { formatAddress } from "utils/address";
 
 const MemberAvatar = ({ user, onSelect }) => {
   const reFormat = () =>{
-    if(user.sns === user.wallet){
+    if(user?.sns?.toLowerCase() === user?.wallet?.toLowerCase()){
       return  publicJs.AddressToShow(user.wallet,10)
     }else{
       return user.sns;
@@ -22,11 +22,11 @@ const MemberAvatar = ({ user, onSelect }) => {
   return (
     <MemberAvatarStyle line={1}>
       <AvatarBox onClick={onSelect}>
-        <Avatar src={user.avatar} size="44px" />
+        <Avatar src={user.avatar|| user?.sp?.avatar} size="44px" />
       </AvatarBox>
       <div className="rhtBox">
         <div className="sns">{reFormat()}</div>
-        <div className="name">{user.name}</div>
+        <div className="name">{user.name || user?.sp?.nickname}</div>
       </div>
 
     </MemberAvatarStyle>
@@ -60,13 +60,14 @@ export default function CityhallMembers() {
   const handleMembers = (members) => {
     return members.map((w) => {
       const user = userMap[w.toLowerCase()];
+
       if (user) {
         return {
           ...user,
-          sns: snsMap[w.toLowerCase()] || w.toLowerCase(),
+          sns: snsMap[w.toLowerCase()] || formatAddress(w, 10),
         };
       } else {
-        return { sns: w.toLowerCase() };
+        return { sns: formatAddress(w, 10) };
       }
     });
   };
@@ -167,7 +168,6 @@ const MemberAvatarStyle = styled.div`
 }
   .sns {
     margin-top: 8px;
-    margin-bottom: 4px;
     line-height: 21px;
     color: var(--font-color-1);
     box-sizing: border-box;
@@ -175,6 +175,7 @@ const MemberAvatarStyle = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-size: 16px;
   }
   .name {
     width: 100%;

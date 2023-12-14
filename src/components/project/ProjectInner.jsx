@@ -1,13 +1,13 @@
 import SipTag from "../sipTag";
 import ProjectMember from "../../pages/project/info/member";
 import {MdPreview} from "md-editor-rt";
-import {PROJECT_ACTIONS, useProjectContext} from "../../pages/project/info/provider";
 import {useEffect, useState} from "react";
 import store from "../../store";
 import {saveLoading} from "../../store/reducer";
 import {getProjectById} from "../../api/project";
 import styled from "styled-components";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import DefaultLogo from "assets/Imgs/defaultLogo.png"
 
 const FlexBox = styled.div`
   display: flex;
@@ -93,7 +93,7 @@ export default function ProjectInner({id}){
 
     return <>
         <FlexBox>
-        <ImgBlock>{data?.logo && <img src={data?.logo} alt="" />}</ImgBlock>
+        <ImgBlock><img src={data?.logo || DefaultLogo} alt="" /></ImgBlock>
     <TitleBox>{data?.name}</TitleBox>
 </FlexBox>
 

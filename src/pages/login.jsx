@@ -5,14 +5,13 @@ import { useTranslation } from "react-i18next";
 import Metamask from "../components/login/metamask";
 import Joyid from "../components/login/joyid";
 import Unipass from "../components/login/unipassPopup";
-import {useState} from "react";
-import SwitchLan from "../components/common/switchLan";
-import AppConfig from "../AppConfig";
+import VersionBox from "components/version";
 
 const Box = styled.div`
   width: 100%;
   height: var(--app-height);
   box-sizing: border-box;
+  position: relative;
 `;
 
 const LogoBox = styled.div`
@@ -58,7 +57,7 @@ const BtnList = styled.ul`
       height: 56px;
       img {
         //width: 56px;
-        height: 6vh;
+        width: 100%;
       }
       &.metamask {
         img {
@@ -83,7 +82,7 @@ const BtnList = styled.ul`
 
 
 export default function Login() {
-  const { t,i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Layout noHeader noTab>
@@ -91,7 +90,10 @@ export default function Login() {
         <LogoBox>
           <img src={LogoImg} alt="" />
         </LogoBox>
-        <Tips>{t("General.connect")}</Tips>
+        <Tips>
+          {t("General.connect")}
+          <HideVersionBox isShort />
+        </Tips>
         <BtnList>
           <li>
             <Metamask />
@@ -108,3 +110,8 @@ export default function Login() {
     </Layout>
   );
 }
+
+const HideVersionBox = styled(VersionBox)`
+  color: #fff;
+  display: inline;
+`;

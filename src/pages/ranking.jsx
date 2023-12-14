@@ -10,7 +10,6 @@ import { formatNumber, getShortDisplay } from "utils/number";
 import publicJs from "utils/publicJs";
 import SortDownSvg from "components/svgs/sortDown";
 import SortUpSvg from "components/svgs/sortUp";
-import ExcellentExport from "excellentexport";
 
 const RankDirection = {
   default: 0,
@@ -81,7 +80,7 @@ export default function RankingPage() {
 
   const formatSNS = (wallet) => {
     const sns = dataMap[wallet] || wallet;
-    return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns, 6);
+    return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns);
   };
   useEffect(() => {
     const getList = () => {
@@ -142,35 +141,38 @@ export default function RankingPage() {
     }
   };
   const handleExport = () => {
-    ExcellentExport.convert(
-      {
-        filename: t("GovernanceNodeResult.SCRSeasonRankFilename", { season: currentSeason }),
-        format: "xlsx",
-        openAsDownload: true,
-      },
-      [
+    import("excellentexport").then((ExcellentExport) => {
+      ExcellentExport.convert(
         {
-          name: t("GovernanceNodeResult.SCRSeasonRankFilename", { season: currentSeason }),
-          from: {
-            array: [
-              ["SNS", ...allSeasons.map((s) => `S${s}(SCR)`), t("GovernanceNodeResult.Total") + "(SCR)"],
-              ...displayList.map((item) => [
-                dataMap[item.wallet] || item.wallet,
-                item.seasons_credit?.find((s) => s.season_idx === 0)?.total || 0,
-                item.seasons_credit?.find((s) => s.season_idx === 1)?.total || 0,
-                item.seasons_credit?.find((s) => s.season_idx === 2)?.total || 0,
-                item.seasons_credit?.find((s) => s.season_idx === 3)?.total || 0,
-                item.season_total_credit || 0,
-              ]),
-            ],
-          },
-          formats: ["B", "C", "D", "E", "F", "G", "H", "I", "J", "K"].map((c) => ({
-            range: `${c}2:${c}1000`,
-            format: ExcellentExport.formats.NUMBER,
-          })),
+          filename: t("GovernanceNodeResult.SCRSeasonRankFilename", { season: currentSeason }),
+          format: "xlsx",
+          openAsDownload: true,
         },
-      ],
-    );
+        [
+          {
+            name: t("GovernanceNodeResult.SCRSeasonRankFilename", { season: currentSeason }),
+            from: {
+              array: [
+                ["SNS", ...allSeasons.map((s) => `S${s}(SCR)`), t("GovernanceNodeResult.Total") + "(SCR)"],
+                ...displayList.map((item) => [
+                  dataMap[item.wallet] || item.wallet,
+                  item.seasons_credit?.find((s) => s.season_idx === 0)?.total || 0,
+                  item.seasons_credit?.find((s) => s.season_idx === 1)?.total || 0,
+                  item.seasons_credit?.find((s) => s.season_idx === 2)?.total || 0,
+                  item.seasons_credit?.find((s) => s.season_idx === 3)?.total || 0,
+                  item.season_total_credit || 0,
+                ]),
+              ],
+            },
+            formats: ["B", "C", "D", "E", "F", "G", "H", "I", "J", "K"].map((c) => ({
+              range: `${c}2:${c}1000`,
+              format: ExcellentExport.formats.NUMBER,
+            })),
+          },
+        ],
+      );
+    });
+   
   };
 
   return (

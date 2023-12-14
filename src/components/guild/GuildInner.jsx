@@ -1,13 +1,13 @@
 import SipTag from "../sipTag";
 import GuildMember from "../../pages/guild/info/member";
 import {MdPreview} from "md-editor-rt";
-import {GUILD_ACTIONS, useGuildContext} from "../../pages/guild/info/provider";
 import {useEffect, useState} from "react";
 import store from "../../store";
 import {saveLoading} from "../../store/reducer";
 import {getGuildById} from "../../api/guild";
 import styled from "styled-components";
 import {t} from "i18next";
+import DefaultLogo from "assets/Imgs/defaultLogo.png";
 
 const FlexBox = styled.div`
   display: flex;
@@ -96,7 +96,7 @@ export default function GuildInner({id}){
 
     return    <>
         <FlexBox>
-            <ImgBlock>{data?.logo && <img src={data?.logo} alt="" />}</ImgBlock>
+            <ImgBlock><img src={data?.logo || DefaultLogo} alt="" /></ImgBlock>
             <TitleBox>{data?.name}</TitleBox>
         </FlexBox>
 

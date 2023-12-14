@@ -12,7 +12,7 @@ import {getNonce, login} from "../../api/user";
 import {ethers} from "ethers";
 import {createSiweMessage} from "../../utils/publicJs";
 import AppConfig from "../../AppConfig";
-import {useNavigate} from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import ReactGA from "react-ga4";
 import usePushPermission from "hooks/usePushPermission";
 import JoyidImg from "../../assets/Imgs/joyid.png";
@@ -31,13 +31,18 @@ export default function Joyid(){
     const [msg,setMsg] = useState();
     const [result,setResult] = useState(null);
     const handlePermission = usePushPermission();
+    const [search] = useSearchParams();
+    const action = search.get("action");
+
     useEffect(() => {
         const redirectHome = () => {
-            const _address = localStorage.getItem("joyid-address");
-            if (_address) {
-                setAccount(_address);
-                return;
-            }
+            if (action !== "connect") {
+                const _address = localStorage.getItem("joyid-address");
+                if (_address) {
+                  setAccount(_address);
+                  return;
+                }
+            } 
             let state;
             try {
                 state = connectCallback();
@@ -65,7 +70,9 @@ export default function Joyid(){
             }
         };
         redirectHome();
-        redirectSignMessage();
+        if (action === "sign-message") {
+            redirectSignMessage();
+        }
     }, []);
 
     const buildRedirectUrl = (action) => {
@@ -103,8 +110,12 @@ export default function Joyid(){
 
             const url = buildRedirectUrl("sign-message");
             signMessageWithRedirect(url, siweMessage, account, {
-              joyidAppURL: `${CONFIG.JOY_ID_URL}/?prefer=login`,
+              joyidAppURL: `${CONFIG.JOY_ID_URL}`,
               state: msg,
+              network: {
+                chainId: CONFIG.NETWORK.chainId,
+                name: CONFIG.NETWORK.name,
+              },
             });
         }catch (e){
             console.error("onSignMessageRedirect",e)
@@ -119,7 +130,6 @@ export default function Joyid(){
             const url = buildRedirectUrl("connect");
             connectWithRedirect(url, {
               joyidAppURL: `${CONFIG.JOY_ID_URL}/?prefer=login`,
-              rpcURL: CONFIG.NETWORK.rpc,
               network: {
                 chainId: CONFIG.NETWORK.chainId,
                 name: CONFIG.NETWORK.name,
@@ -166,8 +176,9 @@ export default function Joyid(){
     }
 
     useEffect(()=>{
-        if(!result)return;
-        navigate('/home');
+        if (!result) return;
+        const toSNS = localStorage.getItem(`==sns==`) === "1";
+        navigate(toSNS ? '/sns/register' : '/home');
 
     },[result])
 

@@ -1,7 +1,6 @@
 import React from "react";
 import Calendar from "@ericz1803/react-google-calendar";
-import { css } from "@emotion/react";
-import styled from 'styled-components';
+import styled, { css } from "styled-components";
 
 const Box = styled.div`
   background: #fff;
@@ -9,7 +8,7 @@ const Box = styled.div`
   height: 100vh;
   overflow: hidden;
     .calendar-title{
-        font-family: 'Jost-ExtraBold';
+        font-family: 'Poppins-SemiBold';
     }
   .innerDay{
     height: 100%;

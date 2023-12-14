@@ -26,3 +26,7 @@ export const getRandomCode = () => {
   }
   return str;
 };
+
+export const isInPWA = () => {
+  return window.navigator?.standalone === true || !!window.matchMedia("(display-mode: standalone)").matches;
+}

@@ -1,7 +1,6 @@
 import { useSendTransaction } from "wagmi";
 import { useSelector } from "react-redux";
 import { Wallet } from "utils/constant";
-import { builtin } from "@seedao/sns-js";
 import { sendTransactionWithRedirect } from "@joyid/evm";
 import getConfig from "constant/envCofnig";
 import { uniWallet } from "components/login/unipassPopup";
@@ -11,6 +10,7 @@ const CONFIG = getConfig();
 export default function useTransaction(action) {
   const account = useSelector((state) => state.account);
   const wallet = useSelector((state) => state.walletType);
+  const rpc = useSelector((state) => state.rpc);
 
   const { sendTransactionAsync } = useSendTransaction();
 
@@ -23,22 +23,22 @@ export default function useTransaction(action) {
     const url = buildRedirectUrl();
     sendTransactionWithRedirect(url, params, account, {
       joyidAppURL: `${CONFIG.JOY_ID_URL}`,
-      rpcURL: CONFIG.NETWORK.rpc,
+      rpcURL: rpc || CONFIG.NETWORK.rpcs[0],
       network: {
-        chainId: CONFIG.NETWORK.chainId,
         name: CONFIG.NETWORK.name,
-      },
+        chainId: CONFIG.NETWORK.chainId,
+      }
     });
   };
 
-  const handleTransaction = (data, secret, sns) => {
+  const handleTransaction = (contractAddress, data, secret, sns) => {
     const params = {
-      to: builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR,
+      to: contractAddress,
       from: account,
       value: "0",
       data,
     };
-    console.log("wallet:", wallet);
+    console.log("use wallet:", wallet);
     if (wallet === Wallet.METAMASK) {
       return sendTransactionAsync(params);
     } else if (wallet === Wallet.JOYID) {
@@ -47,5 +47,5 @@ export default function useTransaction(action) {
       return uniWallet.sendTransaction(params);
     }
   };
-  return handleTransaction;
+  return { handleTransaction };
 }

@@ -6,27 +6,49 @@ import { ACTIONS, useSNSContext } from "./snsProvider";
 import { builtin } from "@seedao/sns-js";
 import useToast from "hooks/useToast";
 import { ethers } from "ethers";
-import { sendTransaction } from "@joyid/evm";
-import { SELECT_WALLET, Wallet } from "utils/constant";
-import ABI from "assets/abi/snsRegister.json";
+import ABI from "assets/abi/SeeDAOMinter.json";
 import { useSelector } from "react-redux";
-import getConfig from "constant/envCofnig";
 import useTransaction from "hooks/useTransaction";
+import getConfig from "constant/envCofnig";
+import { erc20ABI } from "wagmi";
+import CancelModal from "./cancelModal";
 
 const networkConfig = getConfig().NETWORK;
+const PAY_TOKEN = networkConfig.tokens[0];
+const PAY_NUMBER = PAY_TOKEN.price;
 
-const buildRegisterData = (sns, resolveAddress, secret) => {
+const buildApproveData = () => {
+  const iface = new ethers.utils.Interface(erc20ABI);
+  return iface.encodeFunctionData("approve", [
+    builtin.SEEDAO_MINTER_ADDR,
+    ethers.utils.parseUnits(String(PAY_NUMBER), PAY_TOKEN.decimals),
+  ]);
+};
+
+const buildRegisterData = (sns, secret) => {
   const iface = new ethers.utils.Interface(ABI);
-  return iface.encodeFunctionData("register", [sns, resolveAddress, secret]);
+  return iface.encodeFunctionData("register", [sns, builtin.PUBLIC_RESOLVER_ADDR, secret, PAY_TOKEN.address]);
+};
+
+const buildWhiteListRegisterData = (sns, resolveAddress, secret, proof) => {
+  const iface = new ethers.utils.Interface(ABI);
+  return iface.encodeFunctionData("registerWithWhitelist", [
+    sns,
+    resolveAddress,
+    secret,
+    networkConfig.whitelistId,
+    proof,
+  ]);
 };
 
 export default function RegisterSNSStep2() {
   const { t } = useTranslation();
 
   const account = useSelector((state) => state.account);
+  const rpc = useSelector((state) => state.rpc);
 
   const {
-    state: { localData, sns },
+    state: { localData, sns, userProof, hadMintByWhitelist },
     dispatch: dispatchSNS,
   } = useSNSContext();
   const { toast } = useToast();
@@ -34,8 +56,9 @@ export default function RegisterSNSStep2() {
   const startTimeRef = useRef(0);
   const [leftTime, setLeftTime] = useState(0);
   const [secret, setSecret] = useState("");
+  const [showCancelModal, setShowCancelModal] = useState(false);
 
-  const sendTransaction = useTransaction("sns-register");
+  const { handleTransaction } = useTransaction("sns-register");
 
   useEffect(() => {
     const parseLocalData = () => {
@@ -71,22 +94,72 @@ export default function RegisterSNSStep2() {
 
   const progress = (leftTime / 60) * 100;
 
-  const handleRegister = async () => {
-    if (!account) {
-      return;
-    }
+  const handleContinueMint = async () => {
     try {
-      console.log(sns, account, builtin.PUBLIC_RESOLVER_ADDR, secret);
-      const tx = await sendTransaction(
-        buildRegisterData(sns, builtin.PUBLIC_RESOLVER_ADDR, ethers.utils.formatBytes32String(secret)),
+      dispatchSNS({ type: ACTIONS.SHOW_LOADING });
+      const tx = await handleTransaction(
+        builtin.SEEDAO_MINTER_ADDR,
+        buildRegisterData(sns, ethers.utils.formatBytes32String(secret)),
       );
-      const hash = (tx && tx.hash) || tx
+      const hash = (tx && tx.hash) || tx;
       if (hash) {
         const d = { ...localData };
         d[account].registerHash = hash;
         d[account].step = "register";
         d[account].stepStatus = "pending";
         dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(d) });
+      }
+    } catch (error) {
+      dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
+    }
+  };
+
+  const handleRegister = async () => {
+    if (!account) {
+      return;
+    }
+    dispatchSNS({ type: ACTIONS.SHOW_LOADING });
+    try {
+      let tx;
+      if (userProof && !hadMintByWhitelist) {
+        // whitelist
+        tx = await handleTransaction(
+          builtin.SEEDAO_MINTER_ADDR,
+          buildWhiteListRegisterData(
+            sns,
+            builtin.PUBLIC_RESOLVER_ADDR,
+            ethers.utils.formatBytes32String(secret),
+            userProof,
+          ),
+        );
+        const hash = (tx && tx.hash) || tx;
+        if (hash) {
+          const d = { ...localData };
+          d[account].registerHash = hash;
+          d[account].step = "register";
+          d[account].stepStatus = "pending";
+          dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(d) });
+        }
+      } else {
+        // approve
+        const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
+        const tokenContract = new ethers.Contract(PAY_TOKEN.address, erc20ABI, provider);
+        // check approve balance
+        const approve_balance = await tokenContract.allowance(account, builtin.SEEDAO_MINTER_ADDR);
+        const not_enough = approve_balance.lt(ethers.utils.parseUnits(String(PAY_NUMBER), PAY_TOKEN.decimals));
+        if (not_enough) {
+          tx = await handleTransaction(PAY_TOKEN.address, buildApproveData(), "approving");
+          const hash = (tx && tx.hash) || tx;
+          if (hash) {
+            const d = { ...localData };
+            d[account].registerHash = hash;
+            d[account].step = "register";
+            d[account].stepStatus = "approving";
+            dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(d) });
+          }
+        } else {
+          handleContinueMint();
+        }
       }
     } catch (error) {
       dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
@@ -97,32 +170,48 @@ export default function RegisterSNSStep2() {
   };
 
   useEffect(() => {
-    if (!account || !localData) {
+    if (!account || !localData || !rpc || !secret) {
       return;
     }
     const hash = localData[account]?.registerHash;
-    console.log(localData[account], hash);
     if (!hash || localData[account]?.stepStatus === "failed") {
       return;
     }
     let timer;
+    let hasResult = false;
     const timerFunc = () => {
       if (!account || !localData) {
         return;
       }
-      console.log(localData, account);
-      const provider = new ethers.providers.StaticJsonRpcProvider(networkConfig.rpc);
+      const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
       provider.getTransactionReceipt(hash).then((r) => {
-        console.log("r:", r);
-        const _d = { ...localData };
-        if (r && r.status === 1) {
-          // means tx success
-          _d[account].stepStatus = "success";
-          dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(_d) });
-          dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
+        console.log("check tx status:", r);
+        if (hasResult) {
           clearInterval(timer);
-        } else if (r && r.status === 2) {
+          return;
+        }
+        const _d = { ...localData };
+        if (_d[account].stepStatus === "approve_success") {
+          clearInterval(timer);
+          return;
+        }
+        if (r && r.status === 1) {
+          hasResult = true;
+          // means tx success
+          if (_d[account].stepStatus === "approving") {
+            _d[account].stepStatus = "approve_success";
+            dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(_d) });
+            clearInterval(timer);
+            handleContinueMint();
+          } else {
+            _d[account].stepStatus = "success";
+            dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
+            dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(_d) });
+            clearInterval(timer);
+          }
+        } else if (r && (r.status === 2 || r.status === 0)) {
           // means tx failed
+          hasResult = true;
           _d[account].stepStatus = "failed";
           dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(_d) });
           dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
@@ -130,9 +219,17 @@ export default function RegisterSNSStep2() {
         }
       });
     };
-    timer = setInterval(timerFunc, 1000);
+    timerFunc();
+    timer = setInterval(timerFunc, 2000);
     return () => timer && clearInterval(timer);
-  }, [localData, account]);
+  }, [localData, account, rpc, secret]);
+
+  const handleCancel = () => {
+    setShowCancelModal(false);
+    localStorage.removeItem("sns");
+    dispatchSNS({ type: ACTIONS.SET_STEP, payload: 1 });
+    dispatchSNS({ type: ACTIONS.SET_LOCAL_DATA, payload: undefined });
+  };
 
   return (
     <Container>
@@ -150,7 +247,9 @@ export default function RegisterSNSStep2() {
         <FinishButton onClick={handleRegister} disabled={!!leftTime}>
           {t("SNS.Finish")}
         </FinishButton>
+        <CancelButton onClick={() => setShowCancelModal(true)}>{t("SNS.CancelRegister")}</CancelButton>
       </ContainerWrapper>
+      {showCancelModal && <CancelModal handleClose={() => setShowCancelModal(false)} handleCancel={handleCancel} />}
     </Container>
   );
 }
@@ -194,7 +293,7 @@ const CircleBox = styled.div`
   position: relative;
   .number {
     font-size: 44px;
-    font-family: "Poppins-Bold";
+    font-family: "Poppins-SemiBold";
     font-weight: bold;
     color: ${(props) => props.color};
     position: absolute;
@@ -230,4 +329,14 @@ const FinishButton = styled.button`
     border-color: transparent;
     opacity: 0.4;
   }
+`;
+
+const CancelButton = styled.span`
+  text-align: center;
+  display: block;
+  margin: 16px auto;
+  font-size: 12px;
+  cursor: pointer;
+  min-width: 100px;
+  max-width: 200px;
 `;

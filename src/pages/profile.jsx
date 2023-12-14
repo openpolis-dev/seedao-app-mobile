@@ -19,6 +19,8 @@ import MirrorImg from "../assets/Imgs/social/mirror.svg";
 import GithubImg from "../assets/Imgs/social/github.svg"
 import {useDisconnect} from "wagmi";
 import { clearStorage } from "utils/auth";
+import getConfig from "constant/envCofnig";
+import VersionBox from "components/version";
 
 const Box = styled.div`
   padding: 20px;
@@ -63,10 +65,6 @@ const LineBox = styled.div`
     margin-left: 20px;
     text-align: right;
   }
-`;
-const RhtBox = styled.div`
-  font-size: 20px;
-  padding-top: 7px;
 `;
 
 const AvatarBox = styled.div`
@@ -155,10 +153,10 @@ const LevelBox = styled.div`
   text-transform: uppercase;
   padding-right: 10px;
   font-size: 12px;
-  font-family: Poppins-ExtraBold;
+  font-family: Poppins-SemiBold;
   font-weight: normal;
   font-style: italic;
-`
+`;
 
 const SCRBox = styled.div`
   font-size: 12px;
@@ -317,9 +315,9 @@ export default function Profile() {
   const walletType = useSelector((state) => state.walletType);
 
   const [roles, setRoles] = useState([]);
-  const [discord, setDiscord] = useState('');
+  // const [discord, setDiscord] = useState('');
   const [twitter, setTwitter] = useState('');
-  const [wechat, setWechat] = useState('');
+  // const [wechat, setWechat] = useState('');
   const [mirror, setMirror] = useState('');
   const [github, setGithub] = useState('');
   const [seed, setSeed] = useState([]);
@@ -370,8 +368,8 @@ export default function Profile() {
         mapArr.set(item.network, item.identity);
       });
       setTwitter(mapArr.get('twitter') ?? '');
-      setDiscord(mapArr.get('discord') ?? '');
-      setWechat(mapArr.get('wechat') ?? '');
+      // setDiscord(mapArr.get('discord') ?? '');
+      // setWechat(mapArr.get('wechat') ?? '');
       setMirror(mapArr.get('mirror') ?? '');
       setGithub(mapArr.get('github') ?? '');
       setSeed(rt.data.seed || []);
@@ -429,10 +427,6 @@ export default function Profile() {
       return "0";
     }
     return Number(amount).toLocaleString("en-US");
-  }
-
-  const backTop = () =>{
-    navigate(-1)
   }
 
   const switchRoles = (role) => {
@@ -560,7 +554,7 @@ export default function Profile() {
               <div className="lft">
                 <LevelBox>LV {detail?.level?.current_lv}</LevelBox>
                 <SCRBox>
-                  {t("My.current")}{" "}{detail?.scr?.amount} SCR
+                  {t("My.current")} {detail?.scr?.amount} SCR
                 </SCRBox>
               </div>
               <div className="rht">
@@ -661,6 +655,7 @@ export default function Profile() {
         <ButtonBox>
           <button onClick={() => logout()}>{t("My.logout")}</button>
         </ButtonBox>
+        <VersionBox />
       </Layout>
     </OuterBox>
   );
