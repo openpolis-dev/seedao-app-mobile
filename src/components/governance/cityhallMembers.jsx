@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import UserModal from "components/userModal";
 import Avatar from "components/common/avatar";
 import { formatAddress } from "utils/address";
+import useCurrentSeason from "hooks/useCurrentSeason";
 
 const MemberAvatar = ({ user, onSelect }) => {
   const reFormat = () =>{
@@ -50,8 +51,9 @@ const GroupItem = ({ name, members }) => {
 
 export default function CityhallMembers() {
   const { t } = useTranslation();
-  const [cityhallMembers, setCityhallMembers] = useState({});
+  const currentSeason = useCurrentSeason();
 
+  const [cityhallMembers, setCityhallMembers] = useState({});
   const [userMap, setUserMap] = useState({});
   const snsMap = useSelector((state) => state.snsMap);
 
@@ -114,7 +116,7 @@ export default function CityhallMembers() {
   }, []);
   return (
     <>
-      <CityhallTitle>{t("Governance.Cityhall", { season: "S4" })}</CityhallTitle>
+      <CityhallTitle>{t("Governance.Cityhall", { season: currentSeason })}</CityhallTitle>
       <GroupItem name={t("Governance.CityhallGovernance")} members={govMembers} />
       <GroupItem name={t("Governance.CityhallBranding")} members={brandMembers} />
       <GroupItem name={t("Governance.CityhallTech")} members={techMembers} />

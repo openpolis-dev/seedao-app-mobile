@@ -8,3 +8,7 @@ export const getCityHallDetail = () => {
 export const getGovernanceNodeResult = () => {
   return request.get("data_srv/aggr_scr");
 };
+
+export const getCurrentSeason = () => { 
+  return request.get(`/seasons/current`); 
+}

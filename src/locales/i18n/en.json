@@ -256,7 +256,7 @@
     "Switch": "Switch",
     "MySNS": "My SNS",
     "Switching": "Switching",
-    "HadSNS": "Your SNS reached the limit",
+    "HadSNS": "Your SNS has reached the limit",
     "CancelRegister": "Cancel registration",
     "CancelTip": "Cancel means you'll start to register from step one"
   }
