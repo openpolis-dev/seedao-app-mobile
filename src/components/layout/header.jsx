@@ -1,43 +1,75 @@
 import styled from "styled-components";
-import {ChevronLeft} from "react-bootstrap-icons";
-import {Row,Col} from "react-bootstrap";
 import Loading from "./loading";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import BackSVG from "components/svgs/back";
+import DetailModal from "../detailModal";
 
-
+const Back = styled.div`
+  position: absolute;
+  left: 20px;
+  top: calc(7px + env(safe-area-inset-top));
+`;
+const HeaderBox = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 47px;
+  line-height: 47px;
+  color: ${(props) => props.$headColor || "var(--font-color)"};
+`;
 const Box = styled.div`
-    position: fixed;
+  position: fixed;
   left: 0;
   top: 0;
+  height: calc(47px + env(safe-area-inset-top));
   z-index: 9;
-  background: #fff;
+  background: ${(props) => props.$bgColor || "var(--background-color-1)"};
   box-sizing: border-box;
- width: 100vw;
-  padding: 10px;
-`
+  width: 100vw;
+  padding-inline: 20px;
+  padding-top: env(safe-area-inset-top);
+`;
 
-const Rht = styled(Col)`
-  text-align: right;
-`
+const Mid = styled.div`
+  position: relative;
+  font-family: "Poppins-SemiBold";
+  font-size: 17px;
+  font-weight: 600;
+`;
+const LoadingBox = styled.div`
+  position: absolute;
+  right: -24px;
+  top: 3px;
+`;
+const OperateBox = styled.div`
+  position: absolute;
+  right: 20px;
+  top: env(safe-area-inset-top);
+  padding-top: 10px;
+`;
+export default function Header({ title, bgColor, headColor, rightOperation, handleBack }) {
+  const navigate = useNavigate();
 
-const Mid = styled(Col)`
-    text-align: center;
-`
-export default function Header({title}){
-    const navigate = useNavigate();
+  const backTop = () => {
+    handleBack ? handleBack() : navigate(-1);
+  };
 
-    const backTop = () =>{
-        navigate(-1)
-    }
-
-    return <Box>
-        <Row>
-            <Col xs={2} onClick={()=>backTop()}><ChevronLeft /></Col>
-            <Mid xs={8}>{title}</Mid>
-            <Rht xs={2}>
-                <Loading/>
-            </Rht>
-        </Row>
+  return (
+    <Box $bgColor={bgColor}>
+      <Back onClick={() => backTop()}>
+        <BackSVG color={headColor} />
+      </Back>
+        <DetailModal />
+      <HeaderBox $headColor={headColor}>
+        <Mid>
+          <span>{title}</span>
+          <LoadingBox>
+            <Loading />
+          </LoadingBox>
+        </Mid>
+      </HeaderBox>
+      <OperateBox>{rightOperation}</OperateBox>
     </Box>
+  );
 }
-

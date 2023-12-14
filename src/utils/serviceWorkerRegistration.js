@@ -1,25 +1,11 @@
-// This optional code is used to register a service worker.
-// register() is not called by default.
+import runOneSignal from "utils/onesignal";
 
-// This lets the app load faster on subsequent visits in production, and gives
-// it offline capabilities. However, it also means that developers (and users)
-// will only see deployed updates on subsequent visits to a page, after all the
-// existing tabs open on the page have been closed, since previously cached
-// resources are updated in the background.
-
-// To learn more about the benefits of this model and instructions on how to
-// opt-in, read https://cra.link/PWA
-// import sw from "../public/service-worker";
-
-const version = "v1";
+const version = "v1.0.4";
 
 export function register(config) {
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      registerValidSW("./sw.js", config);
-      navigator.serviceWorker.addEventListener("message", (event) => {
-        console.log("-----listen-----", event.data);
-      });
+    window.addEventListener("load", async () => {
+      runOneSignal();
     });
   }
 }
@@ -51,7 +37,7 @@ function registerValidSW(swUrl, config) {
               );
 
               // Execute callback
-              if (config && config.onUpdate) {
+              if (config?.onUpdate) {
                 config.onUpdate(registration);
               }
             } else {
@@ -59,9 +45,8 @@ function registerValidSW(swUrl, config) {
               // It's the perfect time to display a
               // "Content is cached for offline use." message.
               console.log("Content is cached for offline use.");
-
               // Execute callback
-              if (config && config.onSuccess) {
+              if (config?.onSuccess) {
                 config.onSuccess(registration);
               }
             }
@@ -74,14 +59,18 @@ function registerValidSW(swUrl, config) {
     });
 }
 
-export function unregister() {
+export async function unregister(callback) {
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.ready
-      .then((registration) => {
-        registration.unregister();
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
+    navigator.serviceWorker.getRegistrations().then(async function (registrations) {
+      for (let registration of registrations) {
+        console.log("registration:", registration, registration.active?.scriptURL);
+        if (registration.active?.scriptURL.includes("sw.js")) {
+          console.log(">> start to remove old service worker");
+          await registration.unregister();
+          console.log(">> removed old service worker");
+        }
+      }
+      callback && callback();
+    });
   }
 }

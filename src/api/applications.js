@@ -5,6 +5,10 @@ const PATH_PREFIX = '/applications/';
 export const getApplicationById = application_id => {
   return request.get(`${PATH_PREFIX}${application_id}`);
 };
+
+export const getApplications = (data, queryData) => {
+  return request.get(`${PATH_PREFIX}`, { ...data, ...queryData, type: "new_reward" });
+};
 export const getProjectApplications = data => {
   return request.get(`${PATH_PREFIX}`, data);
 };
@@ -74,4 +78,8 @@ export const processApplications = data => {
 // applicants
 export const getApplicants = data => {
   return request.get('/apps_applicants', data);
+};
+
+export const getSeasons = () => {
+  return request.get(`/seasons/`);
 };

@@ -1,33 +1,47 @@
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import styled, { css } from "styled-components";
-import CopyIcon from "assets/images/copy.svg";
+import CopyIcon from "assets/Imgs/copy.svg";
 
-const CopyBox = ({ children, text, dir }) => {
+const CopyBox = ({ children, text, dir, ...props }) => {
   const { t } = useTranslation();
   const [isCopied, setIsCopied] = useState(false);
 
-  const handleCopy = (text, result) => {
-    if (result) {
+  const handleCopy = async(text) => {
+    try {
+       // await navigator.clipboard.writeText(text);
+
+      const input = document.createElement('input')
+      document.body.appendChild(input)
+      input.setAttribute('value', text)
+      input.select()
+      if (document.execCommand('copy')) {
+        document.execCommand('copy')
+      }
+      document.body.removeChild(input)
+
+
       setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);
       }, 1000);
+
+    } catch (error) {
+
+      console.error('Failed to copy text: ', error);
     }
   };
 
   return (
     <>
-      <CopyToClipboard text={text} onCopy={handleCopy}>
-        <CopyContent className="copy-content" dir={dir || "right"}>
+      <div onClick={()=>handleCopy(text)}>
+        <CopyContent className="copy-content" dir={dir || "right"} {...props}>
           {children || <img src={CopyIcon} className="copy-icon" alt="" />}
-          {/* {isCopied && <span className="tooltip-content">{t("mobile.copied")}</span>} */}
         </CopyContent>
-      </CopyToClipboard>
+      </div>
       {isCopied && (
         <TipsBox>
-          <InnerBox>{t("mobile.copied")}</InnerBox>
+          <InnerBox>{t("General.Copied")}</InnerBox>
         </TipsBox>
       )}
     </>
@@ -79,7 +93,6 @@ const CopyContent = styled.div`
 `;
 
 const TipsBox = styled.div`
-  background: rgba(0, 0, 0, 0.2);
   width: 100vw;
   height: 100vh;
   left: 0;
@@ -91,8 +104,11 @@ const TipsBox = styled.div`
   justify-content: center;
 `;
 
-const InnerBox = styled.div`
-  background: #fff;
+const InnerBox = styled.span`
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.75);
   padding: 10px 20px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
+  color: #fff;
+  font-size: 14px;
+  border-radius: 4px;
 `;

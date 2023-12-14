@@ -16,21 +16,30 @@ export default function Tab({ data, onChangeTab, value, ...rest }) {
 }
 
 const TabMenu = styled.div`
-  width: 100%;
-  overflow-x: auto;
-  height: 40px;
-  line-height: 40px;
+  height: 34px;
+  line-height: 34px;
   color: var(--bs-primary);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+
   ul {
     display: flex;
-    height: 40px;
+    height: 34px;
+    background: #eeeef4;
+    border-radius: 8px;
+    overflow: hidden;
   }
   li {
-    padding-inline: 20px;
+    width: 126px;
     white-space: nowrap;
     text-align: center;
+    font-size: 15px;
     &.selected {
-      border-bottom: 3px solid var(--bs-primary);
+      background: var(--primary-color);
+      color: #fff;
     }
   }
 `;

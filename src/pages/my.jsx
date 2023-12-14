@@ -1,7 +1,6 @@
 import Layout from "../components/layout/layout";
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
-import {ChevronRight} from "react-bootstrap-icons"
 import {useTranslation} from "react-i18next";
 
 const Box = styled.div`
@@ -31,19 +30,28 @@ export default function My(){
                 <div>
                     {t('My.MyProfile')}
                 </div>
-                <ChevronRight />
+                {/* <ChevronRight /> */}
             </Item>
-            <Item onClick={()=>toGo('/user/value')}>
+            <Item onClick={()=>toGo('/user/vault')}>
                 <div>
                     {t('My.MyAccount')}
                 </div>
-                <ChevronRight />
+                {/* <ChevronRight /> */}
             </Item>
+            <a href="https://seedao.canny.io/" target="_blank" >
+            <Item>
+
+                <div>
+                    {t('mobile.my.feedback')}
+                </div>
+                {/* <ChevronRight /> */}
+            </Item>
+            </a>
             <Item onClick={()=>toGo('/setting')}>
                 <div>
                     {t('mobile.my.setting')}
                 </div>
-                <ChevronRight />
+                {/* <ChevronRight /> */}
             </Item>
 
 

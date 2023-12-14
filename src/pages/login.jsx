@@ -1,89 +1,117 @@
 import Layout from "components/layout/layout";
-import LogoImg from "../assets/images/logo.png";
+import LogoImg from "../assets/Imgs/loginLogo.png";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import { Button } from "react-bootstrap";
 import Metamask from "../components/login/metamask";
-import { useNavigate } from "react-router-dom";
-import Loading from "../components/layout/loading";
 import Joyid from "../components/login/joyid";
-import Unipass from "../components/login/unipass";
+import Unipass from "../components/login/unipassPopup";
+import VersionBox from "components/version";
 
 const Box = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   width: 100%;
-  height: 100%;
+  height: var(--app-height);
+  box-sizing: border-box;
+  position: relative;
 `;
 
 const LogoBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 40px;
+  padding-top: 11vh;
   img {
-    width: 50%;
+    //width: 70%;
+    height: 29vh;
     margin: 0 auto;
   }
 `;
 
 const Tips = styled.div`
-  font-size: 14px;
+  font-size: 24px;
+  font-family: 'Poppins-SemiBold';
+  margin: 10% 24px 5%;
 `;
 const BtnList = styled.ul`
-  margin-top: 10px;
+  margin: 0 24px;
   li {
     margin-bottom: 20px;
-  }
-  .btn {
-    border-radius: 30px;
-    width: 200px;
-    height: 36px;
-    font-size: 14px;
+    background: #f7f7f9;
+    border-radius: 16px;
+    padding: 1vh 10px;
+
+    dl {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px;
+    }
+    .logo {
+      margin-right: 12px;
+      background: #fff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      width: 56px;
+      height: 56px;
+      img {
+        //width: 56px;
+        width: 100%;
+      }
+      &.metamask {
+        img {
+          height: 4vh;
+          //width: 42px;
+          
+        }
+      }
+    }
+    dt {
+      display: flex;
+      align-items: center;
+      span {
+        font-size: 15px;
+        font-family: Poppins-SemiBold;
+        font-weight: 600;
+        line-height: 22px;
+      }
+    }
   }
 `;
 
-const FlexBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-  min-height: 40px;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-`;
 
 export default function Login() {
   const { t } = useTranslation();
 
   return (
     <Layout noHeader noTab>
-      <FlexBox>
-        <div />
-        <Loading />
-      </FlexBox>
-
       <Box>
         <LogoBox>
           <img src={LogoImg} alt="" />
         </LogoBox>
-        <Tips>{t("mobile.my.connect")}</Tips>
+        <Tips>
+          {t("General.connect")}
+          <HideVersionBox isShort />
+        </Tips>
         <BtnList>
           <li>
             <Metamask />
           </li>
-          <li>
-            <Unipass />
-          </li>
+
           <li>
             <Joyid />
+          </li>
+          <li>
+            <Unipass />
           </li>
         </BtnList>
       </Box>
     </Layout>
   );
 }
+
+const HideVersionBox = styled(VersionBox)`
+  color: #fff;
+  display: inline;
+`;

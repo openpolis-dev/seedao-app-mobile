@@ -1,13 +1,19 @@
 import { createGlobalStyle } from "styled-components";
 import "../assets/styles/font.css";
+import "../assets/styles/custom_variable.scss";
 
 const GlobalStyle = createGlobalStyle`
   body,html{
-    background: #f0f3f8;
-    color: #000;
+    color: var(--font-color);
     padding: 0;
     margin: 0;
-    //font-size: 14px;
+    overscroll-behavior: none;
+  }
+  body.over-hidden {
+    overflow: hidden;
+  }
+  #root {
+    height: var(--app-height);
   }
   dl,dt,ul,li{
     padding: 0;
@@ -18,7 +24,7 @@ const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
   * {
-    font-family: "Inter-Regular",-apple-system,BlinkMacSystemFont,
+    font-family: "Poppins-Regular",-apple-system,BlinkMacSystemFont,
     "Segoe UI",Roboto,"Helvetica Neue",
     Arial,sans-serif,"Apple Color Emoji",
     "Segoe UI Emoji","Segoe UI Symbol" ;
@@ -28,10 +34,17 @@ const GlobalStyle = createGlobalStyle`
     width: 0;
     height: 0;
   }
+    &:focus{
+      outline: none;
+    }
+    &:focus-visible{
+      outline: none!important;
+    }
   }
   a{
     text-decoration: none;
     color: #000;
+  
   }
   .btn-primary{
     color:#fff;
@@ -43,6 +56,14 @@ const GlobalStyle = createGlobalStyle`
       border-color: transparent;
       color: rgba(143, 155, 179, 0.48);
     }
+  }
+
+  .md-editor-preview-wrapper {
+    padding: 0;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
   }
 `;
 

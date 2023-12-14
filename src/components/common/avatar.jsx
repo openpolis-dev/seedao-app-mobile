@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import DefaultAvatarIcon from "assets/images/user/avatar.svg";
 import { useEffect, useState } from "react";
+import DefaultAvatarIcon from "assets/Imgs/avatar.svg";
 
 export default function Avatar({ src, size, ...rest }) {
   const [imgSrc, setImgSrc] = useState(DefaultAvatarIcon);
@@ -23,5 +23,8 @@ const AvatarStyle = styled.div`
   overflow: hidden;
   img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 `;

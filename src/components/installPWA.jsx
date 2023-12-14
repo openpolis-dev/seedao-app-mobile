@@ -1,32 +1,28 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { isAndroid, isIOS, isMobile } from "utils/userAgent";
-import AppIcon from "assets/images/app.png";
-import ShareIcon from "assets/images/install/share.svg";
-import AddIcon from "assets/images/install/add.svg";
+import AppIcon from "assets/Imgs/install/app.png";
+import ShareIcon from "assets/Imgs/install/share.svg";
+import AddIcon from "assets/Imgs/install/add.svg";
 import { useTranslation } from "react-i18next";
+import CloseImg from "../assets/Imgs/close-circle.svg";
+import { isInPWA } from "utils";
 
 console.log("[isAndroid]:", isAndroid);
 console.log("[isiOS]:", isIOS);
 
 export default function InstallCheck() {
   const { t } = useTranslation();
-  const [isInstalled, setIsInstalled] = useState(true);
-
-  useEffect(() => {
-    if (window.navigator?.standalone === true || window.matchMedia("(display-mode: standalone)").matches) {
-      console.log("isInstalled: true. Already in standalone mode");
-      setIsInstalled(true);
-    } else {
-      console.log("isInstalled: false");
-      setIsInstalled(false);
-    }
-  }, []);
+  const [isInstalled] = useState(isInPWA());
+  const [show, setShow] = useState(true);
+  const [canInstall, setCanInstall] = useState(false);
+ 
   const deferredPrompt = useRef();
 
   const handleBeforeInstallPromptEvent = (event) => {
     event.preventDefault();
     deferredPrompt.current = event;
+    setCanInstall(true);
   };
 
   useEffect(() => {
@@ -35,6 +31,17 @@ export default function InstallCheck() {
       window.removeEventListener("beforeinstallprompt", handleBeforeInstallPromptEvent);
     };
   }, []);
+
+  useEffect(() => {
+    const intallTips = sessionStorage.getItem("install-tips");
+    if(intallTips == null) return;
+    setShow(JSON.parse(intallTips))
+  }, []);
+
+  const handleClose = () =>{
+    setShow(false);
+    sessionStorage.setItem("install-tips",false);
+  }
 
   const installApp = async () => {
     const current = deferredPrompt.current;
@@ -58,34 +65,52 @@ export default function InstallCheck() {
   }
   if (isAndroid) {
     return (
-      <AndroidBox>
-        <div className="left">
-          <img src={AppIcon} alt="" />
-          <span>SeeDAO</span>
-        </div>
-        <div>
-          <div className="btn-button" onClick={installApp}>
-            {t("mobile.install.androidInstall")}
-          </div>
-        </div>
-      </AndroidBox>
+      <>
+        {show && canInstall && (
+          <AndroidBox>
+            <div className="left">
+              <img src={AppIcon} alt="" />
+              <span>SeeDAO</span>
+            </div>
+            <div className="lineRht">
+              <div className="btn-cancel" onClick={() => handleClose()}>
+                {t("General.cancel")}
+              </div>
+              <div className="btn-button" onClick={installApp}>
+                {t("Install.AndroidInstall")}
+              </div>
+            </div>
+          </AndroidBox>
+        )}
+      </>
     );
   }
   if (isIOS) {
     return (
-      <IOSBox>
-        <div className="header">{t("mobile.install.iosTitle")}</div>
-        <div className="bottom">
-          <Step>
-            <img src={ShareIcon} alt="" />
-            <span>{t("mobile.install.iosStep1")}</span>
-          </Step>
-          <Step>
-            <img src={AddIcon} alt="" />
-            <span>{t("mobile.install.iosStep2")}</span>
-          </Step>
-        </div>
-      </IOSBox>
+        <>
+          {
+            show && <IOSBox>
+              <div className="header">
+                {t("Install.IosTitle")}
+                <div className="close" onClick={()=>handleClose()}>
+                  <img src={CloseImg} alt=""/>
+                </div>
+              </div>
+              <div className="bottom">
+                <Step>
+                  <img src={ShareIcon} alt="" />
+                  <span>{t("Install.IosStep1")}</span>
+                </Step>
+                <Step>
+                  <img src={AddIcon} alt="" />
+                  <span>{t("Install.IosStep2")}</span>
+                </Step>
+              </div>
+            </IOSBox>
+          }
+
+        </>
+
     );
   }
   return <></>;
@@ -104,17 +129,46 @@ const AndroidBox = styled.div`
   justify-content: space-between;
   padding-inline: 20px;
   align-items: center;
+  box-sizing: border-box;
+  z-index: 99;
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
   img {
     width: 36px;
-    margin-right: 10px;
   }
   .btn-button {
     cursor: pointer;
-    line-height: 36px;
+    line-height: 32px;
     padding-inline: 15px;
     border-radius: 4px;
-    background-color: var(--bs-primary);
+    background-color: var(--primary-color);
     color: #fff;
+    font-size: 14px;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+  }
+  .lineRht {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-cancel {
+    cursor: pointer;
+    line-height: 32px;
+    padding-inline: 15px;
+    border-radius: 4px;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    margin-left: 10px;
+    font-size: 14px;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
   }
 `;
 
@@ -124,6 +178,7 @@ const IOSBox = styled.div`
   width: 100%;
   background-color: rgba(215, 215, 215);
   border-radius: 10px 10px 0 0;
+  z-index: 999;
   .header {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     font-size: 18px;
@@ -131,6 +186,12 @@ const IOSBox = styled.div`
     padding: 13px 16px;
     font-weight: 500;
     font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .close{
+    font-size: 24px;
   }
   .bottom {
     padding-block: 20px;

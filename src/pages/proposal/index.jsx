@@ -1,138 +1,169 @@
 import { useTranslation } from "react-i18next";
 import Layout from "../../components/layout/layout";
 import styled from "styled-components";
-import { ChevronRight } from "react-bootstrap-icons";
-import { useNavigate } from "react-router-dom";
-import { PROPOSAL_CATEGORIES } from "utils/constant";
-import { useState, useEffect } from "react";
-import ProposalSubNav from "components/poposal/proposalSubNav";
-import ProposalCard from "components/poposal/proposalCard";
-import { getAllProposals } from "api/proposal";
-import InfiniteScroll from "react-infinite-scroll-component";
-import MsgIcon from "assets/images/proposal/message.png";
+import { useEffect, useState } from "react";
+import { getCategories } from "api/proposal";
+import MsgIcon from "assets/Imgs/msg.png";
 import store from "store";
 import { saveLoading } from "store/reducer";
-import Loading from "components/common/loading";
+import { useSelector } from "react-redux";
+import { saveProposalCategories } from "store/reducer";
+import { Link } from "react-router-dom";
+import ArrowIcon from "assets/Imgs/arrow_top.svg";
 
 export default function Proposal() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [page, setPage] = useState(0);
-  const [pageSize] = useState(10);
-  const [proposals, setProposals] = useState([]);
-  const [orderType, setOrderType] = useState("latest");
-  const [activeTab, setActiveTab] = useState(0);
-  const [hasMore, setHasMore] = useState(false);
+  const [list, setList] = useState([]);
+  const proposalCategories = useSelector((state) => state.proposalCategories);
 
-  const handleChangeOrder = (index) => {
-    setPage(1);
-    setProposals([]);
-    setOrderType(index === 0 ? "latest" : "old");
+  useEffect(() => {
+    getCategoriesAPi();
+  }, []);
+
+  const getCategoriesAPi = async () => {
+    try {
+      store.dispatch(saveLoading(true));
+      const resp = await getCategories();
+      resp?.data.group.categories.sort((a, b) => b.children.length - a.children.length);
+
+      let arr = resp?.data.group.categories.map((item) => ({ ...item, statusShow: true }));
+      store.dispatch(saveProposalCategories(arr));
+    } catch (error) {
+      console.error("getCategories failed", error);
+    } finally {
+      store.dispatch(saveLoading(false));
+    }
   };
 
-  const getProposals = async (useGlobalLoading) => {
-    useGlobalLoading && store.dispatch(saveLoading(true));
-    try {
-      const resp = await getAllProposals({ page, per_page: pageSize, sort: orderType });
-      setProposals([...proposals, ...resp.data.threads]);
-      setPage(page + 1);
-      setHasMore(resp.data.threads.length >= pageSize);
-    } catch (error) {
-      console.error("getAllProposals failed", error);
-    } finally {
-      useGlobalLoading && store.dispatch(saveLoading(false));
-    }
+  const handleShow = (index) => {
+    let arr = JSON.parse(JSON.stringify(list));
+    console.log(arr[index]);
+    arr[index].statusShow = !arr[index].statusShow;
+    setList(arr);
   };
 
   useEffect(() => {
-    if (activeTab === 1) {
-      getProposals(true);
-    }
-  }, [activeTab, orderType]);
+    setList(proposalCategories.map((item) => ({ ...item, statusShow: true })));
+  }, [proposalCategories]);
+
   return (
-    <Layout title={t("menus.Proposal")} noTab>
-      <TabMenu>
-        <li onClick={() => setActiveTab(0)} className={activeTab === 0 ? "selected" : ""}>
-          {t("Proposal.AllCategories")}
-        </li>
-        <li onClick={() => setActiveTab(1)} className={activeTab === 1 ? "selected" : ""}>
-          {t("Proposal.TheNeweset")}
-        </li>
-      </TabMenu>
+    <Layout title={t("Proposal.Governance")} headBgColor={`var(--background-color)`} bgColor="var(--background-color)">
       <Content>
-        {activeTab === 0 && (
-          <CategoryContent>
-            {PROPOSAL_CATEGORIES[0].children.map((item) => (
-              <li key={item.id} onClick={() => navigate(`/proposal/category/${item.category_id}`)}>
-                <div>
-                  <img src={MsgIcon} alt="" className="msg" />
-                  <span>{item.name}</span>
-                </div>
-                <span>
-                  <ChevronRight />
-                </span>
-              </li>
-            ))}
-          </CategoryContent>
-        )}
-        {activeTab === 1 && (
-          <ProposalListContent>
-            <ProposalSubNav onSelect={handleChangeOrder} value={orderType === "latest" ? 0 : 1} />
-            <InfiniteScroll
-              dataLength={proposals.length}
-              next={getProposals}
-              hasMore={hasMore}
-              loader={<Loading />}
-              height={400}
-              style={{ height: "calc(var(--app-height) - 150px)" }}
-            >
-              <ProposalBox>
-                {proposals.map((proposal) => (
-                  <ProposalCard key={proposal.id} data={proposal} />
+        {list.map((category, index) => (
+          <CategoryCard key={index}>
+            <div className="cate-name" onClick={() => handleShow(index)}>
+              <Link to={`/proposal/category/${category.category_id}`} state={category.name}>
+                {category.name}
+              </Link>
+              {!!category.children.length && (
+                <img src={ArrowIcon} alt="" className={category.statusShow ? "" : "arrowRht"} />
+              )}
+            </div>
+            {!!category.children.length && category.statusShow && (
+              <SubCategoryCard>
+                {category.children.map((subCategory) => (
+                  <Link
+                    to={`/proposal/category/${subCategory.category_id}`}
+                    key={subCategory.category_id}
+                    state={subCategory.name}
+                  >
+                    <SubCategoryItem>
+                      <ImgBox>
+                        <img src={MsgIcon} alt="" width="24px" height="24px" />
+                      </ImgBox>
+
+                      <div>
+                        <div className="name">{subCategory.name}</div>
+                        <div className="tips">
+                          <span>
+                            {subCategory.thread_count} {t("Proposal.Topics")}
+                          </span>
+                        </div>
+                      </div>
+                    </SubCategoryItem>
+                  </Link>
                 ))}
-              </ProposalBox>
-            </InfiniteScroll>
-          </ProposalListContent>
-        )}
+              </SubCategoryCard>
+            )}
+          </CategoryCard>
+        ))}
       </Content>
     </Layout>
   );
 }
 
-const TabMenu = styled.ul`
+const Content = styled.div`
+  padding: 15px 20px 14px;
+  background: var(--background-color);
+`;
+
+const SubCategoryCard = styled.div`
+  border-top: 1px solid var(--border-color-1);
   display: flex;
-  height: 40px;
-  line-height: 40px;
-  li {
-    flex: 1;
-    text-align: center;
-    color: var(--bs-primary);
-    &.selected {
-      border-bottom: 3px solid var(--bs-primary);
-    }
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: stretch;
+  padding: 10px 6px;
+  a {
+    display: block;
+    width: 50%;
   }
 `;
 
-const Content = styled.div``;
+const SubCategoryItem = styled.div`
+  display: flex;
+  align-items: center;
+  padding-block: 8px;
+  cursor: pointer;
+  .name {
+    font-size: 14px;
+    font-family: Poppins-SemiBold;
+    font-weight: 600;
+    color: #424242;
+    line-height: 26px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .tips {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    color: var(--font-light-color);
+  }
+`;
 
-const CategoryContent = styled.ul`
-  li {
-    padding-inline: 20px;
-    background-color: #fff;
+const CategoryCard = styled.div`
+  border-radius: 16px;
+  background: var(--background-color-1);
+  padding-inline: 14px;
+  margin-bottom: 17px;
+  .cate-name {
+    line-height: 44px;
+    font-size: 16px;
+    font-family: Poppins-SemiBold;
+    font-weight: 600;
+    color: #000000;
     display: flex;
     justify-content: space-between;
-    height: 60px;
-    margin-bottom: 10px;
-    line-height: 60px;
-    img.msg {
-      width: 30px;
-      margin-right: 6px;
-    }
+  }
+  .arrowRht {
+    transform: rotate(180deg);
   }
 `;
 
-const ProposalListContent = styled.div``;
-
-const ProposalBox = styled.div`
-  padding: 0 15px;
+const ImgBox = styled.div`
+  margin-right: 10px;
+  width: 24px;
+  height: 24px;
+  box-sizing: border-box;
+  background: #5200ff;
+  border-radius: 100%;
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 14px;
+    height: 14px;
+  }
 `;

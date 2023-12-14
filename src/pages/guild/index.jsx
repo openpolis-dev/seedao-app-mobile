@@ -1,16 +1,19 @@
 import styled from "styled-components";
 import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
-import { useEffect, useMemo, useState } from "react";
+import {useEffect, useMemo, useState} from "react";
 import { getMyGuilds, getGuilds } from "api/guild";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import Tab from "components/common/tab";
 import InfiniteScroll from "react-infinite-scroll-component";
-import ProjectOrGuildItem from "components/projectOrGuild/projectOrGuildItem";
+import ProjectOrGuildItemDetail from "components/projectOrGuild/projectOrGuildItemDetail";
 import store from "store";
-import { saveLoading } from "store/reducer";
+import { saveLoading} from "store/reducer";
 import Loading from "components/common/loading";
 import NoItem from "components/noItem";
+import {useSelector} from "react-redux";
+import useCurrentPath from "../../hooks/useCurrentPath";
+import {saveCache} from "store/reducer";
 
 export default function Guild() {
   const { t } = useTranslation();
@@ -19,8 +22,11 @@ export default function Guild() {
   const [activeTab, setActiveTab] = useState(0);
   const [proList, setProList] = useState([]);
   const [pageCur, setPageCur] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(1);
+  const prevPath = useCurrentPath();
+  const cache = useSelector(state => state.cache);
+
 
   useEffect(() => {
     const _list = [
@@ -35,6 +41,35 @@ export default function Guild() {
     ];
     setList(_list);
   }, [t]);
+
+  useEffect(() => {
+    if(cache?.type==="guild" && cache?.pageCur>pageCur)return;
+    getCurrentList(true);
+  }, [activeTab,cache]);
+
+  useEffect(()=>{
+
+    if(!prevPath || prevPath?.indexOf("/guild/info") === -1 || cache?.type!== "guild" )return;
+
+    const { activeTab, proList, pageCur,height} = cache;
+    setActiveTab(activeTab)
+    setProList(proList);
+    setPageCur(pageCur);
+
+    setTimeout(()=>{
+      const id = prevPath.split("/guild/info/")[1];
+      const element = document.querySelector(`#inner`)
+      const targetElement = document.querySelector(`#guild_${id}`);
+      if (targetElement) {
+        element.scrollTo({
+          top: height,
+          behavior: 'auto',
+        });
+      }
+      store.dispatch(saveCache(null))
+    },0)
+
+  },[prevPath])
 
   const handleTabChange = (v) => {
     setActiveTab(v);
@@ -64,7 +99,7 @@ export default function Guild() {
       setProList([...proList, ...rows]);
       setPageSize(size);
       setTotal(total);
-      setPageCur(page);
+      setPageCur(page+1);
     } catch (error) {
       console.error(error);
     } finally {
@@ -86,7 +121,7 @@ export default function Guild() {
       setProList([...proList, ...rows]);
       setPageSize(size);
       setTotal(total);
-      setPageCur(page);
+      setPageCur(page + 1);
     } catch (error) {
       console.error(error);
     } finally {
@@ -94,7 +129,22 @@ export default function Guild() {
     }
   };
 
+
+  const StorageList = (id) =>{
+    const element = document.querySelector(`#inner`)
+    const height =element.scrollTop;
+    let obj={
+      type:"guild",
+      activeTab,
+      proList,
+      pageCur,
+      height
+    }
+    store.dispatch(saveCache(obj))
+  }
+
   const openDetail = (id) => {
+    StorageList(id);
     navigate(`/guild/info/${id}`);
   };
 
@@ -106,28 +156,33 @@ export default function Guild() {
     }
   };
 
-  useEffect(() => {
-    getCurrentList(true);
-  }, [activeTab]);
+
+
+
 
   return (
-    <Layout title={t("menus.Guild")} noTab>
-      <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
-      <InfiniteScroll
-        dataLength={proList.length}
-        next={getCurrentList}
-        hasMore={hasMore}
-        loader={<Loading />}
-        height={400}
-        style={{ height: "calc(100vh - 90px)" }}
-      >
-        {proList.length === 0 && <NoItem />}
-        <ProjectList>
-          {proList.map((item) => (
-            <ProjectOrGuildItem key={item.id} data={item} onClickItem={openDetail} />
-          ))}
-        </ProjectList>
-      </InfiniteScroll>
+    <Layout title={t("Guild.Guild")}>
+      <div style={{ marginTop: "14px" }}>
+        <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
+      </div>
+      <LayoutContainer>
+        <InfiniteScroll
+          scrollableTarget="inner"
+          dataLength={proList.length}
+          next={getCurrentList}
+          hasMore={hasMore}
+          loader={<Loading />}
+        >
+          {proList.length === 0 && <NoItem />}
+          <ProjectList>
+            {proList.map((item) => (
+                <div  key={item.id} id={`guild_${item.id}`} >
+                  <ProjectOrGuildItemDetail data={item} onClickItem={openDetail} />
+                </div>
+            ))}
+          </ProjectList>
+        </InfiniteScroll>
+      </LayoutContainer>
     </Layout>
   );
 }
@@ -136,4 +191,9 @@ const ProjectList = styled.div`
   & > div {
     margin-bottom: 15px;
   }
+`;
+
+const LayoutContainer = styled.div`
+  padding-inline: 20px;
+  
 `;
