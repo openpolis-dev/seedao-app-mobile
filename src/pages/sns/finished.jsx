@@ -19,6 +19,7 @@ export default function FinishedComponent() {
   }, []);
 
   const goStep1 = () => {
+    localStorage.removeItem("sns");
     dispatchSNS({ type: ACTIONS.SET_STEP, payload: 1 });
     dispatchSNS({ type: ACTIONS.SET_LOCAL_DATA, payload: undefined });
   };
