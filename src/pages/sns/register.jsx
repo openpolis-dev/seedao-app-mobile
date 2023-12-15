@@ -19,7 +19,6 @@ import HelperIcon from "assets/Imgs/sns/helper.svg";
 const RegisterSNSWrapper = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  console.log("====state", state);
 
   const account = useSelector((state) => state.account);
   const rpc = useSelector((state) => state.rpc);

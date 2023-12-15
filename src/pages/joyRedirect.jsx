@@ -38,14 +38,13 @@ export default function JoyIDRedirect() {
     const data = getLocalData();
     const account = localStorage.getItem("joyid-address");
     data[account].step = "register";
-    data[account].stepStatus = search.get("secret") || "pending";
+    data[account].stepStatus = search.get("secret") !== "undefined" ? search.get("secret") : "pending";
     data[account].registerHash = hash;
     localStorage.setItem("sns", JSON.stringify(data));
   };
 
   useEffect(() => {
     console.log("===> joyid redirect action:", action);
-
     let res = "";
     try {
       res = sendTransactionCallback();
