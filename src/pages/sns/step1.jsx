@@ -310,6 +310,7 @@ const SearchBox = styled.div`
   display: flex;
   align-items: center;
   color: var(--font-color);
+  gap: 4px;
 `;
 
 const InputBox = styled.div`
@@ -324,11 +325,11 @@ const InputBox = styled.div`
 `;
 
 const InputStyled = styled.input`
-  width: 117px;
   height: 100%;
   border: none;
   padding: 0;
   background-color: transparent;
+  flex: 1;
   &:focus-visible {
     outline: none;
   }

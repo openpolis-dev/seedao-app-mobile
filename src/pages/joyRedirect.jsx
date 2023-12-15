@@ -38,14 +38,13 @@ export default function JoyIDRedirect() {
     const data = getLocalData();
     const account = localStorage.getItem("joyid-address");
     data[account].step = "register";
-    data[account].stepStatus = search.get("secret") || "pending";
+    data[account].stepStatus = search.get("secret") !== "undefined" ? search.get("secret") : "pending";
     data[account].registerHash = hash;
     localStorage.setItem("sns", JSON.stringify(data));
   };
 
   useEffect(() => {
     console.log("===> joyid redirect action:", action);
-
     let res = "";
     try {
       res = sendTransactionCallback();
@@ -58,7 +57,7 @@ export default function JoyIDRedirect() {
             break;
           case "sns-register":
             handleRegisterData(res.tx);
-            navigate("/sns/register");
+            navigate("/sns/register", { state: true });
             break;
           case "sns-switch":
             navigate("/sns/user", { state: res.tx });

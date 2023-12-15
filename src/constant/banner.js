@@ -1,8 +1,14 @@
 import BannerImg from "assets/Imgs/banner.webp";
 import Demo1 from "assets/Imgs/demo/img.webp";
-import Demo2 from "assets/Imgs/demo/demo2.webp";
+import Demo2 from "assets/Imgs/demo/va.jpg";
 
 const banner = [
+  {
+    img: Demo2,
+    link: "https://mp.weixin.qq.com/s/c73Jp0b9Mb4AmNmQX-UIXA",
+    name: "12月16日 Our Polis 清迈发布会",
+    desc: "「议程 & 出行指南」",
+  },
   {
     img: Demo1,
     link: "https://mp.weixin.qq.com/s/GUq1rbN_caplHpg_02vc9g",
@@ -15,12 +21,12 @@ const banner = [
   //   name: "S2E11 | SeeDAO城邦新闻",
   //   desc: "各位小伙伴们，大家好！本周城邦新闻的主要内容有",
   // },
-  {
-    img: Demo2,
-    link: "https://mp.weixin.qq.com/s/xtQChgi7auo21_B3x2V9hA",
-    name: "SeeDAO第五届节点共识大会即将召开 !！",
-    desc: "12 月 1 日 ~ 12 月 3 日",
-  },
+  // {
+  //   img: Demo2,
+  //   link: "https://mp.weixin.qq.com/s/xtQChgi7auo21_B3x2V9hA",
+  //   name: "SeeDAO第五届节点共识大会即将召开 !！",
+  //   desc: "12 月 1 日 ~ 12 月 3 日",
+  // },
   {
     img: BannerImg,
     name: "连接 100 万 WEB3 游民的数字城邦",

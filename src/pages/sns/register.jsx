@@ -19,7 +19,6 @@ import HelperIcon from "assets/Imgs/sns/helper.svg";
 const RegisterSNSWrapper = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  console.log("====state", state);
 
   const account = useSelector((state) => state.account);
   const rpc = useSelector((state) => state.rpc);
@@ -155,7 +154,11 @@ const RegisterSNSWrapper = () => {
           return;
         } else {
           dispatchSNS({ type: ACTIONS.SET_STEP, payload: 2 });
-          if (v.stepStatus === "pending" || v.stepStatus === "approving") {
+          if (
+            v.stepStatus === "pending" ||
+            v.stepStatus === "approving" ||
+            (v.stepStatus === "approve_success" && !!state)
+          ) {
             dispatchSNS({ type: ACTIONS.SHOW_LOADING });
           }
           return;
