@@ -3,7 +3,12 @@ import Demo1 from "assets/Imgs/demo/img.webp";
 import Demo2 from "assets/Imgs/demo/va.jpg";
 
 const banner = [
-
+  {
+    img: Demo2,
+    link: "https://mp.weixin.qq.com/s/c73Jp0b9Mb4AmNmQX-UIXA",
+    name: "12月16日 Our Polis 清迈发布会",
+    desc: "「议程 & 出行指南」",
+  },
   {
     img: Demo1,
     link: "https://mp.weixin.qq.com/s/GUq1rbN_caplHpg_02vc9g",
@@ -16,13 +21,6 @@ const banner = [
   //   name: "S2E11 | SeeDAO城邦新闻",
   //   desc: "各位小伙伴们，大家好！本周城邦新闻的主要内容有",
   // },
-
-  {
-    img: Demo2,
-    link: "https://mp.weixin.qq.com/s/c73Jp0b9Mb4AmNmQX-UIXA",
-    name: "12月16日 Our Polis 清迈发布会",
-    desc: "「议程 & 出行指南」",
-  },
   // {
   //   img: Demo2,
   //   link: "https://mp.weixin.qq.com/s/xtQChgi7auo21_B3x2V9hA",
