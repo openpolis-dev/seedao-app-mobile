@@ -58,7 +58,7 @@ export default function JoyIDRedirect() {
             break;
           case "sns-register":
             handleRegisterData(res.tx);
-            navigate("/sns/register");
+            navigate("/sns/register", { state: true });
             break;
           case "sns-switch":
             navigate("/sns/user", { state: res.tx });
