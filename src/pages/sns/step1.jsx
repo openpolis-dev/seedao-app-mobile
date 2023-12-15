@@ -325,7 +325,6 @@ const InputBox = styled.div`
 `;
 
 const InputStyled = styled.input`
-  width: 117px;
   height: 100%;
   border: none;
   padding: 0;
