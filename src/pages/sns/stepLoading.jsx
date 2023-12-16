@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useSNSContext } from "./snsProvider";
+import { ACTIONS, useSNSContext } from "./snsProvider";
 import { useTranslation } from "react-i18next";
 import DoneIcon from "assets/Imgs/sns/done.svg";
 
@@ -28,6 +28,7 @@ const STEPS = [
 export default function StepLoading() {
   const {
     state: { step },
+    dispatch: dispatchSNS,
   } = useSNSContext();
   const { t } = useTranslation();
   return (
@@ -47,6 +48,7 @@ export default function StepLoading() {
             </StepBox>
           ))}
         </div>
+        <CloseButton onClick={() => dispatchSNS({ type: ACTIONS.CLOSE_LOADING })}>{t("SNS.CloseLoading")}</CloseButton>
       </LoadingContainer>
     </Mask>
   );
@@ -149,4 +151,14 @@ const LoadingBox = styled.div`
       transform: rotate(360deg);
     }
   }
+`;
+
+const CloseButton = styled.div`
+  font-size: 14px;
+  color: var(--font-light-color);
+  text-align: center;
+  cursor: pointer;
+  margin: 0 auto;
+  margin-top: 30px;
+  width: 100px;
 `;
