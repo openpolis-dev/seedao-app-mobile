@@ -260,6 +260,7 @@
     "CancelRegister": "取消注册",
     "CancelTip": "取消后，注册流程将从第一步开始",
     "CopyError": "复制错误",
-    "Error": "糟糕出错了"
+    "Error": "糟糕出错了",
+    "CloseLoading": "关闭"
   }
 }
