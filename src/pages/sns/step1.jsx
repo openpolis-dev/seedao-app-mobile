@@ -14,7 +14,7 @@ import useToast from "hooks/useToast";
 import ABI from "assets/abi/SeeDAORegistrarController.json";
 import { useSelector } from "react-redux";
 import useTransaction from "hooks/useTransaction";
-import { erc20ABI } from "wagmi";
+import useCheckBalance from "./useCheckBalance";
 
 import getConfig from "constant/envCofnig";
 const networkConfig = getConfig().NETWORK;
@@ -43,6 +43,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
 
   const account = useSelector((state) => state.account);
   const rpc = useSelector((state) => state.rpc);
+  const checkBalance = useCheckBalance();
 
   const {
     dispatch: dispatchSNS,
@@ -125,22 +126,17 @@ export default function RegisterSNSStep1({ sns: _sns }) {
     if (!account) {
       return;
     }
-    // check balance
-    try {
-      const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
-      const tokenContract = new ethers.Contract(PAY_TOKEN.address, erc20ABI, provider);
-      const balance = tokenContract.balanceOf(account);
-      if (balance.gte(ethers.BigNumber.from(PAY_NUMBER))) {
-        toast.danger(t("SNS.NotEnoughBalance", { token: PAY_TOKEN.symbol }));
-        return;
-      }
-    } catch (error) {
-      console.error("check balance error", error);
-    }
 
     // mint
     try {
       dispatchSNS({ type: ACTIONS.SHOW_LOADING });
+      // check balance
+      const token = await checkBalance(true, !(userProof && !hadMintByWhitelist));
+      if (token) {
+        toast.danger(t("SNS.NotEnoughBalance", { token }));
+        dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
+        return;
+      }
       const _s = getRandomCode();
       setRandomSecret(_s);
       localStorage.setItem("sns-secret", _s);
