@@ -1,7 +1,7 @@
 import EthereumIcon from "assets/Imgs/network/ethereum.svg";
 import PolygonIcon from "assets/Imgs/network/polygon.svg";
 
-const VERSION = "0.3.2";
+const VERSION = "0.3.3";
 
 const LOCAL = {
   REACT_APP_BASE_ENDPOINT: "https://test-api.seedao.tech",
@@ -16,6 +16,7 @@ const LOCAL = {
   JOY_ID_URL: "https://app.joy.id",
   NETWORK: {
     name: "Polygon",
+    nativeToken: "Matic",
     chainId: 137,
     // rpcs: [
     //   "https://eth-goerli.g.alchemy.com/v2/MATWeLJN1bEGTjSmtyLedn0i34o1ISLD",

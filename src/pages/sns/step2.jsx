@@ -16,6 +16,7 @@ import { useEthersSigner } from "utils/ethersNew";
 import { Wallet } from "utils/constant";
 import CopyBox from "components/common/copy";
 import parseError from "./parseError";
+import useCheckBalance from "./useCheckBalance";
 
 const networkConfig = getConfig().NETWORK;
 const PAY_TOKEN = networkConfig.tokens[0];
@@ -53,6 +54,7 @@ export default function RegisterSNSStep2() {
   const wallet = useSelector((state) => state.walletType);
 
   const signer = useEthersSigner({ chainId: networkConfig.chainId });
+  const checkBalance = useCheckBalance();
 
   const {
     state: { localData, sns, userProof, hadMintByWhitelist, minterContract },
@@ -104,6 +106,13 @@ export default function RegisterSNSStep2() {
   const handleContinueMint = async () => {
     try {
       dispatchSNS({ type: ACTIONS.SHOW_LOADING });
+      // check balance
+      const token = await checkBalance(true, true);
+      if (token) {
+        toast.danger(t("SNS.NotEnoughBalance", { token }));
+        dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
+        return;
+      }
       const tx = await handleTransaction(
         builtin.SEEDAO_MINTER_ADDR,
         buildRegisterData(sns, ethers.utils.formatBytes32String(secret)),
@@ -125,7 +134,15 @@ export default function RegisterSNSStep2() {
     if (!account) {
       return;
     }
+    // check balance
+
     dispatchSNS({ type: ACTIONS.SHOW_LOADING });
+    const token = await checkBalance(true, !(userProof && !hadMintByWhitelist));
+    if (token) {
+      toast.danger(t("SNS.NotEnoughBalance", { token }));
+      dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
+      return;
+    }
     try {
       let tx;
       if (userProof && !hadMintByWhitelist) {

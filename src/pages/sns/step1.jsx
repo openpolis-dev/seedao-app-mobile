@@ -14,10 +14,12 @@ import useToast from "hooks/useToast";
 import ABI from "assets/abi/SeeDAORegistrarController.json";
 import { useSelector } from "react-redux";
 import useTransaction from "hooks/useTransaction";
+import useCheckBalance from "./useCheckBalance";
 
 import getConfig from "constant/envCofnig";
 const networkConfig = getConfig().NETWORK;
-const PAY_NUMBER = networkConfig.tokens[0].price;
+const PAY_TOKEN = networkConfig.tokens[0];
+const PAY_NUMBER = PAY_TOKEN.price;
 
 const AvailableStatus = {
   DEFAULT: "default",
@@ -41,6 +43,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
 
   const account = useSelector((state) => state.account);
   const rpc = useSelector((state) => state.rpc);
+  const checkBalance = useCheckBalance();
 
   const {
     dispatch: dispatchSNS,
@@ -118,13 +121,22 @@ export default function RegisterSNSStep1({ sns: _sns }) {
     setSearchVal("");
     setAvailable(AvailableStatus.DEFAULT);
   };
+
   const handleMint = async () => {
     if (!account) {
       return;
     }
+
     // mint
     try {
       dispatchSNS({ type: ACTIONS.SHOW_LOADING });
+      // check balance
+      const token = await checkBalance(true, !(userProof && !hadMintByWhitelist));
+      if (token) {
+        toast.danger(t("SNS.NotEnoughBalance", { token }));
+        dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
+        return;
+      }
       const _s = getRandomCode();
       setRandomSecret(_s);
       localStorage.setItem("sns-secret", _s);
@@ -412,4 +424,3 @@ const Tip = styled.div`
   margin-top: 8px;
   text-align: left;
 `;
-
