@@ -47,7 +47,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
     state: { controllerContract, localData, hasReached, userProof, hadMintByWhitelist, whitelistIsOpen },
   } = useSNSContext();
 
-  const { toast } = useToast();
+  const { toast, Toast } = useToast();
 
   // const isLogin = useCheckLogin(account);
 
@@ -264,6 +264,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         <Tip>{t("SNS.InputTip")}</Tip>
         <OperateBox>{showButton()}</OperateBox>
       </ContainerWrapper>
+      {Toast}
     </Container>
   );
 }

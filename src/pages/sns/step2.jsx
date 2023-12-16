@@ -12,6 +12,10 @@ import useTransaction from "hooks/useTransaction";
 import getConfig from "constant/envCofnig";
 import { erc20ABI } from "wagmi";
 import CancelModal from "./cancelModal";
+import { useEthersSigner } from "utils/ethersNew";
+import { Wallet } from "utils/constant";
+import CopyBox from "components/common/copy";
+import parseError from "./parseError";
 
 const networkConfig = getConfig().NETWORK;
 const PAY_TOKEN = networkConfig.tokens[0];
@@ -46,12 +50,15 @@ export default function RegisterSNSStep2() {
 
   const account = useSelector((state) => state.account);
   const rpc = useSelector((state) => state.rpc);
+  const wallet = useSelector((state) => state.walletType);
+
+  const signer = useEthersSigner({ chainId: networkConfig.chainId });
 
   const {
-    state: { localData, sns, userProof, hadMintByWhitelist },
+    state: { localData, sns, userProof, hadMintByWhitelist, minterContract },
     dispatch: dispatchSNS,
   } = useSNSContext();
-  const { toast } = useToast();
+  const { toast, Toast, showToast } = useToast();
 
   const startTimeRef = useRef(0);
   const [leftTime, setLeftTime] = useState(0);
@@ -123,6 +130,44 @@ export default function RegisterSNSStep2() {
       let tx;
       if (userProof && !hadMintByWhitelist) {
         // whitelist
+        if (signer && wallet === Wallet.METAMASK) {
+          try {
+            await minterContract
+              .connect(signer)
+              .estimateGas.registerWithWhitelist(
+                sns,
+                builtin.PUBLIC_RESOLVER_ADDR,
+                ethers.utils.formatBytes32String(secret),
+                networkConfig.whitelistId,
+                userProof,
+              );
+          } catch (error) {
+            const msg = error?.error?.data.message;
+            if (msg === "execution reverted") {
+              const result = parseError(error?.error?.data.data);
+              showToast(
+                result.name,
+                undefined,
+                <CopyBox text={error}>
+                  <CopyErrorButton>{t("SNS.CopyError")}</CopyErrorButton>
+                </CopyBox>,
+              );
+            } else if (msg) {
+              toast.danger(msg);
+            } else {
+              showToast(
+                t("SNS.Error"),
+                undefined,
+                <CopyBox text={error}>
+                  <CopyErrorButton>{t("SNS.CopyError")}</CopyErrorButton>
+                </CopyBox>,
+              );
+            }
+            console.error(error?.error?.data);
+            dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
+            return;
+          }
+        }
         tx = await handleTransaction(
           builtin.SEEDAO_MINTER_ADDR,
           buildWhiteListRegisterData(
@@ -164,7 +209,7 @@ export default function RegisterSNSStep2() {
     } catch (error) {
       dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
       console.error("register failed", error);
-      toast.danger(error?.reason || error?.data?.message || "error");
+      toast.danger(error?.reason || error?.error?.data?.message || error?.data?.message || "error");
     } finally {
     }
   };
@@ -250,6 +295,7 @@ export default function RegisterSNSStep2() {
         <CancelButton onClick={() => setShowCancelModal(true)}>{t("SNS.CancelRegister")}</CancelButton>
       </ContainerWrapper>
       {showCancelModal && <CancelModal handleClose={() => setShowCancelModal(false)} handleCancel={handleCancel} />}
+      {Toast}
     </Container>
   );
 }
@@ -339,4 +385,12 @@ const CancelButton = styled.span`
   cursor: pointer;
   min-width: 100px;
   max-width: 200px;
+`;
+
+const CopyErrorButton = styled(FinishButton)`
+  width: unset;
+  padding-inline: 16px;
+  height: 32px;
+  line-height: 32px;
+  margin-top: 10px;
 `;
