@@ -14,10 +14,12 @@ import useToast from "hooks/useToast";
 import ABI from "assets/abi/SeeDAORegistrarController.json";
 import { useSelector } from "react-redux";
 import useTransaction from "hooks/useTransaction";
+import { erc20ABI } from "wagmi";
 
 import getConfig from "constant/envCofnig";
 const networkConfig = getConfig().NETWORK;
-const PAY_NUMBER = networkConfig.tokens[0].price;
+const PAY_TOKEN = networkConfig.tokens[0];
+const PAY_NUMBER = PAY_TOKEN.price;
 
 const AvailableStatus = {
   DEFAULT: "default",
@@ -118,10 +120,24 @@ export default function RegisterSNSStep1({ sns: _sns }) {
     setSearchVal("");
     setAvailable(AvailableStatus.DEFAULT);
   };
+
   const handleMint = async () => {
     if (!account) {
       return;
     }
+    // check balance
+    try {
+      const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
+      const tokenContract = new ethers.Contract(PAY_TOKEN.address, erc20ABI, provider);
+      const balance = tokenContract.balanceOf(account);
+      if (balance.gte(ethers.BigNumber.from(PAY_NUMBER))) {
+        toast.danger(t("SNS.NotEnoughBalance", { token: PAY_TOKEN.symbol }));
+        return;
+      }
+    } catch (error) {
+      console.error("check balance error", error);
+    }
+
     // mint
     try {
       dispatchSNS({ type: ACTIONS.SHOW_LOADING });
@@ -412,4 +428,3 @@ const Tip = styled.div`
   margin-top: 8px;
   text-align: left;
 `;
-

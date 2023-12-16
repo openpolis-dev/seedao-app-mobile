@@ -125,6 +125,18 @@ export default function RegisterSNSStep2() {
     if (!account) {
       return;
     }
+    // check balance
+    try {
+      const provider = new ethers.providers.StaticJsonRpcProvider(rpc);
+      const tokenContract = new ethers.Contract(PAY_TOKEN.address, erc20ABI, provider);
+      const balance = tokenContract.balanceOf(account);
+      if (balance.gte(ethers.BigNumber.from(PAY_NUMBER))) {
+        toast.danger(t("SNS.NotEnoughBalance", { token: PAY_TOKEN.symbol }));
+        return;
+      }
+    } catch (error) {
+      console.error("check balance error", error);
+    }
     dispatchSNS({ type: ACTIONS.SHOW_LOADING });
     try {
       let tx;

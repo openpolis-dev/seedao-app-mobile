@@ -261,6 +261,7 @@
     "CancelTip": "Cancel means you'll start to register from step one",
     "CopyError": "Copy Error",
     "Error": "oh, something went wrong",
-    "CloseLoading": "Close"
+    "CloseLoading": "Close",
+    "NotEnoughBalance": "{{token}} Not Enough"
   }
 }
