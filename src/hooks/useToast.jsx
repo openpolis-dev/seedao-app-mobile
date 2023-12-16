@@ -35,7 +35,6 @@ export default function useToast() {
   const [optionButton, setOptionButton] = useState();
 
   const showToast = (msg, type, option) => {
-    console.log("msg", msg);
     setMsg(msg);
     setShow(true);
     setType(type || TOAST_TYPE.DEFAULT);
