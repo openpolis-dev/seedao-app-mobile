@@ -108,6 +108,11 @@ export default function RegisterSNSStep2() {
   const progress = (leftTime / 60) * 100;
 
   const handleContinueMint = async () => {
+    // check network
+    if (wallet === Wallet.METAMASK && chain.id !== networkConfig.chainId) {
+      switchNetwork(networkConfig.chainId);
+      return;
+    }
     try {
       dispatchSNS({ type: ACTIONS.SHOW_LOADING });
       // check balance
