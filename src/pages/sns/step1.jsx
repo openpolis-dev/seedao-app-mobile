@@ -149,7 +149,6 @@ export default function RegisterSNSStep1({ sns: _sns }) {
       }
       const _s = getRandomCode();
       setRandomSecret(_s);
-      localStorage.setItem("sns-secret", _s);
       // get commitment
       const _commitment = await controllerContract.makeCommitment(
         searchVal,
