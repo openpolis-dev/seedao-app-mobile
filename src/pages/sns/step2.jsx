@@ -54,7 +54,7 @@ export default function RegisterSNSStep2() {
   const rpc = useSelector((state) => state.rpc);
   const wallet = useSelector((state) => state.walletType);
 
-  const signer = useEthersSigner({ chainId: networkConfig.chainId });
+  const signer = useEthersSigner();
   const checkBalance = useCheckBalance();
 
   const {
