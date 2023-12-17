@@ -17,6 +17,7 @@ import { Wallet } from "utils/constant";
 import CopyBox from "components/common/copy";
 import parseError from "./parseError";
 import useCheckBalance from "./useCheckBalance";
+import { useNetwork, useSwitchNetwork } from "wagmi";
 
 const networkConfig = getConfig().NETWORK;
 const PAY_TOKEN = networkConfig.tokens[0];
@@ -68,6 +69,9 @@ export default function RegisterSNSStep2() {
   const [showCancelModal, setShowCancelModal] = useState(false);
 
   const { handleTransaction } = useTransaction("sns-register");
+
+  const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
 
   useEffect(() => {
     const parseLocalData = () => {
@@ -134,8 +138,12 @@ export default function RegisterSNSStep2() {
     if (!account) {
       return;
     }
+    // check network
+    if (wallet === Wallet.METAMASK && chain.id !== networkConfig.chainId) {
+      switchNetwork(networkConfig.chainId);
+      return;
+    }
     // check balance
-
     dispatchSNS({ type: ACTIONS.SHOW_LOADING });
     const token = await checkBalance(true, !(userProof && !hadMintByWhitelist));
     if (token) {

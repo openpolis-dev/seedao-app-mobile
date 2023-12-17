@@ -15,8 +15,9 @@ import ABI from "assets/abi/SeeDAORegistrarController.json";
 import { useSelector } from "react-redux";
 import useTransaction from "hooks/useTransaction";
 import useCheckBalance from "./useCheckBalance";
-
+import { useNetwork, useSwitchNetwork } from "wagmi";
 import getConfig from "constant/envCofnig";
+import { Wallet } from "utils/constant";
 const networkConfig = getConfig().NETWORK;
 const PAY_TOKEN = networkConfig.tokens[0];
 const PAY_NUMBER = PAY_TOKEN.price;
@@ -41,8 +42,12 @@ export default function RegisterSNSStep1({ sns: _sns }) {
   const [randomSecret, setRandomSecret] = useState("");
   const { handleTransaction } = useTransaction("sns-commit");
 
+  const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
+
   const account = useSelector((state) => state.account);
   const rpc = useSelector((state) => state.rpc);
+  const wallet = useSelector((state) => state.walletType);
   const checkBalance = useCheckBalance();
 
   const {
@@ -124,6 +129,11 @@ export default function RegisterSNSStep1({ sns: _sns }) {
 
   const handleMint = async () => {
     if (!account) {
+      return;
+    }
+    // check network
+    if (wallet === Wallet.METAMASK && chain.id !== networkConfig.chainId) {
+      switchNetwork(networkConfig.chainId);
       return;
     }
 
