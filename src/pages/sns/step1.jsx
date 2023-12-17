@@ -165,7 +165,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         searchVal,
       );
       console.log("tx:", tx);
-      const hash = (tx && tx.hash) || tx;
+      const hash = (tx && tx.hash) || tx; // tx means hash if using unipass
       if (hash) {
         // record to localstorage
         const data = { ...localData };
