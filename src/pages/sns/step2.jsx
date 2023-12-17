@@ -178,7 +178,7 @@ export default function RegisterSNSStep2() {
               showToast(
                 result.name,
                 undefined,
-                <CopyBox text={error}>
+                <CopyBox text={result.name}>
                   <CopyErrorButton>{t("SNS.CopyError")}</CopyErrorButton>
                 </CopyBox>,
               );
