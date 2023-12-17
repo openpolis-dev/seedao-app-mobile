@@ -245,26 +245,25 @@ export default function RegisterSNSStep1({ sns: _sns }) {
           {t("SNS.HadSNS")}
         </MintButton>
       );
-    } else {
-      if (userProof && !hadMintByWhitelist) {
-        if (!whitelistIsOpen) {
-          return (
-            <MintButton variant="primary" disabled={true}>
-              {t("SNS.FreeMintNotOpen")}
-            </MintButton>
-          );
-        }
-      }
+    }
+    // free mint
+    if (userProof && !hadMintByWhitelist && whitelistIsOpen) {
       return (
         <MintButton
           variant="primary"
           disabled={isPending || availableStatus !== AvailableStatus.OK}
           onClick={handleMint}
         >
-          {userProof && !hadMintByWhitelist ? t("SNS.FreeMint") : t("SNS.SpentMint", { money: `${PAY_NUMBER} USDT` })}
+          {t("SNS.FreeMint")}
         </MintButton>
       );
     }
+    // mint by token
+    return (
+      <MintButton variant="primary" disabled={isPending || availableStatus !== AvailableStatus.OK} onClick={handleMint}>
+        {t("SNS.SpentMint", { money: `${PAY_NUMBER} USDT(${networkConfig.name})` })}
+      </MintButton>
+    );
   };
   return (
     <Container>
