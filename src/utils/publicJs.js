@@ -141,10 +141,31 @@ const checkRPCavailable = (rpc_list, network) => {
   });
 };
 
+const getSeedUrl = async (img) => {
+  if (!img) return;
+  if (img.indexOf('http://') > -1 || img.indexOf('https://') > -1) {
+    return img;
+  } else {
+    let str = img;
+    if (img.indexOf('ipfs://') > -1) {
+      str = img.split('ipfs://')[1];
+    }
+    // return `http://ipfs-proxy-bkt.s3-website-ap-northeast-1.amazonaws.com/${str}`;
+    return `https://nftcdn.seedao.tech/${str}`;
+    // try {
+    //   let imgAA = await agumentedIpfsGet(str);
+    //   return imgAA;
+    // } catch (e) {
+    //   return Promise.reject(e);
+    // }
+  }
+};
+
 export default {
   AddressToShow,
   createSiweMessage,
   StorageList,
+  getSeedUrl,
   getImage,
   filterTags,
   checkRPCavailable,
