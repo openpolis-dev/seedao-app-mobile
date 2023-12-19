@@ -58,7 +58,7 @@ export default function RegisterSNSStep2() {
   const checkBalance = useCheckBalance();
 
   const {
-    state: { localData, sns, userProof, hadMintByWhitelist, minterContract },
+    state: { localData, sns, userProof, hadMintByWhitelist, minterContract, whitelistIsOpen },
     dispatch: dispatchSNS,
   } = useSNSContext();
   const { toast, Toast, showToast } = useToast();
@@ -150,7 +150,7 @@ export default function RegisterSNSStep2() {
     }
     // check balance
     dispatchSNS({ type: ACTIONS.SHOW_LOADING });
-    const token = await checkBalance(true, !(userProof && !hadMintByWhitelist));
+    const token = await checkBalance(true, !(userProof && !hadMintByWhitelist && whitelistIsOpen));
     if (token) {
       toast.danger(t("SNS.NotEnoughBalance", { token }));
       dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
@@ -158,7 +158,7 @@ export default function RegisterSNSStep2() {
     }
     try {
       let tx;
-      if (userProof && !hadMintByWhitelist) {
+      if (userProof && !hadMintByWhitelist && whitelistIsOpen) {
         // whitelist
         if (signer && wallet === Wallet.METAMASK) {
           try {
