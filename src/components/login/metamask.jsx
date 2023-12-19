@@ -35,7 +35,7 @@ export default function  Metamask(){
 
 
     const handlePermission = usePushPermission();
-    const signer = useEthersSigner({ chainId: network.chainId });
+    const signer = useEthersSigner();
     console.log("signer: ", signer);
 
     useEffect(()=>{

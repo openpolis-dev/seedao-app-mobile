@@ -23,7 +23,7 @@ import EventHandler from "components/event/eventHandler";
 import getConfig from "constant/envCofnig";
 import ChooseRPC from "components/chooseRPC";
 
-const chains = getConfig().NETWORK.chainId === 1 ? [mainnet] : [polygon, mainnet];
+const chains = getConfig().NETWORK.chainId === 1 ? [mainnet] : [polygon];
 
 const projectId = 'da76ddd6c7d31632ed7fc9b88e28a410'
 

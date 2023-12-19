@@ -15,8 +15,9 @@ import ABI from "assets/abi/SeeDAORegistrarController.json";
 import { useSelector } from "react-redux";
 import useTransaction from "hooks/useTransaction";
 import useCheckBalance from "./useCheckBalance";
-
+import { useNetwork, useSwitchNetwork } from "wagmi";
 import getConfig from "constant/envCofnig";
+import { Wallet } from "utils/constant";
 const networkConfig = getConfig().NETWORK;
 const PAY_TOKEN = networkConfig.tokens[0];
 const PAY_NUMBER = PAY_TOKEN.price;
@@ -41,8 +42,12 @@ export default function RegisterSNSStep1({ sns: _sns }) {
   const [randomSecret, setRandomSecret] = useState("");
   const { handleTransaction } = useTransaction("sns-commit");
 
+  const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
+
   const account = useSelector((state) => state.account);
   const rpc = useSelector((state) => state.rpc);
+  const wallet = useSelector((state) => state.walletType);
   const checkBalance = useCheckBalance();
 
   const {
@@ -126,6 +131,11 @@ export default function RegisterSNSStep1({ sns: _sns }) {
     if (!account) {
       return;
     }
+    // check network
+    if (wallet === Wallet.METAMASK && chain.id !== networkConfig.chainId) {
+      switchNetwork(networkConfig.chainId);
+      return;
+    }
 
     // mint
     try {
@@ -139,7 +149,6 @@ export default function RegisterSNSStep1({ sns: _sns }) {
       }
       const _s = getRandomCode();
       setRandomSecret(_s);
-      localStorage.setItem("sns-secret", _s);
       // get commitment
       const _commitment = await controllerContract.makeCommitment(
         searchVal,
@@ -155,7 +164,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         searchVal,
       );
       console.log("tx:", tx);
-      const hash = (tx && tx.hash) || tx;
+      const hash = (tx && tx.hash) || tx; // tx means hash if using unipass
       if (hash) {
         // record to localstorage
         const data = { ...localData };
@@ -235,26 +244,25 @@ export default function RegisterSNSStep1({ sns: _sns }) {
           {t("SNS.HadSNS")}
         </MintButton>
       );
-    } else {
-      if (userProof && !hadMintByWhitelist) {
-        if (!whitelistIsOpen) {
-          return (
-            <MintButton variant="primary" disabled={true}>
-              {t("SNS.FreeMintNotOpen")}
-            </MintButton>
-          );
-        }
-      }
+    }
+    // free mint
+    if (userProof && !hadMintByWhitelist && whitelistIsOpen) {
       return (
         <MintButton
           variant="primary"
           disabled={isPending || availableStatus !== AvailableStatus.OK}
           onClick={handleMint}
         >
-          {userProof && !hadMintByWhitelist ? t("SNS.FreeMint") : t("SNS.SpentMint", { money: `${PAY_NUMBER} USDT` })}
+          {t("SNS.FreeMint")}
         </MintButton>
       );
     }
+    // mint by token
+    return (
+      <MintButton variant="primary" disabled={isPending || availableStatus !== AvailableStatus.OK} onClick={handleMint}>
+        {t("SNS.SpentMint", { money: `${PAY_NUMBER} USDT(${networkConfig.name})` })}
+      </MintButton>
+    );
   };
   return (
     <Container>
