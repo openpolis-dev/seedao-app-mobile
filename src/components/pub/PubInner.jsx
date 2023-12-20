@@ -9,6 +9,8 @@ import styled from 'styled-components';
 
 const Col = styled.div`
 `
+const Row = styled.div`
+`
 
 const Box = styled.div`
   position: relative;
@@ -141,11 +143,8 @@ export default function PubInner({id}){
     const [title, setTitle] = useState('');
     const [status, setStatus] = useState('');
     const [imgUrl, setImgUrl] = useState('');
-    const [tag, setTag] = useState([]);
-    const [desc, setDesc] = useState('');
-    const [reward, setReward] = useState('');
-    const [jd, setJd] = useState('');
-    const [time, setTime] = useState('');
+    const [props, setProps] = useState();
+
     const [contact, setContact] = useState([]);
 
     useEffect(() => {
@@ -187,20 +186,6 @@ export default function PubInner({id}){
         return colorStr;
     };
 
-    // const flattenArray = (arr: any[]) => {
-    //   let flattened: any[] = [];
-    //
-    //   arr.forEach((item) => {
-    //     if (Array.isArray(item)) {
-    //       flattened = flattened.concat(flattenArray(item));
-    //     } else {
-    //       flattened.push(item);
-    //     }
-    //   });
-    //
-    //   return flattened;
-    // };
-
     const getDetail = async (id) => {
         store.dispatch(saveLoading(true));
         try {
@@ -208,18 +193,15 @@ export default function PubInner({id}){
             let detailInfo = await pubDetail(id);
 
             let detail = detailInfo.data.properties;
+            setProps(detail);
+            
             const titleStr = detail?.['悬赏名称'].title[0].text.content ?? '';
             setTitle(titleStr);
             let url = detailInfo?.data?.cover?.file?.url || detailInfo?.data?.cover?.external.url;
             setImgUrl(url);
 
             setStatus(detail?.['悬赏状态']?.select?.name ?? '');
-            setTag(detail?.['悬赏类型']?.multi_select ?? []);
 
-            setDesc(detail?.['任务说明'].rich_text[0].text.content ?? '');
-            setReward(detail?.['贡献报酬']?.rich_text[0]?.plain_text);
-            setJd(detail?.['技能要求'].rich_text[0].text.content ?? '');
-            setTime(detail?.['招募截止时间']?.rich_text[0]?.plain_text ?? '');
             let contactArr = detail?.['👫 对接人']?.rich_text;
             let arr = [];
             contactArr.map(async (item) => {
@@ -257,6 +239,48 @@ export default function PubInner({id}){
         return cStr;
     };
 
+    const renderElement = (detail) => {
+        const elements = [];
+        let str;
+        for (const key in detail) {
+            console.log(detail)
+            if (detail.hasOwnProperty(key)) {
+                switch (detail[key].type) {
+                    case 'multi_select':
+                        let arr = [];
+                        detail[key]?.multi_select.map((item, index) => {
+                            arr.push(
+                                <TypeBox key={index} className={returnColor(item.name)}>
+                                    {item.name}
+                                </TypeBox>,
+                            );
+                        });
+                        str = arr;
+                        break;
+                    case 'rich_text':
+                        str = detail[key].rich_text[0]?.text?.content || detail[key].rich_text[0]?.plain_text;
+                        break;
+
+                    default:
+                        str = '';
+                        break;
+                }
+            }
+
+            str && !key.includes('对接人') && elements.push(
+                <li key={key}>
+                    <TitleBox>
+                        {key}
+                    </TitleBox>
+                    <Col>
+                        <PreBox>{str}</PreBox>
+                    </Col>
+                </li>,
+            );
+        }
+        return elements;
+    };
+
 
     return  <Box>
         {!!imgUrl && (
@@ -270,36 +294,37 @@ export default function PubInner({id}){
             }
             <Title>{title}</Title>
             <ContentBox>
-                <li>
-                    <TitleBox>悬赏类型</TitleBox>
-                    <Col>
-                        {tag.map((item, index) => (
-                            <TypeBox key={index} className={returnColor(item.name)}>
-                                {item.name}
-                            </TypeBox>
-                        ))}
-                    </Col>
-                </li>
-                <li>
-                    <TitleBox>任务说明</TitleBox>
-                    <Col>
-                        <PreBox>{desc}</PreBox>
-                    </Col>
-                </li>
-                <li>
-                    <TitleBox>贡献报酬</TitleBox>
-                    <Col>{reward}</Col>
-                </li>
-                <li>
-                    <TitleBox>技能要求</TitleBox>
-                    <Col>
-                        <PreBox>{jd}</PreBox>
-                    </Col>
-                </li>
-                <li>
-                    <TitleBox>招募截止时间</TitleBox>
-                    <Col>{time}</Col>
-                </li>
+                <>{renderElement(props)}</>
+                {/*<li>*/}
+                {/*    <TitleBox>悬赏类型</TitleBox>*/}
+                {/*    <Col>*/}
+                {/*        {tag.map((item, index) => (*/}
+                {/*            <TypeBox key={index} className={returnColor(item.name)}>*/}
+                {/*                {item.name}*/}
+                {/*            </TypeBox>*/}
+                {/*        ))}*/}
+                {/*    </Col>*/}
+                {/*</li>*/}
+                {/*<li>*/}
+                {/*    <TitleBox>任务说明</TitleBox>*/}
+                {/*    <Col>*/}
+                {/*        <PreBox>{desc}</PreBox>*/}
+                {/*    </Col>*/}
+                {/*</li>*/}
+                {/*<li>*/}
+                {/*    <TitleBox>贡献报酬</TitleBox>*/}
+                {/*    <Col>{reward}</Col>*/}
+                {/*</li>*/}
+                {/*<li>*/}
+                {/*    <TitleBox>技能要求</TitleBox>*/}
+                {/*    <Col>*/}
+                {/*        <PreBox>{jd}</PreBox>*/}
+                {/*    </Col>*/}
+                {/*</li>*/}
+                {/*<li>*/}
+                {/*    <TitleBox>招募截止时间</TitleBox>*/}
+                {/*    <Col>{time}</Col>*/}
+                {/*</li>*/}
                 <li>
                     <TitleBox>👫 对接人</TitleBox>
                     <Col>
