@@ -42,10 +42,12 @@ export default function Chat() {
   return (
     <Layout noTab title="Chat">
       <chat-component
+        class="chat-widget"
         baseUrl="https://sdktest.sending.me"
         useThirdLogin={true}
-        widgetWidth="100%"
+        widgetWidth="100vw"
         widgetHeight="calc(100vh - 47px)"
+        primaryColor="var(--primary-color)"
       ></chat-component>
     </Layout>
   );
