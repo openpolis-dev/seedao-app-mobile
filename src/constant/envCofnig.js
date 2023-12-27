@@ -39,11 +39,13 @@ const LOCAL = {
     whitelistId: 0,
   },
   INDEXER_ENDPOINT: "https://test-spp-indexer.seedao.tech",
+  SENDINGME_ENABLE: true,
 };
 const DEVELOPMENT = {
   ...LOCAL,
   REACT_APP_ENV: "test",
   REACT_APP_ONESIGNAL_ID: "2889344b-788a-40d5-8949-1ff1adc71851",
+  SENDINGME_ENABLE: true,
 };
 
 const PREVIEW = {
@@ -51,6 +53,7 @@ const PREVIEW = {
   REACT_APP_BASE_ENDPOINT: "https://preview-api.seedao.tech",
   REACT_APP_THEME_ENABLE: false,
   REACT_APP_ONESIGNAL_ID: "5abed421-a9a0-4811-b255-bc48fa7d4fa4",
+  SENDINGME_ENABLE: false,
 };
 
 const PRODUCTION = {
@@ -61,6 +64,7 @@ const PRODUCTION = {
   REACT_APP_APP_VERSION: `B ${VERSION}`,
   REACT_APP_THEME_ENABLE: false,
   REACT_APP_ONESIGNAL_ID: "eda76843-e1a4-40a5-aa01-3d860d9cfa5c",
+  SENDINGME_ENABLE: false,
   // JOY_ID_URL: 'https://app.joy.id',
 };
 

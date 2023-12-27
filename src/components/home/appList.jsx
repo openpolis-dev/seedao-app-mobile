@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Wallet } from "utils/constant";
 import useToast from "hooks/useToast";
 import { useSelector } from "react-redux";
+import getConfig from "constant/envCofnig";
 
 const Box = styled.div`
   background: #fff;
@@ -128,10 +129,12 @@ export default function AppList() {
             <dd>{item.name}</dd>
           </dl>
         ))}
-        <dl onClick={() => handleClickChat()}>
-          <dt>{ChatData.icon ? <img src={ChatData.icon} alt="" /> : <DefaultLogo>{ChatData.name}</DefaultLogo>}</dt>
-          <dd>{ChatData.name}</dd>
-        </dl>
+        {getConfig().SENDINGME_ENABLE && (
+          <dl onClick={() => handleClickChat()}>
+            <dt>{ChatData.icon ? <img src={ChatData.icon} alt="" /> : <DefaultLogo>{ChatData.name}</DefaultLogo>}</dt>
+            <dd>{ChatData.name}</dd>
+          </dl>
+        )}
       </UlBox>
       {Toast}
     </Box>
