@@ -3,6 +3,9 @@ import apps from "../../constant/apps";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { Wallet } from "utils/constant";
+import useToast from "hooks/useToast";
+import { useSelector } from "react-redux";
 
 const Box = styled.div`
   background: #fff;
@@ -64,9 +67,31 @@ const UlBox = styled.div`
   }
 `;
 
+const DefaultLogo = styled.div`
+  width: 62px;
+  height: 62px;
+  background-color: var(--primary-color);
+  border-radius: 10px;
+  text-align: center;
+  line-height: 62px;
+  color: #fff;
+  overflow: hidden;
+`;
+
+const ChatData = {
+  id: "module-chat",
+  name: "Chat",
+  link: "/chat",
+  desc: "apps.SNSDesc",
+};
+
 export default function AppList() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const { Toast, toast } = useToast();
+  const wallet = useSelector((state) => state.walletType);
+
   const events = useMemo(() => {
     return apps.map((item) => ({ ...item, name: t(item.name) }));
   }, [t]);
@@ -78,6 +103,14 @@ export default function AppList() {
     } else {
       window.open(link, "_blank");
     }
+  };
+
+  const handleClickChat = () => {
+    if (wallet !== Wallet.METAMASK) {
+      toast.danger("please switch to metamask");
+      return;
+    }
+    navigate(ChatData.link);
   };
 
   return (
@@ -95,7 +128,12 @@ export default function AppList() {
             <dd>{item.name}</dd>
           </dl>
         ))}
+        <dl onClick={() => handleClickChat()}>
+          <dt>{ChatData.icon ? <img src={ChatData.icon} alt="" /> : <DefaultLogo>{ChatData.name}</DefaultLogo>}</dt>
+          <dd>{ChatData.name}</dd>
+        </dl>
       </UlBox>
+      {Toast}
     </Box>
   );
 }

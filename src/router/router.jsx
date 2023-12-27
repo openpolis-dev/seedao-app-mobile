@@ -30,6 +30,7 @@ const RankingPage = lazy(() => import("pages/ranking"));
 const SNSEntrancePage = lazy(() => import("pages/sns/entrance"))
 const RegisterSNS = lazy(() => import("pages/sns/register"))
 const JoyIDRedirect = lazy(() => import("pages/joyRedirect"))
+const ChatPage = lazy(() => import("pages/chat"));
 
 // import Home from "../pages/home";
 // import Login from "../pages/login";
@@ -102,6 +103,7 @@ function RouterLink() {
         {/* <Route path="/privacy" element={<Privacy />} /> */}
 
         {/*<Route path="/message" element={<MessagePage />} />*/}
+        <Route path="/chat" element={<ChatPage />} />
 
         <Route path="/sns" element={<SNSEntrancePage />} />
         <Route path="/sns/register" element={<RegisterSNS />} />
