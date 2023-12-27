@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import useToast from "hooks/useToast";
 import CloseImg from "../assets/Imgs/close-circle.svg";
 import UploadImg from "../assets/Imgs/upload.svg";
+import { compressionFile, fileToDataURL } from "../utils/image";
 
 const InputGroup = styled.div``;
 
@@ -224,29 +225,12 @@ export default function ProfileEdit() {
     }
   };
 
-  const getBase64 = (imgUrl) => {
-    window.URL = window.URL || window.webkitURL;
-    const xhr = new XMLHttpRequest();
-    xhr.open("get", imgUrl, true);
-    xhr.responseType = "blob";
-    xhr.onload = function () {
-      if (this.status === 200) {
-        const blob = this.response;
-        const oFileReader = new FileReader();
-        oFileReader.onloadend = function (e) {
-          const { result } = e.target;
-          setAvatar(result);
-        };
-        oFileReader.readAsDataURL(blob);
-      }
-    };
-    xhr.send();
-  };
-
-  const updateLogo = (e) => {
+  const updateLogo = async (e) => {
     const { files } = e.target;
-    const url = window.URL.createObjectURL(files[0]);
-    getBase64(url);
+    const file = files[0];
+    const new_file = await compressionFile(file, file.type);
+    const base64 = await fileToDataURL(new_file);
+    setAvatar(base64);
   };
 
   const removeUrl = () => {
