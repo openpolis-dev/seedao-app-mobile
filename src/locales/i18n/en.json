@@ -258,6 +258,10 @@
     "Switching": "Switching",
     "HadSNS": "Your SNS has reached the limit",
     "CancelRegister": "Cancel registration",
-    "CancelTip": "Cancel means you'll start to register from step one"
+    "CancelTip": "Cancel means you'll start to register from step one",
+    "CopyError": "Copy Error",
+    "Error": "oh, something went wrong",
+    "CloseLoading": "Close",
+    "NotEnoughBalance": "{{token}} Not Enough"
   }
 }

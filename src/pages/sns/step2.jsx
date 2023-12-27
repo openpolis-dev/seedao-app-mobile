@@ -12,6 +12,12 @@ import useTransaction from "hooks/useTransaction";
 import getConfig from "constant/envCofnig";
 import { erc20ABI } from "wagmi";
 import CancelModal from "./cancelModal";
+import { useEthersSigner } from "utils/ethersNew";
+import { Wallet } from "utils/constant";
+import CopyBox from "components/common/copy";
+import parseError from "./parseError";
+import useCheckBalance from "./useCheckBalance";
+import { useNetwork, useSwitchNetwork } from "wagmi";
 
 const networkConfig = getConfig().NETWORK;
 const PAY_TOKEN = networkConfig.tokens[0];
@@ -46,12 +52,16 @@ export default function RegisterSNSStep2() {
 
   const account = useSelector((state) => state.account);
   const rpc = useSelector((state) => state.rpc);
+  const wallet = useSelector((state) => state.walletType);
+
+  const signer = useEthersSigner();
+  const checkBalance = useCheckBalance();
 
   const {
-    state: { localData, sns, userProof, hadMintByWhitelist },
+    state: { localData, sns, userProof, hadMintByWhitelist, minterContract, whitelistIsOpen },
     dispatch: dispatchSNS,
   } = useSNSContext();
-  const { toast } = useToast();
+  const { toast, Toast, showToast } = useToast();
 
   const startTimeRef = useRef(0);
   const [leftTime, setLeftTime] = useState(0);
@@ -59,6 +69,9 @@ export default function RegisterSNSStep2() {
   const [showCancelModal, setShowCancelModal] = useState(false);
 
   const { handleTransaction } = useTransaction("sns-register");
+
+  const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
 
   useEffect(() => {
     const parseLocalData = () => {
@@ -95,8 +108,20 @@ export default function RegisterSNSStep2() {
   const progress = (leftTime / 60) * 100;
 
   const handleContinueMint = async () => {
+    // check network
+    if (wallet === Wallet.METAMASK && chain.id !== networkConfig.chainId) {
+      switchNetwork(networkConfig.chainId);
+      return;
+    }
     try {
       dispatchSNS({ type: ACTIONS.SHOW_LOADING });
+      // check balance
+      const token = await checkBalance(true, true);
+      if (token) {
+        toast.danger(t("SNS.NotEnoughBalance", { token }));
+        dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
+        return;
+      }
       const tx = await handleTransaction(
         builtin.SEEDAO_MINTER_ADDR,
         buildRegisterData(sns, ethers.utils.formatBytes32String(secret)),
@@ -118,11 +143,61 @@ export default function RegisterSNSStep2() {
     if (!account) {
       return;
     }
+    // check network
+    if (wallet === Wallet.METAMASK && chain.id !== networkConfig.chainId) {
+      switchNetwork(networkConfig.chainId);
+      return;
+    }
+    // check balance
     dispatchSNS({ type: ACTIONS.SHOW_LOADING });
+    const token = await checkBalance(true, !(userProof && !hadMintByWhitelist && whitelistIsOpen));
+    if (token) {
+      toast.danger(t("SNS.NotEnoughBalance", { token }));
+      dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
+      return;
+    }
     try {
       let tx;
-      if (userProof && !hadMintByWhitelist) {
+      if (userProof && !hadMintByWhitelist && whitelistIsOpen) {
         // whitelist
+        if (signer && wallet === Wallet.METAMASK) {
+          try {
+            await minterContract
+              .connect(signer)
+              .estimateGas.registerWithWhitelist(
+                sns,
+                builtin.PUBLIC_RESOLVER_ADDR,
+                ethers.utils.formatBytes32String(secret),
+                networkConfig.whitelistId,
+                userProof,
+              );
+          } catch (error) {
+            const msg = error?.error?.data.message;
+            if (msg === "execution reverted") {
+              const result = parseError(error?.error?.data.data);
+              showToast(
+                result.name,
+                undefined,
+                <CopyBox text={result.name}>
+                  <CopyErrorButton>{t("SNS.CopyError")}</CopyErrorButton>
+                </CopyBox>,
+              );
+            } else if (msg) {
+              toast.danger(msg);
+            } else {
+              showToast(
+                t("SNS.Error"),
+                undefined,
+                <CopyBox text={error}>
+                  <CopyErrorButton>{t("SNS.CopyError")}</CopyErrorButton>
+                </CopyBox>,
+              );
+            }
+            console.error(error?.error?.data);
+            dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
+            return;
+          }
+        }
         tx = await handleTransaction(
           builtin.SEEDAO_MINTER_ADDR,
           buildWhiteListRegisterData(
@@ -164,7 +239,7 @@ export default function RegisterSNSStep2() {
     } catch (error) {
       dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
       console.error("register failed", error);
-      toast.danger(error?.reason || error?.data?.message || "error");
+      toast.danger(error?.reason || error?.error?.data?.message || error?.data?.message || "error");
     } finally {
     }
   };
@@ -250,6 +325,7 @@ export default function RegisterSNSStep2() {
         <CancelButton onClick={() => setShowCancelModal(true)}>{t("SNS.CancelRegister")}</CancelButton>
       </ContainerWrapper>
       {showCancelModal && <CancelModal handleClose={() => setShowCancelModal(false)} handleCancel={handleCancel} />}
+      {Toast}
     </Container>
   );
 }
@@ -339,4 +415,12 @@ const CancelButton = styled.span`
   cursor: pointer;
   min-width: 100px;
   max-width: 200px;
+`;
+
+const CopyErrorButton = styled(FinishButton)`
+  width: unset;
+  padding-inline: 16px;
+  height: 32px;
+  line-height: 32px;
+  margin-top: 10px;
 `;

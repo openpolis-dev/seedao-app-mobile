@@ -56,7 +56,7 @@ const RegisterSNSWrapper = () => {
         .then((n) => {
           dispatchSNS({ type: ACTIONS.SET_MAX_OWNED_NUMBER, payload: n.toNumber() });
         })
-        .then((error) => {
+        .catch((error) => {
           console.error("checkMaxOwnedNumber failed", error);
         });
     };

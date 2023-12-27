@@ -35,7 +35,7 @@ export default function  Metamask(){
 
 
     const handlePermission = usePushPermission();
-    const signer = useEthersSigner({ chainId: network.chainId });
+    const signer = useEthersSigner();
     console.log("signer: ", signer);
 
     useEffect(()=>{
@@ -88,9 +88,12 @@ export default function  Metamask(){
 
     useEffect(()=>{
         if(!result)return;
-        const toSNS = localStorage.getItem(`==sns==`) === "1";
-        navigate(toSNS ? "/sns/register" : "/home");
-
+        if (localStorage.getItem(`==sns==`) === "1") {
+          localStorage.removeItem(`==sns==`);
+          navigate("/sns/register");
+        } else {
+          navigate("/home");
+        }
     },[result])
 
 
