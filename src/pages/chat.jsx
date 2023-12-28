@@ -46,7 +46,7 @@ export default function Chat() {
         baseUrl="https://sdktest.sending.me"
         useThirdLogin={true}
         widgetWidth="100vw"
-        widgetHeight="calc(100vh - 100px - env(safe-area-inset-bottom)) - env(safe-area-inset-top)"
+        widgetHeight="calc(100vh - 47px - env(safe-area-inset-bottom) - env(safe-area-inset-top))"
       ></chat-component>
     </Layout>
   );
