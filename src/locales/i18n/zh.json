@@ -133,7 +133,8 @@
   },
   "apps": {
     "SeeU": "SeeU Network",
-    "SNS": "SNS"
+    "SNS": "SNS",
+    "Newcomer": "新手村"
   },
   "roles": {
     "SEED_HOLDER": "SEED持有者",
@@ -263,5 +264,19 @@
     "Error": "糟糕出错了",
     "CloseLoading": "关闭",
     "NotEnoughBalance": "{{token}} 余额不足"
+  },
+  "Onboarding": {
+    "UnlockTip": "获取SNS后即可解锁",
+    "AquireSNS": "获取SNS",
+    "ContributeCamp": "SeeDAO共建者营",
+    "ContributeCampIntro": "简介",
+    "QuestionOne": "如何入营",
+    "AnswerOne": "点击“共建者营”按钮，填写申请表单，提交申请。",
+    "QuestionTwo": "共建者营怎么玩",
+    "AnswerTwo": "共建者营是一个为期两周的线上课程，每周一次线下活动。课程内容包括：SeeDAO介绍、SeeDAO治理、SeeDAO生态、SeeDAO应用、SeeDAO项目、SeeDAO公会、SeeDAO节点、SeeDAO资产、SeeDAO社区、SeeDAO未来。",
+    "Enroll": "报名入营",
+    "NewcomerReward": "新手悬赏",
+    "JoinCommunity": "加入社群",
+    "FinalExamination": "毕业考试"
   }
 }

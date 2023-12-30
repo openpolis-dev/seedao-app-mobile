@@ -123,9 +123,7 @@ export default function AppList() {
       <UlBox>
         {events.map((item, index) => (
           <dl key={index} onClick={() => handleClickEvent(item)}>
-            <dt>
-              <img src={item.icon} alt="" />
-            </dt>
+            <dt>{item.icon ? <img src={item.icon} alt="" /> : <DefaultLogo>{item.name}</DefaultLogo>}</dt>
             <dd>{item.name}</dd>
           </dl>
         ))}

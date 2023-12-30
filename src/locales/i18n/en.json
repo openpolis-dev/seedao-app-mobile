@@ -133,7 +133,8 @@
   },
   "apps": {
     "SeeU": "SeeU Network",
-    "SNS": "SNS"
+    "SNS": "SNS",
+    "Newcomer": "Newcomer"
   },
   "roles": {
     "SEED_HOLDER": "SEED Holder",
