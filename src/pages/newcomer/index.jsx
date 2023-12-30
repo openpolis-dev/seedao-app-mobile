@@ -48,7 +48,7 @@ export default function Newcomer() {
         <Container>
           <Tip>{t("Onboarding.UnlockTip")}</Tip>
           <Link to="/sns/register">
-            <button>{t("Onboarding.AquireSNS")}</button>
+            <Button>{t("Onboarding.AquireSNS")}</Button>
           </Link>
         </Container>
       )}
@@ -77,4 +77,15 @@ const Tip = styled.div`
   -moz-background-clip: text;
   -moz-text-fill-color: transparent;
   margin-bottom: 20px;
+`;
+
+const Button = styled.button`
+  outline: none;
+  border: none;
+  height: 36px;
+  border-radius: 8px;
+  padding-inline: 10px;
+  font-size: 14px;
+  background-color: var(--primary-color);
+  color: #fff;
 `;

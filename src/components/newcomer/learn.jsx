@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import styled, { css } from "styled-components";
 import CloseIcon from "assets/Imgs/close-circle.svg";
 import { useState } from "react";
-import LearnCourse from "./course";
+import { useNavigate } from "react-router-dom";
 
 const QUESTIONS = [
   {
@@ -17,11 +17,11 @@ const QUESTIONS = [
 
 export default function LearnDashboard() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [showAnswerContent, setShowAnswerContent] = useState("");
-  const [showCourse, setShowCourse] = useState(false);
 
-  const go2learn = () => {
-    setShowCourse(true);
+  const go2learn = (page_title) => {
+    navigate("/course", { state: page_title });
   };
 
   return (
@@ -37,14 +37,16 @@ export default function LearnDashboard() {
           ))}
         </DashboardLeft>
         <DashboardRight>
-          <ModuleLinkButton onClick={go2learn}>{t("Onboarding.Enroll")}</ModuleLinkButton>
+          <ModuleLinkButton onClick={() => go2learn(t("Onboarding.Enroll"))}>{t("Onboarding.Enroll")}</ModuleLinkButton>
           <LinkButton href="" rel="noreferrer">
             {t("Onboarding.NewcomerReward")}
           </LinkButton>
           <LinkButton href="" rel="noreferrer">
             {t("Onboarding.JoinCommunity")}
           </LinkButton>
-          <ModuleLinkButton onClick={go2learn}>{t("Onboarding.FinalExamination")}</ModuleLinkButton>
+          <ModuleLinkButton onClick={() => go2learn(t("Onboarding.FinalExamination"))}>
+            {t("Onboarding.FinalExamination")}
+          </ModuleLinkButton>
         </DashboardRight>
       </LearnDashboardContet>
       {showAnswerContent && (
@@ -52,12 +54,6 @@ export default function LearnDashboard() {
           <div className="content">{showAnswerContent}</div>
           <img src={CloseIcon} alt="" onClick={() => setShowAnswerContent("")} />
         </AnswerBox>
-      )}
-      {showCourse && (
-        <CourseBox>
-          <LearnCourse />
-          <img src={CloseIcon} alt="" onClick={() => setShowCourse(false)} />
-        </CourseBox>
       )}
     </LeanDashboardStyle>
   );
@@ -99,20 +95,27 @@ const DashboardRight = styled.div`
 `;
 
 const AnswerBox = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
   top: 0;
   left: 0;
-  background-color: var(--background-color);
+  background-color: var(--background-color-1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-inline: 30px;
+  .content {
+    background-color: var(--background-color);
+    padding: 40px 20px;
+    margin-inline: 20px;
+    margin-top: -30%;
+  }
   img {
     cursor: pointer;
-    width: 30px;
+    width: 40px;
     margin-top: 20px;
   }
 `;
@@ -139,7 +142,7 @@ const ModuleLinkButton = styled.div`
 `;
 
 const CourseBox = styled.div`
-  width: 150%;
+  width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
