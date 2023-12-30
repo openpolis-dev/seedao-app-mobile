@@ -3,6 +3,8 @@ import PolygonIcon from "assets/Imgs/network/polygon.svg";
 
 const VERSION = "0.3.5";
 
+const SENTRY_DSN = "https://54ec7357966342699d508a552ec1927c@o4505590144106496.ingest.sentry.io/4505590153805824";
+
 const LOCAL = {
   REACT_APP_BASE_ENDPOINT: "https://test-api.seedao.tech",
   REACT_APP_PUSH_ENDPOINT: "https://test-push-api.seedao.tech",
@@ -41,12 +43,14 @@ const LOCAL = {
   },
   INDEXER_ENDPOINT: "https://test-spp-indexer.seedao.tech",
   SENDINGME_ENABLE: true,
+  SENTRY_DSN,
 };
 const DEVELOPMENT = {
   ...LOCAL,
   REACT_APP_ENV: "test",
   REACT_APP_ONESIGNAL_ID: "2889344b-788a-40d5-8949-1ff1adc71851",
   SENDINGME_ENABLE: true,
+  SENTRY_DSN,
 };
 
 const PREVIEW = {
@@ -55,6 +59,7 @@ const PREVIEW = {
   REACT_APP_THEME_ENABLE: false,
   REACT_APP_ONESIGNAL_ID: "5abed421-a9a0-4811-b255-bc48fa7d4fa4",
   SENDINGME_ENABLE: false,
+  SENTRY_DSN,
 };
 
 const PRODUCTION = {
@@ -66,6 +71,7 @@ const PRODUCTION = {
   REACT_APP_THEME_ENABLE: false,
   REACT_APP_ONESIGNAL_ID: "eda76843-e1a4-40a5-aa01-3d860d9cfa5c",
   SENDINGME_ENABLE: false,
+  SENTRY_DSN,
   // JOY_ID_URL: 'https://app.joy.id',
 };
 
