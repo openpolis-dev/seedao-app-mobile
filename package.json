@@ -11,6 +11,7 @@
     "@metamask/sdk": "^0.7.1",
     "@reduxjs/toolkit": "^1.9.6",
     "@seedao/sns-js": "^0.7.0",
+    "@sentry/cli": "^2.23.1",
     "@sentry/react": "^7.91.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -65,11 +66,12 @@
     "config": "node ./writeManifest.js",
     "dev": "react-scripts start",
     "start": "npm run dev",
-    "build:online": "npm run config && react-app-rewired build",
+    "build:online": "npm run config && react-app-rewired build && npm run sentry:sourcemaps",
     "build": "REACT_APP_ENV_VERSION=dev npm run build:online",
     "build:dev": "npm run build",
     "build:preview": "REACT_APP_ENV_VERSION=preview npm run build:online",
-    "build:prod": "REACT_APP_ENV_VERSION=prod npm run build:online"
+    "build:prod": "REACT_APP_ENV_VERSION=prod npm run build:online",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org seedao --project seedao-mobile-app ./build && sentry-cli sourcemaps upload --org seedao --project seedao-mobile-app ./build"
   },
   "eslintConfig": {
     "extends": [
