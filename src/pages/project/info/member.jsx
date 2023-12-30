@@ -40,7 +40,7 @@ export default function ProjectMember({data}) {
 
       setUserMap(userData);
     } catch (error) {
-      console.error("getUsersInfo error:", error);
+      logError("getUsersInfo error:", error);
     } finally {
       store.dispatch(saveLoading(false));
     }

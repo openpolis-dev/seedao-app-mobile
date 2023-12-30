@@ -124,7 +124,7 @@ export default function Hub(){
             let result = await axios.get(`https://notion-api.splitbee.io/v1/table/73d83a0a-258d-4ac5-afa5-7a997114755a`);
             setList(result.data);
         } catch (e) {
-            console.error(e);
+            logError(e);
         } finally {
             // dispatch({ type: AppActionType.SET_LOADING, payload: false });
         }

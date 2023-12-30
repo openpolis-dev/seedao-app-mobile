@@ -28,7 +28,7 @@ const CopyBox = ({ children, text, dir, ...props }) => {
 
     } catch (error) {
 
-      console.error('Failed to copy text: ', error);
+      logError('Failed to copy text: ', error);
     }
   };
 

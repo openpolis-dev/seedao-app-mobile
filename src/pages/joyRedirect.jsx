@@ -68,7 +68,7 @@ export default function JoyIDRedirect() {
         return;
       }
     } catch (error) {
-      console.error(error);
+      logError(error);
     }
     if (!res) {
       switch (action) {

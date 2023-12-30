@@ -216,7 +216,7 @@ export default function PubInner({id}){
 
             });
         } catch (e) {
-            console.error(e);
+            logError(e);
         } finally {
             store.dispatch(saveLoading(false));
         }

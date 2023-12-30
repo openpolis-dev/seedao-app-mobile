@@ -101,7 +101,7 @@ export default function Guild() {
       setTotal(total);
       setPageCur(page+1);
     } catch (error) {
-      console.error(error);
+      logError(error);
     } finally {
       useGlobalLoading && store.dispatch(saveLoading(false));
     }
@@ -123,7 +123,7 @@ export default function Guild() {
       setTotal(total);
       setPageCur(page + 1);
     } catch (error) {
-      console.error(error);
+      logError(error);
     } finally {
       useGlobalLoading && store.dispatch(saveLoading(false));
     }

@@ -148,7 +148,7 @@ export default function ProfileEdit() {
       setAvatar(avatar);
       // setWallet(wallet);
     } catch (e) {
-      console.error(e);
+      logError(e);
     } finally {
       store.dispatch(saveLoading(false));
     }
@@ -218,7 +218,7 @@ export default function ProfileEdit() {
       toast.success(t("My.ModifiedSuccess"));
       navigate(-1);
     } catch (error) {
-      console.error("updateUser failed", error);
+      logError("updateUser failed", error);
       toast.danger(t("My.ModifiedFailed"));
     } finally {
       store.dispatch(saveLoading(false));

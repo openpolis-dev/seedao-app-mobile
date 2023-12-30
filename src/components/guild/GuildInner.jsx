@@ -83,7 +83,7 @@ export default function GuildInner({id}){
                 setData(data.data)
                 // dispatch({ type: GUILD_ACTIONS.SET_DATA, payload: data.data });
             } catch (error) {
-                console.error(error);
+                logError(error);
             } finally {
                 store.dispatch(saveLoading(false));
             }

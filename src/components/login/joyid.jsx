@@ -118,7 +118,7 @@ export default function Joyid(){
               },
             });
         }catch (e){
-            console.error("onSignMessageRedirect",e)
+            logError("onSignMessageRedirect",e)
         }
 
     };
@@ -166,10 +166,10 @@ export default function Joyid(){
             try {
               await OneSignal.login(account.toLocaleLowerCase());
             } catch (error) {
-              console.error("OneSignal login error", error);
+              logError("OneSignal login error", error);
             }
         }catch (e){
-            console.error(e)
+            logError(e)
             ReactGA.event("login_failed",{type: "joyid"});
         }
 

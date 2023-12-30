@@ -56,7 +56,7 @@ export default function InstallCheck() {
         console.log("[installApp] outcome:", outcome);
       })
       .catch((error) => {
-        console.error("[installApp] error:", error);
+        logError("[installApp] error:", error);
       });
   };
 

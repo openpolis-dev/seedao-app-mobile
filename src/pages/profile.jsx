@@ -383,7 +383,7 @@ export default function Profile() {
 
 
     } catch (e) {
-      console.error(e);
+      logError(e);
     } finally {
       store.dispatch(saveLoading(false));
     }

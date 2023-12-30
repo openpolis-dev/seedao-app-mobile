@@ -148,7 +148,7 @@ export default function PubList(){
             setPageSize(size);
             setPageCur(page +1);
         } catch (e) {
-            console.error(e);
+            logError(e);
         } finally {
             store.dispatch(saveLoading(false));
         }
