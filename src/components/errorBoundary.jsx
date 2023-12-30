@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/react";
-import React, { PropsWithChildren, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import CopyBox from "./common/copy";
 
