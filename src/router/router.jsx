@@ -11,8 +11,7 @@ const ProjectInfoRoot = lazy(() => import("pages/project/info/info"));
 const Guild = lazy(() => import("pages/guild"));
 const GuildInfoRoot = lazy(() => import("pages/guild/info/info"));
 const Proposal = lazy(() => import("../pages/proposalV2/list"));
-const ProposalCategory = lazy(() => import("pages/proposal/category"));
-const ProposalThread = lazy(() => import("pages/proposal/thread"));
+const ProposalThread = lazy(() => import("pages/proposalV2/thread"));
 const Setting = lazy(() => import("../pages/setting"));
 const Assets = lazy(() => import("../pages/vault/assets"));
 const AssetsApplication = lazy(() => import("../pages/vault/application"));
@@ -80,7 +79,6 @@ function RouterLink() {
         <Route path="/guild" element={<Guild />} />
         <Route path="/guild/info/:id" element={<GuildInfoRoot />} />
         <Route path="/proposal" element={<Proposal />} />
-        <Route path="/proposal/category/:id" element={<ProposalCategory />} />
         <Route path="/proposal/thread/:id" element={<ProposalThread />} />
         <Route path="/assets" element={<Assets />} />
         <Route path="/assets/application" element={<AssetsApplication />} />

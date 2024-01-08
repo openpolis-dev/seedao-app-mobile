@@ -11,7 +11,7 @@ export default function ProposalItem({ data, sns }) {
   const navigate = useNavigate();
 
   const openProposal = () => {
-    navigate(`/proposal-v2/thread/${data.id}`, { state: data });
+    navigate(`/proposal/thread/${data.id}`, { state: data });
   };
 
   return (

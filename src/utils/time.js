@@ -26,3 +26,19 @@ export const formatLeftTime = (targetTime) => {
 export const formatDate = (date, formatter) => {
   return dayjs(date).format(['YYYY', 'MM', 'DD'].join(formatter || '-'));
 };
+
+export const formatDeltaDate = (endTime) => {
+  const now = Date.now();
+  const until = endTime;
+  const days = Math.abs(until - now) / 1000 / 3600 / 24;
+  const day = Math.floor(days);
+  const hours = (days - day) * 24;
+  const hour = Math.floor(hours);
+  const minutes = (hours - hour) * 60;
+  let minute = Math.floor(minutes);
+  const seconds = (minutes - minute) * 60;
+  if (seconds) {
+    minute += 1;
+  }
+  return { d: day, h: hour, m: minute };
+};
