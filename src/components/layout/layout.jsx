@@ -38,6 +38,7 @@ const InnerBox = styled.div`
  * sticky: boolean
  * title: string
  * noTab: boolean
+ * customTab: if noTab is true, customTab will not display
  * headBgColor: string
  * bgColor: string
  */
@@ -46,6 +47,7 @@ export default function Layout({
   noHeader,
   title,
   noTab,
+  customTab,
   headBgColor,
   bgColor,
   headColor,
@@ -121,7 +123,7 @@ export default function Layout({
       >
         {children}
       </InnerBox>
-      {!noTab && <TabBar />}
+      {!noTab && (customTab || <TabBar />)}
     </OuterBox>
   );
 }
