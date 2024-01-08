@@ -16,6 +16,7 @@ import { Preview } from "@seedao/components";
 import { MdPreview } from "md-editor-rt";
 import ProposalVote from "components/proposalCom/vote";
 import { ProposalState } from "constant/proposal";
+import ThreadTabbar from "components/proposalCom/threadTabbar";
 
 export default function ProposalThread() {
   const { id } = useParams();
@@ -170,7 +171,7 @@ export default function ProposalThread() {
   };
 
   return (
-    <Layout title={t("Proposal.ProposalDetail")} noTab>
+    <Layout title={t("Proposal.ProposalDetail")} customTab={<ThreadTabbar showVote={showVote()} id={Number(id)} />}>
       <ThreadHead>
         <div className="title">{data?.title}</div>
         <FlexLine>
