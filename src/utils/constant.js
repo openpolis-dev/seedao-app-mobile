@@ -22,3 +22,5 @@ export const Wallet = {
   UNIPASS: 'UNIPASS',
   JOYID: 'JOYID',
 }
+
+export const METAFORO_TOKEN = "METAFORO_TOKEN";

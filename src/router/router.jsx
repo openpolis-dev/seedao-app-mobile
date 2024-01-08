@@ -10,7 +10,7 @@ const Project = lazy(() => import("pages/project"));
 const ProjectInfoRoot = lazy(() => import("pages/project/info/info"));
 const Guild = lazy(() => import("pages/guild"));
 const GuildInfoRoot = lazy(() => import("pages/guild/info/info"));
-const Proposal = lazy(() => import("../pages/proposal"));
+const Proposal = lazy(() => import("../pages/proposalV2/list"));
 const ProposalCategory = lazy(() => import("pages/proposal/category"));
 const ProposalThread = lazy(() => import("pages/proposal/thread"));
 const Setting = lazy(() => import("../pages/setting"));

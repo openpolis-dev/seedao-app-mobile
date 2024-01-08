@@ -68,7 +68,7 @@ const SelectStyle = styled(Select)`
   }
   .react-select__control {
     border-radius: 6px;
-    height: 24px !important;
+    height: ${(props) => (props.height ? props.height : "24px")} !important;
     min-height: unset;
   }
   .react-select__control--is--focused {
