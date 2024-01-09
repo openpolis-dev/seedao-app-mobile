@@ -9,7 +9,7 @@ import Avatar from "components/common/avatar";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import { getProposalDetail, getComponents } from "api/proposalV2";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import publicJs from "utils/publicJs";
 import useQuerySNS from "hooks/useQuerySNS";
 import { Preview } from "@seedao/components";
@@ -21,6 +21,7 @@ import ThreadTabbar from "components/proposalCom/threadTabbar";
 export default function ProposalThread() {
   const { id } = useParams();
   const { state } = useLocation();
+  const navigate = useNavigate();
 
   const { t, i18n } = useTranslation();
   const [data, setData] = useState();
@@ -114,7 +115,7 @@ export default function ProposalThread() {
       if (applicant) {
         try {
           const snsMap = await getMultiSNS([applicant]);
-          const name = snsMap.get(applicant.toLocaleLowerCase()) || applicant;
+          const name = snsMap[applicant.toLocaleLowerCase()] || applicant;
           setApplicantSNS(name?.endsWith(".seedao") ? name : publicJs.AddressToShow(name, 4));
         } catch (error) {}
       }
@@ -171,7 +172,10 @@ export default function ProposalThread() {
   };
 
   return (
-    <Layout title={t("Proposal.ProposalDetail")} customTab={<ThreadTabbar showVote={showVote()} id={Number(id)} />}>
+    <Layout
+      title={t("Proposal.ProposalDetail")}
+      customTab={<ThreadTabbar showVote={showVote()} openComment={() => navigate(`/proposal/thread/${id}/comments`)} />}
+    >
       <ThreadHead>
         <div className="title">{data?.title}</div>
         <FlexLine>

@@ -6,10 +6,9 @@ import ShareImg from "assets/Imgs/proposal/share.svg";
 import CommentImg from "assets/Imgs/proposal/comment.svg";
 import CopyBox from "components/common/copy";
 
-export default function ThreadTabbar({ showVote, id }) {
+export default function ThreadTabbar({ showVote, id, openComment }) {
   const { t } = useTranslation();
   const go2vote = () => {};
-  const openComment = () => {};
 
   return (
     <Box>

@@ -3,7 +3,6 @@ import React from "react";
 import { lazy } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 
-
 const Home = lazy(() => import("../pages/home"));
 const Login = lazy(() => import("../pages/login"));
 const Project = lazy(() => import("pages/project"));
@@ -12,6 +11,7 @@ const Guild = lazy(() => import("pages/guild"));
 const GuildInfoRoot = lazy(() => import("pages/guild/info/info"));
 const Proposal = lazy(() => import("../pages/proposalV2/list"));
 const ProposalThread = lazy(() => import("pages/proposalV2/thread"));
+const ProposalComment = lazy(() => import("pages/proposalV2/comments"));
 const Setting = lazy(() => import("../pages/setting"));
 const Assets = lazy(() => import("../pages/vault/assets"));
 const AssetsApplication = lazy(() => import("../pages/vault/application"));
@@ -26,9 +26,9 @@ const PubList = lazy(() => import("../pages/PubList"));
 const EventList = lazy(() => import("pages/event/list"));
 const EventInfoPage = lazy(() => import("pages/event/detail"));
 const RankingPage = lazy(() => import("pages/ranking"));
-const SNSEntrancePage = lazy(() => import("pages/sns/entrance"))
-const RegisterSNS = lazy(() => import("pages/sns/register"))
-const JoyIDRedirect = lazy(() => import("pages/joyRedirect"))
+const SNSEntrancePage = lazy(() => import("pages/sns/entrance"));
+const RegisterSNS = lazy(() => import("pages/sns/register"));
+const JoyIDRedirect = lazy(() => import("pages/joyRedirect"));
 const ChatPage = lazy(() => import("pages/chat"));
 const Newcomer = lazy(() => import("pages/newcomer"));
 const NewcomerCourse = lazy(() => import("pages/newcomer/course"));
@@ -80,6 +80,7 @@ function RouterLink() {
         <Route path="/guild/info/:id" element={<GuildInfoRoot />} />
         <Route path="/proposal" element={<Proposal />} />
         <Route path="/proposal/thread/:id" element={<ProposalThread />} />
+        <Route path="/proposal/thread/:id/comments" element={<ProposalComment />} />
         <Route path="/assets" element={<Assets />} />
         <Route path="/assets/application" element={<AssetsApplication />} />
         <Route path="/user/edit" element={<ProfileEdit />} />
