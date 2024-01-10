@@ -139,8 +139,8 @@
     "FillRejectReason": "填写驳回理由",
     "Comment": "评论",
     "EditHistory": "历史记录",
-    "HistoryCreate": "在 {{time}} 提交了提案 <title>{{title}}</title>",
-    "HistoryEdit": "在 {{time}} 编辑了提案 <title>{{title}}</title>",
+    "HistoryCreate": "提交了提案",
+    "HistoryEdit": "编辑了提案",
     "Send": "发送",
     "EmptyComment": "当前没有评论",
     "ConfirmDeleteComment": "确定要删除该条评论吗？",
@@ -165,7 +165,8 @@
     "LoginTip": "使用完整功能，请先登录Metaforo",
     "LoginButton": "登录 Metaforo",
     "WriteReplyHint": "留下你的评论吧！",
-    "TimeDisplay": "{{d}}天{{h}}小时{{m}}分钟"
+    "TimeDisplay": "{{d}}天{{h}}小时{{m}}分钟",
+    "History": "历史记录"
   },
   "My": {
     "MyProfile": "我的信息",

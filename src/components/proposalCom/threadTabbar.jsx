@@ -6,13 +6,13 @@ import ShareImg from "assets/Imgs/proposal/share.svg";
 import CommentImg from "assets/Imgs/proposal/comment.svg";
 import CopyBox from "components/common/copy";
 
-export default function ThreadTabbar({ showVote, id, openComment }) {
+export default function ThreadTabbar({ showVote, id, openComment, openHistory }) {
   const { t } = useTranslation();
   const go2vote = () => {};
 
   return (
     <Box>
-      <HistoryBlock>{t("Proposal.HistoryRecord")}</HistoryBlock>
+      <HistoryBlock onClick={openHistory}>{t("Proposal.HistoryRecord")}</HistoryBlock>
       <ThreadToolsBar>
         {showVote && (
           <li onClick={go2vote}>

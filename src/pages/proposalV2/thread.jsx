@@ -174,7 +174,13 @@ export default function ProposalThread() {
   return (
     <Layout
       title={t("Proposal.ProposalDetail")}
-      customTab={<ThreadTabbar showVote={showVote()} openComment={() => navigate(`/proposal/thread/${id}/comments`)} />}
+      customTab={
+        <ThreadTabbar
+          showVote={showVote()}
+          openComment={() => navigate(`/proposal/thread/${id}/comments`)}
+          openHistory={() => navigate(`/proposal/thread/${id}/history`, { state: data.histories?.lists ?? [] })}
+        />
+      }
     >
       <ThreadHead>
         <div className="title">{data?.title}</div>

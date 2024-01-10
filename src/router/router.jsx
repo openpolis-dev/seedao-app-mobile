@@ -12,6 +12,7 @@ const GuildInfoRoot = lazy(() => import("pages/guild/info/info"));
 const Proposal = lazy(() => import("../pages/proposalV2/list"));
 const ProposalThread = lazy(() => import("pages/proposalV2/thread"));
 const ProposalComment = lazy(() => import("pages/proposalV2/comments"));
+const ProposalHistory = lazy(() => import("pages/proposalV2/history"));
 const Setting = lazy(() => import("../pages/setting"));
 const Assets = lazy(() => import("../pages/vault/assets"));
 const AssetsApplication = lazy(() => import("../pages/vault/application"));
@@ -81,6 +82,7 @@ function RouterLink() {
         <Route path="/proposal" element={<Proposal />} />
         <Route path="/proposal/thread/:id" element={<ProposalThread />} />
         <Route path="/proposal/thread/:id/comments" element={<ProposalComment />} />
+        <Route path="/proposal/thread/:id/history" element={<ProposalHistory />} />
         <Route path="/assets" element={<Assets />} />
         <Route path="/assets/application" element={<AssetsApplication />} />
         <Route path="/user/edit" element={<ProfileEdit />} />
