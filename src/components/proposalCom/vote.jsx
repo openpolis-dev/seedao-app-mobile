@@ -9,6 +9,7 @@ import { formatDeltaDate } from "utils/time";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import BaseModal from "components/baseModal";
+import VoteRulesModal from "./voteRules";
 
 const VoteType = {
   Waite: "waite",
@@ -34,6 +35,7 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
   const [openVoteItem, setOpenVoteItem] = useState();
   const [showConfirmVote, setShowConfirmVote] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
+  const [showVoteRules, setShowVoteRules] = useState(false);
 
   const { checkMetaforoLogin, LoginMetafoModal } = useMetaforoLogin();
   const { toast } = useToast();
@@ -173,19 +175,7 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
       <FlexLine>
         <VoteHeadLeft>{poll.title}</VoteHeadLeft>
       </FlexLine>
-      <VoteBody>
-        {showVoteContent()}
-
-        {voteGate && (
-          <VoteNFT>
-            <span>
-              {t("Proposal.PollNFT")}: {voteGate.contract_addr}
-            </span>
-            <span>Token Id: {voteGate.token_id}</span>
-            {voteGate.name && <span>{voteGate.name}</span>}
-          </VoteNFT>
-        )}
-      </VoteBody>
+      <VoteBody>{showVoteContent()}</VoteBody>
       {/* {!!openVoteItem && <VoterListModal {...openVoteItem} onClose={() => setOpenVoteItem(undefined)} />} */}
       {showConfirmVote && (
         <BaseModal
@@ -194,6 +184,13 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
           onClose={() => setShowConfirmVote(false)}
         />
       )}
+      <Bottom>
+        {voteGate?.name && <span className="alias">{voteGate.name}</span>}
+        <span className="rule" onClick={() => setShowVoteRules(true)}>
+          {t("Proposal.VoteRules")}
+        </span>
+      </Bottom>
+      {showVoteRules && <VoteRulesModal voteGate={voteGate} handleClose={() => setShowVoteRules(false)} />}
       {LoginMetafoModal}
     </CardStyle>
   );
@@ -326,4 +323,17 @@ const VoteButton = styled.button`
 
 const HasVote = styled.span`
   color: var(--bs-primary);
+`;
+
+const Bottom = styled.div`
+  margin-top: 16px;
+  font-size: 14px;
+  line-height: 20px;
+  .alias {
+    color: #8c56ff;
+    margin-right: 16px;
+  }
+  .rule {
+    color: var(--font-light-color);
+  }
 `;

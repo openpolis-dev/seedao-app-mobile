@@ -168,7 +168,8 @@
     "LoginButton": "Login to Metaforo",
     "WriteReplyHint": "write a reply",
     "TimeDisplay": "{{d}} day(s) {{h}} hour(s) {{m}} minute(s)",
-    "History": "History"
+    "History": "History",
+    "VoteRules": "Vote Rules"
   },
   "My": {
     "MyProfile": "My Profile",
