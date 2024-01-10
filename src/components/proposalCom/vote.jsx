@@ -3,11 +3,12 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { castVote, checkCanVote } from "api/proposalV2";
 import useToast from "hooks/useToast";
-// import useCheckMetaforoLogin from "hooks/useMetaforoLogin";
 // import VoterListModal from "components/modals/voterListModal";
+import useMetaforoLogin from "hooks/useMetaforoLogin";
 import { formatDeltaDate } from "utils/time";
 import store from "store";
 import { saveLoading } from "store/reducer";
+import BaseModal from "components/baseModal";
 
 const VoteType = {
   Waite: "waite",
@@ -34,7 +35,7 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
   const [showConfirmVote, setShowConfirmVote] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
 
-  //   const { checkMetaforoLogin } = useCheckMetaforoLogin();
+  const { checkMetaforoLogin, LoginMetafoModal } = useMetaforoLogin();
   const { toast } = useToast();
 
   const pollStatus = getPollStatus(poll.poll_start_at, poll.close_at);
@@ -61,12 +62,16 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
     }
   }, [pollStatus, t]);
 
-  const onConfirmVote = () => {
+  const onConfirmVote = async () => {
+    const canVote = await checkMetaforoLogin();
+    if (!canVote) {
+      return;
+    }
     store.dispatch(saveLoading(true));
+    setShowConfirmVote(false);
 
     castVote(id, poll.id, selectOption?.id)
       .then(() => {
-        setShowConfirmVote(false);
         updateStatus();
         toast.success(t("Msg.CastVoteSuccess"));
       })
@@ -182,20 +187,21 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
         )}
       </VoteBody>
       {/* {!!openVoteItem && <VoterListModal {...openVoteItem} onClose={() => setOpenVoteItem(undefined)} />} */}
-      {/* {showConfirmVote && (
-        <ConfirmModal
+      {showConfirmVote && (
+        <BaseModal
           msg={t("Proposal.ConfirmVoteOption", { option: selectOption?.html })}
           onConfirm={onConfirmVote}
           onClose={() => setShowConfirmVote(false)}
         />
-      )} */}
+      )}
+      {LoginMetafoModal}
     </CardStyle>
   );
 }
 const FlexLine = styled.div``;
 
 const CardStyle = styled.div`
-  margin:0 20px 32px;
+  margin: 0 20px 32px;
 `;
 
 const VoteHead = styled.div`
@@ -212,17 +218,17 @@ const VoteHeadLeft = styled.div``;
 
 const VoteBody = styled.div`
   border-radius: 8px;
-  border: 1px solid #E6DCFF;
-  background: #FFF;
-  box-shadow: 2px 4px 4px 0px rgba(211, 206, 221, 0.10);
+  border: 1px solid #e6dcff;
+  background: #fff;
+  box-shadow: 2px 4px 4px 0px rgba(211, 206, 221, 0.1);
   padding: 10px 16px 0;
   box-sizing: border-box;
-  table{
+  table {
     width: 100%;
     margin-bottom: 10px;
     font-size: 14px;
     vertical-align: center;
-    td{
+    td {
       height: 36px;
     }
   }
