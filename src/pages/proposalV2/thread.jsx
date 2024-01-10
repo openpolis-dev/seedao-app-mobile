@@ -37,9 +37,6 @@ export default function ProposalThread() {
   const [currentCommentArrayIdx, setCurrentCommentArrayIdx] = useState(0);
   const [dataSource, setDatasource] = useState();
 
-  const [totalPostsCount, setTotalPostsCount] = useState(0);
-  const [totalEditCount, setTotalEditCount] = useState(0);
-  const [editHistoryList, setEditHistoryList] = useState([]);
   const [contentBlocks, setContentBlocks] = useState([]);
 
   const { getMultiSNS } = useQuerySNS();
@@ -104,11 +101,7 @@ export default function ProposalThread() {
         setHasMore(all_comments.length === 0 ? false : now_count < res.data.comment_count);
         getMultiSNS(Array.from(new Set(all_comments.map((item) => item.wallet))));
       }
-      setTotalPostsCount(res.data.comment_count);
 
-      // history
-      setTotalEditCount(res.data.histories.total_count ?? 0);
-      setEditHistoryList(res.data.histories?.lists ?? []);
       const applicant = res.data.applicant;
       setApplicantSNS(publicJs.AddressToShow(applicant));
       setApplicant(applicant);
