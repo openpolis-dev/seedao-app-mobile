@@ -8,7 +8,9 @@ import CopyBox from "components/common/copy";
 
 export default function ThreadTabbar({ showVote, id, openComment, openHistory }) {
   const { t } = useTranslation();
-  const go2vote = () => {};
+  const go2vote = () => {
+    document.querySelector("#vote-block")?.scrollIntoView();
+  };
 
   return (
     <Box>
@@ -56,7 +58,6 @@ const Box = styled.div`
   padding: 0 20px env(safe-area-inset-bottom);
   border-top: 1px solid var(--border-color);
   font-size: 14px;
-  
 `;
 
 const ThreadToolsBar = styled.ul`
@@ -71,7 +72,7 @@ const ThreadToolsBar = styled.ul`
   li {
     cursor: pointer;
     font-size: 14px;
-    color: #9A9A9A;
+    color: #9a9a9a;
     display: flex;
     align-items: center;
     font-size: 12px;
