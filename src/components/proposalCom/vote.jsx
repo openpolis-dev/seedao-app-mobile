@@ -10,6 +10,7 @@ import store from "store";
 import { saveLoading } from "store/reducer";
 import BaseModal from "components/baseModal";
 import VoteRulesModal from "./voteRules";
+import VoterListModal from "./voterList";
 
 const VoteType = {
   Waite: "waite",
@@ -176,7 +177,7 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
         <VoteHeadLeft>{poll.title}</VoteHeadLeft>
       </FlexLine>
       <VoteBody>{showVoteContent()}</VoteBody>
-      {/* {!!openVoteItem && <VoterListModal {...openVoteItem} onClose={() => setOpenVoteItem(undefined)} />} */}
+      {!!openVoteItem && <VoterListModal {...openVoteItem} onClose={() => setOpenVoteItem(undefined)} />}
       {showConfirmVote && (
         <BaseModal
           msg={t("Proposal.ConfirmVoteOption", { option: selectOption?.html })}
