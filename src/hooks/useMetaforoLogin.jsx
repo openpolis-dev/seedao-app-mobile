@@ -14,6 +14,7 @@ export default function useMetaforoLogin() {
   const account = useSelector((state) => state.account);
   const metaforoToken = useSelector((state) => state.metaforoToken);
   const [showLogin, setShowLogin] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { chain } = useNetwork();
 
@@ -21,8 +22,10 @@ export default function useMetaforoLogin() {
   const { toast } = useToast();
 
   const go2login = async () => {
-    store.dispatch(saveLoading(true));
-
+    if (loading) {
+      return;
+    }
+    setLoading(true);
     // sign
     try {
       console.log("[typedData] params", account, chain.id);
@@ -36,27 +39,32 @@ export default function useMetaforoLogin() {
         signMsg: JSON.stringify(signData),
         wallet_type: 5,
       });
-      store.dispatch(saveMetaforoToken({ account, token: data.token }));
+      store.dispatch(saveMetaforoToken({ id: data.user.id, account, token: data.api_token }));
+      try {
+        await prepareMetaforo();
+      } catch (error) {
+        logError("prepareMetaforo failed", error);
+      }
     } catch (error) {
       logError("login failed", error);
       toast.danger(error?.data?.msg || error?.message || `${error}`);
       return;
     } finally {
-      store.dispatch(saveLoading(false));
+      setLoading(false);
       setShowLogin(false);
     }
     return true;
   };
 
   const checkMetaforoLogin = async () => {
-    if (account === metaforoToken?.account) {
+    if (metaforoToken?.token && account?.toLocalLowercase() === metaforoToken?.account?.toLocalLowercase()) {
       return true;
     }
     setShowLogin(true);
   };
 
   const LoginMetafoModal = showLogin ? (
-    <MetaforoLoginModal onClose={() => setShowLogin(false)} onConfirm={go2login} />
+    <MetaforoLoginModal onClose={() => !loading && setShowLogin(false)} onConfirm={go2login} />
   ) : null;
 
   return { checkMetaforoLogin, LoginMetafoModal };

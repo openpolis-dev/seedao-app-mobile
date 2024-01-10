@@ -19,11 +19,13 @@ import { ProposalState } from "constant/proposal";
 import ThreadTabbar from "components/proposalCom/threadTabbar";
 import LinkImg from "assets/Imgs/proposal/link.png";
 import useMetaforoLogin from "hooks/useMetaforoLogin";
+import { useSelector } from "react-redux";
 
 export default function ProposalThread() {
   const { id } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
+  const metaforoToken = useSelector((state) => state.metaforoToken);
 
   const { t, i18n } = useTranslation();
   const [data, setData] = useState();
@@ -32,7 +34,6 @@ export default function ProposalThread() {
 
   const [applicantSNS, setApplicantSNS] = useState("");
 
-  const [hasMore, setHasMore] = useState(false);
   const [components, setComponents] = useState([]);
   const [commentsArray, setCommentsArray] = useState([]);
   const [currentCommentArrayIdx, setCurrentCommentArrayIdx] = useState(0);
@@ -100,7 +101,6 @@ export default function ProposalThread() {
         const all_comments = new_arr.length ? new_arr.reduce((a, b) => [...a, ...b], []) : [];
         let now_count = all_comments.length;
         all_comments.forEach((item) => (now_count += item.children?.length || 0));
-        setHasMore(all_comments.length === 0 ? false : now_count < res.data.comment_count);
         getMultiSNS(Array.from(new Set(all_comments.map((item) => item.wallet))));
       }
 
@@ -129,7 +129,7 @@ export default function ProposalThread() {
     }
     getProposal();
     getComponentsList();
-  }, [id, state]);
+  }, [id, state, metaforoToken]);
 
   const getComponentsList = async () => {
     // NOTE: getProposalDetail may use more time, so not show loading here

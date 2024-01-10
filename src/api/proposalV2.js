@@ -1,6 +1,7 @@
 import request from "./index";
 import axios from "axios";
 import { METAFORO_TOKEN } from "utils/constant";
+import store from "store";
 
 const PATH_PREFIX = "/proposals/";
 
@@ -16,15 +17,12 @@ export function loginByWallet(param, token) {
       },
     })
     .then((res) => {
-      return res.data;
+      return res.data?.data;
     });
 }
 
 export const getMetaforoData = () => {
-  try {
-    const data = localStorage.getItem(METAFORO_TOKEN);
-    return data;
-  } catch (error) {}
+  return store.getState().metaforoToken;
 };
 
 export const getProposalCategoryList = () => {
