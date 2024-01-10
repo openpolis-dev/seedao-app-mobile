@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import store from "store";
 import { saveLoading } from "store/reducer";
-import { useSelector } from "react-redux";
+
 import { useEffect, useState } from "react";
 import Layout from "components/layout/layout";
 import Loading from "components/common/loading";
@@ -13,6 +13,7 @@ import { ProposalState } from "constant/proposal";
 import useProposalCategories from "hooks/useProposalCategories";
 import { getProposalList } from "api/proposalV2";
 import SeeSelect from "components/common/select";
+import SearchImg from "assets/Imgs/search.svg";
 
 const PAGE_SIZE = 10;
 
@@ -79,6 +80,7 @@ export default function ProposalList() {
         q: searchKeyword,
       });
       setProposalList(resp.data.rows);
+      console.log(proposalList)
       //   handleSNS(resp.data.rows.filter((d) => !!d.applicant).map((d) => d.applicant));
       setTotalCount(resp.data.total);
     } catch (error) {
@@ -104,6 +106,7 @@ export default function ProposalList() {
     <Layout title={t("Proposal.Governance")} headBgColor={`var(--background-color)`} bgColor="var(--background-color)">
       <FilterBox>
         <SearchInputBox>
+          <img src={SearchImg} alt=""/>
           <InputStyle
             value={inputKeyword}
             onChange={onChangeKeyword}
@@ -188,19 +191,26 @@ const SearchInputBox = styled.div`
   width: 100%;
   position: relative;
   margin-bottom: 9px;
-`;
-
-const InputStyle = styled.input`
-  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   height: 40px;
   line-height: 40px;
   background: #e2e2ee;
   border-radius: 20px;
-  padding-left: 6px;
-  border: none;
-  font-size: 10px;
+  gap: 8px;
+  padding: 0 16px;
   box-sizing: border-box;
-  overflow-x: auto;
+`;
+
+const InputStyle = styled.input`
+  
+  flex-grow: 1;
+    background: transparent;
+  border: none;
+  font-size: 14px;
+  box-sizing: border-box;
+  margin-bottom: -3px;
 
   &:focus-visible {
     outline: none;
@@ -209,4 +219,11 @@ const InputStyle = styled.input`
 
 const FilterSelect = styled(SeeSelect)`
   height: 26px !important;
+[class$="-control"]{
+  height: 26px !important;
+}
+[class$="-control"],[class$="-option"]{
+  font-size: 12px !important;
+}
+
 `

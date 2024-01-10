@@ -17,4 +17,8 @@ const VersionStyle = styled.div`
   font-size: 12px;
   color: var(--font-light-color);
   margin-top: 20px;
+  //position: sticky;
+  //left: 0;
+  //bottom: 0;
+  //width: 100%;
 `;

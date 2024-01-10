@@ -17,6 +17,7 @@ import { MdPreview } from "md-editor-rt";
 import ProposalVote from "components/proposalCom/vote";
 import { ProposalState } from "constant/proposal";
 import ThreadTabbar from "components/proposalCom/threadTabbar";
+import LinkImg from "assets/Imgs/proposal/link.png";
 
 export default function ProposalThread() {
   const { id } = useParams();
@@ -183,35 +184,40 @@ export default function ProposalThread() {
       }
     >
       <ThreadHead>
-        <div className="title">{data?.title}</div>
+        <div className="title">{data?.title}  {data?.arweave && (
+            <a href={`https://arweave.net/tx/${data?.arweave}/data.html`} target="_blank" rel="noreferrer" className="linkStyle">
+              <img src={LinkImg} alt=""/>
+            </a>
+        )}</div>
         <FlexLine>
           {data?.state && <ProposalStateTag state={data.state} />}
-          {data?.category_name && <CategoryTag>{data.category_name}</CategoryTag>}
-          {data?.arweave && (
-            <a href={`https://arweave.net/tx/${data?.arweave}/data.html`} target="_blank" rel="noreferrer">
-              a
-            </a>
-          )}
+          {data?.category_name && <CategoryTag>{data?.category_name}</CategoryTag>}
         </FlexLine>
+
         <InfoBox>
           <UserBox>
             <Avatar src={applicantAvatar} size="30px" />
-            <span className="name">{applicantSNS}</span>
+            <div>
+              <span className="name">{applicantSNS}</span>
+              {data?.create_ts && <div className="date">{formatTime(data.create_ts * 1000)}</div>}
+            </div>
           </UserBox>
-          {data?.create_ts && <div className="date">{formatTime(data.create_ts * 1000)}</div>}
         </InfoBox>
       </ThreadHead>
       {data?.is_rejected && data?.reject_reason && data?.reject_ts && (
-        <RejectBlock>
-          <RejectLine>
-            <span className="rejectTit">{t("Proposal.CityhallRejected")}</span>
-            <span className="time">{formatTime(data.reject_ts * 1000)}</span>
-          </RejectLine>
-          <div className="desc">{data.reject_reason}</div>
-        </RejectBlock>
+          <RejectOuter>
+            <RejectBlock>
+              <RejectLine>
+                <span className="rejectTit">{t("Proposal.CityhallRejected")}</span>
+                <span className="time">{formatTime(data.reject_ts * 1000)}</span>
+              </RejectLine>
+              <div className="desc">{data.reject_reason}</div>
+            </RejectBlock>
+            <div className="line"/>
+          </RejectOuter>
       )}
       <ContentOuter>
-        <Preview
+      <Preview
           DataSource={dataSource}
           language={i18n.language}
           initialItems={components}
@@ -242,8 +248,8 @@ export default function ProposalThread() {
 const RejectBlock = styled.div`
   border-radius: 8px;
   background: rgba(251, 78, 78, 0.1);
-  padding: 16px 32px;
-  margin-bottom: 20px;
+  padding: 8px 16px;
+  margin-bottom: 16px;
   .desc {
     color: var(--bs-body-color_active);
     font-size: 14px;
@@ -251,7 +257,17 @@ const RejectBlock = styled.div`
     font-weight: 400;
     line-height: 20px;
   }
+ 
 `;
+
+const RejectOuter = styled.div`
+  margin: 0 20px 16px;
+  .line{
+    width: 100%;
+    height: 1px;
+    background: var(--border-color-1);
+  }
+`
 
 const RejectLine = styled.div`
   display: flex;
@@ -275,18 +291,22 @@ const RejectLine = styled.div`
 `;
 
 const ThreadHead = styled.div`
-  background-color: var(--bs-box-background);
-  box-shadow: var(--proposal-box-shadow);
-  border: 1px solid var(--proposal-border);
-  margin-bottom: 24px;
-  padding: 16px 32px;
-  border-radius: 8px;
+  border-top: 1px solid var(--border-color-1);
+  padding: 16px 20px;
   .title {
-    font-size: 24px;
+    font-size: 16px;
     font-family: "Poppins-Bold";
     color: var(--bs-body-color_active);
     line-height: 30px;
-    letter-spacing: 0.12px;
+  }
+  .linkStyle{
+    width: 16px;
+    height: 16px;
+    img{
+      width: 16px;
+      height: 16px;
+      margin-bottom: -3px;
+    }
   }
 `;
 
@@ -301,9 +321,6 @@ const InfoBox = styled.div`
   display: flex;
   gap: 16px;
   align-items: center;
-  .date {
-    font-size: 12px;
-  }
 `;
 
 const UserBox = styled.div`
@@ -319,20 +336,20 @@ const UserBox = styled.div`
   }
 
   .name {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     line-height: 22px;
     color: var(--bs-body-color_active);
     cursor: default;
   }
+  .date{
+    color:#BBB;
+    font-size: 12px;
+  }
 `;
 
 const ContentOuter = styled.div`
-  background-color: var(--bs-box-background);
-  box-shadow: var(--proposal-box-shadow);
-  border: 1px solid var(--proposal-border);
-  margin-bottom: 24px;
-  border-radius: 8px;
+    margin: 0 20px;
 `;
 
 const ProposalContentBlock = styled.div`
@@ -340,14 +357,15 @@ const ProposalContentBlock = styled.div`
   .title {
     background: rgba(82, 0, 255, 0.08);
     line-height: 40px;
-    border-radius: ${(props) => props.$radius || "4px 4px 0 0"};
+    border-radius: 4px;
     color: var(--bs-body-color_active);
-    padding-inline: 32px;
+    padding-inline: 8px;
     font-size: 16px;
     font-family: "Poppins-SemiBold";
   }
   .content .md-editor-preview-wrapper {
-    padding-inline: 32px;
+    padding-inline: 12px;
+    font-size: 14px;
   }
 `;
 

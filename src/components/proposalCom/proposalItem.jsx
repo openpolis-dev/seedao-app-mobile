@@ -29,7 +29,8 @@ export default function ProposalItem({ data, sns }) {
               </div>
               <div className="right">
                 <div className="name">
-                  <span>{sns}</span>
+                  {/*<span>{sns}</span>*/}
+                  <span>baiyu.seedao</span>
                 </div>
                 <div className="date">
                   <span>{formatDate(new Date(data.create_ts * 1000))}</span>
@@ -48,7 +49,7 @@ const FlexLine = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 16px;
+  margin-top: 6px;
 `;
 
 const CardBox = styled.div`
@@ -60,7 +61,7 @@ const CardBox = styled.div`
   margin-bottom: 9px;
 
   .name {
-    font-size: 14px;
+    font-size: 12px;
     font-family: Poppins-SemiBold, Poppins;
     color: var(--bs-body-color_active);
   }
@@ -69,12 +70,12 @@ const CardBox = styled.div`
     font-size: 12px;
     color: var(--font-light-color);
     padding-inline: 2px;
-    margin-top: 5px;
   }
 `;
 
 const CardHeaderStyled = styled.div`
   display: flex;
+  align-items: flex-start;
   gap: 10px;
 `;
 
@@ -93,13 +94,19 @@ const Title = styled.div`
   font-family: Poppins-SemiBold, Poppins;
   color: var(--bs-body-color_active);
   flex: 1;
+  height: 40px;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
   ${MultiLineStyle}
 `;
 
 const CatBox = styled.div`
   display: inline-block;
   border-radius: 4px;
-  border: 1px solid var(--bs-border-color_opacity);
+  border: 1px solid var( --border-color-1);
   color: var(--bs-body-color_active);
   font-size: 12px;
   padding: 0 16px;
