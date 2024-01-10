@@ -8,15 +8,18 @@ import { useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import ReplyTabbar from "components/proposalCom/replyTabbar";
 import { useEffect, useRef, useState } from "react";
-import { getProposalDetail, editCommet, addComment } from "api/proposalV2";
+import { getProposalDetail, editCommet, addComment, deleteCommet } from "api/proposalV2";
 import useQuerySNS from "hooks/useQuerySNS";
 import useToast from "hooks/useToast";
 import ActionOfCommet from "components/proposalCom/actionOfComment";
 import useMetaforoLogin from "hooks/useMetaforoLogin";
 import store from "store";
 import { saveLoading } from "store/reducer";
+import BaseModal from "components/baseModal";
 
 const hideReply = false;
+
+export const DeletedContent = `[{"insert":"Post deleted\\n"}]`;
 
 export default function ThreadCommentsPage() {
   const { t } = useTranslation();
@@ -26,6 +29,7 @@ export default function ThreadCommentsPage() {
   const [currentCommentArrayIdx, setCurrentCommentArrayIdx] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [showCommentAction, setShowCommentAction] = useState();
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   const { getMultiSNS } = useQuerySNS();
   const { toast, Toast } = useToast();
@@ -143,8 +147,50 @@ export default function ThreadCommentsPage() {
     replyRef?.current?.focus("edit", showCommentAction);
     setShowCommentAction(undefined);
   };
+
+  const onDeleteComment = (cid, bindIdx) => {
+    const _new_arr = [...commentsArray];
+    for (const item of _new_arr[bindIdx]) {
+      let flag = false;
+      if (item.metaforo_post_id === cid) {
+        item.content = DeletedContent;
+        item.deleted = 1;
+        break;
+      }
+      for (const childItem of item.children || []) {
+        if (childItem.metaforo_post_id === cid) {
+          childItem.content = DeletedContent;
+          childItem.deleted = 1;
+          flag = true;
+          break;
+        }
+      }
+      if (flag) {
+        break;
+      }
+    }
+    setCommentsArray(_new_arr);
+  };
   const onDelete = () => {
+    setShowConfirmDelete(true);
+  };
+
+  const onConfirmDelete = () => {
+    store.dispatch(saveLoading(true));
     setShowCommentAction(undefined);
+
+    deleteCommet(id, showCommentAction.metaforo_post_id)
+      .then(() => {
+        onDeleteComment(showCommentAction.metaforo_post_id, showCommentAction.bindIdx);
+        toast.success(t("Msg.ApproveSuccess"));
+      })
+      .catch((error) => {
+        logError(`delete proposal-${id} comment-${showCommentAction.metaforo_post_id} failed`, error);
+        toast.danger(error?.data?.msg || error?.code || error);
+      })
+      .finally(() => {
+        store.dispatch(saveLoading(false));
+      });
   };
 
   const onEditComment = (idx) => {
@@ -251,6 +297,17 @@ export default function ThreadCommentsPage() {
           handleClose={() => setShowCommentAction(undefined)}
           onClickEditCommet={onEdit}
           onClickDeleteCommet={onDelete}
+        />
+      )}
+      {showConfirmDelete && (
+        <BaseModal
+          title={t("Proposal.DeleteComment")}
+          msg={t("Proposal.ConfirmDeleteComment")}
+          onConfirm={onConfirmDelete}
+          onCancel={() => {
+            setShowConfirmDelete(false);
+            setShowCommentAction(undefined);
+          }}
         />
       )}
       {Toast}
