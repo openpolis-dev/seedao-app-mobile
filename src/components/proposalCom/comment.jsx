@@ -36,8 +36,7 @@ export default function CommentComponent({
   isChild,
   parentData,
   onReply,
-  onEdit,
-  onDelete,
+  onMore,
   hideReply,
   isCurrentUser,
   isSpecial,
@@ -122,6 +121,7 @@ export default function CommentComponent({
                       <img src={CommentIcon} alt="" />
                       {t("Proposal.Reply")}
                     </ReplyBtn>
+                    {isCurrentUser && <span onClick={() => onMore(data)}>...</span>}
                   </FlexReply>
                 )}
               </OpLine>

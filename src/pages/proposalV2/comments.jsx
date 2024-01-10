@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { getProposalDetail } from "api/proposalV2";
 import useQuerySNS from "hooks/useQuerySNS";
 import useToast from "hooks/useToast";
+import ActionOfCommet from "components/proposalCom/actionOfComment";
 
 const hideReply = false;
 
@@ -24,6 +25,7 @@ export default function ThreadCommentsPage() {
   const [currentCommentArrayIdx, setCurrentCommentArrayIdx] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [totalPostsCount, setTotalPostsCount] = useState(0);
+  const [showCommentAction, setShowCommentAction] = useState();
 
   const { getMultiSNS } = useQuerySNS();
   const { toast, Toast } = useToast();
@@ -126,8 +128,16 @@ export default function ThreadCommentsPage() {
   }, [id]);
 
   const onReply = () => {};
-  const onEdit = () => {};
-  const onDelete = () => {};
+  const onMore = (data) => {
+    setShowCommentAction(data);
+  };
+
+  const onEdit = () => {
+    setShowCommentAction(undefined);
+  };
+  const onDelete = () => {
+    setShowCommentAction(undefined);
+  };
 
   return (
     <Layout title={t("Proposal.Comment")} customTab={<ReplyTabbar />}>
@@ -144,8 +154,7 @@ export default function ThreadCommentsPage() {
             <CommentComponent
               data={pinPost}
               onReply={onReply}
-              onEdit={onEdit}
-              onDelete={onDelete}
+              onMore={onMore}
               hideReply={hideReply}
               isCurrentUser={false}
               isSpecial
@@ -157,8 +166,7 @@ export default function ThreadCommentsPage() {
                   key={ip.metaforo_post_id}
                   parentData={findPinPostChildrenParent(ip.reply_metaforo_post_id)}
                   onReply={onReply}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
+                  onMore={onMore}
                   hideReply={hideReply}
                   isCurrentUser={isCurrentUser(ip?.wallet)}
                   hideVersion
@@ -171,8 +179,7 @@ export default function ThreadCommentsPage() {
               data={p}
               key={p.metaforo_post_id}
               onReply={onReply}
-              onEdit={onEdit}
-              onDelete={onDelete}
+              onMore={onMore}
               hideReply={hideReply}
               isCurrentUser={isCurrentUser(p.wallet)}
             >
@@ -183,8 +190,7 @@ export default function ThreadCommentsPage() {
                   key={ip.metaforo_post_id}
                   parentData={findReplyData(ip.reply_metaforo_post_id)}
                   onReply={onReply}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
+                  onMore={onMore}
                   hideReply={hideReply}
                   isCurrentUser={isCurrentUser(ip?.wallet)}
                   hideVersion
@@ -194,6 +200,14 @@ export default function ThreadCommentsPage() {
           ))}
         </CommentsList>
       </InfiniteScroll>
+      {showCommentAction && (
+        <ActionOfCommet
+          data={showCommentAction}
+          handleClose={() => setShowCommentAction(undefined)}
+          onClickEditCommet={onEdit}
+          onClickDeleteCommet={onDelete}
+        />
+      )}
       {Toast}
     </Layout>
   );
