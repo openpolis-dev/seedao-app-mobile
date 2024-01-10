@@ -67,6 +67,7 @@ export default function ThreadEditHistoryPage() {
 const HistoryList = styled.ul`
   padding-inline: 20px;
   font-size: 14px;
+  border-top: 1px solid var(--border-color-1);
 `;
 
 const HistoryItem = styled.li`
