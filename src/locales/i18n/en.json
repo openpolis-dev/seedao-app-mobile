@@ -292,7 +292,13 @@
   },
   "Msg": {
     "SnsNotFound": "SNS Not Found",
-    "InvalidAddress": "Invalid Address"
+    "InvalidAddress": "Invalid Address",
+    "ApproveSuccess": "Operate successfully",
+    "ApproveFailed": "Operate failed",
+    "SubmitProposalSuccess": "Submit successfully",
+    "SaveProposalSuccess": "Save successfully",
+    "CastVoteSuccess": "Cast vote successfully",
+    "CommentSuccess": "Comment successfully"
   },
   "GovernanceNodeResult": {
     "SCRSeasonRankFilename": "{{season}} SCR Ranking"

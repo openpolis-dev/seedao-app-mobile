@@ -16,8 +16,6 @@ export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
 
   const [replyContent, setReplyContent] = useState("");
   const [quillContent, setQuillContent] = useState("");
-  console.log("replyContent", replyContent);
-  console.log("quillContent", quillContent);
 
   React.useImperativeHandle(ref, () => ({
     focus(type, _data) {

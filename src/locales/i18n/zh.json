@@ -292,7 +292,13 @@
   },
   "Msg": {
     "SnsNotFound": "无效的SNS",
-    "InvalidAddress": "无效的地址"
+    "InvalidAddress": "无效的地址",
+    "ApproveSuccess": "操作成功",
+    "ApproveFailed": "操作失败",
+    "SubmitProposalSuccess": "提交成功",
+    "SaveProposalSuccess": "保存成功",
+    "CastVoteSuccess": "投票成功",
+    "CommentSuccess": "评论成功"
   },
   "GovernanceNodeResult": {
     "SCRSeasonRankFilename": "{{season}} 积分榜"

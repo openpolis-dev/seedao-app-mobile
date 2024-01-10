@@ -148,7 +148,7 @@ export default function ThreadCommentsPage() {
   };
 
   const onEditComment = (idx) => {
-    getProposalDetail(idx);
+    requestsComments(idx);
   };
 
   const sendComment = async (type, data, content) => {
@@ -162,7 +162,7 @@ export default function ThreadCommentsPage() {
         await editCommet(id, content, data.metaforo_post_id);
         toast.success(t("Msg.ApproveSuccess"));
       } else {
-        await addComment(id, content, data.metaforo_post_id);
+        await addComment(id, content, data?.metaforo_post_id);
         toast.success(t("Msg.CommentSuccess"));
       }
       if (type === "reply" || type === "edit") {
@@ -171,7 +171,7 @@ export default function ThreadCommentsPage() {
         onEditComment();
       }
       replyRef?.current?.clear();
-      toast.success(t("Proposal.CommentSuccess"));
+      toast.success(t("Msg.CommentSuccess"));
       // refresh
     } catch (error) {
       logError("send comment error:", type, error);
