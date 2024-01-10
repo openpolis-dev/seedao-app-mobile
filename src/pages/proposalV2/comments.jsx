@@ -5,7 +5,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Loading from "components/common/loading";
 import CommentComponent from "components/proposalCom/comment";
 import { useSelector } from "react-redux";
-import NoItem from "components/noItem";
 import { useLocation, useParams } from "react-router-dom";
 import ReplyTabbar from "components/proposalCom/replyTabbar";
 import { useEffect, useState } from "react";
@@ -139,7 +138,7 @@ export default function ThreadCommentsPage() {
         hasMore={hasMore}
         loader={<Loading />}
       >
-        {posts.length === 0 && <NoItem />}
+        {posts.length === 0 && <NoItem>{t("Proposal.EmptyComment")}</NoItem>}
         <CommentsList>
           {!!pinPost && (
             <CommentComponent
@@ -202,4 +201,11 @@ export default function ThreadCommentsPage() {
 
 const CommentsList = styled.div`
   padding-inline: 20px;
+`;
+
+const NoItem = styled.div`
+  text-align: center;
+  margin-top: 120px;
+  color: var(--font-light-color);
+  font-size: 14px;
 `;
