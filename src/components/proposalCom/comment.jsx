@@ -52,7 +52,7 @@ export default function CommentComponent({
   const content = useParseContent(data?.deleted ? DeletedContent : data?.content, isSpecial);
 
   const handleReply = () => {
-    onReply(data.metaforo_post_id, data.bindIdx);
+    onReply(data);
   };
 
   useEffect(() => {

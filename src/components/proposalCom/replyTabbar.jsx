@@ -1,23 +1,61 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Avatar from "components/common/avatar";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import QuillEditor from "./quillEditor";
 
 export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
   const { t } = useTranslation();
-  const [isReply, setIsReply] = useState(false);
+  const userToken = useSelector((state) => state.userToken);
+
+  const [ctype, setCtype] = useState("");
+  const [data, setData] = useState();
   const inputRef = useRef();
+  const loading = useSelector((store) => store.loading);
+
+  const [replyContent, setReplyContent] = useState("");
+  const [quillContent, setQuillContent] = useState("");
+  console.log("replyContent", replyContent);
+  console.log("quillContent", quillContent);
+
   React.useImperativeHandle(ref, () => ({
-    focusAndReply() {
+    focus(type, _data) {
+      // TODO: focus
       inputRef?.current?.focus();
-      setIsReply(true);
+      setData(_data);
+      setCtype(type);
+      if (type === "edit") {
+        setQuillContent({ ops: JSON.parse(_data?.content) });
+      }
+    },
+    clear() {
+      setData(undefined);
+      setCtype();
+      setReplyContent("");
+      setQuillContent("");
     },
   }));
+
+  const handleChange = (value, source, editor) => {
+    if (editor.getText().trim().length === 0) {
+      setReplyContent("");
+    } else {
+      setReplyContent(JSON.stringify(editor.getContents().ops));
+    }
+    // @ts-ignore
+    setQuillContent(editor.getContents);
+  };
+
   return (
     <Box>
-      <Avatar size="32px" />
-      <NormalInput placeholder={t("Proposal.WriteReplyHint")} ref={inputRef} />
-      <button onClick={() => sendComment()}>{isReply ? t("Proposal.Reply") : t("Proposal.Send")}</button>
+      <Avatar src={userToken?.user?.avatar} size="32px" />
+      <Editor>
+        <QuillEditor onChange={handleChange} value={quillContent} ref={inputRef} />
+      </Editor>
+      <button disabled={loading} onClick={() => sendComment(ctype, data, replyContent)}>
+        {t("Proposal.Send")}
+      </button>
     </Box>
   );
 });
@@ -28,7 +66,7 @@ const Box = styled.div`
   -webkit-backdrop-filter: blur(20px);
   position: fixed;
   gap: 16px;
-  height: 70px;
+  min-height: 70px;
   bottom: 0;
   left: 0;
   z-index: 9;
@@ -41,12 +79,13 @@ const Box = styled.div`
   box-sizing: border-box;
 `;
 
-const NormalInput = styled.textarea`
+const Editor = styled.div`
   flex: 1;
   border: 1px solid var(--border-color-1);
   border-radius: 16px;
   outline: none;
-  height: 40px;
-  line-height: 40px;
   padding-inline: 16px;
+  .ql-editor {
+    height: unset;
+  }
 `;

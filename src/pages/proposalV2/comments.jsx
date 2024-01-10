@@ -8,29 +8,30 @@ import { useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import ReplyTabbar from "components/proposalCom/replyTabbar";
 import { useEffect, useRef, useState } from "react";
-import { getProposalDetail } from "api/proposalV2";
+import { getProposalDetail, editCommet, addComment } from "api/proposalV2";
 import useQuerySNS from "hooks/useQuerySNS";
 import useToast from "hooks/useToast";
 import ActionOfCommet from "components/proposalCom/actionOfComment";
+import useMetaforoLogin from "hooks/useMetaforoLogin";
+import store from "store";
+import { saveLoading } from "store/reducer";
 
 const hideReply = false;
 
 export default function ThreadCommentsPage() {
   const { t } = useTranslation();
   const { id } = useParams();
-  const { state } = useLocation();
-
   const [pinId, setPinId] = useState();
   const [commentsArray, setCommentsArray] = useState([]);
   const [currentCommentArrayIdx, setCurrentCommentArrayIdx] = useState(0);
   const [hasMore, setHasMore] = useState(false);
-  const [totalPostsCount, setTotalPostsCount] = useState(0);
   const [showCommentAction, setShowCommentAction] = useState();
 
-  const [replyId, setReplyId] = useState();
   const { getMultiSNS } = useQuerySNS();
   const { toast, Toast } = useToast();
   const replyRef = useRef();
+
+  const { checkMetaforoLogin, LoginMetafoModal } = useMetaforoLogin();
 
   const posts = commentsArray.length ? commentsArray.reduce((a, b) => [...a, ...b], []) : [];
 
@@ -71,6 +72,8 @@ export default function ThreadCommentsPage() {
   };
 
   const requestsComments = async (refreshIdx) => {
+    store.dispatch(saveLoading(true));
+
     try {
       let res;
       if (refreshIdx !== void 0) {
@@ -116,12 +119,12 @@ export default function ThreadCommentsPage() {
         setHasMore(all_comments.length === 0 ? false : now_count < res.data.comment_count);
         getMultiSNS(Array.from(new Set(all_comments.map((item) => item.wallet))));
       }
-      setTotalPostsCount(res.data.comment_count);
       setPinId(res.data?.reject_metaforo_comment_id);
     } catch (error) {
       logError("get proposal detail error:", error);
       toast.danger(error?.data?.msg || error?.code || error);
     } finally {
+      store.dispatch(saveLoading(false));
     }
   };
 
@@ -130,22 +133,59 @@ export default function ThreadCommentsPage() {
   }, [id]);
 
   const onReply = (data) => {
-    replyRef?.current?.focusAndReply();
-    setReplyId(data?.id);
+    replyRef?.current?.focus("reply", data);
   };
   const onMore = (data) => {
     setShowCommentAction(data);
   };
 
-  const onEdit = () => {
+  const onEdit = async () => {
+    replyRef?.current?.focus("edit", showCommentAction);
     setShowCommentAction(undefined);
   };
   const onDelete = () => {
     setShowCommentAction(undefined);
   };
 
+  const onEditComment = (idx) => {
+    getProposalDetail(idx);
+  };
+
+  const sendComment = async (type, data, content) => {
+    const canReply = await checkMetaforoLogin();
+    if (!canReply) {
+      return;
+    }
+    store.dispatch(saveLoading(true));
+    try {
+      if (type === "edit") {
+        await editCommet(id, content, data.metaforo_post_id);
+        toast.success(t("Msg.ApproveSuccess"));
+      } else {
+        await addComment(id, content, data.metaforo_post_id);
+        toast.success(t("Msg.CommentSuccess"));
+      }
+      if (type === "reply" || type === "edit") {
+        onEditComment(data.bindIdx);
+      } else {
+        onEditComment();
+      }
+      replyRef?.current?.clear();
+      toast.success(t("Proposal.CommentSuccess"));
+      // refresh
+    } catch (error) {
+      logError("send comment error:", type, error);
+    } finally {
+      store.dispatch(saveLoading(false));
+    }
+  };
+
+  useEffect(() => {
+    checkMetaforoLogin();
+  }, []);
+
   return (
-    <Layout title={t("Proposal.Comment")} customTab={<ReplyTabbar ref={replyRef} />}>
+    <Layout title={t("Proposal.Comment")} customTab={<ReplyTabbar ref={replyRef} sendComment={sendComment} />}>
       <InfiniteScroll
         scrollableTarget="inner"
         dataLength={posts.length}
@@ -214,6 +254,7 @@ export default function ThreadCommentsPage() {
         />
       )}
       {Toast}
+      {LoginMetafoModal}
     </Layout>
   );
 }

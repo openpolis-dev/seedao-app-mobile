@@ -57,7 +57,7 @@ export default function useMetaforoLogin() {
   };
 
   const checkMetaforoLogin = async () => {
-    if (metaforoToken?.token && account?.toLocalLowercase() === metaforoToken?.account?.toLocalLowercase()) {
+    if (metaforoToken?.token && account?.toLocaleLowerCase() === metaforoToken?.account?.toLocaleLowerCase()) {
       return true;
     }
     setShowLogin(true);
