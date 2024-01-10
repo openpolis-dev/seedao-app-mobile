@@ -12,7 +12,7 @@ import { getProposalDetail, getComponents } from "api/proposalV2";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import publicJs from "utils/publicJs";
 import useQuerySNS from "hooks/useQuerySNS";
-import { Preview } from "@seedao/components";
+import { PreviewMobie } from "@seedao/components";
 import { MdPreview } from "md-editor-rt";
 import ProposalVote from "components/proposalCom/vote";
 import { ProposalState } from "constant/proposal";
@@ -224,25 +224,30 @@ export default function ProposalThread() {
         </RejectOuter>
       )}
       <ContentOuter>
-        <Preview
-          DataSource={dataSource}
-          language={i18n.language}
-          initialItems={components}
-          BeforeComponent={
-            !!dataSource?.length && (
-              <ComponnentBox>
-                <div className="title">{t("Proposal.proposalComponents")}</div>
-              </ComponnentBox>
-            )
-          }
-          AfterComponent={contentBlocks.map((block, i) => (
+
+
+
+        {contentBlocks.map((block, i) => (
+
             <ProposalContentBlock key={block.title} $radius={i === 0 && !dataSource?.length ? "4px 4px 0 0" : "0"}>
               <div className="title">{block.title}</div>
               <div className="content">
                 <MdPreview modelValue={block.content || ""} />
               </div>
             </ProposalContentBlock>
-          ))}
+        ))}
+
+        {
+            !!dataSource?.length && (
+                <ComponnentBox>
+                  <div className="title">{t("Proposal.proposalComponents")}</div>
+                </ComponnentBox>
+            )
+        }
+        <PreviewMobie
+            DataSource={dataSource}
+            language={i18n.language}
+            initialItems={components}
         />
       </ContentOuter>
       {showVote() && (
@@ -268,7 +273,7 @@ const RejectBlock = styled.div`
 `;
 
 const RejectOuter = styled.div`
-  margin: 0 20px 16px;
+  margin: 0 16px 16px;
   .line {
     width: 100%;
     height: 1px;
@@ -299,7 +304,7 @@ const RejectLine = styled.div`
 
 const ThreadHead = styled.div`
   border-top: 1px solid var(--border-color-1);
-  padding: 16px 20px;
+  padding: 16px;
   .title {
     font-size: 16px;
     font-family: "Poppins-Bold";
@@ -356,11 +361,12 @@ const UserBox = styled.div`
 `;
 
 const ContentOuter = styled.div`
-  margin: 0 20px;
+
 `;
 
 const ProposalContentBlock = styled.div`
   margin-bottom: 16px;
+  padding: 0 16px;
   .title {
     background: rgba(82, 0, 255, 0.08);
     line-height: 40px;
