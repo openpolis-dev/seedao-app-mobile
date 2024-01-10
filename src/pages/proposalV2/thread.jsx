@@ -176,6 +176,7 @@ export default function ProposalThread() {
       title={t("Proposal.ProposalDetail")}
       customTab={
         <ThreadTabbar
+          id={id}
           showVote={showVote()}
           openComment={() => navigate(`/proposal/thread/${id}/comments`)}
           openHistory={() => navigate(`/proposal/thread/${id}/history`, { state: data.histories?.lists ?? [] })}
