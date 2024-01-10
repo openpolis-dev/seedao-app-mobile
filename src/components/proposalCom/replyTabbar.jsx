@@ -30,6 +30,7 @@ const Box = styled.div`
   border-top: 1px solid var(--border-color);
   padding-bottom: env(safe-area-inset-bottom);
   padding-inline: 24px;
+    box-sizing: border-box;
 `;
 
 const NormalInput = styled.input`
