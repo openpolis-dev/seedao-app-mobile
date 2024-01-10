@@ -13,7 +13,9 @@
     "Empty": "Empty",
     "Copied": "Copied",
     "Version": "Current version",
-    "Search": "Search"
+    "Search": "Search",
+    "JustNow": "just now",
+    "MinutesAgo": "{{time}} minutes ago"
   },
   "Buttons": {
     "Check": "View",

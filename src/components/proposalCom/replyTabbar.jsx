@@ -1,18 +1,26 @@
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Avatar from "components/common/avatar";
 import { useTranslation } from "react-i18next";
 
-export default function ReplyTabbar({ sendComment }) {
+export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
   const { t } = useTranslation();
-
+  const [isReply, setIsReply] = useState(false);
+  const inputRef = useRef();
+  React.useImperativeHandle(ref, () => ({
+    focusAndReply() {
+      inputRef?.current?.focus();
+      setIsReply(true);
+    },
+  }));
   return (
     <Box>
       <Avatar size="32px" />
-      <NormalInput placeholder={t("Proposal.WriteReplyHint")} />
-      <button onClick={() => sendComment()}>{t("Proposal.Send")}</button>
+      <NormalInput placeholder={t("Proposal.WriteReplyHint")} ref={inputRef} />
+      <button onClick={() => sendComment()}>{isReply ? t("Proposal.Reply") : t("Proposal.Send")}</button>
     </Box>
   );
-}
+});
 
 const Box = styled.div`
   background: rgba(255, 255, 255, 0.8);
@@ -30,7 +38,7 @@ const Box = styled.div`
   border-top: 1px solid var(--border-color);
   padding-bottom: env(safe-area-inset-bottom);
   padding-inline: 24px;
-    box-sizing: border-box;
+  box-sizing: border-box;
 `;
 
 const NormalInput = styled.textarea`

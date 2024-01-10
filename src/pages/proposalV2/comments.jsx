@@ -7,7 +7,7 @@ import CommentComponent from "components/proposalCom/comment";
 import { useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import ReplyTabbar from "components/proposalCom/replyTabbar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getProposalDetail } from "api/proposalV2";
 import useQuerySNS from "hooks/useQuerySNS";
 import useToast from "hooks/useToast";
@@ -27,8 +27,10 @@ export default function ThreadCommentsPage() {
   const [totalPostsCount, setTotalPostsCount] = useState(0);
   const [showCommentAction, setShowCommentAction] = useState();
 
+  const [replyId, setReplyId] = useState();
   const { getMultiSNS } = useQuerySNS();
   const { toast, Toast } = useToast();
+  const replyRef = useRef();
 
   const posts = commentsArray.length ? commentsArray.reduce((a, b) => [...a, ...b], []) : [];
 
@@ -127,7 +129,10 @@ export default function ThreadCommentsPage() {
     id && requestsComments();
   }, [id]);
 
-  const onReply = () => {};
+  const onReply = (data) => {
+    replyRef?.current?.focusAndReply();
+    setReplyId(data?.id);
+  };
   const onMore = (data) => {
     setShowCommentAction(data);
   };
@@ -140,7 +145,7 @@ export default function ThreadCommentsPage() {
   };
 
   return (
-    <Layout title={t("Proposal.Comment")} customTab={<ReplyTabbar />}>
+    <Layout title={t("Proposal.Comment")} customTab={<ReplyTabbar ref={replyRef} />}>
       <InfiniteScroll
         scrollableTarget="inner"
         dataLength={posts.length}

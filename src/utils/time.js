@@ -66,12 +66,12 @@ export const formatMsgTime = (time, t) => {
   const timestampDiff = currentTimestamp - oldTimestamp;
   if (timestampDiff < 60) {
     // in one minute
-    return t("general.JustNow");
+    return t("General.JustNow");
   }
 
   if (timestampDiff < 60 * 60) {
     // in an hour
-    return t("general.MinutesAgo", { time: Math.floor(timestampDiff / 60) });
+    return t("General.MinutesAgo", { time: Math.floor(timestampDiff / 60) });
   }
 
   // today
