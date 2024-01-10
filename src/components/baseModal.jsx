@@ -59,6 +59,7 @@ const ModalBox = styled.div`
   border-radius: 8px;
   overflow: hidden;
   background-color: #fff;
+  text-align: center;
 `;
 
 const Content = styled.div`
@@ -80,6 +81,8 @@ const Footer = styled.div`
 const Title = styled.div`
   font-size: 16px;
   line-height: 22px;
+  margin-bottom: 8px;
+  font-family: "Poppins-SemiBold";
 `;
 
 const FooterButton = styled.span`

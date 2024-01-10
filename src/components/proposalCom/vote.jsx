@@ -88,8 +88,7 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
   };
 
   const goVote = async (option) => {
-    let canVote = false;
-    // const canVote = await checkMetaforoLogin();
+    const canVote = await checkMetaforoLogin();
     if (!canVote) {
       return;
     }
@@ -180,9 +179,10 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
       {!!openVoteItem && <VoterListModal {...openVoteItem} onClose={() => setOpenVoteItem(undefined)} />}
       {showConfirmVote && (
         <BaseModal
+          title={t("Proposal.Vote")}
           msg={t("Proposal.ConfirmVoteOption", { option: selectOption?.html })}
           onConfirm={onConfirmVote}
-          onClose={() => setShowConfirmVote(false)}
+          onCancel={() => setShowConfirmVote(false)}
         />
       )}
       <Bottom>
