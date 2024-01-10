@@ -2,14 +2,14 @@ import styled from "styled-components";
 import Avatar from "components/common/avatar";
 import { useTranslation } from "react-i18next";
 
-export default function ReplyTabbar() {
+export default function ReplyTabbar({ sendComment }) {
   const { t } = useTranslation();
 
-  const onFocusToWriteReply = () => {};
   return (
     <Box>
       <Avatar size="32px" />
-      <NormalInput placeholder={t("Proposal.WriteReplyHint")} onClick={onFocusToWriteReply} />
+      <NormalInput placeholder={t("Proposal.WriteReplyHint")} />
+      <button onClick={() => sendComment()}>{t("Proposal.Send")}</button>
     </Box>
   );
 }
@@ -33,7 +33,7 @@ const Box = styled.div`
     box-sizing: border-box;
 `;
 
-const NormalInput = styled.input`
+const NormalInput = styled.textarea`
   flex: 1;
   border: 1px solid var(--border-color-1);
   border-radius: 16px;
