@@ -102,7 +102,7 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
   const showVoteContent = () => {
     if ((pollStatus === VoteType.Open && !!poll.is_vote) || pollStatus === VoteType.Closed) {
       return (
-        <table>
+        <table cellSpacing="0" cellPadding="0">
           <tbody>
             {poll.options.map((option, index) => (
               <tr>
@@ -195,7 +195,7 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
 const FlexLine = styled.div``;
 
 const CardStyle = styled.div`
-  margin-bottom: 32px;
+  margin:0 20px 32px;
 `;
 
 const VoteHead = styled.div`
@@ -211,8 +211,21 @@ const VoteHead = styled.div`
 const VoteHeadLeft = styled.div``;
 
 const VoteBody = styled.div`
-  border-bottom: 1px solid var(--bs-border-color);
-  padding-bottom: 16px;
+  border-radius: 8px;
+  border: 1px solid #E6DCFF;
+  background: #FFF;
+  box-shadow: 2px 4px 4px 0px rgba(211, 206, 221, 0.10);
+  padding: 10px 16px 0;
+  box-sizing: border-box;
+  table{
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 14px;
+    vertical-align: center;
+    td{
+      height: 36px;
+    }
+  }
 `;
 
 const VoteNFT = styled.div`
@@ -233,13 +246,15 @@ const TotalVoters = styled.div`
 
 const CloseTag = styled.span`
   color: red;
+  font-size: 14px;
 `;
 const OpenTag = styled.span`
-  color: var(--bs-primary);
+  color: var(--primary-color);
+  font-size: 14px;
 `;
 
 const VoteOptionBlock = styled.div`
-  margin-top: 12px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
 `;
@@ -262,7 +277,6 @@ const ProgressBar = styled.div`
   background: rgba(82, 0, 255, 0.1);
   overflow: hidden;
   margin-right: 16px;
-  margin-bottom: 16px;
   .inner {
     width: ${(props) => props.percent}%;
     background-color: var(--bs-primary);
@@ -271,7 +285,6 @@ const ProgressBar = styled.div`
 `;
 
 const VoteNumber = styled.div`
-  margin-bottom: 16px;
   color: var(--bs-body-color_active);
   .voters {
     color: var(--bs-primary);
@@ -292,16 +305,17 @@ const OptionContent = styled.div`
   color: ${({ $highlight }) => ($highlight ? "var(--bs-primary)" : "var(--bs-body-color_active)")};
   margin-right: 20px;
   line-height: 20px;
-  margin-bottom: 16px;
 `;
 
 const VoteButton = styled.button`
-  margin-top: 16px;
+  margin-bottom: 16px;
   border-radius: 8px;
-  color: var(--bs-body-color_active);
-  border: 1px solid var(--proposal-border);
-  background: var(--profile-bg);
-  min-width: 120px;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  background: #fff;
+  width: 100%;
+  height: 36px;
+  font-weight: bold;
 `;
 
 const HasVote = styled.span`

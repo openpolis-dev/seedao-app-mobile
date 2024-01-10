@@ -52,8 +52,11 @@ const Box = styled.div`
   width: 100vw;
   display: flex;
   align-items: center;
+  box-sizing: border-box;
+  padding: 0 20px env(safe-area-inset-bottom);
   border-top: 1px solid var(--border-color);
-  padding-bottom: env(safe-area-inset-bottom);
+  font-size: 14px;
+  
 `;
 
 const ThreadToolsBar = styled.ul`
@@ -68,7 +71,10 @@ const ThreadToolsBar = styled.ul`
   li {
     cursor: pointer;
     font-size: 14px;
-    color: var(--bs-body-color_active);
+    color: #9A9A9A;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
   }
   img {
     margin-right: 10px;
