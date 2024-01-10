@@ -9,6 +9,7 @@ import CityHallImg from "assets/Imgs/proposal/cityhall.png";
 // import Overlay from "react-bootstrap/Overlay";
 import Avatar from "components/common/avatar";
 import { useSelector } from "react-redux";
+import { MdPreview } from "md-editor-rt";
 
 export const DeletedContent = `[{"insert":"Post deleted\\n"}]`;
 
@@ -110,8 +111,10 @@ export default function CommentComponent({
             </div>
             {isSpecial ? (
               <Content>{data.content}</Content>
-            ) : (
+            ) : data?.content.includes("insert") ? (
               <Content className="content" dangerouslySetInnerHTML={{ __html: content }}></Content>
+            ) : (
+              <MdPreview modelValue={data?.content || ""} />
             )}
             {!data.deleted && (
               <OpLine>

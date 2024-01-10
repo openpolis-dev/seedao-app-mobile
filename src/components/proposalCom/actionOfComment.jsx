@@ -7,7 +7,6 @@ import { handleContent } from "./parseContent";
 export default function ActionOfCommet({ data, handleClose, onClickEditCommet, onClickDeleteCommet }) {
   const { t } = useTranslation();
   const [content, setContent] = useState("");
-  console.log("data.content", data?.content);
 
   useEffect(() => {
     if (data?.content && data?.content.includes("insert")) {
