@@ -1,7 +1,24 @@
 import request from "./index";
+import axios from "axios";
 import { METAFORO_TOKEN } from "utils/constant";
 
 const PATH_PREFIX = "/proposals/";
+
+const instance = axios.create({
+  baseURL: "https://metaforo.io/api",
+});
+
+export function loginByWallet(param, token) {
+  return instance
+    .post("/wallet/sso", param, {
+      headers: {
+        api_key: "metaforo_website",
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+}
 
 export const getMetaforoData = () => {
   try {

@@ -18,6 +18,7 @@ import ProposalVote from "components/proposalCom/vote";
 import { ProposalState } from "constant/proposal";
 import ThreadTabbar from "components/proposalCom/threadTabbar";
 import LinkImg from "assets/Imgs/proposal/link.png";
+import useMetaforoLogin from "hooks/useMetaforoLogin";
 
 export default function ProposalThread() {
   const { id } = useParams();
@@ -40,6 +41,7 @@ export default function ProposalThread() {
   const [contentBlocks, setContentBlocks] = useState([]);
 
   const { getMultiSNS } = useQuerySNS();
+  const { checkMetaforoLogin, LoginMetafoModal } = useMetaforoLogin();
 
   const getProposal = async (refreshIdx) => {
     store.dispatch(saveLoading(true));
@@ -165,6 +167,10 @@ export default function ProposalThread() {
     return true;
   };
 
+  useEffect(() => {
+    checkMetaforoLogin();
+  }, []);
+
   return (
     <Layout
       title={t("Proposal.ProposalDetail")}
@@ -242,6 +248,7 @@ export default function ProposalThread() {
       {showVote() && (
         <ProposalVote voteGate={data?.vote_gate} poll={data.votes[0]} id={Number(id)} updateStatus={getProposal} />
       )}
+      {LoginMetafoModal}
     </Layout>
   );
 }

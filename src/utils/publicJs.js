@@ -161,6 +161,36 @@ const getSeedUrl = async (img) => {
   }
 };
 
+
+function typedData(address, chainId) {
+  return {
+    types: {
+      EIP712Domain: [
+        { name: "name", type: "string" },
+        { name: "version", type: "string" },
+        {
+          name: "chainId",
+          type: "uint256",
+        },
+      ],
+      Login: [
+        { name: "account", type: "address" },
+        { name: "message", type: "string" },
+      ],
+    },
+    primaryType: "Login",
+    domain: {
+      name: "Metaforo",
+      version: "1.0",
+      chainId: chainId,
+    },
+    message: {
+      account: address,
+      message: "Login to Metaforo",
+    },
+  };
+}
+
 export default {
   AddressToShow,
   createSiweMessage,
@@ -169,4 +199,5 @@ export default {
   getImage,
   filterTags,
   checkRPCavailable,
+  typedData,
 };
