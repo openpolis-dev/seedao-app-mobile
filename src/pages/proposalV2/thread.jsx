@@ -184,11 +184,19 @@ export default function ProposalThread() {
       }
     >
       <ThreadHead>
-        <div className="title">{data?.title}  {data?.arweave && (
-            <a href={`https://arweave.net/tx/${data?.arweave}/data.html`} target="_blank" rel="noreferrer" className="linkStyle">
-              <img src={LinkImg} alt=""/>
+        <div className="title">
+          {data?.title}{" "}
+          {data?.arweave && (
+            <a
+              href={`https://arweave.net/tx/${data?.arweave}/data.html`}
+              target="_blank"
+              rel="noreferrer"
+              className="linkStyle"
+            >
+              <img src={LinkImg} alt="" />
             </a>
-        )}</div>
+          )}
+        </div>
         <FlexLine>
           {data?.state && <ProposalStateTag state={data.state} />}
           {data?.category_name && <CategoryTag>{data?.category_name}</CategoryTag>}
@@ -205,19 +213,19 @@ export default function ProposalThread() {
         </InfoBox>
       </ThreadHead>
       {data?.is_rejected && data?.reject_reason && data?.reject_ts && (
-          <RejectOuter>
-            <RejectBlock>
-              <RejectLine>
-                <span className="rejectTit">{t("Proposal.CityhallRejected")}</span>
-                <span className="time">{formatTime(data.reject_ts * 1000)}</span>
-              </RejectLine>
-              <div className="desc">{data.reject_reason}</div>
-            </RejectBlock>
-            <div className="line"/>
-          </RejectOuter>
+        <RejectOuter>
+          <RejectBlock>
+            <RejectLine>
+              <span className="rejectTit">{t("Proposal.CityhallRejected")}</span>
+              <span className="time">{formatTime(data.reject_ts * 1000)}</span>
+            </RejectLine>
+            <div className="desc">{data.reject_reason}</div>
+          </RejectBlock>
+          <div className="line" />
+        </RejectOuter>
       )}
       <ContentOuter>
-      <Preview
+        <Preview
           DataSource={dataSource}
           language={i18n.language}
           initialItems={components}
@@ -257,17 +265,16 @@ const RejectBlock = styled.div`
     font-weight: 400;
     line-height: 20px;
   }
- 
 `;
 
 const RejectOuter = styled.div`
   margin: 0 20px 16px;
-  .line{
+  .line {
     width: 100%;
     height: 1px;
     background: var(--border-color-1);
   }
-`
+`;
 
 const RejectLine = styled.div`
   display: flex;
@@ -299,10 +306,10 @@ const ThreadHead = styled.div`
     color: var(--bs-body-color_active);
     line-height: 30px;
   }
-  .linkStyle{
+  .linkStyle {
     width: 16px;
     height: 16px;
-    img{
+    img {
       width: 16px;
       height: 16px;
       margin-bottom: -3px;
@@ -342,14 +349,14 @@ const UserBox = styled.div`
     color: var(--bs-body-color_active);
     cursor: default;
   }
-  .date{
-    color:#BBB;
+  .date {
+    color: #bbb;
     font-size: 12px;
   }
 `;
 
 const ContentOuter = styled.div`
-    margin: 0 20px;
+  margin: 0 20px;
 `;
 
 const ProposalContentBlock = styled.div`
