@@ -26,10 +26,12 @@ export default function ProposalList() {
 
   const proposalCategories = useProposalCategories();
   // filter category
-  const CATEGORY_OPTIONS = proposalCategories.map((c) => ({
-    value: c.id,
-    label: c.name,
-  }));
+  const CATEGORY_OPTIONS = [{ value: undefined, label: t("Proposal.TypeSelectHint") }].concat(
+    proposalCategories.map((c) => ({
+      value: c.id,
+      label: c.name,
+    })),
+  );
   // filter time
   const TIME_OPTIONS = [
     { value: "desc", label: t("Proposal.TheNeweset") },
@@ -37,6 +39,7 @@ export default function ProposalList() {
   ];
   // filter status
   const STATUS_OPTIONS = [
+    { value: undefined, label: t("Proposal.StatusSelectHint") },
     { value: ProposalState.Voting, label: t("Proposal.Voting") },
     { value: ProposalState.Draft, label: t("Proposal.Draft") },
     { value: ProposalState.Rejected, label: t("Proposal.Rejected") },
@@ -71,9 +74,9 @@ export default function ProposalList() {
     !v && searchKeyword && setSearchKeyword("");
   };
 
-  const getProposals = async (_page = 1) => {
+  const getProposals = async (init = false) => {
     store.dispatch(saveLoading(true));
-
+    const _page = init ? 1 : page;
     try {
       const resp = await getProposalList({
         page: _page,
@@ -84,9 +87,12 @@ export default function ProposalList() {
         category_id: selectCategory?.value,
         q: searchKeyword,
       });
-      setProposalList(resp.data.rows);
+      let new_list;
+      _page === 1 ? (new_list = resp.data.rows) : (new_list = [...proposalList, ...resp.data.rows]);
+      setProposalList(new_list);
       getMultiSNS(resp.data.rows.filter((d) => !!d.applicant).map((d) => d.applicant));
       setTotalCount(resp.data.total);
+      setPage(_page + 1);
     } catch (error) {
       logError("getAllProposals failed", error);
     } finally {
@@ -96,7 +102,7 @@ export default function ProposalList() {
 
   useEffect(() => {
     if (!initPage) {
-      getProposals();
+      getProposals(true);
       setPage(1);
     }
   }, [selectStatus, selectTime, selectCategory, searchKeyword]);
@@ -141,6 +147,7 @@ export default function ProposalList() {
             <FilterSelect
               width="100%"
               options={CATEGORY_OPTIONS}
+              defaultValue={CATEGORY_OPTIONS[0]}
               closeClear={true}
               isSearchable={false}
               placeholder={t("Proposal.TypeSelectHint")}
@@ -151,6 +158,7 @@ export default function ProposalList() {
             <FilterSelect
               width="100%"
               options={STATUS_OPTIONS}
+              defaultValue={STATUS_OPTIONS[0]}
               closeClear={true}
               isSearchable={false}
               placeholder={t("Proposal.StatusSelectHint")}
