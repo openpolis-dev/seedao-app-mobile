@@ -53,4 +53,7 @@ const EditorStyle = styled.div`
   .ql-toolbar {
     display: none;
   }
+  .ql-editor.ql-blank::before {
+    font-style: normal;
+  }
 `;
