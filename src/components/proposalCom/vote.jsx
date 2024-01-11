@@ -11,6 +11,7 @@ import { saveLoading } from "store/reducer";
 import BaseModal from "components/baseModal";
 import VoteRulesModal from "./voteRules";
 import VoterListModal from "./voterList";
+import VoteRuleIcon from "assets/Imgs/proposal/rule.svg";
 
 const VoteType = {
   Waite: "waite",
@@ -188,7 +189,8 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
       <Bottom>
         {voteGate?.name && <span className="alias">{voteGate.name}</span>}
         <span className="rule" onClick={() => setShowVoteRules(true)}>
-          {t("Proposal.VoteRules")}
+          <span> {t("Proposal.VoteRules")}</span>
+          <img src={VoteRuleIcon} alt="" />
         </span>
       </Bottom>
       {showVoteRules && <VoteRulesModal voteGate={voteGate} handleClose={() => setShowVoteRules(false)} />}
@@ -336,5 +338,8 @@ const Bottom = styled.div`
   }
   .rule {
     color: var(--font-light-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
   }
 `;
