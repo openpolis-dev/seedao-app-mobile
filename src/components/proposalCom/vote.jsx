@@ -113,7 +113,7 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
         <table cellSpacing="0" cellPadding="0">
           <tbody>
             {poll.options.map((option, index) => (
-              <tr>
+              <tr key={index}>
                 <td>
                   <OptionContent $highlight={option.is_vote}>
                     {option.html}
@@ -127,9 +127,10 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
                 </td>
                 <td>
                   <VoteNumber
+                    className={!!option.is_vote ? "active" : ""}
                     onClick={() => !!option.voters && setOpenVoteItem({ count: option.voters, optionId: option.id })}
                   >
-                    <span className={!!option.is_vote ? "active" : ""}>{option.voters}</span>
+                    <span>{option.voters}</span>
                     <span className="voters"> ({option.percent}%)</span>
                   </VoteNumber>
                 </td>
@@ -207,7 +208,6 @@ const CardStyle = styled.div`
 const VoteHead = styled.div`
   display: flex;
   justify-content: space-between;
-  color: var(--bs-body-color_active);
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
@@ -231,15 +231,6 @@ const VoteBody = styled.div`
     td {
       height: 36px;
     }
-  }
-`;
-
-const VoteNFT = styled.div`
-  color: var(--bs-body-color);
-  margin-top: 16px;
-  margin-bottom: 14px;
-  span {
-    margin-right: 20px;
   }
 `;
 
@@ -285,30 +276,24 @@ const ProgressBar = styled.div`
   margin-right: 16px;
   .inner {
     width: ${(props) => props.percent}%;
-    background-color: var(--bs-primary);
+    background-color: var(--primary-color);
     height: 10px;
   }
 `;
 
 const VoteNumber = styled.div`
-  color: var(--bs-body-color_active);
-  .voters {
-    color: var(--bs-primary);
-    cursor: pointer;
-  }
-  .active {
-    color: var(--bs-primary);
+  &.active {
+    color: var(--primary-color);
   }
 `;
 
 const OptionContentPure = styled.div`
   font-size: 14px;
-  color: var(--bs-body-color_active);
 `;
 
 const OptionContent = styled.div`
   font-size: 14px;
-  color: ${({ $highlight }) => ($highlight ? "var(--bs-primary)" : "var(--bs-body-color_active)")};
+  color: ${({ $highlight }) => ($highlight ? "var(--primary-color)" : "var(--font-color)")};
   margin-right: 20px;
   line-height: 20px;
 `;
@@ -325,7 +310,7 @@ const VoteButton = styled.button`
 `;
 
 const HasVote = styled.span`
-  color: var(--bs-primary);
+  color: var(--primary-color);
 `;
 
 const Bottom = styled.div`
