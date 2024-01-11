@@ -49,6 +49,7 @@ export default function Layout({
   noTab,
   customTab,
   headBgColor,
+  headStyle,
   bgColor,
   headColor,
   sticky,
@@ -60,12 +61,12 @@ export default function Layout({
   const userToken = useSelector((state) => state.userToken);
   const innerRef = useRef();
 
-  const [pwaBtm,setPwaBtm] = useState(false);
+  const [pwaBtm, setPwaBtm] = useState(false);
 
   const location = useLocation();
 
   useEffect(() => {
-    store.dispatch(savePath(location.pathname))
+    store.dispatch(savePath(location.pathname));
   }, [location]);
 
   useEffect(() => {
@@ -73,9 +74,7 @@ export default function Layout({
     const isMobile = /Mobile/.test(userAgent);
     const isPWA = isInPWA();
 
-
-      setPwaBtm(isMobile && !isPWA)
-
+    setPwaBtm(isMobile && !isPWA);
   }, []);
 
   useEffect(() => {
@@ -87,15 +86,9 @@ export default function Layout({
     }
   }, [userToken, pathname]);
 
-
-  useEffect(() => {
-
-  }, []);
-
   useEffect(() => {
     document.querySelector("body").style.background = bgColor || "#FFFFFF";
   }, [bgColor]);
-
 
   return (
     <OuterBox isPwa={isInPWA().toString()}>
@@ -109,6 +102,7 @@ export default function Layout({
             rightOperation={rightOperation}
             headColor={headColor}
             handleBack={handleBack}
+            {...headStyle}
           />
         )
       ) : (

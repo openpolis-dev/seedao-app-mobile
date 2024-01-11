@@ -174,6 +174,7 @@ export default function ProposalThread() {
   return (
     <Layout
       title={t("Proposal.ProposalDetail")}
+      headStyle={{ style: { borderBottom: "1px solid var(--border-color-1)" } }}
       customTab={
         <ThreadTabbar
           id={id}
@@ -225,31 +226,21 @@ export default function ProposalThread() {
         </RejectOuter>
       )}
       <ContentOuter>
-
-
-
         {contentBlocks.map((block, i) => (
-
-            <ProposalContentBlock key={block.title} $radius={i === 0 && !dataSource?.length ? "4px 4px 0 0" : "0"}>
-              <div className="title">{block.title}</div>
-              <div className="content">
-                <MdPreview modelValue={block.content || ""} />
-              </div>
-            </ProposalContentBlock>
+          <ProposalContentBlock key={block.title} $radius={i === 0 && !dataSource?.length ? "4px 4px 0 0" : "0"}>
+            <div className="title">{block.title}</div>
+            <div className="content">
+              <MdPreview modelValue={block.content || ""} />
+            </div>
+          </ProposalContentBlock>
         ))}
 
-        {
-            !!dataSource?.length && (
-                <ComponnentBox>
-                  <div className="title">{t("Proposal.proposalComponents")}</div>
-                </ComponnentBox>
-            )
-        }
-        <PreviewMobie
-            DataSource={dataSource}
-            language={i18n.language}
-            initialItems={components}
-        />
+        {!!dataSource?.length && (
+          <ComponnentBox>
+            <div className="title">{t("Proposal.proposalComponents")}</div>
+          </ComponnentBox>
+        )}
+        <PreviewMobie DataSource={dataSource} language={i18n.language} initialItems={components} />
       </ContentOuter>
       {showVote() && (
         <ProposalVote voteGate={data?.vote_gate} poll={data.votes[0]} id={Number(id)} updateStatus={getProposal} />
@@ -304,7 +295,6 @@ const RejectLine = styled.div`
 `;
 
 const ThreadHead = styled.div`
-  border-top: 1px solid var(--border-color-1);
   padding: 16px;
   .title {
     font-size: 16px;

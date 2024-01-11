@@ -48,7 +48,7 @@ const OperateBox = styled.div`
   top: env(safe-area-inset-top);
   padding-top: 10px;
 `;
-export default function Header({ title, bgColor, headColor, rightOperation, handleBack }) {
+export default function Header({ title, bgColor, headColor, rightOperation, handleBack, ...props }) {
   const navigate = useNavigate();
 
   const backTop = () => {
@@ -56,7 +56,7 @@ export default function Header({ title, bgColor, headColor, rightOperation, hand
   };
 
   return (
-    <Box $bgColor={bgColor}>
+    <Box $bgColor={bgColor} {...props}>
       <Back onClick={() => backTop()}>
         <BackSVG color={headColor} />
       </Back>

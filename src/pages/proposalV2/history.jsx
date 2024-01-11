@@ -44,7 +44,11 @@ export default function ThreadEditHistoryPage() {
   }, [data]);
   console.log("====list", list);
   return (
-    <Layout title={t("Proposal.History")} noTab>
+    <Layout
+      title={t("Proposal.History")}
+      noTab
+      headStyle={{ style: { borderBottom: "1px solid var(--border-color-1)" } }}
+    >
       <HistoryList>
         {list.map((item, idx) => (
           <HistoryItem key={idx}>
@@ -67,7 +71,6 @@ export default function ThreadEditHistoryPage() {
 const HistoryList = styled.ul`
   padding-inline: 20px;
   font-size: 14px;
-  border-top: 1px solid var(--border-color-1);
 `;
 
 const HistoryItem = styled.li`

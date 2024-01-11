@@ -232,7 +232,11 @@ export default function ThreadCommentsPage() {
   }, []);
 
   return (
-    <Layout title={t("Proposal.Comment")} customTab={<ReplyTabbar ref={replyRef} sendComment={sendComment} />}>
+    <Layout
+      title={t("Proposal.Comment")}
+      headStyle={{ style: { borderBottom: "1px solid var(--border-color-1)" } }}
+      customTab={<ReplyTabbar ref={replyRef} sendComment={sendComment} />}
+    >
       <InfiniteScroll
         scrollableTarget="inner"
         dataLength={posts.length}
