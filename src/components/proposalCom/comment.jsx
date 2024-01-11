@@ -3,7 +3,7 @@ import { handleContent } from "./parseContent";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatMsgTime } from "utils/time";
-import CommentIcon from "assets/Imgs/proposal/commentIcon.png";
+import CommentIcon from "assets/Imgs/proposal/commentReply.svg";
 import publicJs from "utils/publicJs";
 import CityHallImg from "assets/Imgs/proposal/cityhall.png";
 // import Overlay from "react-bootstrap/Overlay";
@@ -67,7 +67,7 @@ export default function CommentComponent({
   };
 
   return (
-    <CommentStyle padding={isChild ? "64px" : "0"}>
+    <CommentStyle padding={isChild ? "64px" : "0"} ischild={isChild}>
       {/* {parentData && <ReplyComment data={parentData} />} */}
       <CommentMain>
         <Avatar src={isSpecial ? CityHallImg : data.avatar} size="32px" />
@@ -131,6 +131,9 @@ export default function CommentComponent({
             )}
           </RhtBtm>
         </RightBox>
+        {
+            !isChild && <div className="line"/>
+        }
       </CommentMain>
       {children}
     </CommentStyle>
@@ -138,12 +141,21 @@ export default function CommentComponent({
 }
 
 const CommentStyle = styled.div`
-  width: 100%;
+
   padding-left: ${(props) => props.padding};
-  margin-bottom: 16px;
+  margin-bottom: 32px;
+  position: relative;
   p {
     padding: 0;
     margin: 0;
+  }
+  .line{
+    position: absolute;
+    right: 0;
+    bottom: -16px;
+    width: calc(100% - 40px);
+    height: 1px;
+    background: var(--border-color-1);
   }
 `;
 
@@ -152,9 +164,12 @@ const CommentMain = styled.div`
   gap: 10px;
   margin-bottom: 17px;
   width: 100%;
+
 `;
 
-const RightBox = styled.div``;
+const RightBox = styled.div`
+  flex-grow: 1;
+`;
 
 const ReplyTag = styled.div`
   color: #2f8fff;
@@ -259,6 +274,10 @@ const FlexReply = styled.div`
   display: flex;
   align-items: center;
   color: #2f8fff;
+  span{
+    line-height: 12px;
+    margin-top: -9px;
+  }
 `;
 const RhtBtm = styled.div`
   flex-grow: 1;
