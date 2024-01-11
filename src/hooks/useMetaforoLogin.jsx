@@ -56,7 +56,7 @@ export default function useMetaforoLogin() {
           },
         });
       } else {
-        await signTypedData(signData);
+        sign = await signTypedData(signData);
       }
 
       const data = await loginByWallet({
