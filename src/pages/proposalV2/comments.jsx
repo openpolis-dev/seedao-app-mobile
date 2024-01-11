@@ -181,6 +181,7 @@ export default function ThreadCommentsPage() {
 
     deleteCommet(id, showCommentAction.metaforo_post_id)
       .then(() => {
+        setShowConfirmDelete(false);
         onDeleteComment(showCommentAction.metaforo_post_id, showCommentAction.bindIdx);
         toast.success(t("Msg.ApproveSuccess"));
       })

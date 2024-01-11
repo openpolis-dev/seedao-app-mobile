@@ -108,6 +108,7 @@ const SendButton = styled.button`
   font-size: 14px;
   font-family: "Poppins-SemiBold";
   border-radius: 16px;
+  border: none;
   &:disabled {
     opacity: 0.4;
   }
