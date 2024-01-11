@@ -323,8 +323,10 @@ const Bottom = styled.div`
   }
   .rule {
     color: var(--font-light-color);
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
+    img {
+      position: relative;
+      left: 4px;
+      top: 2px;
+    }
   }
 `;
