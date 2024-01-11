@@ -14,11 +14,15 @@ import useProposalCategories from "hooks/useProposalCategories";
 import { getProposalList } from "api/proposalV2";
 import SeeSelect from "components/common/select";
 import SearchImg from "assets/Imgs/search.svg";
+import useQuerySNS from "hooks/useQuerySNS";
+import publicJs from "utils/publicJs";
+import { useSelector } from "react-redux";
 
 const PAGE_SIZE = 10;
 
 export default function ProposalList() {
   const { t } = useTranslation();
+  const snsMap = useSelector((state) => state.snsMap);
 
   const proposalCategories = useProposalCategories();
   // filter category
@@ -54,6 +58,7 @@ export default function ProposalList() {
   const [initPage, setInitPage] = useState(true);
 
   const hasMore = proposalList.length < totalCount;
+  const { getMultiSNS } = useQuerySNS();
 
   const onKeyUp = (e) => {
     if (e.keyCode === 13) {
@@ -80,8 +85,7 @@ export default function ProposalList() {
         q: searchKeyword,
       });
       setProposalList(resp.data.rows);
-      console.log(proposalList)
-      //   handleSNS(resp.data.rows.filter((d) => !!d.applicant).map((d) => d.applicant));
+      getMultiSNS(resp.data.rows.filter((d) => !!d.applicant).map((d) => d.applicant));
       setTotalCount(resp.data.total);
     } catch (error) {
       logError("getAllProposals failed", error);
@@ -102,11 +106,16 @@ export default function ProposalList() {
     setInitPage(false);
   }, [page]);
 
+  const formatSNS = (wallet) => {
+    const name = snsMap[wallet] || wallet;
+    return name?.endsWith(".seedao") ? name : publicJs.AddressToShow(name, 4);
+  };
+
   return (
     <Layout title={t("Proposal.Governance")} headBgColor={`var(--background-color)`} bgColor="var(--background-color)">
       <FilterBox>
         <SearchInputBox>
-          <img src={SearchImg} alt=""/>
+          <img src={SearchImg} alt="" />
           <InputStyle
             value={inputKeyword}
             onChange={onChangeKeyword}
@@ -161,7 +170,7 @@ export default function ProposalList() {
           {proposalList.length === 0 && <NoItem />}
           {proposalList.map((p) => (
             <div id={`pro_${p.id}`} key={p.id}>
-              <ProposalItem data={p} />
+              <ProposalItem data={p} sns={formatSNS(p.applicant?.toLocaleLowerCase())} />
             </div>
           ))}
         </InfiniteScroll>
@@ -204,9 +213,8 @@ const SearchInputBox = styled.div`
 `;
 
 const InputStyle = styled.input`
-  
   flex-grow: 1;
-    background: transparent;
+  background: transparent;
   border: none;
   font-size: 14px;
   box-sizing: border-box;
@@ -219,11 +227,11 @@ const InputStyle = styled.input`
 
 const FilterSelect = styled(SeeSelect)`
   height: 26px !important;
-[class$="-control"]{
-  height: 26px !important;
-}
-[class$="-control"],[class$="-option"]{
-  font-size: 12px !important;
-}
-
-`
+  [class$="-control"] {
+    height: 26px !important;
+  }
+  [class$="-control"],
+  [class$="-option"] {
+    font-size: 12px !important;
+  }
+`;

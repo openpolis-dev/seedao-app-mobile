@@ -29,8 +29,7 @@ export default function ProposalItem({ data, sns }) {
               </div>
               <div className="right">
                 <div className="name">
-                  {/*<span>{sns}</span>*/}
-                  <span>baiyu.seedao</span>
+                  <span>{sns}</span>
                 </div>
                 <div className="date">
                   <span>{formatDate(new Date(data.create_ts * 1000))}</span>
