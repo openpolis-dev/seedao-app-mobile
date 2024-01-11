@@ -1,16 +1,15 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 
 import "react-quill/dist/quill.snow.css";
 import "assets/styles/quill.css";
 import styled from "styled-components";
 
-export default function QuillEditor(props) {
+export default React.forwardRef(function QuillEditor({ placeholder, ...props }, ref) {
   const inputRef = useRef(null);
 
   useEffect(() => {
     if (inputRef != null && inputRef.current != null) {
-      // @ts-ignore
       const quill = inputRef.current;
       quill.setEditorSelection(quill.getEditor(), { index: quill.getEditor().getLength(), length: 0 });
     }
@@ -20,20 +19,26 @@ export default function QuillEditor(props) {
     props.onChange(value, source, editor);
   };
 
-  // @ts-ignore
+  React.useImperativeHandle(ref, () => ({
+    focus() {
+      inputRef?.current?.focus();
+    },
+  }));
+
   return (
     <EditorStyle className={"mf-ql-editor"}>
       <ReactQuill
         className={"quill-editor"}
         readOnly={props.disabled}
         value={props.value}
+        placeholder={placeholder}
         onChange={handleChange}
         ref={inputRef}
       />
       {<></>}
     </EditorStyle>
   );
-}
+});
 
 const EditorStyle = styled.div`
   width: 100%;

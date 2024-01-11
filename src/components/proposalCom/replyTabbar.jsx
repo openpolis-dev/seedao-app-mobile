@@ -1,13 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Avatar from "components/common/avatar";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import QuillEditor from "./quillEditor";
+import publicJs from "utils/publicJs";
+
+const formatSNS = (snsMap, wallet) => {
+  const name = snsMap[wallet] || wallet;
+  return name?.endsWith(".seedao") ? name : publicJs.AddressToShow(name, 4);
+};
 
 export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
   const { t } = useTranslation();
   const userToken = useSelector((state) => state.userToken);
+  const snsMap = useSelector((state) => state.snsMap);
 
   const [ctype, setCtype] = useState("");
   const [data, setData] = useState();
@@ -17,14 +24,17 @@ export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
   const [replyContent, setReplyContent] = useState("");
   const [quillContent, setQuillContent] = useState("");
 
+  const [placeholder, setPlaceholder] = useState(t("Proposal.WriteReplyHint"));
+
   React.useImperativeHandle(ref, () => ({
     focus(type, _data) {
-      // TODO: focus
       inputRef?.current?.focus();
       setData(_data);
       setCtype(type);
       if (type === "edit") {
         setQuillContent({ ops: JSON.parse(_data?.content) });
+      } else if (type === "reply") {
+        setPlaceholder(`${t("Proposal.Reply")} @${formatSNS(snsMap, _data.wallet?.toLocaleLowerCase())}`);
       }
     },
     clear() {
@@ -41,7 +51,6 @@ export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
     } else {
       setReplyContent(JSON.stringify(editor.getContents().ops));
     }
-    // @ts-ignore
     setQuillContent(editor.getContents);
   };
 
@@ -49,7 +58,7 @@ export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
     <Box>
       <Avatar src={userToken?.user?.avatar} size="32px" />
       <Editor>
-        <QuillEditor onChange={handleChange} value={quillContent} ref={inputRef} />
+        <QuillEditor onChange={handleChange} value={quillContent} ref={inputRef} placeholder={placeholder} />
       </Editor>
       <SendButton disabled={loading} onClick={() => sendComment(ctype, data, replyContent)}>
         {t("Proposal.Send")}
@@ -82,11 +91,11 @@ const Editor = styled.div`
   border: 1px solid var(--border-color-1);
   border-radius: 16px;
   outline: none;
-  padding-inline: 16px;
+  padding-inline: 4px;
   margin: 10px 0;
   .ql-editor {
     height: unset;
-    min-height: 1.5em!important;
+    min-height: 1.5em !important;
   }
 `;
 
