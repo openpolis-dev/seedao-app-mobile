@@ -90,7 +90,7 @@ export default function useMetaforoLogin() {
   };
 
   const LoginMetafoModal = showLogin ? (
-    <MetaforoLoginModal onClose={() => !loading && setShowLogin(false)} onConfirm={go2login} />
+    <MetaforoLoginModal onClose={() => setShowLogin(false)} onConfirm={go2login} />
   ) : null;
 
   return { checkMetaforoLogin, LoginMetafoModal };
