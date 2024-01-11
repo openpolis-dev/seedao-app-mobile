@@ -29,6 +29,7 @@ const projectId = "da76ddd6c7d31632ed7fc9b88e28a410";
 
 const metadata = {
   name: "SeeDAO",
+  description: "SeeDAO APP",
   url: window.location.origin,
   icons: [`${window.location.origin}/icon192.png`],
 };
