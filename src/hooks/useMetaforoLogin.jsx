@@ -11,9 +11,10 @@ import { saveMetaforoToken } from "store/reducer";
 import { useSelector } from "react-redux";
 import getConfig from "constant/envCofnig";
 import { Wallet } from "utils/constant";
+import { ConnectorNotFoundError } from "wagmi";
 
 import { signTypedDataWithRedirect } from "@joyid/evm";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 const CONFIG = getConfig();
 
 const buildRedirectUrl = (action, current) => {
@@ -32,6 +33,7 @@ export default function useMetaforoLogin() {
   const [loading, setLoading] = useState(false);
 
   const { chain } = useNetwork();
+  const navigate = useNavigate();
 
   const { t } = useTranslation();
   const { toast } = useToast();
@@ -56,7 +58,17 @@ export default function useMetaforoLogin() {
           },
         });
       } else {
-        sign = await signTypedData(signData);
+        try {
+          sign = await signTypedData(signData);
+        } catch (error) {
+          if (error instanceof ConnectorNotFoundError) {
+            navigate("/login");
+            return;
+          }
+          logError("login to metaforo failed", error);
+          setLoading(false);
+          return;
+        }
       }
 
       const data = await loginByWallet({
