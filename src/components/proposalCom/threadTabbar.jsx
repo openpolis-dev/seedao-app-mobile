@@ -19,17 +19,17 @@ export default function ThreadTabbar({ showVote, id, openComment, openHistory })
         {showVote && (
           <li onClick={go2vote}>
             <img src={VoteImg} alt="" />
-            {t("Proposal.Vote")}
+            <span>{t("Proposal.Vote")}</span>
           </li>
         )}
         <li onClick={openComment}>
           <img src={CommentImg} alt="" />
-          {t("Proposal.Comment")}
+          <span>{t("Proposal.Comment")}</span>
         </li>
         <li>
           <CopyBox dir="left" text={`${window.location.origin}/proposal/thread/${id}`}>
             <img src={ShareImg} alt="" />
-            {t("Proposal.Share")}
+            <span>{t("Proposal.Share")}</span>
           </CopyBox>
         </li>
         {/*{isCurrentApplicant && !!moreActions().length && (*/}
@@ -54,8 +54,9 @@ const Box = styled.div`
   width: 100vw;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   box-sizing: border-box;
-  padding: 0 20px env(safe-area-inset-bottom);
+  padding: 16px 20px calc(16px + env(safe-area-inset-bottom));
   border-top: 1px solid var(--border-color);
   font-size: 14px;
 `;
@@ -66,12 +67,10 @@ const ThreadToolsBar = styled.ul`
   border: 1px solid var(--bs-border-color);
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 10px 24px;
+  gap: 32px;
 
   li {
     cursor: pointer;
-    font-size: 14px;
     color: #9a9a9a;
     display: flex;
     align-items: center;
@@ -79,6 +78,10 @@ const ThreadToolsBar = styled.ul`
   }
   img {
     margin-right: 10px;
+  }
+  .copy-content span {
+    position: relative;
+    top: -4px;
   }
 `;
 const HistoryBlock = styled.div`
