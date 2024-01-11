@@ -83,7 +83,9 @@ const Editor = styled.div`
   border-radius: 16px;
   outline: none;
   padding-inline: 16px;
+  margin: 10px 0;
   .ql-editor {
     height: unset;
+    min-height: 1.5em!important;
   }
 `;
