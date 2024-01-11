@@ -190,13 +190,16 @@ const VersionTag = styled.div`
     height: 18px;
     line-height: 15px;
     border-radius: 50%;
-    border: 1px solid var(--bs-body-color);
+    font-size: 12px;
+    color: #bbb;
+    border: 1px solid #bbb;
     text-align: center;
     box-sizing: border-box;
   }
   &:hover {
     color: #2f8fff;
     span {
+      color: #2f8fff;
       border: 1px solid #2f8fff;
     }
   }
