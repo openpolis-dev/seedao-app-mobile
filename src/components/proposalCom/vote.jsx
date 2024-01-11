@@ -40,7 +40,7 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
   const [showVoteRules, setShowVoteRules] = useState(false);
 
   const { checkMetaforoLogin, LoginMetafoModal } = useMetaforoLogin();
-  const { toast } = useToast();
+  const { toast, Toast } = useToast();
 
   const pollStatus = getPollStatus(poll.poll_start_at, poll.close_at);
 
@@ -196,6 +196,7 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
       </Bottom>
       {showVoteRules && <VoteRulesModal voteGate={voteGate} handleClose={() => setShowVoteRules(false)} />}
       {LoginMetafoModal}
+      {Toast}
     </CardStyle>
   );
 }
