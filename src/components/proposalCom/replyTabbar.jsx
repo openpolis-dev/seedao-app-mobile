@@ -51,9 +51,9 @@ export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
       <Editor>
         <QuillEditor onChange={handleChange} value={quillContent} ref={inputRef} />
       </Editor>
-      <button disabled={loading} onClick={() => sendComment(ctype, data, replyContent)}>
+      <SendButton disabled={loading} onClick={() => sendComment(ctype, data, replyContent)}>
         {t("Proposal.Send")}
-      </button>
+      </SendButton>
     </Box>
   );
 });
@@ -87,5 +87,19 @@ const Editor = styled.div`
   .ql-editor {
     height: unset;
     min-height: 1.5em!important;
+  }
+`;
+
+const SendButton = styled.button`
+  height: 40px;
+  line-height: 40px;
+  padding-inline: 16px;
+  background-color: var(--primary-color);
+  color: #fff;
+  font-size: 14px;
+  font-family: "Poppins-SemiBold";
+  border-radius: 16px;
+  &:disabled {
+    opacity: 0.4;
   }
 `;
