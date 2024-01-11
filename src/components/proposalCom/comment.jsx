@@ -2,14 +2,14 @@ import styled from "styled-components";
 import { handleContent } from "./parseContent";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { formatMsgTime } from "utils/time";
+import { formatMsgTime, formatTime } from "utils/time";
 import CommentIcon from "assets/Imgs/proposal/commentReply.svg";
 import publicJs from "utils/publicJs";
 import CityHallImg from "assets/Imgs/proposal/cityhall.png";
-// import Overlay from "react-bootstrap/Overlay";
 import Avatar from "components/common/avatar";
 import { useSelector } from "react-redux";
 import { MdPreview } from "md-editor-rt";
+import LinkIcon from "assets/Imgs/proposal/link.svg";
 
 export const DeletedContent = `[{"insert":"Post deleted\\n"}]`;
 
@@ -81,24 +81,26 @@ export default function CommentComponent({
               <TimeBox>{formatMsgTime(data.created_ts * 1000, t)}</TimeBox>
               {!hideVersion && data.proposal_arweave_hash && (
                 <VersionTag>
-                  <span ref={versionTargetRef} onClick={(e) => handleShow(e)}>
+                  <span className="a" ref={versionTargetRef} onClick={(e) => handleShow(e)}>
                     a
                   </span>
-                  {/* <Overlay show={showVersionTip} target={versionTargetRef.current} placement="right-end">
-                      {(props) => (
-                        <Tip
-                          {...props}
-                          onClick={() => {
-                            window.open(`https://arweave.net/tx/${data.proposal_arweave_hash}/data.html`);
-                            setShowVersionTip(false);
-                          }}
-                        >
-                          <span className="titleName">{data.proposal_title}</span>
-                          <span className="time">{formatTime(data.proposal_ts * 1000)}</span>
-                        </Tip>
-                      )}
-                    </Overlay> */}
                 </VersionTag>
+              )}
+              {showVersionTip && (
+                <Tip
+                  onClick={() => {
+                    window.open(`https://arweave.net/tx/${data.proposal_arweave_hash}/data.html`);
+                    setShowVersionTip(false);
+                  }}
+                >
+                  <div className="titleName">
+                    {t("Proposal.VersionTitle")} <img src={LinkIcon} alt="" />
+                  </div>
+                  <div className="time">
+                    {data.proposal_title}
+                    {formatTime(data.proposal_ts * 1000)}
+                  </div>
+                </Tip>
               )}
             </Flextop>
             <div>
@@ -131,9 +133,7 @@ export default function CommentComponent({
             )}
           </RhtBtm>
         </RightBox>
-        {
-            !isChild && <div className="line"/>
-        }
+        {!isChild && <div className="line" />}
       </CommentMain>
       {children}
     </CommentStyle>
@@ -141,7 +141,6 @@ export default function CommentComponent({
 }
 
 const CommentStyle = styled.div`
-
   padding-left: ${(props) => props.padding};
   margin-bottom: 32px;
   position: relative;
@@ -149,7 +148,7 @@ const CommentStyle = styled.div`
     padding: 0;
     margin: 0;
   }
-  .line{
+  .line {
     position: absolute;
     right: 0;
     bottom: -16px;
@@ -164,7 +163,6 @@ const CommentMain = styled.div`
   gap: 10px;
   margin-bottom: 17px;
   width: 100%;
-
 `;
 
 const RightBox = styled.div`
@@ -183,7 +181,7 @@ const VersionTag = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  span {
+  span.a {
     cursor: pointer;
     display: inline-block;
     width: 18px;
@@ -198,7 +196,7 @@ const VersionTag = styled.div`
   }
   &:hover {
     color: #2f8fff;
-    span {
+    span.a {
       color: #2f8fff;
       border: 1px solid #2f8fff;
     }
@@ -206,31 +204,34 @@ const VersionTag = styled.div`
 `;
 
 const Tip = styled.div`
-  position: relative;
-  left: -20px;
-  top: -40px;
-  height: 36px;
+  position: absolute;
+  left: 20vw;
+  top: 20px;
+  min-width: 70vw;
   line-height: 34px;
-  border: 1px solid var(--bs-border-color);
-  padding-inline: 16px;
+  padding: 8px 12px;
   box-sizing: border-box;
-  border-radius: 8px;
-  background-color: var(--bs-box-background);
-  //color: var(--bs-body-color_active);
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 2px 4px 4px 0px var(--bs-border-color_opacity);
+  z-index: 1;
 
   cursor: default;
   font-size: 14px;
   .titleName {
-    color: #2f8fff;
+    line-height: 22px;
+    height: 22px;
+    font-size: 12px;
+    font-family: "Poppins-SemiBold";
   }
   .time {
-    padding-left: 10px;
     font-size: 12px;
+    line-height: 22px;
   }
   img {
     position: relative;
-    top: -1px;
-    margin-left: 12px;
+    top: 2px;
+    margin-left: 4px;
   }
 `;
 
@@ -277,7 +278,7 @@ const FlexReply = styled.div`
   display: flex;
   align-items: center;
   color: #2f8fff;
-  span{
+  span {
     line-height: 12px;
     margin-top: -9px;
   }

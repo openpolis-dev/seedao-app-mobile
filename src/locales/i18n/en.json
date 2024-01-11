@@ -170,7 +170,8 @@
     "WriteReplyHint": "write a reply",
     "TimeDisplay": "{{d}} day(s) {{h}} hour(s) {{m}} minute(s)",
     "History": "History",
-    "VoteRules": "Vote Rules"
+    "VoteRules": "Vote Rules",
+    "VersionTitle": "Version"
   },
   "My": {
     "MyProfile": "My Profile",

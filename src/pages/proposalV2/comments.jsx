@@ -323,6 +323,7 @@ export default function ThreadCommentsPage() {
 
 const CommentsList = styled.div`
   padding-inline: 20px;
+  padding-top: 16px;
 `;
 
 const NoItem = styled.div`
