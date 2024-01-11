@@ -7,12 +7,27 @@ import { signTypedData } from "wagmi/actions";
 import MetaforoLoginModal from "components/loginMetaforoModal";
 import { prepareMetaforo, loginByWallet } from "api/proposalV2";
 import store from "store";
-import { saveMetaforoToken, saveLoading } from "store/reducer";
+import { saveMetaforoToken } from "store/reducer";
 import { useSelector } from "react-redux";
+import getConfig from "constant/envCofnig";
+import { Wallet } from "utils/constant";
+
+import { signTypedDataWithRedirect } from "@joyid/evm";
+import { useLocation } from "react-router-dom";
+const CONFIG = getConfig();
+
+const buildRedirectUrl = (action, current) => {
+  const url = new URL(`${window.location.origin}/redirect?current=${current}`);
+  url.searchParams.set("action", action);
+  return url.href;
+};
 
 export default function useMetaforoLogin() {
   const account = useSelector((state) => state.account);
   const metaforoToken = useSelector((state) => state.metaforoToken);
+  const wallet = useSelector((state) => state.walletType);
+  const { pathname } = useLocation();
+
   const [showLogin, setShowLogin] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -28,11 +43,22 @@ export default function useMetaforoLogin() {
     setLoading(true);
     // sign
     try {
-      console.log("[typedData] params", account, chain.id);
-      const signData = publicJs.typedData(account, chain.id);
+      const signData = publicJs.typedData(account, chain?.id || CONFIG.NETWORK.chainId);
       console.log("[signData]", signData);
-      // @ts-ignore
-      const sign = await signTypedData(signData);
+      let sign;
+      if (wallet === Wallet.JOYID) {
+        signTypedDataWithRedirect(buildRedirectUrl("sign-metaforo", pathname), signData, account, {
+          joyidAppURL: `${CONFIG.JOY_ID_URL}`,
+          state: pathname,
+          network: {
+            chainId: CONFIG.NETWORK.chainId,
+            name: CONFIG.NETWORK.name,
+          },
+        });
+      } else {
+        await signTypedData(signData);
+      }
+
       const data = await loginByWallet({
         web3_public_key: account,
         sign,
