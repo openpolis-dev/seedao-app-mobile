@@ -1,6 +1,6 @@
 
 import {useEffect, useState} from "react";
-import { useWeb3Modal } from "@web3modal/react";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { useAccount, useDisconnect } from "wagmi";
 import {useEthersSigner } from '../../utils/ethersNew';
 import store from "../../store";

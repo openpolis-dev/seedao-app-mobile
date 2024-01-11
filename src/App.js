@@ -11,9 +11,8 @@ import Loading from "./components/loading";
 
 import GlobalStyle from "./utils/GlobalStyle";
 
-import { EthereumClient, w3mConnectors, w3mProvider } from "@web3modal/ethereum";
-import { Web3Modal } from "@web3modal/react";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
+import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi/react";
+import { WagmiConfig } from "wagmi";
 import { mainnet, polygon } from "wagmi/chains";
 import InstallCheck from "components/thirdInstallPWA";
 import RouterChecker from "./components/routerChecker";
@@ -28,13 +27,28 @@ const chains = getConfig().NETWORK.chainId === 1 ? [mainnet] : [polygon];
 
 const projectId = "da76ddd6c7d31632ed7fc9b88e28a410";
 
-const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors: w3mConnectors({ projectId, chains }),
-  publicClient,
+const metadata = {
+  name: "SeeDAO",
+  url: window.location.origin,
+  icons: [`${window.location.origin}/icon192.png`],
+};
+
+const wagmiConfig = defaultWagmiConfig({
+  chains,
+  projectId,
+  metadata,
+  enableCoinbase: false,
+  enableEmail: false,
+  enableEIP6963: false,
 });
-const ethereumClient = new EthereumClient(wagmiConfig, chains);
+
+// 3. Create modal
+createWeb3Modal({
+  wagmiConfig,
+  projectId,
+  chains,
+  includeWalletIds: ["c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96"],
+});
 
 function App() {
   const { Toast, showToast } = useToast();
@@ -59,17 +73,6 @@ function App() {
             </PersistGate>
           </Provider>
           <GlobalStyle />
-          <Web3Modal
-            defaultChain={getConfig().NETWORK.chainId === 1 ? mainnet : polygon}
-            projectId={projectId}
-            ethereumClient={ethereumClient}
-            explorerRecommendedWalletIds={[
-              "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
-              // '80c7742837ad9455049270303bccd55bae39a9e639b70d931191269d3a76320a',
-              // '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0'
-            ]}
-            explorerExcludedWalletIds="ALL"
-          />
         </WagmiConfig>
         <InstallCheck />
         {Toast}
