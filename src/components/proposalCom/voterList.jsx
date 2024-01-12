@@ -15,7 +15,7 @@ const UserBox = ({ name, avatar }) => {
   return (
     <UserBoxStyle>
       <Avatar src={avatar} alt="" size="30px" />
-      <span>{name}</span>
+      <span className="name">{name}</span>
     </UserBoxStyle>
   );
 };
