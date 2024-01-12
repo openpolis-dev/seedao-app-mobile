@@ -374,5 +374,5 @@ const ProposalContentBlock = styled.div`
 `;
 
 const ComponnentBox = styled(ProposalContentBlock)`
-  margin-bottom: 0;
+  margin-bottom: 10px;
 `;
