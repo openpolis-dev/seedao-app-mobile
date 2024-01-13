@@ -36,7 +36,7 @@ export default function useMetaforoLogin() {
   const navigate = useNavigate();
 
   const { t } = useTranslation();
-  const { toast } = useToast();
+  const { toast, Toast } = useToast();
 
   const go2login = async () => {
     if (loading) {
@@ -66,6 +66,7 @@ export default function useMetaforoLogin() {
             return;
           }
           logError("login to metaforo failed", error);
+          toast.danger(error?.data?.msg || error?.message || error?.details || `${error}`);
           setLoading(false);
           return;
         }
@@ -102,7 +103,10 @@ export default function useMetaforoLogin() {
   };
 
   const LoginMetafoModal = showLogin ? (
-    <MetaforoLoginModal onClose={() => setShowLogin(false)} onConfirm={go2login} />
+    <>
+      <MetaforoLoginModal onClose={() => setShowLogin(false)} onConfirm={go2login} />
+      {Toast}
+    </>
   ) : null;
 
   return { checkMetaforoLogin, LoginMetafoModal };
