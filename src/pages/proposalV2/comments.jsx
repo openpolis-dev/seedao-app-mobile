@@ -278,6 +278,7 @@ export default function ThreadCommentsPage() {
               onMore={onMore}
               hideReply={hideReply}
               isCurrentUser={isCurrentUser(p.wallet)}
+              isSpecial={p.is_rejected}
             >
               {p.children?.map((ip) => (
                 <CommentComponent
