@@ -67,7 +67,7 @@ export default function CommentComponent({
   };
 
   return (
-    <CommentStyle padding={isChild ? "64px" : "0"} ischild={isChild}>
+    <CommentStyle padding={isChild ? "42px" : "0"} ischild={isChild}>
       {/* {parentData && <ReplyComment data={parentData} />} */}
       <CommentMain>
         <Avatar src={isSpecial ? CityHallImg : data.avatar} size="32px" />
