@@ -58,9 +58,9 @@ const StatusTag = styled.div`
   color: #fff;
   font-size: 12px;
   border-radius: 4px;
-  display: inline-block;
   height: 24px;
-  line-height: 24px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: ${(props) => props.$width};
 `;

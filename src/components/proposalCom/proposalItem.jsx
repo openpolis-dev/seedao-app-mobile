@@ -61,6 +61,7 @@ const CardBox = styled.div`
 
   .name {
     font-size: 12px;
+    lh1em
     font-family: Poppins-SemiBold, Poppins;
     color: var(--bs-body-color_active);
   }
@@ -69,6 +70,7 @@ const CardBox = styled.div`
     font-size: 12px;
     color: var(--font-light-color);
     padding-inline: 2px;
+    line-height: 1em;
   }
 `;
 
