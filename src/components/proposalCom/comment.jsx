@@ -212,7 +212,7 @@ const Tip = styled.div`
   padding: 8px 12px;
   box-sizing: border-box;
   border-radius: 4px;
-  background: #fff;
+  background: var(--background-color);
   box-shadow: 2px 4px 4px 0px var(--bs-border-color_opacity);
   z-index: 1;
 
