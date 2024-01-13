@@ -87,10 +87,10 @@ const AvaBox = styled.div`
 `;
 
 const Title = styled.div`
-  font-weight: 600;
+  //font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  font-family: Poppins-SemiBold, Poppins;
+  //font-family: Poppins-SemiBold, Poppins;
   color: var(--bs-body-color_active);
   flex: 1;
   height: 40px;
