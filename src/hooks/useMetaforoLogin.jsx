@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import getConfig from "constant/envCofnig";
 import { Wallet } from "utils/constant";
 import { ConnectorNotFoundError } from "wagmi";
+import LoadingModal from "components/LoadingModal";
 
 import { signTypedDataWithRedirect } from "@joyid/evm";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -39,9 +40,6 @@ export default function useMetaforoLogin() {
   const { toast, Toast } = useToast();
 
   const go2login = async () => {
-    if (loading) {
-      return;
-    }
     setLoading(true);
     // sign
     try {
@@ -87,7 +85,6 @@ export default function useMetaforoLogin() {
     } catch (error) {
       logError("login failed", error);
       toast.danger(error?.data?.msg || error?.message || `${error}`);
-      return;
     } finally {
       setLoading(false);
       setShowLogin(false);
@@ -102,9 +99,11 @@ export default function useMetaforoLogin() {
     setShowLogin(true);
   };
 
-  const LoginMetafoModal = showLogin ? (
+  const LoginMetafoModal = loading ? (
+    <LoadingModal msg={t("Proposal.Loging")} />
+  ) : showLogin ? (
     <>
-      <MetaforoLoginModal onClose={() => setShowLogin(false)} onConfirm={go2login} />
+      <MetaforoLoginModal onClose={() => setShowLogin(false)} onConfirm={go2login} loading={loading} />
       {Toast}
     </>
   ) : null;

@@ -171,7 +171,8 @@
     "TimeDisplay": "{{d}} day(s) {{h}} hour(s) {{m}} minute(s)",
     "History": "History",
     "VoteRules": "Vote Rules",
-    "VersionTitle": "Version"
+    "VersionTitle": "Version",
+    "Loging": "Login to Metaforo..."
   },
   "My": {
     "MyProfile": "My Profile",

@@ -171,7 +171,8 @@
     "TimeDisplay": "{{d}}天{{h}}小时{{m}}分钟",
     "History": "历史记录",
     "VoteRules": "投票规则",
-    "VersionTitle": "提案版本"
+    "VersionTitle": "提案版本",
+    "Loging": "正在登录Metaforo..."
   },
   "My": {
     "MyProfile": "我的信息",
