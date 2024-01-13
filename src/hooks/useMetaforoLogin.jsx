@@ -64,7 +64,7 @@ export default function useMetaforoLogin() {
             return;
           }
           logError("login to metaforo failed", error);
-          toast.danger(error?.data?.msg || error?.message || error?.details || `${error}`);
+          toast.danger(error?.data?.msg || error?.message || error?.details || `${t("Msg.ApproveFailed")} ${error}`);
           setLoading(false);
           return;
         }
