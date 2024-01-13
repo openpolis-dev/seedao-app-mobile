@@ -95,7 +95,7 @@ const Title = styled.div`
   //font-family: Poppins-SemiBold, Poppins;
   color: var(--bs-body-color_active);
   flex: 1;
-  height: 40px;
+  //height: 40px;
   overflow:hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;
