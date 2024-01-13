@@ -10,6 +10,7 @@ import StickyHeader from "./StickyHeader";
 import {savePath} from "../../store/reducer";
 import store from "store";
 import { isInPWA } from "utils";
+import { checkTokenValid, clearStorage } from "utils/auth";
 
 const OuterBox = styled.div`
   width: 100%;
@@ -78,12 +79,18 @@ export default function Layout({
   }, []);
 
   useEffect(() => {
-    if (!userToken?.token && pathname !== "/sns") {
-      if (pathname === "/sns/register") {
-        localStorage.setItem("==sns==", "1");
-      }
-      navigate("/login");
+    if (pathname === 'sns') {
+      return;
     }
+    // check token
+     if (!checkTokenValid(userToken?.token, userToken?.token_exp)) {
+       clearStorage();
+       
+       if (pathname === "/sns/register") {
+         localStorage.setItem("==sns==", "1");
+       }
+       navigate("/login");
+     }
   }, [userToken, pathname]);
 
   useEffect(() => {
