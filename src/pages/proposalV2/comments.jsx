@@ -231,6 +231,10 @@ export default function ThreadCommentsPage() {
     checkMetaforoLogin();
   }, []);
 
+  useEffect(() => {
+    replyRef?.current?.focus();
+  }, [])
+
   return (
     <Layout
       title={t("Proposal.Comment")}

@@ -29,6 +29,9 @@ export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
   React.useImperativeHandle(ref, () => ({
     focus(type, _data) {
       inputRef?.current?.focus();
+      if (!type) {
+        return;
+      }
       setData(_data);
       setCtype(type);
       if (type === "edit") {
