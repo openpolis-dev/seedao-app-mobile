@@ -85,7 +85,7 @@ export default function Layout({
     // check token
      if (!checkTokenValid(userToken?.token, userToken?.token_exp)) {
        clearStorage();
-       
+
        if (pathname === "/sns/register") {
          localStorage.setItem("==sns==", "1");
        }
@@ -118,7 +118,7 @@ export default function Layout({
       <InnerBox
         id="inner"
         ref={innerRef}
-        $notab={noTab ? 0 : pwaBtm ? "120px" : "70px"}
+        $notab={noTab ? 0 : pwaBtm ? "50px" : "70px"}
         $sticky="true"
         $paddingtop={noHeader || sticky ? "0" : "47px"}
       >

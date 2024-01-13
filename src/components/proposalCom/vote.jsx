@@ -204,6 +204,8 @@ const FlexLine = styled.div``;
 
 const CardStyle = styled.div`
   margin: 0 20px 32px;
+  border-top: 1px solid #e6dcff;
+  padding-top:20px;
 `;
 
 const VoteHead = styled.div`
