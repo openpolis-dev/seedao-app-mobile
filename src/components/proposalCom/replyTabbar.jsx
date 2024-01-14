@@ -57,10 +57,6 @@ export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
     setQuillContent(editor.getContents);
   };
 
-  useEffect(() => {
-    inputRef?.current?.focus();
-  }, [inputRef?.current]);
-
   return (
     <Box>
       <Avatar src={userToken?.user?.avatar} size="32px" />

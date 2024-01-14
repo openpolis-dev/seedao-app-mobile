@@ -228,8 +228,14 @@ export default function ThreadCommentsPage() {
   };
 
   useEffect(() => {
-    checkMetaforoLogin();
-  }, []);
+    const check = async () => {
+      const canReply = await checkMetaforoLogin();
+      if (canReply) {
+        replyRef?.current?.focus();
+      }
+    };
+    replyRef?.current && check();
+  }, [replyRef?.current]);
 
   return (
     <Layout
