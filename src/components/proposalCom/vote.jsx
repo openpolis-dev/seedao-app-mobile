@@ -155,11 +155,9 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
               <OptionContentPure>{option.html}</OptionContentPure>
             </VoteOptionSelect>
           ))}
-          {hasPermission && (
-            <VoteButton onClick={goVote} disabled={selectOption === void 0}>
-              {t("Proposal.Vote")}
-            </VoteButton>
-          )}
+          <VoteButton onClick={goVote} disabled={!hasPermission || selectOption === void 0}>
+            {t("Proposal.Vote")}
+          </VoteButton>
         </>
       );
     }
@@ -205,7 +203,7 @@ const FlexLine = styled.div``;
 const CardStyle = styled.div`
   margin: 0 20px 32px;
   border-top: 1px solid #e6dcff;
-  padding-top:20px;
+  padding-top: 20px;
 `;
 
 const VoteHead = styled.div`
