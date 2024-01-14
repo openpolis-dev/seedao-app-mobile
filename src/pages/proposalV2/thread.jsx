@@ -12,7 +12,7 @@ import { getProposalDetail, getComponents } from "api/proposalV2";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import publicJs from "utils/publicJs";
 import useQuerySNS from "hooks/useQuerySNS";
-import { PreviewMobie } from "@seedao/components";
+import { PreviewMobie } from "@taoist-labs/components";
 import { MdPreview } from "md-editor-rt";
 import ProposalVote from "components/proposalCom/vote";
 import { ProposalState } from "constant/proposal";
