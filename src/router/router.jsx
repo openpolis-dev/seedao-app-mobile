@@ -2,6 +2,7 @@
 import React from "react";
 import { lazy } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
+import ProposalComment from "pages/proposalV2/comments";
 
 const Home = lazy(() => import("../pages/home"));
 const Login = lazy(() => import("../pages/login"));
@@ -11,7 +12,7 @@ const Guild = lazy(() => import("pages/guild"));
 const GuildInfoRoot = lazy(() => import("pages/guild/info/info"));
 const Proposal = lazy(() => import("../pages/proposalV2/list"));
 const ProposalThread = lazy(() => import("pages/proposalV2/thread"));
-const ProposalComment = lazy(() => import("pages/proposalV2/comments"));
+// const ProposalComment = lazy(() => import("pages/proposalV2/comments"));
 const ProposalHistory = lazy(() => import("pages/proposalV2/history"));
 const Setting = lazy(() => import("../pages/setting"));
 const Assets = lazy(() => import("../pages/vault/assets"));
