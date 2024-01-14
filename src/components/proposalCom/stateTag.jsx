@@ -54,13 +54,16 @@ export default function ProposalStateTag({ state }) {
 }
 
 const StatusTag = styled.div`
-  background-color: ${(props) => props.$color};
-  color: #fff;
+  border-color: ${(props) => props.$color};
+  border: 1px solid;
+  color: ${(props) => props.$color};
   font-size: 12px;
   border-radius: 4px;
-  height: 24px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: ${(props) => props.$width};
+  padding: 0 5px;
+  box-sizing: border-box;
+  //width: ${(props) => props.$width};
 `;

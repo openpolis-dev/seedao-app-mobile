@@ -17,6 +17,7 @@ import SearchImg from "assets/Imgs/search.svg";
 import useQuerySNS from "hooks/useQuerySNS";
 import publicJs from "utils/publicJs";
 import { useSelector } from "react-redux";
+import SearchRhtImg from "../../assets/Imgs/searchRht.svg";
 
 const PAGE_SIZE = 10;
 
@@ -59,6 +60,8 @@ export default function ProposalList() {
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [initPage, setInitPage] = useState(true);
+
+  const [showModal,setShowModal] = useState(false);
 
   const hasMore = proposalList.length < totalCount;
   const { getMultiSNS } = useQuerySNS();
@@ -117,6 +120,19 @@ export default function ProposalList() {
     return name?.endsWith(".seedao") ? name : publicJs.AddressToShow(name, 4);
   };
 
+  const handleTime = (item) =>{
+    setSelectTime(item)
+    setShowModal(false)
+  }
+
+  const handleType = (item) =>{
+    setSelectCategory(item)
+    setShowModal(false)
+  }
+  const handleClose = () =>{
+    setShowModal(false)
+  }
+
   return (
     <Layout title={t("Proposal.Governance")} headBgColor={`var(--background-color)`} bgColor="var(--background-color)">
       <FilterBox>
@@ -130,42 +146,86 @@ export default function ProposalList() {
             placeholder={t("General.Search")}
             onKeyUp={onKeyUp}
           />
+          <img src={SearchRhtImg} alt="" className="srht" onClick={()=>setShowModal(true)} />
         </SearchInputBox>
-        <SelectBox>
-          <li>
-            <FilterSelect
-              width="100%"
-              options={TIME_OPTIONS}
-              defaultValue={TIME_OPTIONS[0]}
-              isClearable={false}
-              isSearchable={false}
-              placeholder={t("Application.SelectStatus")}
-              onChange={(v) => setSelectTime(v)}
-            />
-          </li>
-          <li>
-            <FilterSelect
-              width="100%"
-              options={CATEGORY_OPTIONS}
-              defaultValue={CATEGORY_OPTIONS[0]}
-              closeClear={true}
-              isSearchable={false}
-              placeholder={t("Proposal.TypeSelectHint")}
-              onChange={(v) => setSelectCategory(v)}
-            />
-          </li>
-          <li>
-            <FilterSelect
-              width="100%"
-              options={STATUS_OPTIONS}
-              defaultValue={STATUS_OPTIONS[0]}
-              closeClear={true}
-              isSearchable={false}
-              placeholder={t("Proposal.StatusSelectHint")}
-              onChange={(v) => setSelectStatus(v)}
-            />
-          </li>
-        </SelectBox>
+        {
+          showModal && <Modal onClick={handleClose}>
+              <FilterMask>
+                <ModalContent>
+                  <ListBox>
+                    <dt>时间</dt>
+                    <dd>
+                      <ul>
+                        {
+                          TIME_OPTIONS.map((item,index)=> (<li key={`time_${index}`} onClick={() => handleTime(item)}>
+                            {item.label}</li>))
+                        }
+                      </ul>
+                    </dd>
+                  </ListBox>
+                  <ListBox>
+                    <dt>类型</dt>
+                    <dd>
+                      <ul>
+                        {
+                          CATEGORY_OPTIONS.map((item,index)=> (<li className="w50" key={`cat_${index}`}  onClick={() => handleType(item)}>
+                            {item.label}</li>))
+                        }
+                      </ul>
+                    </dd>
+                  </ListBox>
+                  <ListBox>
+                    <dt>状态</dt>
+                    <dd>
+                      <ul>
+                        {
+                          STATUS_OPTIONS.map((item,index)=> (<li key={`status_${index}`} onClick={() => handleType(item)}>
+                            {item.label}</li>))
+                        }
+                      </ul>
+                    </dd>
+                  </ListBox>
+                </ModalContent>
+              </FilterMask>
+            </Modal>
+        }
+
+
+        {/*<SelectBox>*/}
+        {/*  <li>*/}
+        {/*    <FilterSelect*/}
+        {/*      width="100%"*/}
+        {/*      options={TIME_OPTIONS}*/}
+        {/*      defaultValue={TIME_OPTIONS[0]}*/}
+        {/*      isClearable={false}*/}
+        {/*      isSearchable={false}*/}
+        {/*      placeholder={t("Application.SelectStatus")}*/}
+        {/*      onChange={(v) => setSelectTime(v)}*/}
+        {/*    />*/}
+        {/*  </li>*/}
+        {/*  <li>*/}
+        {/*    <FilterSelect*/}
+        {/*      width="100%"*/}
+        {/*      options={CATEGORY_OPTIONS}*/}
+        {/*      defaultValue={CATEGORY_OPTIONS[0]}*/}
+        {/*      closeClear={true}*/}
+        {/*      isSearchable={false}*/}
+        {/*      placeholder={t("Proposal.TypeSelectHint")}*/}
+        {/*      onChange={(v) => setSelectCategory(v)}*/}
+        {/*    />*/}
+        {/*  </li>*/}
+        {/*  <li>*/}
+        {/*    <FilterSelect*/}
+        {/*      width="100%"*/}
+        {/*      options={STATUS_OPTIONS}*/}
+        {/*      defaultValue={STATUS_OPTIONS[0]}*/}
+        {/*      closeClear={true}*/}
+        {/*      isSearchable={false}*/}
+        {/*      placeholder={t("Proposal.StatusSelectHint")}*/}
+        {/*      onChange={(v) => setSelectStatus(v)}*/}
+        {/*    />*/}
+        {/*  </li>*/}
+        {/*</SelectBox>*/}
       </FilterBox>
       <ProposalBox>
         <InfiniteScroll
@@ -186,6 +246,79 @@ export default function ProposalList() {
     </Layout>
   );
 }
+
+
+const ListBox = styled.dl`
+  margin-bottom: 20px;
+  dt{
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-family: 'Poppins-Medium';
+  }
+  ul{
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    li{
+      border: 1px solid var(--primary-color);
+      border-radius: 50px;
+      padding-block: 5px;
+      width: 31%;
+      box-sizing: border-box;
+      text-align: center;
+      margin-bottom: 10px;
+      &:last-child{
+        margin-right: auto;
+      }
+      &.w50{
+        width: 48%;
+        &:last-child{
+          margin-left: 0;
+          margin-right: 0;
+        }
+      }
+    }
+  }
+`
+
+
+const Modal = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 9999;
+`;
+
+const ModalContent = styled.div`
+  background-color: var(--background-color-1);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.05);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding-top: 24px;
+  padding-inline: 22px;
+  padding-bottom: 29px;
+  box-sizing: border-box;
+`;
+
+const FilterMask = styled.div`
+
+  position: absolute;
+  background: rgba(244, 244, 248, 0.9);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(10px);
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+`
+
 
 const FilterBox = styled.div`
   padding-inline: 20px;
@@ -218,6 +351,10 @@ const SearchInputBox = styled.div`
   gap: 8px;
   padding: 0 16px;
   box-sizing: border-box;
+  .srht{
+    width: 18px;
+    height: 16px;
+  }
 `;
 
 const InputStyle = styled.input`

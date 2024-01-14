@@ -19,30 +19,36 @@ export default function ProposalItem({ data, sns }) {
       <div onClick={openProposal}>
         <CardHeaderStyled>
           <Title line={2}>{data.title}</Title>
-          <ProposalStateTag state={data.state} />
         </CardHeaderStyled>
+        <Flexlft>
+          <ProposalStateTag state={data.state} />
+          <CatBox>{data.category_name}</CatBox>
+        </Flexlft>
         <CardBody>
           <FlexLine>
             <AvaBox>
               <div className="left">
-                <Avatar src={data.applicant_avatar} alt="" size="28px" />
+                <Avatar src={data.applicant_avatar} alt="" size="28px"/>
               </div>
-              <div className="right">
-                <div className="name">
-                  <span>{sns}</span>
-                </div>
-                <div className="date">
-                  <span>{formatDate(new Date(data.create_ts * 1000))}</span>
-                </div>
-              </div>
+              <div className="name">{sns}</div>
             </AvaBox>
-            <CatBox>{data.category_name}</CatBox>
+            <div className="date">
+            <span>{formatDate(new Date(data.create_ts * 1000))}</span>
+            </div>
           </FlexLine>
         </CardBody>
       </div>
     </CardBox>
   );
 }
+
+const Flexlft = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+  gap:5px;
+`
+
 
 const FlexLine = styled.div`
   display: flex;
@@ -61,8 +67,7 @@ const CardBox = styled.div`
 
   .name {
     font-size: 12px;
-    lh1em
-    font-family: Poppins-SemiBold, Poppins;
+    font-family: Poppins-SemiBold !important;
     color: var(--bs-body-color_active);
   }
 
@@ -89,10 +94,10 @@ const AvaBox = styled.div`
 `;
 
 const Title = styled.div`
-  //font-weight: 600;
+  //font-weight: bolder;
   font-size: 14px;
   line-height: 20px;
-  //font-family: Poppins-SemiBold, Poppins;
+  //font-family: Poppins-SemiBold;
   color: var(--bs-body-color_active);
   flex: 1;
   //height: 40px;
@@ -107,9 +112,9 @@ const Title = styled.div`
 const CatBox = styled.div`
   display: inline-block;
   border-radius: 4px;
-  border: 1px solid var( --border-color-1);
-  color: var(--bs-body-color_active);
+  border: 1px solid var(--border-color-2);
+  color: var(--border-color-2);
   font-size: 12px;
-  padding: 0 16px;
-  line-height: 2em;
+  padding: 0 6px;
+  line-height: 20px;
 `;
