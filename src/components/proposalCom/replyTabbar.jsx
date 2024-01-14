@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import Avatar from "components/common/avatar";
 import { useTranslation } from "react-i18next";
@@ -56,6 +56,10 @@ export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
     }
     setQuillContent(editor.getContents);
   };
+
+  useEffect(() => {
+    inputRef?.current?.focus();
+  }, [inputRef?.current]);
 
   return (
     <Box>
