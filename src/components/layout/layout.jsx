@@ -79,7 +79,7 @@ export default function Layout({
   }, []);
 
   useEffect(() => {
-    if (pathname === 'sns') {
+    if (pathname === 'sns' || pathname === 'login') {
       return;
     }
     // check token
