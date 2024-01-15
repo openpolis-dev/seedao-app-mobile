@@ -234,8 +234,8 @@ export default function ThreadCommentsPage() {
         replyRef?.current?.focus();
       }
     };
-    replyRef?.current && check();
-  }, [replyRef?.current]);
+    check();
+  }, []);
 
   return (
     <Layout
