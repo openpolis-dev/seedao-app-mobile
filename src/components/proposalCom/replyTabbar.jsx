@@ -46,6 +46,9 @@ export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
       setReplyContent("");
       setQuillContent("");
     },
+    blur() {
+      inputRef?.current?.blur();
+    }
   }));
 
   const handleChange = (value, source, editor) => {

@@ -23,6 +23,9 @@ export default React.forwardRef(function QuillEditor({ placeholder, ...props }, 
     focus() {
       inputRef?.current?.focus();
     },
+    blur() {
+      inputRef?.current?.blur();
+    }
   }));
 
   return (
