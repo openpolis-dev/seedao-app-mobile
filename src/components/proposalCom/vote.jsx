@@ -155,9 +155,11 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
               <OptionContentPure>{option.html}</OptionContentPure>
             </VoteOptionSelect>
           ))}
-          <VoteButton onClick={goVote} disabled={!hasPermission || selectOption === void 0}>
-            {t("Proposal.Vote")}
-          </VoteButton>
+          {hasPermission && (
+            <VoteButton onClick={goVote} disabled={selectOption === void 0}>
+              {t("Proposal.Vote")}
+            </VoteButton>
+          )}
         </>
       );
     }
