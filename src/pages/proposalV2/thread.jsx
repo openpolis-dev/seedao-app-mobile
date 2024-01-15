@@ -20,12 +20,14 @@ import ThreadTabbar from "components/proposalCom/threadTabbar";
 import LinkImg from "assets/Imgs/proposal/link.png";
 import useMetaforoLogin from "hooks/useMetaforoLogin";
 import { useSelector } from "react-redux";
+import useProposalCategories from "hooks/useProposalCategories";
 
 export default function ProposalThread() {
   const { id } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
   const metaforoToken = useSelector((state) => state.metaforoToken);
+  const proposalCategories = useProposalCategories();
 
   const { t, i18n } = useTranslation();
   const [data, setData] = useState();
@@ -167,6 +169,21 @@ export default function ProposalThread() {
     return true;
   };
 
+   const getCurrentCategory = () => {
+     if (data?.category_name) {
+       return data.category_name;
+     } else {
+       if (data?.proposal_category_id) {
+         const findOne = proposalCategories.find((c) => c.id === data.proposal_category_id);
+         if (findOne) {
+           return findOne.name;
+         }
+       }
+       return "";
+     }
+   };
+   const currentCategory = getCurrentCategory();
+
   useEffect(() => {
     checkMetaforoLogin();
   }, []);
@@ -200,7 +217,7 @@ export default function ProposalThread() {
         </div>
         <FlexLine>
           {data?.state && <ProposalStateTag state={data.state} />}
-          {data?.category_name && <CategoryTag>{data?.category_name}</CategoryTag>}
+          {currentCategory && <CategoryTag>{currentCategory}</CategoryTag>}
         </FlexLine>
 
         <InfoBox>
