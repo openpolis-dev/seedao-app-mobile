@@ -8,6 +8,8 @@ const CategoryTag = styled.div`
   font-size: 12px;
   padding: 0 6px;
   line-height: 20px;
+  height: 20px;
+  box-sizing: border-box;
 `;
 
 export default CategoryTag;
