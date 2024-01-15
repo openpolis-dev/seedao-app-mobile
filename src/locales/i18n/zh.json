@@ -172,7 +172,10 @@
     "History": "历史记录",
     "VoteRules": "投票规则",
     "VersionTitle": "提案版本",
-    "Loging": "正在登录Metaforo..."
+    "Loging": "正在登录Metaforo...",
+    "Time": "时间",
+    "Category": "类型",
+    "State": "状态"
   },
   "My": {
     "MyProfile": "我的信息",

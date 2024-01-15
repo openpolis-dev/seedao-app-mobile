@@ -146,50 +146,52 @@ export default function ProposalList() {
             placeholder={t("General.Search")}
             onKeyUp={onKeyUp}
           />
-          <img src={SearchRhtImg} alt="" className="srht" onClick={()=>setShowModal(true)} />
+          <img src={SearchRhtImg} alt="" className="srht" onClick={() => setShowModal(true)} />
         </SearchInputBox>
-        {
-          showModal && <Modal onClick={handleClose}>
-              <FilterMask>
-                <ModalContent>
-                  <ListBox>
-                    <dt>时间</dt>
-                    <dd>
-                      <ul>
-                        {
-                          TIME_OPTIONS.map((item,index)=> (<li key={`time_${index}`} onClick={() => handleTime(item)}>
-                            {item.label}</li>))
-                        }
-                      </ul>
-                    </dd>
-                  </ListBox>
-                  <ListBox>
-                    <dt>类型</dt>
-                    <dd>
-                      <ul>
-                        {
-                          CATEGORY_OPTIONS.map((item,index)=> (<li className="w50" key={`cat_${index}`}  onClick={() => handleType(item)}>
-                            {item.label}</li>))
-                        }
-                      </ul>
-                    </dd>
-                  </ListBox>
-                  <ListBox>
-                    <dt>状态</dt>
-                    <dd>
-                      <ul>
-                        {
-                          STATUS_OPTIONS.map((item,index)=> (<li key={`status_${index}`} onClick={() => handleType(item)}>
-                            {item.label}</li>))
-                        }
-                      </ul>
-                    </dd>
-                  </ListBox>
-                </ModalContent>
-              </FilterMask>
-            </Modal>
-        }
-
+        {showModal && (
+          <Modal onClick={handleClose}>
+            <FilterMask>
+              <ModalContent>
+                <ListBox>
+                  <dt>{t("Proposal.Time")}</dt>
+                  <dd>
+                    <ul>
+                      {TIME_OPTIONS.map((item, index) => (
+                        <li key={`time_${index}`} onClick={() => handleTime(item)}>
+                          {item.label}
+                        </li>
+                      ))}
+                    </ul>
+                  </dd>
+                </ListBox>
+                <ListBox>
+                  <dt>{t("Proposal.Category")}</dt>
+                  <dd>
+                    <ul>
+                      {CATEGORY_OPTIONS.map((item, index) => (
+                        <li className="w50" key={`cat_${index}`} onClick={() => handleType(item)}>
+                          {item.label}
+                        </li>
+                      ))}
+                    </ul>
+                  </dd>
+                </ListBox>
+                <ListBox>
+                  <dt>{t("Proposal.State")}</dt>
+                  <dd>
+                    <ul>
+                      {STATUS_OPTIONS.map((item, index) => (
+                        <li key={`status_${index}`} onClick={() => handleType(item)}>
+                          {item.label}
+                        </li>
+                      ))}
+                    </ul>
+                  </dd>
+                </ListBox>
+              </ModalContent>
+            </FilterMask>
+          </Modal>
+        )}
 
         {/*<SelectBox>*/}
         {/*  <li>*/}

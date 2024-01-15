@@ -172,7 +172,10 @@
     "History": "History",
     "VoteRules": "Vote Rules",
     "VersionTitle": "Version",
-    "Loging": "Login to Metaforo..."
+    "Loging": "Login to Metaforo...",
+    "Time": "Time",
+    "Category": "Category",
+    "State": "State"
   },
   "My": {
     "MyProfile": "My Profile",
