@@ -362,6 +362,8 @@ const SearchInputBox = styled.div`
   .srht{
     width: 18px;
     height: 16px;
+    border-left: 1px solid var(--border-color-2);
+    padding-left: 10px;
   }
 `;
 
