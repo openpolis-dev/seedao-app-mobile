@@ -27,7 +27,7 @@ const OuterBox = styled.div`
 const InnerBox = styled.div`
   /* flex-grow: 1; */
   width: 100%;
-  height: ${(props) => `calc(100% - ${props.$sticky === "true" ? props.$notab : 0})`};
+  height: 100%;
   padding-top: ${(props) => props.$paddingtop};
   padding-bottom: ${(props) => props.$notab};
   overflow-y: auto;
@@ -118,7 +118,7 @@ export default function Layout({
       <InnerBox
         id="inner"
         ref={innerRef}
-        $notab={noTab ? 0 : pwaBtm ? "50px" : "70px"}
+        $notab={noTab ? 0 : "70px"}
         $sticky="true"
         $paddingtop={noHeader || sticky ? "0" : "47px"}
       >
