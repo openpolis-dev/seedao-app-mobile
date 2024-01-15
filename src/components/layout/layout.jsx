@@ -27,7 +27,7 @@ const OuterBox = styled.div`
 const InnerBox = styled.div`
   /* flex-grow: 1; */
   width: 100%;
-  height: 100%;
+  height: ${(props) => `calc(100% - ${props.$sticky === "true" ? props.$notab : 0})`};
   padding-top: ${(props) => props.$paddingtop};
   padding-bottom: ${(props) => props.$notab};
   overflow-y: auto;
