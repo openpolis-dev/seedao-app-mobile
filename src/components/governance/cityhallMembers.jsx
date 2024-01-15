@@ -133,6 +133,9 @@ const CityhallTitle = styled.div`
 
 const GroupItemStyle = styled.div`
   margin-top: 16px;
+  &:last-child {
+    margin-bottom: 16px;
+  }
 `;
 
 const GroupName = styled.div`

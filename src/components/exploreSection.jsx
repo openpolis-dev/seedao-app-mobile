@@ -26,6 +26,7 @@ export default function ExploreSection({ title, desc, children, moreLink,noMore 
 
 const SectionBlock = styled.section`
   border-bottom: 1px solid var(--border-color-1);
+  margin-bottom: 32px;
   &:last-child{
     border-bottom: 0;
   }
