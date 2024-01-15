@@ -129,6 +129,12 @@ export default function ProposalList() {
     setSelectCategory(item)
     setShowModal(false)
   }
+
+  const handleState = (item) => {
+    setSelectStatus(item);
+    setShowModal(false);
+  };
+
   const handleClose = () =>{
     setShowModal(false)
   }
@@ -181,7 +187,7 @@ export default function ProposalList() {
                   <dd>
                     <ul>
                       {STATUS_OPTIONS.map((item, index) => (
-                        <li key={`status_${index}`} onClick={() => handleType(item)}>
+                        <li key={`status_${index}`} onClick={() => handleState(item)}>
                           {item.label}
                         </li>
                       ))}
