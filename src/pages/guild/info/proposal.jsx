@@ -29,7 +29,7 @@ export default function GuildProposal() {
         });
         setList(_list);
       } catch (error) {
-        console.error("get proposals error: ", error);
+        logError("get proposals error: ", error);
       } finally {
         store.dispatch(saveLoading(false));
       }

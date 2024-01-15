@@ -72,6 +72,8 @@ const Title = styled.div`
   font-family: Poppins-SemiBold, Poppins;
   font-weight: 600;
   color: var(--font-color);
+    word-break: break-all;
+    line-height: 1.5em;
 `;
 
 const LookButton = styled.span`
@@ -91,6 +93,7 @@ const LookButton = styled.span`
 const ImageBox = styled.div`
   border-radius: 15px;
   overflow: hidden;
+    flex-shrink: 0;
   width: 62px;
   height: 62px;
   img {

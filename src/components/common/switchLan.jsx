@@ -35,7 +35,7 @@ export default function SwitchLan(props){
         try {
           requestSetDeviceLanguage({ device: getPushDevice(), language: v });
         } catch (error) {
-          console.error("Set Device Language Failed", error);
+          logError("Set Device Language Failed", error);
         }
       }
       handleClose()

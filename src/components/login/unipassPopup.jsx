@@ -44,7 +44,7 @@ export default function Unipass() {
         setAddr(address);
         store.dispatch(saveAccount(address));
       } catch (e) {
-        console.error(e);
+        logError(e);
       }
     });
   };
@@ -69,7 +69,7 @@ export default function Unipass() {
       let res = await uniWallet.signMessage(siweMessage, { isEIP191Prefix: true, onAuthChain: true });
       setSignInfo(res);
     } catch (e) {
-      console.error(e);
+      logError(e);
       store.dispatch(saveAccount(null));
       setAddr(null);
       await uniWallet.logout();
@@ -101,22 +101,26 @@ export default function Unipass() {
       try {
         await OneSignal.login(addr.toLocaleLowerCase());
       } catch (error) {
-        console.error("OneSignal login error", error);
+        logError("OneSignal login error", error);
       }
       ReactGA.event("login_success", {
         type: "unipass",
         account: "account:" + addr,
       });
     } catch (e) {
-      console.error(e);
+      logError(e);
       ReactGA.event("login_failed", { type: "unipass" });
     }
   };
 
   useEffect(() => {
     if (!result) return;
-    const toSNS = localStorage.getItem(`==sns==`) === "1";
-    navigate(toSNS ? "/sns/register" : "/home");
+    if (localStorage.getItem(`==sns==`) === "1") {
+      localStorage.removeItem(`==sns==`);
+      navigate("/sns/register");
+    } else {
+      navigate("/home");
+    }
   }, [result]);
 
   return (

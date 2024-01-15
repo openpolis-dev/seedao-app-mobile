@@ -1,6 +1,6 @@
 async function subscribeToPushMessages() {
   if (!window.navigator || !navigator.serviceWorker) {
-    console.error("not support navigator or serviceWorker");
+    logError("not support navigator or serviceWorker");
     return;
   }
 

@@ -19,7 +19,6 @@ import HelperIcon from "assets/Imgs/sns/helper.svg";
 const RegisterSNSWrapper = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  console.log("====state", state);
 
   const account = useSelector((state) => state.account);
   const rpc = useSelector((state) => state.rpc);
@@ -34,7 +33,7 @@ const RegisterSNSWrapper = () => {
       const hasReached = await controllerContract.maxOwnedNumberReached(account);
       dispatchSNS({ type: ACTIONS.SET_HAS_REACHED, payload: hasReached });
     } catch (error) {
-      console.error("query maxOwnedNumberReached failed", error);
+      logError("query maxOwnedNumberReached failed", error);
     }
   };
 
@@ -48,7 +47,7 @@ const RegisterSNSWrapper = () => {
           dispatchSNS({ type: ACTIONS.SET_USER_PROOF, payload: isInWhitelist.proof });
         }
       } catch (error) {
-        console.error("checkUserInwhitelist failed", error);
+        logError("checkUserInwhitelist failed", error);
       }
     };
     const checkMaxOwnedNumber = () => {
@@ -57,8 +56,8 @@ const RegisterSNSWrapper = () => {
         .then((n) => {
           dispatchSNS({ type: ACTIONS.SET_MAX_OWNED_NUMBER, payload: n.toNumber() });
         })
-        .then((error) => {
-          console.error("checkMaxOwnedNumber failed", error);
+        .catch((error) => {
+          logError("checkMaxOwnedNumber failed", error);
         });
     };
     if (account && controllerContract) {
@@ -77,7 +76,7 @@ const RegisterSNSWrapper = () => {
         })
         .catch((error) => {
           dispatchSNS({ type: ACTIONS.SET_WHITELIST_IS_OPEN, payload: true });
-          console.error('checkWhitelistOpen failed', error);
+          logError('checkWhitelistOpen failed', error);
         });
     };
     const checkHadMintByWhitelist = async () => {
@@ -87,7 +86,7 @@ const RegisterSNSWrapper = () => {
           dispatchSNS({ type: ACTIONS.SET_HAD_MINT_BY_WHITELIST, payload: r });
         })
         .catch((error) => {
-          console.error('checkWhitelistOpen failed', error);
+          logError('checkWhitelistOpen failed', error);
         });
     };
     if (account && minterContract) {
@@ -155,7 +154,11 @@ const RegisterSNSWrapper = () => {
           return;
         } else {
           dispatchSNS({ type: ACTIONS.SET_STEP, payload: 2 });
-          if (v.stepStatus === "pending" || v.stepStatus === "approving") {
+          if (
+            v.stepStatus === "pending" ||
+            v.stepStatus === "approving" ||
+            (v.stepStatus === "approve_success" && !!state)
+          ) {
             dispatchSNS({ type: ACTIONS.SHOW_LOADING });
           }
           return;

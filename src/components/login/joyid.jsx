@@ -118,7 +118,7 @@ export default function Joyid(){
               },
             });
         }catch (e){
-            console.error("onSignMessageRedirect",e)
+            logError("onSignMessageRedirect",e)
         }
 
     };
@@ -166,10 +166,10 @@ export default function Joyid(){
             try {
               await OneSignal.login(account.toLocaleLowerCase());
             } catch (error) {
-              console.error("OneSignal login error", error);
+              logError("OneSignal login error", error);
             }
         }catch (e){
-            console.error(e)
+            logError(e)
             ReactGA.event("login_failed",{type: "joyid"});
         }
 
@@ -177,8 +177,12 @@ export default function Joyid(){
 
     useEffect(()=>{
         if (!result) return;
-        const toSNS = localStorage.getItem(`==sns==`) === "1";
-        navigate(toSNS ? '/sns/register' : '/home');
+        if (localStorage.getItem(`==sns==`) === "1") {
+            localStorage.removeItem(`==sns==`);
+            navigate("/sns/register");
+        } else {
+            navigate("/home");
+        }
 
     },[result])
 

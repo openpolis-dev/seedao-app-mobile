@@ -82,7 +82,7 @@ export default function Assets() {
       res.data.wallets.forEach((w) => (v += Number(w.fiatTotal)));
       setTotalBalance(v.format());
     } catch (error) {
-      console.error(error);
+      logError(error);
     } finally {
       setStatus1(false);
     }
@@ -110,7 +110,7 @@ export default function Assets() {
           });
         });
     } catch (error) {
-      console.error("getFloorPrice error", error);
+      logError("getFloorPrice error", error);
     } finally {
       setStatus3(false);
     }
@@ -145,7 +145,7 @@ export default function Assets() {
       const supply = await contract.totalSupply();
       setTotalSCR(Number(ethers.utils.formatEther(supply)).format());
     } catch (error) {
-      console.error("getSCR error", error);
+      logError("getSCR error", error);
     } finally {
       setStatus2(false);
       // store.dispatch(saveLoading(false));

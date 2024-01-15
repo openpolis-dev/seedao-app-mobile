@@ -1,6 +1,6 @@
 
 import {useEffect, useState} from "react";
-import { useWeb3Modal } from "@web3modal/react";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { useAccount, useDisconnect } from "wagmi";
 import {useEthersSigner } from '../../utils/ethersNew';
 import store from "../../store";
@@ -35,7 +35,7 @@ export default function  Metamask(){
 
 
     const handlePermission = usePushPermission();
-    const signer = useEthersSigner({ chainId: network.chainId });
+    const signer = useEthersSigner();
     console.log("signer: ", signer);
 
     useEffect(()=>{
@@ -81,16 +81,19 @@ export default function  Metamask(){
         }catch (e) {
             setConnectWallet(true);
             disconnect();
-            console.error("error",JSON.stringify(e))
+            logError("error",JSON.stringify(e))
         }
 
     }
 
     useEffect(()=>{
         if(!result)return;
-        const toSNS = localStorage.getItem(`==sns==`) === "1";
-        navigate(toSNS ? "/sns/register" : "/home");
-
+        if (localStorage.getItem(`==sns==`) === "1") {
+          localStorage.removeItem(`==sns==`);
+          navigate("/sns/register");
+        } else {
+          navigate("/home");
+        }
     },[result])
 
 
@@ -121,7 +124,7 @@ export default function  Metamask(){
             try {
                await OneSignal.login(address.toLocaleLowerCase());
             } catch (error) {
-               console.error("OneSignal login error", error);
+               logError("OneSignal login error", error);
             }
 
             ReactGA.event("login_success",{
@@ -130,7 +133,7 @@ export default function  Metamask(){
             });
 
         }catch (e){
-            console.error(e)
+            logError(e)
             ReactGA.event("login_failed",{type: "metamask"});
         }
     }

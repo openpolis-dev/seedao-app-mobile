@@ -80,7 +80,7 @@ export default function ProjectInner({id}){
                 console.log(`[pro-${id}]`, data);
                 setData(data.data)
             } catch (error) {
-                console.error(error);
+                logError(error);
             } finally {
                 store.dispatch(saveLoading(false));
             }

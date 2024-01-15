@@ -45,7 +45,7 @@ export default function Event() {
         setLoading(false);
       } catch (error) {
         //  TODO toast
-        console.error(error);
+        logError(error);
       }
     };
     getList();

@@ -36,7 +36,7 @@ export default function ApplicationDetailPage() {
         const sns_map = await getMultiSNS(Array.from(_wallets));
         setSnsMap(sns_map);
       } catch (error) {
-        console.error(error);
+        logError(error);
       }
     };
     handleSNS();

@@ -1,6 +1,12 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { sendTransactionCallback } from "@joyid/evm";
+import { sendTransactionCallback, signTypedDataCallback } from "@joyid/evm";
 import { useEffect } from "react";
+import { prepareMetaforo, loginByWallet } from "api/proposalV2";
+import publicJs from "utils/publicJs";
+import store from "store";
+import { saveMetaforoToken } from "store/reducer";
+import getConfig from "constant/envCofnig";
+const CONFIG = getConfig();
 
 export default function JoyIDRedirect() {
   const navigate = useNavigate();
@@ -38,14 +44,37 @@ export default function JoyIDRedirect() {
     const data = getLocalData();
     const account = localStorage.getItem("joyid-address");
     data[account].step = "register";
-    data[account].stepStatus = search.get("secret") || "pending";
+    data[account].stepStatus = search.get("secret") !== "undefined" ? search.get("secret") : "pending";
     data[account].registerHash = hash;
     localStorage.setItem("sns", JSON.stringify(data));
+  };
+  const handleSignMetaforo = async () => {
+    const res = signTypedDataCallback();
+    const account = localStorage.getItem("joyid-address");
+    const signData = publicJs.typedData(account, CONFIG.NETWORK.chainId);
+    const data = await loginByWallet({
+      web3_public_key: account,
+      sign: res.signature,
+      signMsg: JSON.stringify(signData),
+      wallet_type: 5,
+    });
+    store.dispatch(saveMetaforoToken({ id: data.user.id, account, token: data.api_token }));
+    try {
+      await prepareMetaforo();
+    } catch (error) {
+      logError("prepareMetaforo failed", error);
+    }
+
+    const pathname = search.get("current");
+    navigate(pathname);
   };
 
   useEffect(() => {
     console.log("===> joyid redirect action:", action);
-
+    if (action === "sign-metaforo") {
+      handleSignMetaforo();
+      return;
+    }
     let res = "";
     try {
       res = sendTransactionCallback();
@@ -58,7 +87,7 @@ export default function JoyIDRedirect() {
             break;
           case "sns-register":
             handleRegisterData(res.tx);
-            navigate("/sns/register");
+            navigate("/sns/register", { state: true });
             break;
           case "sns-switch":
             navigate("/sns/user", { state: res.tx });
@@ -69,7 +98,7 @@ export default function JoyIDRedirect() {
         return;
       }
     } catch (error) {
-      console.error(error);
+      logError(error);
     }
     if (!res) {
       switch (action) {

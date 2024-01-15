@@ -106,7 +106,7 @@ export default function RankingPage() {
           });
         })
         .catch((err) => {
-          console.error(err);
+          logError(err);
         })
         .finally(() => {
           store.dispatch(saveLoading(false));

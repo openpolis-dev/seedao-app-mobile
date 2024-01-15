@@ -105,7 +105,7 @@ export default function ApplicationsSection({ handleBg }) {
       setList(init ? _list : [...list, ..._list]);
       setPage(_page + 1);
     } catch (error) {
-      console.error("getRecords error", error);
+      logError("getRecords error", error);
     } finally {
     }
   };

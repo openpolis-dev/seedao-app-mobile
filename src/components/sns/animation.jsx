@@ -64,7 +64,7 @@ export default function Animation(){
       }else{
         adWidth = divWidth;
         adHeight = divWidth * 2.16;
-        console.error(adWidth,adHeight)
+        logError(adWidth,adHeight)
       }
       setWidth(adWidth);
       setHeight(adHeight);

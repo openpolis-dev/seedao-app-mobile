@@ -57,6 +57,9 @@ const GlobalStyle = createGlobalStyle`
       color: rgba(143, 155, 179, 0.48);
     }
   }
+  .md-editor-preview{
+      font-size: 14px;
+  }
 
   .md-editor-preview-wrapper {
     padding: 0;

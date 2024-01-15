@@ -14,10 +14,13 @@ import useToast from "hooks/useToast";
 import ABI from "assets/abi/SeeDAORegistrarController.json";
 import { useSelector } from "react-redux";
 import useTransaction from "hooks/useTransaction";
-
+import useCheckBalance from "./useCheckBalance";
+import { useNetwork, useSwitchNetwork } from "wagmi";
 import getConfig from "constant/envCofnig";
+import { Wallet } from "utils/constant";
 const networkConfig = getConfig().NETWORK;
-const PAY_NUMBER = networkConfig.tokens[0].price;
+const PAY_TOKEN = networkConfig.tokens[0];
+const PAY_NUMBER = PAY_TOKEN.price;
 
 const AvailableStatus = {
   DEFAULT: "default",
@@ -39,15 +42,20 @@ export default function RegisterSNSStep1({ sns: _sns }) {
   const [randomSecret, setRandomSecret] = useState("");
   const { handleTransaction } = useTransaction("sns-commit");
 
+  const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
+
   const account = useSelector((state) => state.account);
   const rpc = useSelector((state) => state.rpc);
+  const wallet = useSelector((state) => state.walletType);
+  const checkBalance = useCheckBalance();
 
   const {
     dispatch: dispatchSNS,
     state: { controllerContract, localData, hasReached, userProof, hadMintByWhitelist, whitelistIsOpen },
   } = useSNSContext();
 
-  const { toast } = useToast();
+  const { toast, Toast } = useToast();
 
   // const isLogin = useCheckLogin(account);
 
@@ -73,7 +81,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
       }
       setAvailable(AvailableStatus.OK);
     } catch (error) {
-      console.error("check available error", error);
+      logError("check available error", error);
       setAvailable(AvailableStatus.DEFAULT);
     } finally {
       setPending(false);
@@ -118,16 +126,29 @@ export default function RegisterSNSStep1({ sns: _sns }) {
     setSearchVal("");
     setAvailable(AvailableStatus.DEFAULT);
   };
+
   const handleMint = async () => {
     if (!account) {
       return;
     }
+    // check network
+    if (wallet === Wallet.METAMASK && chain.id !== networkConfig.chainId) {
+      switchNetwork(networkConfig.chainId);
+      return;
+    }
+
     // mint
     try {
       dispatchSNS({ type: ACTIONS.SHOW_LOADING });
+      // check balance
+      const token = await checkBalance(true, !(userProof && !hadMintByWhitelist));
+      if (token) {
+        toast.danger(t("SNS.NotEnoughBalance", { token }));
+        dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
+        return;
+      }
       const _s = getRandomCode();
       setRandomSecret(_s);
-      localStorage.setItem("sns-secret", _s);
       // get commitment
       const _commitment = await controllerContract.makeCommitment(
         searchVal,
@@ -143,7 +164,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         searchVal,
       );
       console.log("tx:", tx);
-      const hash = (tx && tx.hash) || tx;
+      const hash = (tx && tx.hash) || tx; // tx means hash if using unipass
       if (hash) {
         // record to localstorage
         const data = { ...localData };
@@ -159,7 +180,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(data) });
       }
     } catch (error) {
-      console.error("mint failed", error);
+      logError("mint failed", error);
       dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
       toast.danger(error?.reason || error?.data?.message || "error");
     }
@@ -223,26 +244,25 @@ export default function RegisterSNSStep1({ sns: _sns }) {
           {t("SNS.HadSNS")}
         </MintButton>
       );
-    } else {
-      if (userProof && !hadMintByWhitelist) {
-        if (!whitelistIsOpen) {
-          return (
-            <MintButton variant="primary" disabled={true}>
-              {t("SNS.FreeMintNotOpen")}
-            </MintButton>
-          );
-        }
-      }
+    }
+    // free mint
+    if (userProof && !hadMintByWhitelist && whitelistIsOpen) {
       return (
         <MintButton
           variant="primary"
           disabled={isPending || availableStatus !== AvailableStatus.OK}
           onClick={handleMint}
         >
-          {userProof && !hadMintByWhitelist ? t("SNS.FreeMint") : t("SNS.SpentMint", { money: `${PAY_NUMBER} USDT` })}
+          {t("SNS.FreeMint")}
         </MintButton>
       );
     }
+    // mint by token
+    return (
+      <MintButton variant="primary" disabled={isPending || availableStatus !== AvailableStatus.OK} onClick={handleMint}>
+        {t("SNS.SpentMint", { money: `${PAY_NUMBER} USDT(${networkConfig.name})` })}
+      </MintButton>
+    );
   };
   return (
     <Container>
@@ -264,6 +284,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         <Tip>{t("SNS.InputTip")}</Tip>
         <OperateBox>{showButton()}</OperateBox>
       </ContainerWrapper>
+      {Toast}
     </Container>
   );
 }
@@ -310,6 +331,7 @@ const SearchBox = styled.div`
   display: flex;
   align-items: center;
   color: var(--font-color);
+  gap: 4px;
 `;
 
 const InputBox = styled.div`
@@ -324,11 +346,11 @@ const InputBox = styled.div`
 `;
 
 const InputStyled = styled.input`
-  width: 117px;
   height: 100%;
   border: none;
   padding: 0;
   background-color: transparent;
+  flex: 1;
   &:focus-visible {
     outline: none;
   }
@@ -410,4 +432,3 @@ const Tip = styled.div`
   margin-top: 8px;
   text-align: left;
 `;
-

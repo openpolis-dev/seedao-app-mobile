@@ -10,6 +10,7 @@ import StickyHeader from "./StickyHeader";
 import {savePath} from "../../store/reducer";
 import store from "store";
 import { isInPWA } from "utils";
+import { checkTokenValid, clearStorage } from "utils/auth";
 
 const OuterBox = styled.div`
   width: 100%;
@@ -38,6 +39,7 @@ const InnerBox = styled.div`
  * sticky: boolean
  * title: string
  * noTab: boolean
+ * customTab: if noTab is true, customTab will not display
  * headBgColor: string
  * bgColor: string
  */
@@ -46,7 +48,9 @@ export default function Layout({
   noHeader,
   title,
   noTab,
+  customTab,
   headBgColor,
+  headStyle,
   bgColor,
   headColor,
   sticky,
@@ -58,12 +62,12 @@ export default function Layout({
   const userToken = useSelector((state) => state.userToken);
   const innerRef = useRef();
 
-  const [pwaBtm,setPwaBtm] = useState(false);
+  const [pwaBtm, setPwaBtm] = useState(false);
 
   const location = useLocation();
 
   useEffect(() => {
-    store.dispatch(savePath(location.pathname))
+    store.dispatch(savePath(location.pathname));
   }, [location]);
 
   useEffect(() => {
@@ -71,29 +75,27 @@ export default function Layout({
     const isMobile = /Mobile/.test(userAgent);
     const isPWA = isInPWA();
 
-
-      setPwaBtm(isMobile && !isPWA)
-
+    setPwaBtm(isMobile && !isPWA);
   }, []);
 
   useEffect(() => {
-    if (!userToken?.token && pathname !== "/sns") {
-      if (pathname === "/sns/register") {
-        localStorage.setItem("==sns==", "1");
-      }
-      navigate("/login");
+    if (pathname === '/sns' || pathname === '/login') {
+      return;
     }
+    // check token
+     if (!checkTokenValid(userToken?.token, userToken?.token_exp)) {
+       clearStorage();
+
+       if (pathname === "/sns/register") {
+         localStorage.setItem("==sns==", "1");
+       }
+       navigate("/login");
+     }
   }, [userToken, pathname]);
-
-
-  useEffect(() => {
-
-  }, []);
 
   useEffect(() => {
     document.querySelector("body").style.background = bgColor || "#FFFFFF";
   }, [bgColor]);
-
 
   return (
     <OuterBox isPwa={isInPWA().toString()}>
@@ -107,6 +109,7 @@ export default function Layout({
             rightOperation={rightOperation}
             headColor={headColor}
             handleBack={handleBack}
+            {...headStyle}
           />
         )
       ) : (
@@ -115,13 +118,13 @@ export default function Layout({
       <InnerBox
         id="inner"
         ref={innerRef}
-        $notab={noTab ? 0 : pwaBtm ? "120px" : "70px"}
+        $notab={noTab ? 0 : "70px"}
         $sticky="true"
         $paddingtop={noHeader || sticky ? "0" : "47px"}
       >
         {children}
       </InnerBox>
-      {!noTab && <TabBar />}
+      {!noTab && (customTab || <TabBar />)}
     </OuterBox>
   );
 }

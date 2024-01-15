@@ -11,4 +11,6 @@ export default {
   currentpath: [],
   proposalCategories: [],
   rpc: "",
+  currentSeason: "",
+  metaforoToken: null,
 };
