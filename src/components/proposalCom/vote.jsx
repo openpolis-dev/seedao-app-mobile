@@ -144,15 +144,14 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
         <>
           {poll.options.map((option, index) => (
             <VoteOptionSelect key={index}>
-              <span>
                 <input
                   type="radio"
                   checked={selectOption?.id === option.id}
                   onChange={(e) => setSelectOption(e.target.checked ? option : undefined)}
                   disabled={!hasPermission}
+                  id={`select_${index}`}
                 />
-              </span>
-              <OptionContentPure>{option.html}</OptionContentPure>
+              <OptionContentPure htmlFor={`select_${index}`}>{option.html}</OptionContentPure>
             </VoteOptionSelect>
           ))}
           {hasPermission && (
@@ -263,9 +262,10 @@ const VoteOptionSelect = styled(VoteOptionBlock)`
   display: flex;
   align-items: center;
   gap: 8px;
-  input:disabled {
-    background-color: #d9d9d980;
-    border-color: rgba(217, 217, 217, 0.5);
+  input[type="radio"]:disabled + label{
+    //background-color: #d9d9d980;
+    //border-color: rgba(217, 217, 217, 0.5);
+    opacity: 0.4;
   }
 `;
 
@@ -290,7 +290,7 @@ const VoteNumber = styled.div`
   }
 `;
 
-const OptionContentPure = styled.div`
+const OptionContentPure = styled.label`
   font-size: 14px;
 `;
 

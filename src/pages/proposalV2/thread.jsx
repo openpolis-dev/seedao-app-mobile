@@ -334,7 +334,7 @@ const FlexLine = styled.div`
   display: flex;
   align-items: center;
   margin: 10px 0;
-  gap: 16px;
+  gap: 6px;
 `;
 
 const InfoBox = styled.div`
