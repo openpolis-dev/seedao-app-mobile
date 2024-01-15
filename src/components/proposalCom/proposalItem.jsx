@@ -95,9 +95,9 @@ const AvaBox = styled.div`
 
 const Title = styled.div`
   //font-weight: bolder;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 20px;
-  //font-family: Poppins-SemiBold;
+  font-family: Poppins-SemiBold;
   color: var(--bs-body-color_active);
   flex: 1;
   //height: 40px;
@@ -116,5 +116,5 @@ const CatBox = styled.div`
   color: var(--border-color-2);
   font-size: 12px;
   padding: 0 6px;
-  line-height: 20px;
+  line-height: 18px;
 `;
