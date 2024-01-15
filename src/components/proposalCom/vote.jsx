@@ -201,7 +201,7 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
 const FlexLine = styled.div``;
 
 const CardStyle = styled.div`
-  margin: 0 20px 32px;
+  margin: 0 20px;
   border-top: 1px solid #e6dcff;
   padding-top: 20px;
 `;
