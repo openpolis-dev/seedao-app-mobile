@@ -56,6 +56,7 @@ export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
       setCtype();
       setQuillContent("");
       setSendVisible(false);
+      setPlaceholder(t("Proposal.WriteReplyHint"));
     },
   }));
 
