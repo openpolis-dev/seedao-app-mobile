@@ -55,6 +55,7 @@ export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
       setData(undefined);
       setCtype();
       setQuillContent("");
+      setSendVisible(false);
     },
   }));
 
