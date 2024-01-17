@@ -257,7 +257,7 @@ export default function ProposalThread() {
             <div className="title">{t("Proposal.proposalComponents")}</div>
           </ComponnentBox>
         )}
-        <PreviewMobie DataSource={dataSource} language={i18n.language} initialItems={components} />
+        <PreviewMobie DataSource={dataSource} language={i18n.language.indexOf("zh") > -1 ?"zh":"en"} initialItems={components} />
       </ContentOuter>
       {showVote() && (
         <ProposalVote voteGate={data?.vote_gate} poll={data.votes[0]} id={Number(id)} updateStatus={getProposal} />
