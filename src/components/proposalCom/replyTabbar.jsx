@@ -25,6 +25,7 @@ export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
 
   const [ctype, setCtype] = useState("");
   const [data, setData] = useState();
+  const [sendVisible, setSendVisible] = useState(false);
   const inputRef = useRef();
   const loading = useSelector((store) => store.loading);
 
@@ -66,12 +67,21 @@ export default React.forwardRef(function ReplyTabbar({ sendComment }, ref) {
       <BoxInner>
         <Avatar src={userToken?.user?.avatar} size="32px" />
         <Editor>
-          <textarea ref={inputRef} value={quillContent} placeholder={placeholder} onChange={onChangeContent} />
+          <textarea
+            ref={inputRef}
+            value={quillContent}
+            placeholder={placeholder}
+            onChange={onChangeContent}
+            onFocus={() => setSendVisible(true)}
+            onBlur={() => !quillContent && setSendVisible(false)}
+          />
           <HideContent contenteditable="true">{quillContent}</HideContent>
         </Editor>
-        <SendButton disabled={loading} onClick={() => sendComment(ctype, data, quillContent)}>
-          {t("Proposal.Send")}
-        </SendButton>
+        {sendVisible && (
+          <SendButton disabled={loading} onClick={() => sendComment(ctype, data, quillContent)}>
+            {t("Proposal.Send")}
+          </SendButton>
+        )}
       </BoxInner>
     </Box>
   );
@@ -122,6 +132,7 @@ const Editor = styled.div`
     border: none;
     padding-inline: 10px;
     margin-block: 10px;
+    font-size: 14px;
   }
 `;
 const HideContent = styled.div`
