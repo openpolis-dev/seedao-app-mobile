@@ -80,7 +80,7 @@ export const addComment = (id, content, reply_id) => {
   return request.post(`${PATH_PREFIX}add_comment/${id}`, {
     content,
     reply_id,
-    editor_type: 0,
+    editor_type: 1,
     metaforo_access_token: getMetaforoData()?.token,
   });
 };
@@ -89,7 +89,7 @@ export const editCommet = (id, content, cid) => {
   return request.post(`${PATH_PREFIX}edit_comment/${id}`, {
     post_id: cid,
     content,
-    editor_type: 0,
+    editor_type: 1,
     metaforo_access_token: getMetaforoData()?.token,
   });
 };

@@ -228,14 +228,9 @@ export default function ThreadCommentsPage() {
   };
 
   useEffect(() => {
-    replyRef?.current?.blur();
-    const check = async () => {
-      const canReply = await checkMetaforoLogin();
-      if (canReply) {
-        replyRef?.current?.focus();
-      }
-    };
-    check();
+    checkMetaforoLogin().then((canReply) => {
+      replyRef?.current?.focus();
+    });
   }, []);
 
   return (
