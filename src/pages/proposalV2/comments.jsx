@@ -228,9 +228,7 @@ export default function ThreadCommentsPage() {
   };
 
   useEffect(() => {
-    checkMetaforoLogin().then((canReply) => {
-      replyRef?.current?.focus();
-    });
+    checkMetaforoLogin();
   }, []);
 
   return (
