@@ -52,7 +52,7 @@ export default function Header({ title, bgColor, headColor, rightOperation, hand
   const navigate = useNavigate();
 
   const backTop = () => {
-    handleBack ? handleBack() : navigate(-1);
+    handleBack ? handleBack() : navigate(window.history.state.idx === 0 ? "/home" : -1);
   };
 
   return (
@@ -60,7 +60,7 @@ export default function Header({ title, bgColor, headColor, rightOperation, hand
       <Back onClick={() => backTop()}>
         <BackSVG color={headColor} />
       </Back>
-        <DetailModal />
+      <DetailModal />
       <HeaderBox $headColor={headColor}>
         <Mid>
           <span>{title}</span>
