@@ -3,26 +3,25 @@ import Header from "./header";
 import TabBar from "./tabBar";
 import { useSelector } from "react-redux";
 
-import {useEffect, useRef, useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import StickyHeader from "./StickyHeader";
-import {savePath} from "../../store/reducer";
+import { savePath } from "../../store/reducer";
 import store from "store";
 import { isInPWA } from "utils";
 import { checkTokenValid, clearStorage } from "utils/auth";
 
 const OuterBox = styled.div`
   width: 100%;
-  height: ${(props) => props.isPwa==="true"?"100vh":'100%'};
+  height: ${(props) => (props.isPwa === "true" ? "100vh" : "100%")};
   box-sizing: border-box;
 
   padding-top: constant(safe-area-inset-top);
   padding-top: env(safe-area-inset-top);
-  
+
   padding-bottom: constant(safe-area-inset-bottom);
   padding-bottom: env(safe-area-inset-bottom);
-  
 `;
 const InnerBox = styled.div`
   /* flex-grow: 1; */
@@ -80,18 +79,18 @@ export default function Layout({
   }, []);
 
   useEffect(() => {
-    if (pathname === '/sns' || pathname === '/login') {
+    if (pathname === "/sns" || pathname === "/login") {
       return;
     }
     // check token
-     if (!checkTokenValid(userToken?.token, userToken?.token_exp)) {
-       clearStorage();
+    if (!checkTokenValid(userToken?.token, userToken?.token_exp)) {
+      clearStorage();
 
-       if (pathname === "/sns/register") {
-         localStorage.setItem("==sns==", "1");
-       }
-       navigate("/login");
-     }
+      if (pathname === "/sns/register") {
+        localStorage.setItem("==sns==", "1");
+      }
+      navigate("/login");
+    }
   }, [userToken, pathname]);
 
   useEffect(() => {
