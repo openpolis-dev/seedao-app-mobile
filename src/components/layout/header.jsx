@@ -48,11 +48,11 @@ const OperateBox = styled.div`
   top: env(safe-area-inset-top);
   padding-top: 10px;
 `;
-export default function Header({ title, bgColor, headColor, rightOperation, handleBack, ...props }) {
+export default function Header({ title, bgColor, headColor, rightOperation, handleBack, headerProps, ...props }) {
   const navigate = useNavigate();
 
   const backTop = () => {
-    handleBack ? handleBack() : navigate(window.history.state.idx === 0 ? "/home" : -1);
+    handleBack ? handleBack() : navigate(window.history.state.idx === 0 ? headerProps?.backPath || "/home" : -1);
   };
 
   return (

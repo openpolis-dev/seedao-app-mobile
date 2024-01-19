@@ -236,6 +236,7 @@ export default function ThreadCommentsPage() {
       title={t("Proposal.Comment")}
       headStyle={{ style: { borderBottom: "1px solid var(--border-color-1)" } }}
       customTab={<ReplyTabbar ref={replyRef} sendComment={sendComment} />}
+      headerProps={{ backPath: `/proposal/thread/${id}` }}
     >
       <InfiniteScroll
         scrollableTarget="inner"

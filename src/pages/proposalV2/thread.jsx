@@ -200,6 +200,7 @@ export default function ProposalThread() {
           openHistory={() => navigate(`/proposal/thread/${id}/history`, { state: data.histories?.lists ?? [] })}
         />
       }
+      headerProps={{ backPath: "/proposal" }}
     >
       <ThreadHead>
         <div className="title">

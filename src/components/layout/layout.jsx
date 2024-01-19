@@ -56,6 +56,7 @@ export default function Layout({
   sticky,
   rightOperation,
   handleBack,
+  headerProps,
 }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -110,6 +111,7 @@ export default function Layout({
             headColor={headColor}
             handleBack={handleBack}
             {...headStyle}
+            headerProps={headerProps}
           />
         )
       ) : (
