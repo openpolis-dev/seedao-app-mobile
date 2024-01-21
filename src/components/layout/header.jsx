@@ -52,7 +52,12 @@ export default function Header({ title, bgColor, headColor, rightOperation, hand
   const navigate = useNavigate();
 
   const backTop = () => {
-    handleBack ? handleBack() : navigate(headerProps?.backPath || -1);
+    if (handleBack) handleBack();
+    if (headerProps?.backPath) {
+      navigate(headerProps?.backPath, { replace: true });
+    } else {
+      navigate(-1);
+    }
   };
 
   return (
