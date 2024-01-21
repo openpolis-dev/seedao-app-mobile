@@ -140,7 +140,12 @@ export default function ProposalList() {
   }
 
   return (
-    <Layout title={t("Proposal.Governance")} headBgColor={`var(--background-color)`} bgColor="var(--background-color)">
+    <Layout
+      title={t("Proposal.Governance")}
+      headBgColor={`var(--background-color)`}
+      bgColor="var(--background-color)"
+      headerProps={{ backPath: "/governance" }}
+    >
       <FilterBox>
         <SearchInputBox>
           <img src={SearchImg} alt="" />
