@@ -52,7 +52,7 @@ export default function Header({ title, bgColor, headColor, rightOperation, hand
   const navigate = useNavigate();
 
   const backTop = () => {
-    handleBack ? handleBack() : navigate(window.history.state.idx === 0 ? headerProps?.backPath || "/home" : -1);
+    handleBack ? handleBack() : navigate(headerProps?.backPath || -1);
   };
 
   return (
