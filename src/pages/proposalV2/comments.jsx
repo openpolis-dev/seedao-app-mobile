@@ -228,14 +228,7 @@ export default function ThreadCommentsPage() {
   };
 
   useEffect(() => {
-    replyRef?.current?.blur();
-    const check = async () => {
-      const canReply = await checkMetaforoLogin();
-      if (canReply) {
-        replyRef?.current?.focus();
-      }
-    };
-    check();
+    checkMetaforoLogin();
   }, []);
 
   return (
@@ -243,6 +236,7 @@ export default function ThreadCommentsPage() {
       title={t("Proposal.Comment")}
       headStyle={{ style: { borderBottom: "1px solid var(--border-color-1)" } }}
       customTab={<ReplyTabbar ref={replyRef} sendComment={sendComment} />}
+      headerProps={{ backPath: `/proposal/thread/${id}` }}
     >
       <InfiniteScroll
         scrollableTarget="inner"
