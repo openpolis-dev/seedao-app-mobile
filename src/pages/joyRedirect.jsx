@@ -66,7 +66,7 @@ export default function JoyIDRedirect() {
     }
 
     const pathname = search.get("current");
-    navigate(pathname);
+    navigate(pathname, { replace: true });
   };
 
   useEffect(() => {
@@ -83,14 +83,14 @@ export default function JoyIDRedirect() {
         switch (action) {
           case "sns-commit":
             handleCommitData(res.tx);
-            navigate("/sns/register");
+            navigate("/sns/register", {replace: true});
             break;
           case "sns-register":
             handleRegisterData(res.tx);
-            navigate("/sns/register", { state: true });
+            navigate("/sns/register", { state: true, replace: true });
             break;
           case "sns-switch":
-            navigate("/sns/user", { state: res.tx });
+            navigate("/sns/user", { state: res.tx, replace: true });
             break;
           default:
             break;
@@ -103,13 +103,13 @@ export default function JoyIDRedirect() {
     if (!res) {
       switch (action) {
         case "sns-commit":
-          navigate("/sns/register", { state: { sns: search.get("sns"), step: action } });
+          navigate("/sns/register", { state: { sns: search.get("sns"), step: action }, replace: true });
           break;
         case "sns-register":
-          navigate("/sns/register");
+          navigate("/sns/register", { replace: true });
           break;
         case "sns-switch":
-          navigate("/sns/user");
+          navigate("/sns/user", { replace: true });
           break;
         default:
           break;
