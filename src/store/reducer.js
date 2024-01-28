@@ -59,6 +59,10 @@ const mainSlice = createSlice({
         },
         saveMetaforoToken(state, action) { 
             state.metaforoToken = action.payload;
+        },
+        saveThirdPartyToken(state, action) { 
+            state.metaforoToken = action.payload.metaforo;
+            state.deschoolToken = action.payload.deschool;
         }
     },
 });
@@ -78,6 +82,7 @@ export const {
     saveProposalCategories,
     saveRPC,
     saveCurrentSeason,
-    saveMetaforoToken
+    saveMetaforoToken,
+    saveThirdPartyToken,
 } = mainSlice.actions;
 export default mainSlice.reducer;
