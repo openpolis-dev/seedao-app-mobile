@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { formatTime } from "utils/time";
 import ProposalStateTag from "components/proposalCom/stateTag";
 import CategoryTag from "components/proposalCom/categoryTag";
+import TemplateTag from "components/proposalCom/templateTag";
 import Avatar from "components/common/avatar";
 import store from "store";
 import { saveLoading } from "store/reducer";
@@ -219,6 +220,7 @@ export default function ProposalThread() {
         <FlexLine>
           {data?.state && <ProposalStateTag state={data.state} />}
           {currentCategory && <CategoryTag>{currentCategory}</CategoryTag>}
+          {data?.template_name && <TemplateTag>{data?.template_name}</TemplateTag>}
         </FlexLine>
 
         <InfoBox>
