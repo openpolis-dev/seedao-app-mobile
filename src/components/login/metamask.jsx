@@ -4,9 +4,9 @@ import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { useAccount, useDisconnect } from "wagmi";
 import {useEthersSigner } from '../../utils/ethersNew';
 import store from "../../store";
-import {saveLoading,saveAccount,saveUserToken,saveWalletType} from "../../store/reducer";
+import { saveLoading, saveAccount, saveUserToken, saveWalletType, saveThirdPartyToken } from "../../store/reducer";
 import {ethers} from "ethers";
-import {getNonce,login} from "../../api/user";
+import { getNonce, login, loginWithSeeAuth, loginToMetafo, loginToDeschool } from "../../api/user";
 import {createSiweMessage} from "../../utils/publicJs";
 import {useNavigate} from "react-router-dom";
 import AppConfig from "../../AppConfig";
@@ -101,37 +101,43 @@ export default function  Metamask(){
 
 
         const { host} = AppConfig;
-        let obj = {
+        try{
+          let rt = await loginWithSeeAuth({
             wallet: address,
             message: msg,
             signature: signInfo,
             domain: host,
-            wallet_type: 'EOA',
-            is_eip191_prefix: true,
-        };
-        try{
-            let rt = await login(obj);
-            setResult(rt.data)
-            const now = Date.now();
-            rt.data.token_exp = now + rt.data.token_exp * 1000;
-            store.dispatch(saveUserToken(rt.data));
-            store.dispatch(saveWalletType(Wallet.METAMASK));
-            store.dispatch(saveAccount(address))
-            store.dispatch(saveLoading(false));
+            walletName: "metamask",
+          });
+          // login to third party
+            const loginResp = await Promise.all([loginToMetafo(rt.data.see_auth), loginToDeschool(rt.data.see_auth)]);
+            store.dispatch(
+                saveThirdPartyToken({
+                metaforo: loginResp[0].data.token,
+                deschool: loginResp[1].data.jwtToken,
+                }),
+            );
 
-            localStorage.setItem(SELECT_WALLET, Wallet.METAMASK);
+          setResult(rt.data);
+          const now = Date.now();
+          rt.data.token_exp = now + rt.data.token_exp * 1000;
+          store.dispatch(saveUserToken(rt.data));
+          store.dispatch(saveWalletType(Wallet.METAMASK));
+          store.dispatch(saveAccount(address));
+          store.dispatch(saveLoading(false));
 
-            try {
-               await OneSignal.login(address.toLocaleLowerCase());
-            } catch (error) {
-               logError("OneSignal login error", error);
-            }
+          localStorage.setItem(SELECT_WALLET, Wallet.METAMASK);
 
-            ReactGA.event("login_success",{
-                type: "metamask",
-                account:"account:"+address
-            });
+          try {
+            await OneSignal.login(address.toLocaleLowerCase());
+          } catch (error) {
+            logError("OneSignal login error", error);
+          }
 
+          ReactGA.event("login_success", {
+            type: "metamask",
+            account: "account:" + address,
+          });
         }catch (e){
             logError(e)
             ReactGA.event("login_failed",{type: "metamask"});

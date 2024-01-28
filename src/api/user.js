@@ -33,7 +33,7 @@ export const getNonce = wallet => {
 };
 
 export const loginWithSeeAuth = (data) => {
-  return axios.post("/seeauth/login", data);
+  return request.post("/seeauth/login", data);
 };
 
 export const loginToMetafo = (data) => {
