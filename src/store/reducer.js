@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import InitState from './initState';
-import { SELECT_WALLET } from 'utils/constant';
+import { SELECT_WALLET, METAFORO_TOKEN, SEE_AUTH, SEEDAO_USER, SEEDAO_USER_DATA } from "utils/constant";
 
 const mainSlice = createSlice({
     name: 'main',
@@ -11,7 +11,19 @@ const mainSlice = createSlice({
             state.userToken = null;
             state.walletType = null;
             state.metaforoToken = null;
-            localStorage.removeItem(SELECT_WALLET);
+            state.deschoolToken = null;
+            [
+              SELECT_WALLET,
+              METAFORO_TOKEN,
+              SEE_AUTH,
+              SEEDAO_USER,
+              SEEDAO_USER_DATA,
+              "joyid-address",
+              "joyid-status",
+              "joyid-msg",
+            ].forEach((item) => {
+              localStorage.removeItem(item);
+            });
         },
         saveAccount(state, action) {
             state.account = action.payload;
@@ -61,6 +73,7 @@ const mainSlice = createSlice({
             state.metaforoToken = action.payload;
         },
         saveThirdPartyToken(state, action) { 
+            localStorage.setItem(SEE_AUTH, JSON.stringify(action.payload));
             state.metaforoToken = action.payload.metaforo;
             state.deschoolToken = action.payload.deschool;
         }

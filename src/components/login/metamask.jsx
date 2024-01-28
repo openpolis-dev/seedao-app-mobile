@@ -15,9 +15,9 @@ import usePushPermission from "hooks/usePushPermission";
 import MetamaskLogo from "../../assets/Imgs/METAmask.svg";
 import ArrImg from "../../assets/Imgs/arrow.svg";
 import OneSignal from "react-onesignal";
-import { SELECT_WALLET, Wallet } from "utils/constant";
-import getConfig from "constant/envCofnig";
-const network = getConfig().NETWORK;
+import { SELECT_WALLET, Wallet, SEE_AUTH } from "utils/constant";
+import { METAFORO_TOKEN } from "utils/constant";
+import { prepareMetaforo } from "api/proposalV2";
 
 // https://github.com/MetaMask/metamask-sdk/issues/381
 // https://github.com/MetaMask/metamask-mobile/issues/7165
@@ -110,13 +110,17 @@ export default function  Metamask(){
             walletName: "metamask",
           });
           // login to third party
-            const loginResp = await Promise.all([loginToMetafo(rt.data.see_auth), loginToDeschool(rt.data.see_auth)]);
-            store.dispatch(
-                saveThirdPartyToken({
-                metaforo: loginResp[0].data.token,
-                deschool: loginResp[1].data.jwtToken,
-                }),
-            );
+          const loginResp = await Promise.all([loginToMetafo(rt.data.see_auth), loginToDeschool(rt.data.see_auth)]);
+          store.dispatch(
+            saveThirdPartyToken({
+              metaforo: loginResp[0].data.token,
+              deschool: loginResp[1].data.jwtToken,
+            }),
+          );
+          localStorage.setItem(
+            METAFORO_TOKEN,
+            JSON.stringify({ id: loginResp[0].data.user_id, account: address, token: loginResp[0].data.token }),
+          );
 
           setResult(rt.data);
           const now = Date.now();
@@ -133,11 +137,13 @@ export default function  Metamask(){
           } catch (error) {
             logError("OneSignal login error", error);
           }
+          prepareMetaforo(loginResp[0].data.user_id);
 
           ReactGA.event("login_success", {
             type: "metamask",
             account: "account:" + address,
           });
+          
         }catch (e){
             logError(e)
             ReactGA.event("login_failed",{type: "metamask"});
