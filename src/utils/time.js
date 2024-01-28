@@ -27,7 +27,7 @@ export const formatDate = (date, formatter) => {
   return dayjs(date).format(['YYYY', 'MM', 'DD'].join(formatter || '-'));
 };
 
-export const formatDeltaDate = (endTime) => {
+export const formatDeltaDate = (endTime, formatDay = true) => {
   const now = Date.now();
   const until = endTime;
   const days = Math.abs(until - now) / 1000 / 3600 / 24;
@@ -40,7 +40,7 @@ export const formatDeltaDate = (endTime) => {
   if (seconds) {
     minute += 1;
   }
-  return { d: day, h: hour, m: minute };
+  return formatDay ? { d: day, h: hour, m: minute } : { h: hour, m: minute };
 };
 
 

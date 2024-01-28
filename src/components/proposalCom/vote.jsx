@@ -12,6 +12,7 @@ import BaseModal from "components/baseModal";
 import VoteRulesModal from "./voteRules";
 import VoterListModal from "./voterList";
 import VoteRuleIcon from "assets/Imgs/proposal/rule.svg";
+import { ProposalState } from "constant/proposal";
 
 const VoteType = {
   Waite: "waite",
@@ -31,13 +32,14 @@ const getPollStatus = (start_t, close_t) => {
   return VoteType.Open;
 };
 
-export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
+export default function ProposalVote({ proposalState, id, poll, voteGate, updateStatus }) {
   const { t } = useTranslation();
   const [selectOption, setSelectOption] = useState();
   const [openVoteItem, setOpenVoteItem] = useState();
   const [showConfirmVote, setShowConfirmVote] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
   const [showVoteRules, setShowVoteRules] = useState(false);
+  const [showExecutionTip, setShowExecutionTip] = useState(false);
 
   const { checkMetaforoLogin, LoginMetafoModal } = useMetaforoLogin();
   const { toast, Toast } = useToast();
@@ -45,8 +47,45 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
   const pollStatus = getPollStatus(poll.poll_start_at, poll.close_at);
 
   const voteStatusTag = useMemo(() => {
-    if (pollStatus === VoteType.Closed) {
-      return <CloseTag>{t("Proposal.VoteClose")}</CloseTag>;
+    if (proposalState === ProposalState.Executed || pollStatus === VoteType.Closed) {
+        return <CloseTag>{t("Proposal.VoteClose")}</CloseTag>;
+      } else if (proposalState === ProposalState.PendingExecution) {
+      return (
+        <>
+          <OpenTag>
+            {t("Proposal.AutoExecuteLeftTime", {
+              ...formatDeltaDate(new Date(poll.close_at).getTime() + 86400000),
+            })}
+          </OpenTag>
+          <TipBox onClick={() => setShowExecutionTip(true)}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={18}
+              height={18}
+              fill="none"
+              viewBox="0 0 24 24"
+              style={{ marginLeft: "4px" }}
+            >
+              <path
+                stroke="#ccc"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 10a3 3 0 1 1 3 3v1m9-2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"
+              />
+              <circle cx={12} cy={17} r={1} fill="#ccc" />
+            </svg>
+          </TipBox>
+          {showExecutionTip && (
+            <BaseModal
+              msg={t("Proposal.ExecutionTip")}
+              footer={
+                <ModalCloseButton onClick={() => setShowExecutionTip(false)}>{t("General.Close")}</ModalCloseButton>
+              }
+            />
+          )}
+        </>
+      );
     } else if (pollStatus === VoteType.Open) {
       return (
         <OpenTag>
@@ -64,7 +103,7 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
         </OpenTag>
       );
     }
-  }, [pollStatus, t]);
+  }, [pollStatus, t, showExecutionTip]);
 
   const onConfirmVote = async () => {
     const canVote = await checkMetaforoLogin();
@@ -144,13 +183,13 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
         <>
           {poll.options.map((option, index) => (
             <VoteOptionSelect key={index}>
-                <input
-                  type="radio"
-                  checked={selectOption?.id === option.id}
-                  onChange={(e) => setSelectOption(e.target.checked ? option : undefined)}
-                  disabled={!hasPermission}
-                  id={`select_${index}`}
-                />
+              <input
+                type="radio"
+                checked={selectOption?.id === option.id}
+                onChange={(e) => setSelectOption(e.target.checked ? option : undefined)}
+                disabled={!hasPermission}
+                id={`select_${index}`}
+              />
               <OptionContentPure htmlFor={`select_${index}`}>{option.html}</OptionContentPure>
             </VoteOptionSelect>
           ))}
@@ -241,6 +280,8 @@ const TotalVoters = styled.div`
   font-style: normal;
   font-weight: 600;
   line-height: 22px;
+  display: flex;
+  align-items: center;
 `;
 
 const CloseTag = styled.span`
@@ -262,7 +303,7 @@ const VoteOptionSelect = styled(VoteOptionBlock)`
   display: flex;
   align-items: center;
   gap: 8px;
-  input[type="radio"]:disabled + label{
+  input[type="radio"]:disabled + label {
     //background-color: #d9d9d980;
     //border-color: rgba(217, 217, 217, 0.5);
     opacity: 0.4;
@@ -332,4 +373,15 @@ const Bottom = styled.div`
       top: 2px;
     }
   }
+`;
+
+const TipBox = styled.div`
+  height: 18px;
+`;
+
+const ModalCloseButton = styled.div`
+  line-height: 45px;
+  text-align: center;
+  border-top: 1px solid #f0f1f2;
+  color: var(--primary-color);
 `;

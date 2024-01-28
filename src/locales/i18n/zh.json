@@ -15,7 +15,8 @@
     "Version": "当前版本",
     "Search": "搜索",
     "JustNow": "刚刚",
-    "MinutesAgo": "{{time}}分钟前"
+    "MinutesAgo": "{{time}}分钟前",
+    "Close": "关闭"
   },
   "Buttons": {
     "Check": "查看",
@@ -175,7 +176,11 @@
     "Loging": "正在登录Metaforo...",
     "Time": "时间",
     "Category": "类型",
-    "State": "状态"
+    "State": "状态",
+    "AutoExecuteLeftTime": "自动执行等待时间还剩{{h}}小时{{m}}分钟",
+    "CloseVote": "提前结束投票",
+    "ConfirmToCloseVote": "确认提前结束投票吗",
+    "ExecutionTip": "当前投票已结束，进入 24 小时等待期，在此期间市政厅可对提案结果进行否决，如市政厅未否决，则提案按照投票结果结束。"
   },
   "My": {
     "MyProfile": "我的信息",
