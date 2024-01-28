@@ -6,7 +6,7 @@ import {useEthersSigner } from '../../utils/ethersNew';
 import store from "../../store";
 import { saveLoading, saveAccount, saveUserToken, saveWalletType, saveThirdPartyToken } from "../../store/reducer";
 import {ethers} from "ethers";
-import { getNonce, login, loginWithSeeAuth, loginToMetafo, loginToDeschool } from "../../api/user";
+import { getNonce, loginWithSeeAuth, loginToMetafo, loginToDeschool } from "../../api/user";
 import {createSiweMessage} from "../../utils/publicJs";
 import {useNavigate} from "react-router-dom";
 import AppConfig from "../../AppConfig";
