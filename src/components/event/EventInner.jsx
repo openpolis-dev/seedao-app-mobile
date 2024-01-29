@@ -61,7 +61,7 @@ export default function EventInner({id}){
                 const resp = await getSeeuEventDetail(id);
                 setData(resp.data);
             } catch (error) {
-                console.error(error);
+                logError(error);
                 // TODO toast
             } finally {
                 store.dispatch(saveLoading(false));

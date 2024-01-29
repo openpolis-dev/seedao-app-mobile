@@ -31,7 +31,7 @@ export default function SwitchModal({ select, handleClose }) {
       }
       handleClose(select);
     } catch (error) {
-      console.error(error);
+      logError(error);
     } finally {
     }
   };

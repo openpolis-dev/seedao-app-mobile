@@ -3,25 +3,25 @@ import Header from "./header";
 import TabBar from "./tabBar";
 import { useSelector } from "react-redux";
 
-import {useEffect, useRef, useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import StickyHeader from "./StickyHeader";
-import {savePath} from "../../store/reducer";
+import { savePath } from "../../store/reducer";
 import store from "store";
 import { isInPWA } from "utils";
+import { checkTokenValid, clearStorage } from "utils/auth";
 
 const OuterBox = styled.div`
   width: 100%;
-  height: ${(props) => props.isPwa==="true"?"100vh":'100%'};
+  height: ${(props) => (props.isPwa === "true" ? "100vh" : "100%")};
   box-sizing: border-box;
 
   padding-top: constant(safe-area-inset-top);
   padding-top: env(safe-area-inset-top);
-  
+
   padding-bottom: constant(safe-area-inset-bottom);
   padding-bottom: env(safe-area-inset-bottom);
-  
 `;
 const InnerBox = styled.div`
   /* flex-grow: 1; */
@@ -38,6 +38,7 @@ const InnerBox = styled.div`
  * sticky: boolean
  * title: string
  * noTab: boolean
+ * customTab: if noTab is true, customTab will not display
  * headBgColor: string
  * bgColor: string
  */
@@ -46,24 +47,27 @@ export default function Layout({
   noHeader,
   title,
   noTab,
+  customTab,
   headBgColor,
+  headStyle,
   bgColor,
   headColor,
   sticky,
   rightOperation,
   handleBack,
+  headerProps,
 }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const userToken = useSelector((state) => state.userToken);
   const innerRef = useRef();
 
-  const [pwaBtm,setPwaBtm] = useState(false);
+  const [pwaBtm, setPwaBtm] = useState(false);
 
   const location = useLocation();
 
   useEffect(() => {
-    store.dispatch(savePath(location.pathname))
+    store.dispatch(savePath(location.pathname));
   }, [location]);
 
   useEffect(() => {
@@ -71,13 +75,17 @@ export default function Layout({
     const isMobile = /Mobile/.test(userAgent);
     const isPWA = isInPWA();
 
-
-      setPwaBtm(isMobile && !isPWA)
-
+    setPwaBtm(isMobile && !isPWA);
   }, []);
 
   useEffect(() => {
-    if (!userToken?.token && pathname !== "/sns") {
+    if (pathname === "/sns" || pathname === "/login") {
+      return;
+    }
+    // check token
+    if (!checkTokenValid(userToken?.token, userToken?.token_exp)) {
+      clearStorage();
+
       if (pathname === "/sns/register") {
         localStorage.setItem("==sns==", "1");
       }
@@ -85,15 +93,9 @@ export default function Layout({
     }
   }, [userToken, pathname]);
 
-
-  useEffect(() => {
-
-  }, []);
-
   useEffect(() => {
     document.querySelector("body").style.background = bgColor || "#FFFFFF";
   }, [bgColor]);
-
 
   return (
     <OuterBox isPwa={isInPWA().toString()}>
@@ -107,6 +109,8 @@ export default function Layout({
             rightOperation={rightOperation}
             headColor={headColor}
             handleBack={handleBack}
+            {...headStyle}
+            headerProps={headerProps}
           />
         )
       ) : (
@@ -115,13 +119,13 @@ export default function Layout({
       <InnerBox
         id="inner"
         ref={innerRef}
-        $notab={noTab ? 0 : pwaBtm ? "120px" : "70px"}
+        $notab={noTab ? 0 : "70px"}
         $sticky="true"
         $paddingtop={noHeader || sticky ? "0" : "47px"}
       >
         {children}
       </InnerBox>
-      {!noTab && <TabBar />}
+      {!noTab && (customTab || <TabBar />)}
     </OuterBox>
   );
 }

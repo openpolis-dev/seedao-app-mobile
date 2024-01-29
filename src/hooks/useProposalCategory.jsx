@@ -23,7 +23,7 @@ export default function useProposalCategory(proposal_category_id) {
       const resp = await getCategories();
       store.dispatch(saveProposalCategories(resp?.data.group.categories));
     } catch (error) {
-      console.error("getCategories failed", error);
+      logError("getCategories failed", error);
     } finally {
       store.dispatch(saveLoading(false));
     }

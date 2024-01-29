@@ -71,7 +71,7 @@ const ToastMask = styled.div`
   height: 100vh;
   left: 0;
   top: 0;
-  z-index: 999;
+  z-index: 999999;
   position: fixed;
   display: flex;
   align-items: center;

@@ -66,7 +66,7 @@ export default function ExploreProjectSection() {
       setLoading(false);
     } catch (error) {
       //  TODO toast
-      console.error(error);
+      logError(error);
     }
   };
   return (

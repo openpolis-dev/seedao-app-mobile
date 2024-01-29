@@ -160,7 +160,7 @@ export default function Hub() {
             setPageSize(size);
             setPageCur(page);
         } catch (e) {
-            console.error(e);
+            logError(e);
         } finally {
             setLoading(false);
         }

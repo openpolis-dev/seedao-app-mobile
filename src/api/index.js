@@ -37,7 +37,7 @@ instance.interceptors.request.use(function (config) {
       const e = new Event("TOKEN_EXPIRED");
       window.dispatchEvent(e);
     } catch (error) {
-      console.error("dispatch event failed", error);
+      logError("dispatch event failed", error);
     }
     return Promise.reject();
   }

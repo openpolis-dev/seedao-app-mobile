@@ -29,7 +29,7 @@ export default function Proposal() {
       let arr = resp?.data.group.categories.map((item) => ({ ...item, statusShow: true }));
       store.dispatch(saveProposalCategories(arr));
     } catch (error) {
-      console.error("getCategories failed", error);
+      logError("getCategories failed", error);
     } finally {
       store.dispatch(saveLoading(false));
     }

@@ -28,7 +28,7 @@ const CopyBox = ({ children, text, dir, ...props }) => {
 
     } catch (error) {
 
-      console.error('Failed to copy text: ', error);
+      logError('Failed to copy text: ', error);
     }
   };
 
@@ -96,7 +96,7 @@ const TipsBox = styled.div`
   width: 100vw;
   height: 100vh;
   left: 0;
-  top: 0;
+  bottom: 0;
   z-index: 999;
   position: fixed;
   display: flex;

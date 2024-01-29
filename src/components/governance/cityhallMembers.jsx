@@ -91,7 +91,7 @@ export default function CityhallMembers() {
       });
       setUserMap(userData);
     } catch (error) {
-      console.error("getUsersInfo error:", error);
+      logError("getUsersInfo error:", error);
     }
   };
 
@@ -109,7 +109,7 @@ export default function CityhallMembers() {
         getUsersInfo(wallets);
         getMultiSNS(wallets);
       } catch (error) {
-        console.error(error);
+        logError(error);
       }
     };
     getCityhallMembers();

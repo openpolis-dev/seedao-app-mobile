@@ -167,7 +167,7 @@ export default function Hub() {
 
             setList(rows);
         } catch (e) {
-            console.error(e);
+            logError(e);
         } finally {
             setLoading(false);
         }

@@ -1,6 +1,12 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { sendTransactionCallback } from "@joyid/evm";
+import { sendTransactionCallback, signTypedDataCallback } from "@joyid/evm";
 import { useEffect } from "react";
+import { prepareMetaforo, loginByWallet } from "api/proposalV2";
+import publicJs from "utils/publicJs";
+import store from "store";
+import { saveMetaforoToken } from "store/reducer";
+import getConfig from "constant/envCofnig";
+const CONFIG = getConfig();
 
 export default function JoyIDRedirect() {
   const navigate = useNavigate();
@@ -42,9 +48,33 @@ export default function JoyIDRedirect() {
     data[account].registerHash = hash;
     localStorage.setItem("sns", JSON.stringify(data));
   };
+  const handleSignMetaforo = async () => {
+    const res = signTypedDataCallback();
+    const account = localStorage.getItem("joyid-address");
+    const signData = publicJs.typedData(account, CONFIG.NETWORK.chainId);
+    const data = await loginByWallet({
+      web3_public_key: account,
+      sign: res.signature,
+      signMsg: JSON.stringify(signData),
+      wallet_type: 5,
+    });
+    store.dispatch(saveMetaforoToken({ id: data.user.id, account, token: data.api_token }));
+    try {
+      await prepareMetaforo();
+    } catch (error) {
+      logError("prepareMetaforo failed", error);
+    }
+
+    const pathname = search.get("current");
+    navigate(pathname, { replace: true });
+  };
 
   useEffect(() => {
     console.log("===> joyid redirect action:", action);
+    if (action === "sign-metaforo") {
+      handleSignMetaforo();
+      return;
+    }
     let res = "";
     try {
       res = sendTransactionCallback();
@@ -53,14 +83,14 @@ export default function JoyIDRedirect() {
         switch (action) {
           case "sns-commit":
             handleCommitData(res.tx);
-            navigate("/sns/register");
+            navigate("/sns/register", {replace: true});
             break;
           case "sns-register":
             handleRegisterData(res.tx);
-            navigate("/sns/register", { state: true });
+            navigate("/sns/register", { state: true, replace: true });
             break;
           case "sns-switch":
-            navigate("/sns/user", { state: res.tx });
+            navigate("/sns/user", { state: res.tx, replace: true });
             break;
           default:
             break;
@@ -68,18 +98,18 @@ export default function JoyIDRedirect() {
         return;
       }
     } catch (error) {
-      console.error(error);
+      logError(error);
     }
     if (!res) {
       switch (action) {
         case "sns-commit":
-          navigate("/sns/register", { state: { sns: search.get("sns"), step: action } });
+          navigate("/sns/register", { state: { sns: search.get("sns"), step: action }, replace: true });
           break;
         case "sns-register":
-          navigate("/sns/register");
+          navigate("/sns/register", { replace: true });
           break;
         case "sns-switch":
-          navigate("/sns/user");
+          navigate("/sns/user", { replace: true });
           break;
         default:
           break;

@@ -12,4 +12,5 @@ export default {
   proposalCategories: [],
   rpc: "",
   currentSeason: "",
+  metaforoToken: null,
 };

@@ -17,7 +17,7 @@ export default function useSeasons(addAll = true) {
           })),
         ]);
       } catch (error) {
-        console.error("getSeasons failed", error);
+        logError("getSeasons failed", error);
       }
     };
     getSeasonList();

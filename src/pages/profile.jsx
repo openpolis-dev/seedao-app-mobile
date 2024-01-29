@@ -383,7 +383,7 @@ export default function Profile() {
 
 
     } catch (e) {
-      console.error(e);
+      logError(e);
     } finally {
       store.dispatch(saveLoading(false));
     }
@@ -394,7 +394,7 @@ export default function Profile() {
     setList([]);
     // setSbtList([]);
     seed?.map(async (seedItem) => {
-      let url = await PublicJs.getImage(seedItem.image_uri);
+      let url = await PublicJs.getSeedUrl(seedItem.image_uri);
       setList((list) => [...list, { ...seedItem, url }]);
     });
 
