@@ -268,7 +268,14 @@ export default function ProposalThread() {
         />
       </ContentOuter>
       {showVote() && (
-        <ProposalVote voteGate={data?.vote_gate} poll={data.votes[0]} id={Number(id)} updateStatus={getProposal} />
+        <ProposalVote
+          voteGate={data?.vote_gate}
+          poll={data.votes[0]}
+          id={Number(id)}
+          updateStatus={getProposal}
+          proposalState={data?.state}
+          execution_ts={data?.execution_ts}
+        />
       )}
       {LoginMetafoModal}
     </Layout>
@@ -399,7 +406,6 @@ const ProposalContentBlock = styled.div`
 const ComponnentBox = styled(ProposalContentBlock)`
   margin-bottom: 10px;
 `;
-
 
 const StatusTag = styled.div`
   background-color: #fb4e4e;

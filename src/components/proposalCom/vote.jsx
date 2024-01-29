@@ -32,7 +32,7 @@ const getPollStatus = (start_t, close_t) => {
   return VoteType.Open;
 };
 
-export default function ProposalVote({ proposalState, id, poll, voteGate, updateStatus }) {
+export default function ProposalVote({ execution_ts, proposalState, id, poll, voteGate, updateStatus }) {
   const { t } = useTranslation();
   const [selectOption, setSelectOption] = useState();
   const [openVoteItem, setOpenVoteItem] = useState();
@@ -47,14 +47,14 @@ export default function ProposalVote({ proposalState, id, poll, voteGate, update
   const pollStatus = getPollStatus(poll.poll_start_at, poll.close_at);
 
   const voteStatusTag = useMemo(() => {
-    if (proposalState === ProposalState.Executed || pollStatus === VoteType.Closed) {
-        return <CloseTag>{t("Proposal.VoteClose")}</CloseTag>;
-      } else if (proposalState === ProposalState.PendingExecution) {
+    if (proposalState === ProposalState.Executed) {
+      return <CloseTag>{t("Proposal.VoteClose")}</CloseTag>;
+    } else if (proposalState === ProposalState.PendingExecution) {
       return (
         <>
           <OpenTag>
             {t("Proposal.AutoExecuteLeftTime", {
-              ...formatDeltaDate(new Date(poll.close_at).getTime() + 86400000),
+              ...formatDeltaDate(execution_ts ? execution_ts * 1000 : new Date(poll.close_at).getTime() + 86400000),
             })}
           </OpenTag>
           <TipBox onClick={() => setShowExecutionTip(true)}>
@@ -86,6 +86,8 @@ export default function ProposalVote({ proposalState, id, poll, voteGate, update
           )}
         </>
       );
+    } else if (pollStatus === VoteType.Closed) {
+      return <CloseTag>{t("Proposal.VoteClose")}</CloseTag>;
     } else if (pollStatus === VoteType.Open) {
       return (
         <OpenTag>
@@ -103,7 +105,7 @@ export default function ProposalVote({ proposalState, id, poll, voteGate, update
         </OpenTag>
       );
     }
-  }, [pollStatus, t, showExecutionTip]);
+  }, [pollStatus, t, proposalState, showExecutionTip, execution_ts]);
 
   const onConfirmVote = async () => {
     const canVote = await checkMetaforoLogin();
