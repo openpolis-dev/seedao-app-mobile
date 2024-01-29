@@ -219,7 +219,7 @@ export default function ProposalThread() {
         </div>
         <FlexLine>
           {data?.state && <ProposalStateTag state={data.state} />}
-          {!!data?.vetoed && <StatusTag>{t("Proposal.veto")}</StatusTag>}
+          {data?.vetoed === ProposalState.Vetoed && <StatusTag>{t("Proposal.Veto")}</StatusTag>}
           {currentCategory && <CategoryTag>{currentCategory}</CategoryTag>}
           {data?.template_name && <TemplateTag>{data?.template_name}</TemplateTag>}
         </FlexLine>
