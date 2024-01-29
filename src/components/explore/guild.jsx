@@ -55,7 +55,7 @@ export default function ExploreGuildSection() {
       setLoading(false);
     } catch (error) {
       //  TODO toast
-      console.error(error);
+      logError(error);
     }
   };
   return (

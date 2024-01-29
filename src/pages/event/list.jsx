@@ -65,7 +65,7 @@ export default function EventListPage() {
       setPage(page + 1);
     } catch (error) {
       //  TODO toast
-      console.error(error);
+      logError(error);
     } finally {
       store.dispatch(saveLoading(false));
     }

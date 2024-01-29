@@ -78,5 +78,11 @@ const apps =  [
       icon: SNSImg,
       desc: "apps.SNSDesc",
     },
+    {
+      id: "module-newcomer",
+      name: "apps.Newcomer",
+      link: "/newcomer",
+      desc: ""
+    }
 ];
  export default apps;

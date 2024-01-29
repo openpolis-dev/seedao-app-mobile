@@ -10,6 +10,7 @@ const mainSlice = createSlice({
             state.account = null;
             state.userToken = null;
             state.walletType = null;
+            state.metaforoToken = null;
             localStorage.removeItem(SELECT_WALLET);
         },
         saveAccount(state, action) {
@@ -55,6 +56,9 @@ const mainSlice = createSlice({
         },
         saveCurrentSeason(state, action) { 
             state.currentSeason = action.payload;
+        },
+        saveMetaforoToken(state, action) { 
+            state.metaforoToken = action.payload;
         }
     },
 });
@@ -73,6 +77,7 @@ export const {
     updateSNSmap,
     saveProposalCategories,
     saveRPC,
-    saveCurrentSeason
+    saveCurrentSeason,
+    saveMetaforoToken
 } = mainSlice.actions;
 export default mainSlice.reducer;

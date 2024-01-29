@@ -193,7 +193,7 @@ export default function RegisterSNSStep2() {
                 </CopyBox>,
               );
             }
-            console.error(error?.error?.data);
+            logError(error?.error?.data);
             dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
             return;
           }
@@ -238,7 +238,7 @@ export default function RegisterSNSStep2() {
       }
     } catch (error) {
       dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
-      console.error("register failed", error);
+      logError("register failed", error);
       toast.danger(error?.reason || error?.error?.data?.message || error?.data?.message || "error");
     } finally {
     }

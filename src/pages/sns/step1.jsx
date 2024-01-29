@@ -81,7 +81,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
       }
       setAvailable(AvailableStatus.OK);
     } catch (error) {
-      console.error("check available error", error);
+      logError("check available error", error);
       setAvailable(AvailableStatus.DEFAULT);
     } finally {
       setPending(false);
@@ -180,7 +180,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(data) });
       }
     } catch (error) {
-      console.error("mint failed", error);
+      logError("mint failed", error);
       dispatchSNS({ type: ACTIONS.CLOSE_LOADING });
       toast.danger(error?.reason || error?.data?.message || "error");
     }

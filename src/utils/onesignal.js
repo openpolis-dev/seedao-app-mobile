@@ -12,6 +12,6 @@ export default function runOneSignal() {
     OneSignal.Slidedown.promptPush();
     window.INITIAL_ONESIGNAL = true;
   } catch (error) {
-    console.error("init onesignal error:", error);
+    logError("init onesignal error:", error);
   }
 }

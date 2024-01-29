@@ -83,7 +83,7 @@ export default function ProposalCategory() {
       setHasMore(res.data.threads.length >= pageSize);
       setPage(page + 1);
     } catch (error) {
-      console.error(error);
+      logError(error);
     } finally {
       store.dispatch(saveLoading(false));
     }
@@ -93,7 +93,7 @@ export default function ProposalCategory() {
     const element = document.querySelector(`#inner`)
     const height = element.scrollTop;
 
-    console.error(height)
+    logError(height)
     let obj={
       type:"proposal",
       category,

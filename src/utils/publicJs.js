@@ -141,11 +141,63 @@ const checkRPCavailable = (rpc_list, network) => {
   });
 };
 
+const getSeedUrl = async (img) => {
+  if (!img) return;
+  if (img.indexOf('http://') > -1 || img.indexOf('https://') > -1) {
+    return img;
+  } else {
+    let str = img;
+    if (img.indexOf('ipfs://') > -1) {
+      str = img.split('ipfs://')[1];
+    }
+    // return `http://ipfs-proxy-bkt.s3-website-ap-northeast-1.amazonaws.com/${str}`;
+    return `https://nftcdn.seedao.tech/${str}`;
+    // try {
+    //   let imgAA = await agumentedIpfsGet(str);
+    //   return imgAA;
+    // } catch (e) {
+    //   return Promise.reject(e);
+    // }
+  }
+};
+
+
+function typedData(address, chainId) {
+  return {
+    types: {
+      EIP712Domain: [
+        { name: "name", type: "string" },
+        { name: "version", type: "string" },
+        {
+          name: "chainId",
+          type: "uint256",
+        },
+      ],
+      Login: [
+        { name: "account", type: "address" },
+        { name: "message", type: "string" },
+      ],
+    },
+    primaryType: "Login",
+    domain: {
+      name: "Metaforo",
+      version: "1.0",
+      chainId: chainId,
+    },
+    message: {
+      account: address,
+      message: "Login to Metaforo",
+    },
+  };
+}
+
 export default {
   AddressToShow,
   createSiweMessage,
   StorageList,
+  getSeedUrl,
   getImage,
   filterTags,
   checkRPCavailable,
+  typedData,
 };
