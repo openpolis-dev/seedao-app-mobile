@@ -219,6 +219,7 @@ export default function ProposalThread() {
         </div>
         <FlexLine>
           {data?.state && <ProposalStateTag state={data.state} />}
+          {!!data?.vetoed && <StatusTag>{t("Proposal.veto")}</StatusTag>}
           {currentCategory && <CategoryTag>{currentCategory}</CategoryTag>}
           {data?.template_name && <TemplateTag>{data?.template_name}</TemplateTag>}
         </FlexLine>
@@ -397,4 +398,19 @@ const ProposalContentBlock = styled.div`
 
 const ComponnentBox = styled(ProposalContentBlock)`
   margin-bottom: 10px;
+`;
+
+
+const StatusTag = styled.div`
+  background-color: #fb4e4e;
+  border: 1px solid;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 4px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  box-sizing: border-box;
 `;
