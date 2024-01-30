@@ -1,7 +1,7 @@
 
 import {useEffect, useState} from "react";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount, useDisconnect, useSwitchNetwork } from "wagmi";
 import {useEthersSigner } from '../../utils/ethersNew';
 import store from "../../store";
 import { saveLoading, saveAccount, saveUserToken, saveWalletType, saveThirdPartyToken } from "../../store/reducer";
@@ -18,6 +18,7 @@ import OneSignal from "react-onesignal";
 import { SELECT_WALLET, Wallet, SEE_AUTH } from "utils/constant";
 import { METAFORO_TOKEN } from "utils/constant";
 import { prepareMetaforo } from "api/proposalV2";
+import getConfig from "constant/envCofnig";
 
 // https://github.com/MetaMask/metamask-sdk/issues/381
 // https://github.com/MetaMask/metamask-mobile/issues/7165
@@ -31,7 +32,8 @@ export default function  Metamask(){
     const [msg,setMsg] = useState();
     const [signInfo,setSignInfo] = useState();
     const [result,setResult] = useState(null);
-    const [connectWallet,setConnectWallet] = useState(false);
+    const [connectWallet, setConnectWallet] = useState(false);
+    const { switchNetworkAsync } = useSwitchNetwork();
 
 
     const handlePermission = usePushPermission();
@@ -67,22 +69,29 @@ export default function  Metamask(){
         return rt.data.nonce;
     }
 
-    const sign = async() =>{
-        if(!isConnected || !signer.provider)return;
-        try{
-            const eip55Addr = ethers.utils.getAddress(address);
-            const {chainId} =  await signer.provider.getNetwork();
-            let nonce = await getMyNonce(address);
-            const siweMessage = createSiweMessage(eip55Addr, chainId, nonce, 'Welcome to SeeDAO!');
-            setMsg(siweMessage)
-            let signData = await signer.signMessage(siweMessage);
-            setSignInfo(signData)
-            setConnectWallet(false);
-        }catch (e) {
-            setConnectWallet(true);
-            disconnect();
-            logError("error",JSON.stringify(e))
+    const sign = async () => {
+      if (!isConnected || !signer.provider) return;
+      try{
+        const eip55Addr = ethers.utils.getAddress(address);
+        try {
+          const { chainId } = await signer.provider.getNetwork();
+          let nonce = await getMyNonce(address);
+          const siweMessage = createSiweMessage(eip55Addr, chainId, nonce, "Welcome to SeeDAO!");
+          setMsg(siweMessage);
+          let signData = await signer.signMessage(siweMessage);
+          setSignInfo(signData);
+          setConnectWallet(false);
+        } catch (error) {
+          // switch
+          await switchNetworkAsync(getConfig().NETWORK.chainId);
+          return;
         }
+          
+      }catch (e) {
+          setConnectWallet(true);
+          disconnect();
+          logError("error",JSON.stringify(e))
+      }
 
     }
 
