@@ -42,6 +42,11 @@ export default function ProposalThread() {
   const [currentCommentArrayIdx, setCurrentCommentArrayIdx] = useState(0);
   const [dataSource, setDatasource] = useState();
 
+  const [componentName, setComponentName] = useState('');
+  const [beforeList, setBeforeList] = useState([]);
+  const [preview, setPreview] = useState([]);
+  const [previewTitle, setPreviewTitle] = useState('');
+
   const [contentBlocks, setContentBlocks] = useState([]);
 
   const { getMultiSNS } = useQuerySNS();
@@ -68,7 +73,32 @@ export default function ProposalThread() {
       }
       setData(res.data);
 
-      setContentBlocks(res.data.content_blocks);
+
+      const arr = res.data.content_blocks;
+      const componentsIndex = arr.findIndex((i) => i.type === 'components');
+
+      const beforeComponents = arr.filter(
+          (item) => item.type !== 'components' && item.type !== 'preview' && arr.indexOf(item) < componentsIndex,
+      );
+      let componentsList = arr.filter((item) => item.type === 'components') || [];
+      const afterComponents = arr.filter(
+          (item) => item.type !== 'components' && item.type !== 'preview' && arr.indexOf(item) > componentsIndex,
+      );
+
+      const preview = arr.filter((i) => i.type === 'preview');
+
+      if (preview.length) {
+        const preArr = JSON.parse(preview[0].content);
+        setPreview(preArr);
+        setPreviewTitle(preview[0].title);
+      }
+
+      setComponentName(componentsList[0]?.title);
+      setBeforeList(beforeComponents ?? []);
+
+      setContentBlocks(afterComponents);
+
+      // setContentBlocks(res.data.content_blocks);
       const comStr = res.data.components || [];
       comStr.map((item) => {
         if (typeof item.data === "string") {
@@ -247,7 +277,22 @@ export default function ProposalThread() {
         </RejectOuter>
       )}
       <ContentOuter>
-        {contentBlocks.map((block, i) => (
+
+        {!!preview?.length && (
+            <>
+
+              <ComponnentBox>
+                <div className="title">{previewTitle}</div>
+              </ComponnentBox>
+              <PreviewMobie
+                  DataSource={JSON.parse(JSON.stringify(preview || []))}
+                  language={i18n.language}
+                  initialItems={components}
+              />
+            </>
+        )}
+
+        {!!beforeList?.length &&beforeList.map((block, i) => (
           <ProposalContentBlock key={block.title} $radius={i === 0 && !dataSource?.length ? "4px 4px 0 0" : "0"}>
             <div className="title">{block.title}</div>
             <div className="content">
@@ -258,7 +303,7 @@ export default function ProposalThread() {
 
         {!!dataSource?.length && (
           <ComponnentBox>
-            <div className="title">{t("Proposal.proposalComponents")}</div>
+            <div className="title">{componentName || t("Proposal.proposalComponents")}</div>
           </ComponnentBox>
         )}
         <PreviewMobie
@@ -266,6 +311,16 @@ export default function ProposalThread() {
           language={i18n.language.indexOf("zh") > -1 ? "zh" : "en"}
           initialItems={components}
         />
+
+
+        {!!contentBlocks?.length && contentBlocks.map((block, i) => (
+            <ProposalContentBlock key={block.title} $radius={i === 0 && !dataSource?.length ? "4px 4px 0 0" : "0"}>
+              <div className="title">{block.title}</div>
+              <div className="content">
+                <MdPreview modelValue={block.content || ""} />
+              </div>
+            </ProposalContentBlock>
+        ))}
       </ContentOuter>
       {showVote() && (
         <ProposalVote
@@ -350,6 +405,7 @@ const FlexLine = styled.div`
   align-items: center;
   margin: 10px 0;
   gap: 6px;
+  flex-wrap: wrap;
 `;
 
 const InfoBox = styled.div`
