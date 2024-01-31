@@ -1,4 +1,5 @@
 // user Module API
+import axios from 'axios';
 import request from './index';
 
 const PATH_PREFIX = '/user';
@@ -29,4 +30,16 @@ export const getUsers = wallets => {
 
 export const getNonce = wallet => {
   return request.post(`${PATH_PREFIX}/refresh_nonce`, {wallet});
+};
+
+export const loginWithSeeAuth = (data) => {
+  return request.post("/seeauth/login", data);
+};
+
+export const loginToMetafo = (data) => {
+  return axios.post("https://stage.metaforo.io/api/seeAuth?api_key=1", data);
+};
+
+export const loginToDeschool = (data) => {
+  return axios.post("https://deschool.app/api/login?app=seedao", data);
 };

@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-export default function BaseModal({ title, msg, onCancel, onConfirm, confirmText }) {
+export default function BaseModal({ title, msg, onCancel, onConfirm, confirmText, footer }) {
   const { t } = useTranslation();
   return (
     <Modal>
@@ -12,10 +12,12 @@ export default function BaseModal({ title, msg, onCancel, onConfirm, confirmText
             {title && <Title>{title}</Title>}
             <Message>{msg}</Message>
           </Content>
-          <Footer>
-            <CancelButton onClick={onCancel}>{t("General.cancel")}</CancelButton>
-            <ConfirmButtn onClick={onConfirm}>{confirmText || t("General.confirm")}</ConfirmButtn>
-          </Footer>
+          {footer || (
+            <Footer>
+              <CancelButton onClick={onCancel}>{t("General.cancel")}</CancelButton>
+              <ConfirmButtn onClick={onConfirm}>{confirmText || t("General.confirm")}</ConfirmButtn>
+            </Footer>
+          )}
         </ModalBox>
       </ModalContainer>
     </Modal>
