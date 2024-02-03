@@ -32,12 +32,12 @@ export default function ProposalItem({ data, sns }) {
           <FlexLine>
             <AvaBox>
               <div className="left">
-                <Avatar src={data.applicant_avatar} alt="" size="28px"/>
+                <Avatar src={data.applicant_avatar} alt="" size="28px" />
               </div>
               <div className="name">{sns}</div>
             </AvaBox>
             <div className="date">
-            <span>{formatDate(new Date(data.create_ts * 1000))}</span>
+              <span>{formatDate(new Date(data.create_ts * 1000))}</span>
             </div>
           </FlexLine>
         </CardBody>
