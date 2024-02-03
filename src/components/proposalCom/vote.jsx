@@ -199,7 +199,10 @@ export default function ProposalVote({ execution_ts, proposalState, id, poll, vo
       )}
       <Bottom>
         {voteGate?.name && <span className="alias">{voteGate.name}</span>}
-        <span className="rule" onClick={() => setShowVoteRules(true)}>
+        <span
+          className="rule"
+          onClick={() => window.open("https://docs.seedao.tech/seedao/Governance/proposal", "_blank")}
+        >
           <span> {t("Proposal.VoteRules")}</span>
           <img src={VoteRuleIcon} alt="" />
         </span>
