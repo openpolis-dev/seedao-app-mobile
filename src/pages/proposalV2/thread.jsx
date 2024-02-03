@@ -15,13 +15,14 @@ import publicJs from "utils/publicJs";
 import useQuerySNS from "hooks/useQuerySNS";
 import { PreviewMobie } from "@taoist-labs/components";
 import { MdPreview } from "md-editor-rt";
-import ProposalVote from "components/proposalCom/vote";
+import ProposalVote, { getPollStatus, VoteType } from "components/proposalCom/vote";
 import { ProposalState } from "constant/proposal";
 import ThreadTabbar from "components/proposalCom/threadTabbar";
 import LinkImg from "assets/Imgs/proposal/link.png";
 import useMetaforoLogin from "hooks/useMetaforoLogin";
 import { useSelector } from "react-redux";
 import useProposalCategories from "hooks/useProposalCategories";
+import { formatDeltaDate } from "utils/time";
 
 export default function ProposalThread() {
   const { id } = useParams();
@@ -213,6 +214,44 @@ export default function ProposalThread() {
       return "";
     }
   };
+  const getTimeTagDisplay = () => {
+    if (data?.state === ProposalState.PendingExecution) {
+      if (data?.execution_ts && data?.execution_ts * 1000 > Date.now()) {
+        return (
+          <TimeTag>
+            {t("Proposal.AutoExecuteLeftTime", {
+              ...formatDeltaDate((data?.execution_ts || 0) * 1000),
+            })}
+          </TimeTag>
+        );
+      }
+    }
+    const poll = data?.votes?.[0];
+    if (!poll) {
+      return;
+    }
+    if (data?.state === ProposalState.Voting) {
+      const pollStatus = getPollStatus(poll.poll_start_at, poll.close_at);
+      if (pollStatus === VoteType.Open) {
+        return (
+          <TimeTag>
+            {t("Proposal.VoteEndAt", {
+              leftTime: t("Proposal.TimeDisplay", { ...formatDeltaDate(new Date(poll.close_at).getTime()) }),
+            })}
+          </TimeTag>
+        );
+      }
+    }
+    if (data?.state === ProposalState.Draft) {
+      return (
+        <TimeTag>
+          {t("Proposal.DraftEndAt", {
+            leftTime: t("Proposal.TimeDisplay", { ...formatDeltaDate(new Date(poll.poll_start_at).getTime()) }),
+          })}
+        </TimeTag>
+      );
+    }
+  };
   const currentCategory = getCurrentCategory();
 
   useEffect(() => {
@@ -249,11 +288,10 @@ export default function ProposalThread() {
         </div>
         <FlexLine>
           {data?.state && <ProposalStateTag state={data.state} />}
-          {data?.state === ProposalState.Vetoed && <StatusTag>{t("Proposal.Veto")}</StatusTag>}
           {currentCategory && <CategoryTag>{currentCategory}</CategoryTag>}
           {data?.template_name && <TemplateTag>{data?.template_name}</TemplateTag>}
         </FlexLine>
-
+        {getTimeTagDisplay()}
         <InfoBox>
           <UserBox>
             <Avatar src={applicantAvatar} size="30px" />
@@ -330,6 +368,7 @@ export default function ProposalThread() {
           updateStatus={getProposal}
           proposalState={data?.state}
           execution_ts={data?.execution_ts}
+          voteOptionType={data?.vote_type}
         />
       )}
       {LoginMetafoModal}
@@ -475,4 +514,10 @@ const StatusTag = styled.div`
   justify-content: center;
   padding: 0 5px;
   box-sizing: border-box;
+`;
+
+const TimeTag = styled.div`
+  color: var(--primary-color);
+  font-size: 12px;
+  margin-bottom: 4px;
 `;

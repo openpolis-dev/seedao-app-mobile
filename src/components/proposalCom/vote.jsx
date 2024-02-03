@@ -14,13 +14,13 @@ import VoterListModal from "./voterList";
 import VoteRuleIcon from "assets/Imgs/proposal/rule.svg";
 import { ProposalState } from "constant/proposal";
 
-const VoteType = {
+export const VoteType = {
   Waite: "waite",
   Open: "open",
   Closed: "closed",
 };
 
-const getPollStatus = (start_t, close_t) => {
+export const getPollStatus = (start_t, close_t) => {
   const start_at = new Date(start_t).getTime();
   const close_at = new Date(close_t).getTime();
   if (start_at > Date.now()) {
@@ -32,7 +32,7 @@ const getPollStatus = (start_t, close_t) => {
   return VoteType.Open;
 };
 
-export default function ProposalVote({ execution_ts, proposalState, id, poll, voteGate, updateStatus }) {
+export default function ProposalVote({ execution_ts, proposalState, id, poll, voteGate, updateStatus, voteOptionType }) {
   const { t } = useTranslation();
   const [selectOption, setSelectOption] = useState();
   const [openVoteItem, setOpenVoteItem] = useState();
@@ -46,47 +46,17 @@ export default function ProposalVote({ execution_ts, proposalState, id, poll, vo
 
   const pollStatus = getPollStatus(poll.poll_start_at, poll.close_at);
 
+  const onlyShowVoteOption =
+    (voteOptionType === 99 || voteOptionType === 98) &&
+    [ProposalState.Rejected, ProposalState.Withdrawn, ProposalState.PendingSubmit, ProposalState.Draft].includes(
+      proposalState,
+    );
+
   const voteStatusTag = useMemo(() => {
-    if (proposalState === ProposalState.Executed) {
-      return <CloseTag>{t("Proposal.VoteClose")}</CloseTag>;
-    } else if (proposalState === ProposalState.PendingExecution) {
-      return (
-        <>
-          <OpenTag>
-            {t("Proposal.AutoExecuteLeftTime", {
-              ...formatDeltaDate(execution_ts ? execution_ts * 1000 : new Date(poll.close_at).getTime() + 86400000),
-            })}
-          </OpenTag>
-          <TipBox onClick={() => setShowExecutionTip(true)}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width={18}
-              height={18}
-              fill="none"
-              viewBox="0 0 24 24"
-              style={{ marginLeft: "4px" }}
-            >
-              <path
-                stroke="#ccc"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 10a3 3 0 1 1 3 3v1m9-2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"
-              />
-              <circle cx={12} cy={17} r={1} fill="#ccc" />
-            </svg>
-          </TipBox>
-          {showExecutionTip && (
-            <BaseModal
-              msg={t("Proposal.ExecutionTip")}
-              footer={
-                <ModalCloseButton onClick={() => setShowExecutionTip(false)}>{t("General.Close")}</ModalCloseButton>
-              }
-            />
-          )}
-        </>
-      );
-    } else if (pollStatus === VoteType.Closed) {
+    if (onlyShowVoteOption) {
+      return <OpenTag>{t("Proposal.VoteNotStart")}</OpenTag>;
+    }
+    if (proposalState === ProposalState.Executed || pollStatus === VoteType.Closed) {
       return <CloseTag>{t("Proposal.VoteClose")}</CloseTag>;
     } else if (pollStatus === VoteType.Open) {
       return (

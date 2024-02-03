@@ -11,44 +11,54 @@ export default function ProposalStateTag({ state }) {
   let text;
   switch (state) {
     case ProposalState.Approved:
-      color = "#1F9E14";
-      text = t("Proposal.Approve");
+      color = '#1F9E14';
+      text = t('Proposal.Approved');
       break;
     case ProposalState.Rejected:
-      color = "#FB4E4E";
-      text = t("Proposal.Rejected");
+      color = '#FB4E4E';
+      text = t('Proposal.Discard');
       break;
     case ProposalState.Draft:
-      color = "#2F8FFF";
-      text = t("Proposal.Draft");
+      color = '#2F8FFF';
+      text = t('Proposal.Draft');
       break;
     case ProposalState.PendingSubmit:
-      color = "rgba(9, 171, 207, 0.90)";
-      text = t("Proposal.PendingCommit");
+      color = 'rgb(253, 210, 255)';
+      text = t('Proposal.PendingCommit');
       break;
     case ProposalState.Withdrawn:
-      color = "#B0B0B0";
-      text = t("Proposal.WithDrawn");
+      color = '#B0B0B0';
+      text = t('Proposal.WithDrawn');
       break;
     case ProposalState.VotingPassed:
     case ProposalState.Executed:
+      color = '#1F9E14';
+      text = t('Proposal.Passed');
+      break;
     case ProposalState.ExecutionFailed:
-      color = "#1F9E14";
-      text = t("Proposal.Passed");
+      color = 'rgb(187, 187, 187)';
+      text = t('Proposal.ExecutedFailed');
       break;
     case ProposalState.VotingFailed:
+      color = '#FB4E4E';
+      text = t('Proposal.Failed');
+      break;
     case ProposalState.Vetoed:
-      color = "#FB4E4E";
-      text = t("Proposal.Failed");
+      color = '#FB4E4E';
+      text = t('Proposal.Vetoed');
       break;
     case ProposalState.Voting:
-    case ProposalState.PendingExecution:
-      color = "#F9B617";
-      text = t("Proposal.Voting");
+      color = '#F9B617';
+      text = t('Proposal.Voting');
       break;
+    case ProposalState.PendingExecution:
+      color = 'rgba(190, 166, 255, 0.8)';
+      text = t('Proposal.PendingExecution');
+      break;
+
     default:
-      text = "";
-      color = "#ddd";
+      text = state;
+      color = '#ddd';
   }
   return (
     <StatusTag $color={color} $width={language === "en" ? "90px" : "70px"}>
