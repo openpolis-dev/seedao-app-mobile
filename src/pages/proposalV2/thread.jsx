@@ -23,6 +23,7 @@ import useMetaforoLogin from "hooks/useMetaforoLogin";
 import { useSelector } from "react-redux";
 import useProposalCategories from "hooks/useProposalCategories";
 import { formatDeltaDate } from "utils/time";
+import { getProposalSIPSlug } from "utils";
 
 export default function ProposalThread() {
   const { id } = useParams();
@@ -273,6 +274,7 @@ export default function ProposalThread() {
     >
       <ThreadHead>
         <div className="title">
+          {getProposalSIPSlug(data?.sip)}
           {data?.title}{" "}
           {data?.arweave && (
             <a
