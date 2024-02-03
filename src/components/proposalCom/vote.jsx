@@ -32,7 +32,15 @@ export const getPollStatus = (start_t, close_t) => {
   return VoteType.Open;
 };
 
-export default function ProposalVote({ execution_ts, proposalState, id, poll, voteGate, updateStatus, voteOptionType }) {
+export default function ProposalVote({
+  execution_ts,
+  proposalState,
+  id,
+  poll,
+  voteGate,
+  updateStatus,
+  voteOptionType,
+}) {
   const { t } = useTranslation();
   const [selectOption, setSelectOption] = useState();
   const [openVoteItem, setOpenVoteItem] = useState();
@@ -75,7 +83,7 @@ export default function ProposalVote({ execution_ts, proposalState, id, poll, vo
         </OpenTag>
       );
     }
-  }, [pollStatus, t, proposalState, showExecutionTip, execution_ts]);
+  }, [pollStatus, t, proposalState, showExecutionTip, execution_ts, onlyShowVoteOption]);
 
   const onConfirmVote = async () => {
     const canVote = await checkMetaforoLogin();
@@ -113,13 +121,13 @@ export default function ProposalVote({ execution_ts, proposalState, id, poll, vo
         setHasPermission(r.data);
       });
     };
-    if (pollStatus === VoteType.Open && !poll.is_vote) {
+    if (!onlyShowVoteOption && pollStatus === VoteType.Open && !poll.is_vote) {
       getVotePermission();
     }
-  }, [poll, pollStatus]);
+  }, [poll, pollStatus, onlyShowVoteOption]);
 
   const showVoteContent = () => {
-    if ((pollStatus === VoteType.Open && !!poll.is_vote) || pollStatus === VoteType.Closed) {
+    if (!onlyShowVoteOption && ((pollStatus === VoteType.Open && !!poll.is_vote) || pollStatus === VoteType.Closed)) {
       return (
         <table cellSpacing="0" cellPadding="0">
           <tbody>

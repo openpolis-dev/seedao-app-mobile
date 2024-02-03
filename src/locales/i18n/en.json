@@ -156,6 +156,7 @@
     "ConfirmBackCreate": "Leaving this webpage will result in the loss of unsaved changes. Continue?",
     "ConfirmVoteOption": "Confirm to vote '{{option}}' ?",
     "NotSupportWallet": "This operation is not supported by {{wallet}}, please change to others",
+    "VoteNotStart": "Voting has not started",
     "Vote": "Vote",
     "Share": "Share",
     "Edit": "Edit",
