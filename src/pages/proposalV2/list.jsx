@@ -59,6 +59,8 @@ export default function ProposalList() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [inputKeyword, setInputKeyword] = useState("");
 
+  const [isFilterSIP, setIsFilterSIP] = useState(false);
+
   const [proposalList, setProposalList] = useState([]);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -88,10 +90,11 @@ export default function ProposalList() {
         page: _page,
         size: PAGE_SIZE,
         sort_order: selectTime.value,
-        sort_field: "create_ts",
+        sort_field: isFilterSIP ? "sip" : "create_ts",
         state: selectStatus?.value,
         category_id: selectCategory?.value,
         q: searchKeyword,
+        sip: isFilterSIP ? 1 : "",
       });
       let new_list;
       _page === 1 ? (new_list = resp.data.rows) : (new_list = [...proposalList, ...resp.data.rows]);
@@ -111,7 +114,7 @@ export default function ProposalList() {
       getProposals(true);
       setPage(1);
     }
-  }, [selectStatus, selectTime, selectCategory, searchKeyword]);
+  }, [selectStatus, selectTime, selectCategory, searchKeyword, isFilterSIP]);
 
   useEffect(() => {
     initPage && getProposals();
@@ -166,6 +169,14 @@ export default function ProposalList() {
           <Modal onClick={handleClose}>
             <FilterMask>
               <ModalContent>
+                <ListBox>
+                  <dt>SIP</dt>
+                  <dd>
+                    <ul>
+                      <li onClick={() => setIsFilterSIP((prev) => !prev)}>SIP</li>
+                    </ul>
+                  </dd>
+                </ListBox>
                 <ListBox>
                   <dt>{t("Proposal.Time")}</dt>
                   <dd>
