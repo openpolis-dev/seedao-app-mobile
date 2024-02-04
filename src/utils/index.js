@@ -30,3 +30,11 @@ export const getRandomCode = () => {
 export const isInPWA = () => {
   return window.navigator?.standalone === true || !!window.matchMedia("(display-mode: standalone)").matches;
 }
+
+export const getProposalSIPSlug = (sip, suffix = ": ") => {
+  if (!sip) return "";
+  if (suffix) {
+    return `SIP-${sip}${suffix}`;
+  }
+  return sip;
+};

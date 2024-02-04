@@ -41,15 +41,15 @@ export default function ProposalList() {
   // filter status
   const STATUS_OPTIONS = [
     { value: undefined, label: t("Proposal.StatusSelectHint") },
-    { value: [ProposalState.Voting, ProposalState.PendingExecution].join(","), label: t("Proposal.Voting") },
     { value: ProposalState.Draft, label: t("Proposal.Draft") },
-    { value: ProposalState.Rejected, label: t("Proposal.Rejected") },
+    { value: ProposalState.Voting, label: t("Proposal.Voting") },
+    { value: ProposalState.PendingExecution, label: t("Proposal.PendingExecution") },
+    { value: ProposalState.Rejected, label: t("Proposal.Discard") },
     { value: ProposalState.Withdrawn, label: t("Proposal.WithDrawn") },
-    {
-      value: [ProposalState.VotingPassed, ProposalState.Executed, ProposalState.ExecutionFailed].join(","),
-      label: t("Proposal.Passed"),
-    },
-    { value: [ProposalState.VotingFailed, ProposalState.Vetoed].join(","), label: t("Proposal.Failed") },
+    { value: ProposalState.Executed, label: t("Proposal.Passed") },
+    { value: ProposalState.VotingFailed, label: t("Proposal.Failed") },
+    { value: ProposalState.Vetoed, label: t("Proposal.Vetoed") },
+    { value: ProposalState.ExecutionFailed, label: t("Proposal.ExecutedFailed") },
   ];
 
   const [selectCategory, setSelectCategory] = useState();
@@ -59,12 +59,14 @@ export default function ProposalList() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [inputKeyword, setInputKeyword] = useState("");
 
+  const [isFilterSIP, setIsFilterSIP] = useState(false);
+
   const [proposalList, setProposalList] = useState([]);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [initPage, setInitPage] = useState(true);
 
-  const [showModal,setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const hasMore = proposalList.length < totalCount;
   const { getMultiSNS } = useQuerySNS();
@@ -88,10 +90,11 @@ export default function ProposalList() {
         page: _page,
         size: PAGE_SIZE,
         sort_order: selectTime.value,
-        sort_field: "create_ts",
+        sort_field: isFilterSIP ? "sip" : "create_ts",
         state: selectStatus?.value,
         category_id: selectCategory?.value,
         q: searchKeyword,
+        sip: isFilterSIP ? 1 : "",
       });
       let new_list;
       _page === 1 ? (new_list = resp.data.rows) : (new_list = [...proposalList, ...resp.data.rows]);
@@ -111,7 +114,7 @@ export default function ProposalList() {
       getProposals(true);
       setPage(1);
     }
-  }, [selectStatus, selectTime, selectCategory, searchKeyword]);
+  }, [selectStatus, selectTime, selectCategory, searchKeyword, isFilterSIP]);
 
   useEffect(() => {
     initPage && getProposals();
@@ -123,24 +126,24 @@ export default function ProposalList() {
     return name?.endsWith(".seedao") ? name : publicJs.AddressToShow(name, 4);
   };
 
-  const handleTime = (item) =>{
-    setSelectTime(item)
-    setShowModal(false)
-  }
+  const handleTime = (item) => {
+    setSelectTime(item);
+    setShowModal(false);
+  };
 
-  const handleType = (item) =>{
-    setSelectCategory(item)
-    setShowModal(false)
-  }
+  const handleType = (item) => {
+    setSelectCategory(item);
+    setShowModal(false);
+  };
 
   const handleState = (item) => {
     setSelectStatus(item);
     setShowModal(false);
   };
 
-  const handleClose = () =>{
-    setShowModal(false)
-  }
+  const handleClose = () => {
+    setShowModal(false);
+  };
 
   return (
     <Layout
@@ -167,11 +170,25 @@ export default function ProposalList() {
             <FilterMask>
               <ModalContent>
                 <ListBox>
+                  <dt>SIP</dt>
+                  <dd>
+                    <ul>
+                      <li className={isFilterSIP ? "selected" : ""} onClick={() => setIsFilterSIP((prev) => !prev)}>
+                        SIP
+                      </li>
+                    </ul>
+                  </dd>
+                </ListBox>
+                <ListBox>
                   <dt>{t("Proposal.Time")}</dt>
                   <dd>
                     <ul>
                       {TIME_OPTIONS.map((item, index) => (
-                        <li key={`time_${index}`} onClick={() => handleTime(item)}>
+                        <li
+                          key={`time_${index}`}
+                          onClick={() => handleTime(item)}
+                          className={item.value === selectTime?.value ? "selected" : ""}
+                        >
                           {item.label}
                         </li>
                       ))}
@@ -183,7 +200,11 @@ export default function ProposalList() {
                   <dd>
                     <ul>
                       {CATEGORY_OPTIONS.map((item, index) => (
-                        <li className="w50" key={`cat_${index}`} onClick={() => handleType(item)}>
+                        <li
+                          key={`cat_${index}`}
+                          onClick={() => handleType(item)}
+                          className={item.value === selectCategory?.value ? "selected w50" : "w50"}
+                        >
                           {item.label}
                         </li>
                       ))}
@@ -195,7 +216,11 @@ export default function ProposalList() {
                   <dd>
                     <ul>
                       {STATUS_OPTIONS.map((item, index) => (
-                        <li key={`status_${index}`} onClick={() => handleState(item)}>
+                        <li
+                          key={`status_${index}`}
+                          onClick={() => handleState(item)}
+                          className={item.value === selectStatus?.value ? "selected" : ""}
+                        >
                           {item.label}
                         </li>
                       ))}
@@ -263,21 +288,20 @@ export default function ProposalList() {
   );
 }
 
-
 const ListBox = styled.dl`
   margin-bottom: 20px;
-  dt{
+  dt {
     font-size: 16px;
     margin-bottom: 10px;
-    font-family: 'Poppins-Medium';
+    font-family: "Poppins-Medium";
   }
-  ul{
+  ul {
     font-size: 14px;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
-    li{
+    li {
       border: 1px solid var(--primary-color);
       border-radius: 50px;
       padding-block: 5px;
@@ -285,20 +309,23 @@ const ListBox = styled.dl`
       box-sizing: border-box;
       text-align: center;
       margin-bottom: 10px;
-      &:last-child{
+      &:last-child {
         margin-right: auto;
       }
-      &.w50{
+      &.w50 {
         width: 48%;
-        &:last-child{
+        &:last-child {
           margin-left: 0;
           margin-right: 0;
         }
       }
+      &.selected {
+        background-color: var(--primary-color);
+        color: #fff;
+      }
     }
   }
-`
-
+`;
 
 const Modal = styled.div`
   position: fixed;
@@ -324,7 +351,6 @@ const ModalContent = styled.div`
 `;
 
 const FilterMask = styled.div`
-
   position: absolute;
   background: rgba(244, 244, 248, 0.9);
   backdrop-filter: blur(4px);
@@ -333,8 +359,7 @@ const FilterMask = styled.div`
   top: 0;
   bottom: 0;
   right: 0;
-`
-
+`;
 
 const FilterBox = styled.div`
   padding-inline: 20px;
@@ -367,7 +392,7 @@ const SearchInputBox = styled.div`
   gap: 8px;
   padding: 0 16px;
   box-sizing: border-box;
-  .srht{
+  .srht {
     width: 18px;
     height: 16px;
     border-left: 1px solid var(--border-color-2);
