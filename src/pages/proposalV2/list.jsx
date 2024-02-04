@@ -66,7 +66,7 @@ export default function ProposalList() {
   const [totalCount, setTotalCount] = useState(0);
   const [initPage, setInitPage] = useState(true);
 
-  const [showModal,setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const hasMore = proposalList.length < totalCount;
   const { getMultiSNS } = useQuerySNS();
@@ -126,24 +126,24 @@ export default function ProposalList() {
     return name?.endsWith(".seedao") ? name : publicJs.AddressToShow(name, 4);
   };
 
-  const handleTime = (item) =>{
-    setSelectTime(item)
-    setShowModal(false)
-  }
+  const handleTime = (item) => {
+    setSelectTime(item);
+    setShowModal(false);
+  };
 
-  const handleType = (item) =>{
-    setSelectCategory(item)
-    setShowModal(false)
-  }
+  const handleType = (item) => {
+    setSelectCategory(item);
+    setShowModal(false);
+  };
 
   const handleState = (item) => {
     setSelectStatus(item);
     setShowModal(false);
   };
 
-  const handleClose = () =>{
-    setShowModal(false)
-  }
+  const handleClose = () => {
+    setShowModal(false);
+  };
 
   return (
     <Layout
@@ -274,21 +274,20 @@ export default function ProposalList() {
   );
 }
 
-
 const ListBox = styled.dl`
   margin-bottom: 20px;
-  dt{
+  dt {
     font-size: 16px;
     margin-bottom: 10px;
-    font-family: 'Poppins-Medium';
+    font-family: "Poppins-Medium";
   }
-  ul{
+  ul {
     font-size: 14px;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
-    li{
+    li {
       border: 1px solid var(--primary-color);
       border-radius: 50px;
       padding-block: 5px;
@@ -296,20 +295,19 @@ const ListBox = styled.dl`
       box-sizing: border-box;
       text-align: center;
       margin-bottom: 10px;
-      &:last-child{
+      &:last-child {
         margin-right: auto;
       }
-      &.w50{
+      &.w50 {
         width: 48%;
-        &:last-child{
+        &:last-child {
           margin-left: 0;
           margin-right: 0;
         }
       }
     }
   }
-`
-
+`;
 
 const Modal = styled.div`
   position: fixed;
@@ -335,7 +333,6 @@ const ModalContent = styled.div`
 `;
 
 const FilterMask = styled.div`
-
   position: absolute;
   background: rgba(244, 244, 248, 0.9);
   backdrop-filter: blur(4px);
@@ -344,8 +341,7 @@ const FilterMask = styled.div`
   top: 0;
   bottom: 0;
   right: 0;
-`
-
+`;
 
 const FilterBox = styled.div`
   padding-inline: 20px;
@@ -378,7 +374,7 @@ const SearchInputBox = styled.div`
   gap: 8px;
   padding: 0 16px;
   box-sizing: border-box;
-  .srht{
+  .srht {
     width: 18px;
     height: 16px;
     border-left: 1px solid var(--border-color-2);
