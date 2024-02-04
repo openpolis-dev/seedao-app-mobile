@@ -173,7 +173,9 @@ export default function ProposalList() {
                   <dt>SIP</dt>
                   <dd>
                     <ul>
-                      <li onClick={() => setIsFilterSIP((prev) => !prev)}>SIP</li>
+                      <li className={isFilterSIP ? "selected" : ""} onClick={() => setIsFilterSIP((prev) => !prev)}>
+                        SIP
+                      </li>
                     </ul>
                   </dd>
                 </ListBox>
@@ -182,7 +184,11 @@ export default function ProposalList() {
                   <dd>
                     <ul>
                       {TIME_OPTIONS.map((item, index) => (
-                        <li key={`time_${index}`} onClick={() => handleTime(item)}>
+                        <li
+                          key={`time_${index}`}
+                          onClick={() => handleTime(item)}
+                          className={item.value === selectTime?.value ? "selected" : ""}
+                        >
                           {item.label}
                         </li>
                       ))}
@@ -194,7 +200,11 @@ export default function ProposalList() {
                   <dd>
                     <ul>
                       {CATEGORY_OPTIONS.map((item, index) => (
-                        <li className="w50" key={`cat_${index}`} onClick={() => handleType(item)}>
+                        <li
+                          key={`cat_${index}`}
+                          onClick={() => handleType(item)}
+                          className={item.value === selectCategory?.value ? "selected w50" : "w50"}
+                        >
                           {item.label}
                         </li>
                       ))}
@@ -206,7 +216,11 @@ export default function ProposalList() {
                   <dd>
                     <ul>
                       {STATUS_OPTIONS.map((item, index) => (
-                        <li key={`status_${index}`} onClick={() => handleState(item)}>
+                        <li
+                          key={`status_${index}`}
+                          onClick={() => handleState(item)}
+                          className={item.value === selectStatus?.value ? "selected" : ""}
+                        >
                           {item.label}
                         </li>
                       ))}
@@ -304,6 +318,10 @@ const ListBox = styled.dl`
           margin-left: 0;
           margin-right: 0;
         }
+      }
+      &.selected {
+        background-color: var(--primary-color);
+        color: #fff;
       }
     }
   }
