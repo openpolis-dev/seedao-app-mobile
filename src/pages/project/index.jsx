@@ -12,6 +12,9 @@ import {saveCache, saveDetail, saveLoading} from "store/reducer";
 import NoItem from "components/noItem";
 import useCurrentPath from "../../hooks/useCurrentPath";
 import {useSelector} from "react-redux";
+import useQuerySNS from "hooks/useQuerySNS";
+import { ethers } from "ethers";
+import {getUsers} from "../../api/user";
 
 export default function Project() {
   const { t } = useTranslation();
@@ -24,6 +27,10 @@ export default function Project() {
   const [total, setTotal] = useState(1);
   const prevPath = useCurrentPath();
   const cache = useSelector(state => state.cache);
+
+  const { getMultiSNS } = useQuerySNS();
+  const [snsMap, setSnsMap] = useState({});
+  const [userMap, setUserMap] = useState({});
 
   useEffect(() => {
     const _list = [
@@ -50,7 +57,6 @@ export default function Project() {
   }, [activeTab,cache]);
 
   useEffect(()=>{
-
     if(!prevPath || prevPath?.indexOf("/project/info") === -1 || cache?.type!== "project" )return;
     const { activeTab, proList, pageCur,height} = cache;
     setActiveTab(activeTab)
@@ -72,6 +78,41 @@ export default function Project() {
   },[prevPath])
 
 
+
+  const getUsersDetail = async (dt) => {
+    const _wallets= [];
+    dt.forEach((key) => {
+      if (key.sponsors?.length) {
+        let w = key.sponsors[0];
+        if (ethers.utils.isAddress(w)) {
+          _wallets.push(w);
+        }
+      }
+    });
+    const wallets = Array.from(new Set(_wallets));
+    getUsersInfo(wallets);
+    let userSns = await getMultiSNS(wallets);
+
+    setSnsMap(userSns);
+  };
+
+  const getUsersInfo = async (wallets) => {
+
+    try {
+      const res = await getUsers(wallets);
+      const userData = {};
+      res.data.forEach((r) => {
+        userData[(r.wallet || '').toLowerCase()] = r;
+      });
+      setUserMap(userData);
+    } catch (error) {
+      logError('getUsersInfo error:', error);
+    } finally {
+
+    }
+  };
+
+
   const handleTabChange = (v) => {
     setActiveTab(v);
     setPageCur(1);
@@ -85,18 +126,20 @@ export default function Project() {
 
   const getList = async (useGlobalLoading) => {
     if (activeTab > 2) return;
-    const stt = activeTab === 1 ? "closed" : "";
+    const stt = activeTab === 1 ? "closed" : "open,pending_close";
     useGlobalLoading && store.dispatch(saveLoading(true));
     const obj = {
       status: stt,
       page: pageCur,
       size: pageSize,
       sort_order: "desc",
-      sort_field: "created_at",
+      sort_field: "create_ts",
     };
     const rt = await getProjects(obj);
     store.dispatch(saveLoading(false));
     const { rows, page, size, total } = rt.data;
+
+    await getUsersDetail(rows);
     setProList([...proList, ...rows]);
     setPageSize(size);
     setTotal(total);
@@ -115,6 +158,7 @@ export default function Project() {
     store.dispatch(saveLoading(false));
 
     const { rows, page, size, total } = rt.data;
+    await getUsersDetail(rows);
     setProList([...proList, ...rows]);
     setPageSize(size);
     setTotal(total);
@@ -164,7 +208,9 @@ export default function Project() {
           <ProjectList>
             {proList.map((item) => (
                 <div  key={item.id} id={`project_${item.id}`} >
-                <ProjectOrGuildItemDetail key={item.id} data={item} onClickItem={openDetail} />
+                <ProjectOrGuildItemDetail key={item.id} data={item} onClickItem={openDetail}
+                                          user={userMap[item.sponsors[0]]}
+                                          sns={snsMap[item.sponsors[0]]} />
                 </div>
             ))}
           </ProjectList>

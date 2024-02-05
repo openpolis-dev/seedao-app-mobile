@@ -78,7 +78,14 @@
     "JoinedProjects": "Joined",
     "Members": "Members",
     "Intro": "Introduction",
-    "Detail": "Project Detail"
+    "Detail": "Project Detail",
+    "OfficialLink": "Official link",
+    "Deliverables": "Deliverables",
+    "Contact": "Project Moderator Contact",
+    "SIPNumber": "SIP No.",
+    "StartProjectLink": "立项链接",
+    "EndProjectLink": "结项链接",
+    "PlanFinishTime": "Planned completion time"
   },
   "home": {
     "title": "See Calendar",

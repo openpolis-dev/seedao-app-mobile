@@ -2,18 +2,44 @@ import React from "react";
 import styled from "styled-components";
 import { RectangularSkeleton } from "components/common/skeleton";
 import DefaultLogo from "assets/Imgs/defaultLogo.png";
+import {useTranslation} from "react-i18next";
+import PublicJs from "../../utils/publicJs";
 
-export default function ProjectOrGuildItemDetail({ data, onClickItem }) {
+export default function ProjectOrGuildItemDetail({ data, onClickItem, user, sns, noTag }) {
+    const { t } = useTranslation();
+const showStatusComponent = () => {
+    if (data?.status === 'closed') {
+        return <StatusBox>{t('Project.Closed')}</StatusBox>;
+    }
+    if (data?.status === 'open') {
+        // @ts-ignore
+        return <StatusBox className="pending">{t('Project.Open')}</StatusBox>;
+    }
+    if (data?.status === 'pending_close') {
+        return <StatusBox>{t('Project.Pending')}</StatusBox>;
+    }
+};
   return (
     <Item onClick={() => onClickItem(data.id)}>
       <ImageBox>
         <img src={data.logo || DefaultLogo} alt="" />
       </ImageBox>
       <RightBox className="_right">
-        <div>
+
           <Title>{data.name}</Title>
-          <DescBox>{data.desc}</DescBox>
-        </div>
+          <FlexBox>
+              {!noTag && showStatusComponent()}
+              {!!user &&  <MemBox>
+                  <Avatar>
+                      <img src={user?.avatar} alt="" />
+                  </Avatar>
+                  <span>{sns?.endsWith('.seedao') ? sns : PublicJs.AddressToShow(user?.wallet)}</span>
+                  {/*<span>{(data?.members?.length || 0) + (data?.sponsors?.length || 0)}</span> {t('Project.Members')}*/}
+              </MemBox>
+              }
+
+          </FlexBox>
+
       </RightBox>
     </Item>
   );
@@ -33,6 +59,51 @@ export const ProjectOrGuildItemSkeleton = () => {
   );
 };
 
+const MemBox = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 400;
+    margin:0 0 -6px 10px;
+    
+    
+  //span {
+  //  margin-right: 5px;
+  //}
+`;
+
+const Avatar = styled.div`
+    padding-right: 10px;
+  img {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 100%;
+  }
+`;
+
+const FlexBox = styled.div`
+    display: flex;
+    align-items: center;
+`
+
+const StatusBox = styled.div`
+  font-size: 12px;
+  color: #fff;
+  background: var(--primary-color);
+  padding: 2px 8px;
+  border-radius: 4px;
+
+  &.pending_close {
+    background: #f9b617;
+  }
+  &.close {
+    background: #ff7193;
+  }
+`;
+
+
 const Item = styled.div`
   display: flex;
   gap: 10px;
@@ -45,7 +116,8 @@ const RightBox = styled.div`
   display: flex;
   border-bottom: 1px solid var(--border-color-1);
   justify-content: space-between;
-  padding-bottom: 16px;
+  padding-bottom: 10px;
+    flex-direction: column;
 `;
 
 const DescBox = styled.div`
@@ -67,6 +139,14 @@ const Title = styled.div`
   font-family: Poppins-SemiBold;
   font-weight: 600;
   color: var(--font-color);
+    min-height: 26px;
+    width: 100%;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    margin-bottom: 5px;
 `;
 
 
@@ -75,6 +155,7 @@ const ImageBox = styled.div`
   overflow: hidden;
   width: 62px;
   height: 62px;
+    flex-shrink: 0;
   img {
     width: 100%;
     height: 100%;

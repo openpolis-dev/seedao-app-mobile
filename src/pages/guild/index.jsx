@@ -14,6 +14,9 @@ import NoItem from "components/noItem";
 import {useSelector} from "react-redux";
 import useCurrentPath from "../../hooks/useCurrentPath";
 import {saveCache} from "store/reducer";
+import {ethers} from "ethers";
+import {getUsers} from "../../api/user";
+import useQuerySNS from "../../hooks/useQuerySNS";
 
 export default function Guild() {
   const { t } = useTranslation();
@@ -26,6 +29,11 @@ export default function Guild() {
   const [total, setTotal] = useState(1);
   const prevPath = useCurrentPath();
   const cache = useSelector(state => state.cache);
+
+
+  const { getMultiSNS } = useQuerySNS();
+  const [snsMap, setSnsMap] = useState({});
+  const [userMap, setUserMap] = useState({});
 
 
   useEffect(() => {
@@ -96,7 +104,12 @@ export default function Guild() {
     try {
       const rt = await getGuilds(obj);
       const { rows, page, size, total } = rt.data;
+      await getUsersDetail(rows);
+      console.log("=====rows",rows)
+
+
       setProList([...proList, ...rows]);
+
       setPageSize(size);
       setTotal(total);
       setPageCur(page+1);
@@ -113,12 +126,15 @@ export default function Guild() {
       page: pageCur,
       size: pageSize,
       sort_order: "desc",
-      sort_field: "created_at",
+      sort_field: "create_ts",
     };
     try {
       const rt = await getMyGuilds(obj);
       const { rows, page, size, total } = rt.data;
+      await getUsersDetail(rows);
+
       setProList([...proList, ...rows]);
+
       setPageSize(size);
       setTotal(total);
       setPageCur(page + 1);
@@ -142,6 +158,43 @@ export default function Guild() {
     }
     store.dispatch(saveCache(obj))
   }
+
+
+  const getUsersDetail = async (dt) => {
+    const _wallets= [];
+
+
+
+    dt?.forEach((key) => {
+      if (key.sponsors?.length) {
+        let w = key.sponsors[0];
+        if (ethers.utils.isAddress(w)) {
+          _wallets.push(w);
+        }
+      }
+    });
+    const wallets = Array.from(new Set(_wallets));
+    getUsersInfo(wallets);
+    let userSns = await getMultiSNS(wallets);
+    console.log(userSns,userSns["0x82944b68bb92fa11764041aa61204b5fdc85f429"])
+    setSnsMap(userSns);
+  };
+
+  const getUsersInfo = async (wallets) => {
+
+    try {
+      const res = await getUsers(wallets);
+      const userData = {};
+      res.data?.forEach((r) => {
+        userData[(r.wallet || '').toLowerCase()] = r;
+      });
+      setUserMap(userData);
+    } catch (error) {
+      logError('getUsersInfo error:', error);
+    } finally {
+
+    }
+  };
 
   const openDetail = (id) => {
     StorageList(id);
@@ -175,9 +228,12 @@ export default function Guild() {
         >
           {proList.length === 0 && <NoItem />}
           <ProjectList>
+
             {proList.map((item) => (
                 <div  key={item.id} id={`guild_${item.id}`} >
-                  <ProjectOrGuildItemDetail data={item} onClickItem={openDetail} />
+                  <ProjectOrGuildItemDetail data={item} onClickItem={openDetail} key={item.id} data={item} onClickItem={openDetail}
+                                            user={userMap[item.sponsors[0]]}
+                                            sns={snsMap[item.sponsors[0]]} noTag={true}/>
                 </div>
             ))}
           </ProjectList>

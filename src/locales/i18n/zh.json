@@ -78,7 +78,15 @@
     "JoinedProjects": "已加入",
     "Members": "项目成员",
     "Intro": "项目介绍",
-    "Detail": "项目详情"
+    "Detail": "项目详情",
+    "OfficialLink": "项目官方链接",
+    "Deliverables": "交付物",
+    "Contact": "项目负责人联系方式",
+    "SIPNumber": "SIP 编号",
+    "StartProjectLink": "立项链接",
+    "EndProjectLink": "结项链接",
+    "Open": "进行中",
+    "PlanFinishTime": "计划完成时限"
   },
   "home": {
     "title": "城邦日历",
