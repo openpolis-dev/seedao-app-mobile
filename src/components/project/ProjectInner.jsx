@@ -132,7 +132,8 @@ const BorderBox = styled.div`
 const MemberBox = styled.dl`
     width: 50%;
     text-align: center;
-    padding: 10px 0;
+    padding: 10px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     &:first-child{
@@ -217,7 +218,6 @@ export default function ProjectInner({id}){
             store.dispatch(saveLoading(true));
             try {
                 const data = await getProjectById(id);
-                console.log(`[pro-${id}]`, data);
                 setData(data.data)
             } catch (error) {
                 logError(error);
