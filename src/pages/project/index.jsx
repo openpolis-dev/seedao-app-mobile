@@ -29,8 +29,8 @@ export default function Project() {
   const cache = useSelector(state => state.cache);
 
   const { getMultiSNS } = useQuerySNS();
-  const [snsMap, setSnsMap] = useState({});
-  const [userMap, setUserMap] = useState({});
+  // const [snsMap, setSnsMap] = useState({});
+  // const [userMap, setUserMap] = useState({});
 
   useEffect(() => {
     const _list = [
@@ -81,7 +81,7 @@ export default function Project() {
 
   const getUsersDetail = async (dt) => {
     const _wallets= [];
-    dt.forEach((key) => {
+    dt?.forEach((key) => {
       if (key.sponsors?.length) {
         let w = key.sponsors[0];
         if (ethers.utils.isAddress(w)) {
@@ -90,10 +90,14 @@ export default function Project() {
       }
     });
     const wallets = Array.from(new Set(_wallets));
-    getUsersInfo(wallets);
+    let rt =  await getUsersInfo(wallets);
     let userSns = await getMultiSNS(wallets);
 
-    setSnsMap(userSns);
+    return {
+      userMap:rt,
+      userSns
+    }
+    // setSnsMap(userSns);
   };
 
   const getUsersInfo = async (wallets) => {
@@ -101,10 +105,11 @@ export default function Project() {
     try {
       const res = await getUsers(wallets);
       const userData = {};
-      res.data.forEach((r) => {
+      res.data?.forEach((r) => {
         userData[(r.wallet || '').toLowerCase()] = r;
       });
-      setUserMap(userData);
+      // setUserMap(userData);
+      return userData;
     } catch (error) {
       logError('getUsersInfo error:', error);
     } finally {
@@ -139,7 +144,17 @@ export default function Project() {
     store.dispatch(saveLoading(false));
     const { rows, page, size, total } = rt.data;
 
-    await getUsersDetail(rows);
+    let userRT = await getUsersDetail(rows);
+    const {userMap,userSns} = userRT;
+
+    rows.map((d)=>{
+      let m = d.sponsors[0];
+      if(m){
+        d.user = userMap[m]
+        d.sns = userSns[m]
+      }
+    })
+
     setProList([...proList, ...rows]);
     setPageSize(size);
     setTotal(total);
@@ -158,7 +173,18 @@ export default function Project() {
     store.dispatch(saveLoading(false));
 
     const { rows, page, size, total } = rt.data;
-    await getUsersDetail(rows);
+
+    let userRT = await getUsersDetail(rows);
+    const {userMap,userSns} = userRT;
+
+    rows.map((d)=>{
+      let m = d.sponsors[0];
+      if(m){
+        d.user = userMap[m]
+        d.sns = userSns[m]
+      }
+    })
+
     setProList([...proList, ...rows]);
     setPageSize(size);
     setTotal(total);
@@ -208,9 +234,8 @@ export default function Project() {
           <ProjectList>
             {proList.map((item) => (
                 <div  key={item.id} id={`project_${item.id}`} >
-                <ProjectOrGuildItemDetail key={item.id} data={item} onClickItem={openDetail}
-                                          user={userMap[item.sponsors[0]]}
-                                          sns={snsMap[item.sponsors[0]]} />
+
+                <ProjectOrGuildItemDetail key={item.id} data={item} onClickItem={openDetail}/>
                 </div>
             ))}
           </ProjectList>

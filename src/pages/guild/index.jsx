@@ -105,7 +105,16 @@ export default function Guild() {
       const rt = await getGuilds(obj);
       const { rows, page, size, total } = rt.data;
       await getUsersDetail(rows);
-      console.log("=====rows",rows)
+      let userRT = await getUsersDetail(rows);
+      const {userMap,userSns} = userRT;
+
+      rows.map((d)=>{
+        let m = d.sponsors[0];
+        if(m){
+          d.user = userMap[m]
+          d.sns = userSns[m]
+        }
+      })
 
 
       setProList([...proList, ...rows]);
@@ -132,6 +141,16 @@ export default function Guild() {
       const rt = await getMyGuilds(obj);
       const { rows, page, size, total } = rt.data;
       await getUsersDetail(rows);
+      let userRT = await getUsersDetail(rows);
+      const {userMap,userSns} = userRT;
+
+      rows.map((d)=>{
+        let m = d.sponsors[0];
+        if(m){
+          d.user = userMap[m]
+          d.sns = userSns[m]
+        }
+      })
 
       setProList([...proList, ...rows]);
 
@@ -162,9 +181,6 @@ export default function Guild() {
 
   const getUsersDetail = async (dt) => {
     const _wallets= [];
-
-
-
     dt?.forEach((key) => {
       if (key.sponsors?.length) {
         let w = key.sponsors[0];
@@ -174,10 +190,14 @@ export default function Guild() {
       }
     });
     const wallets = Array.from(new Set(_wallets));
-    getUsersInfo(wallets);
+    let rt =  await getUsersInfo(wallets);
     let userSns = await getMultiSNS(wallets);
-    console.log(userSns,userSns["0x82944b68bb92fa11764041aa61204b5fdc85f429"])
-    setSnsMap(userSns);
+
+    return {
+      userMap:rt,
+      userSns
+    }
+    // setSnsMap(userSns);
   };
 
   const getUsersInfo = async (wallets) => {
@@ -188,7 +208,8 @@ export default function Guild() {
       res.data?.forEach((r) => {
         userData[(r.wallet || '').toLowerCase()] = r;
       });
-      setUserMap(userData);
+      // setUserMap(userData);
+      return userData;
     } catch (error) {
       logError('getUsersInfo error:', error);
     } finally {
@@ -231,9 +252,7 @@ export default function Guild() {
 
             {proList.map((item) => (
                 <div  key={item.id} id={`guild_${item.id}`} >
-                  <ProjectOrGuildItemDetail data={item} onClickItem={openDetail} key={item.id} data={item} onClickItem={openDetail}
-                                            user={userMap[item.sponsors[0]]}
-                                            sns={snsMap[item.sponsors[0]]} noTag={true}/>
+                  <ProjectOrGuildItemDetail data={item} onClickItem={openDetail} key={item.id} data={item} onClickItem={openDetail} noTag={true}/>
                 </div>
             ))}
           </ProjectList>

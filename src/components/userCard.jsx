@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Avatar from "components/common/avatar";
+import PublicJs from "../utils/publicJs";
 
 const EmptyUserCard = () => {
   return (
@@ -22,26 +23,24 @@ export default function UserCard({ user, sns, onChooseUser }) {
   return (
     <UserCardBox>
       <div className="left">
-        <Avatar src={user.avatar|| user.sp?.avatar} onClick={onChooseUser} />
+        <Avatar src={user.avatar|| user.sp?.avatar} size="30px" onClick={onChooseUser} />
       </div>
-      <UserRight>{(user.wallet || sns) && <>{sns || user.wallet}</>}</UserRight>
-        {
-           !! user.title &&  <TagBox>{user.title}</TagBox>
-        }
+      <UserRight>{(user.wallet || sns) && <>{sns || PublicJs.AddressToShow(user.wallet)}</>}</UserRight>
+        {/*{*/}
+        {/*   !! user.title &&  <TagBox>{user.title}</TagBox>*/}
+        {/*}*/}
 
     </UserCardBox>
   );
 }
 
 const UserCardBox = styled.div`
-  width: 33.3333%;
   box-sizing: border-box;
-  border-radius: 8px;
-  margin-bottom: 20px;
   display: flex;
-  flex-direction: column;
+margin: 5px 0;
   align-items: center;
   justify-content: center;
+    width: 100%;
   &:last-child {
     margin-right: auto;
   }
@@ -66,7 +65,6 @@ const UserRight = styled.div`
   margin-top: 4px;
   padding: 0 10px;
   box-sizing: border-box;
-  width: 100%;
   overflow:hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

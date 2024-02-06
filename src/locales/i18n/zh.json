@@ -86,7 +86,10 @@
     "StartProjectLink": "立项链接",
     "EndProjectLink": "结项链接",
     "Open": "进行中",
-    "PlanFinishTime": "计划完成时限"
+    "PlanFinishTime": "计划完成时限",
+    "Budget": "项目预算",
+    "Moderator": "项目负责人",
+    "viewMore": "查看更多项目详情"
   },
   "home": {
     "title": "城邦日历",
@@ -258,7 +261,9 @@
     "Joined": "已加入",
     "Members": "公会成员",
     "Intro": "公会介绍",
-    "Detail": "公会详情"
+    "Detail": "公会详情",
+    "Contact": "公会负责人联系方式",
+    "viewMore": "查看更多公会详情"
   },
   "Event": {
     "ListTitle": "城邦活动",

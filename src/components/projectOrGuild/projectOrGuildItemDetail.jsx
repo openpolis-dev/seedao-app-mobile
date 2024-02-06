@@ -4,8 +4,9 @@ import { RectangularSkeleton } from "components/common/skeleton";
 import DefaultLogo from "assets/Imgs/defaultLogo.png";
 import {useTranslation} from "react-i18next";
 import PublicJs from "../../utils/publicJs";
+import DefaultAvatar from "assets/Imgs/avatar.svg";
 
-export default function ProjectOrGuildItemDetail({ data, onClickItem, user, sns, noTag }) {
+export default function ProjectOrGuildItemDetail({ data, onClickItem,noTag }) {
     const { t } = useTranslation();
 const showStatusComponent = () => {
     if (data?.status === 'closed') {
@@ -29,11 +30,11 @@ const showStatusComponent = () => {
           <Title>{data.name}</Title>
           <FlexBox>
               {!noTag && showStatusComponent()}
-              {!!user &&  <MemBox>
+              {!!data.user &&  <MemBox>
                   <Avatar>
-                      <img src={user?.avatar} alt="" />
+                      <img src={data.user?.avatar? data.user?.avatar : DefaultAvatar} alt="" />
                   </Avatar>
-                  <span>{sns?.endsWith('.seedao') ? sns : PublicJs.AddressToShow(user?.wallet)}</span>
+                  <span>{data.sns?.endsWith('.seedao') ? data.sns : PublicJs.AddressToShow(data.user?.wallet)}</span>
                   {/*<span>{(data?.members?.length || 0) + (data?.sponsors?.length || 0)}</span> {t('Project.Members')}*/}
               </MemBox>
               }

@@ -85,7 +85,10 @@
     "SIPNumber": "SIP No.",
     "StartProjectLink": "立项链接",
     "EndProjectLink": "结项链接",
-    "PlanFinishTime": "Planned completion time"
+    "PlanFinishTime": "Planned completion time",
+    "Budget": "Budget",
+    "Moderator": "Moderator",
+    "viewMore": "View More"
   },
   "home": {
     "title": "See Calendar",
@@ -257,7 +260,9 @@
     "Joined": "Joined",
     "Members": "Members",
     "Intro": "Guild Intro",
-    "Detail": "Guild Detail"
+    "Detail": "Guild Detail",
+    "Contact": "Guild Moderator Contact",
+    "viewMore": "View More"
   },
   "Event": {
     "ListTitle": "Events",
