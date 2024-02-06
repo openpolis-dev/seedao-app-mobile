@@ -10,7 +10,7 @@ export default function ProjectOrGuildItemDetail({ data, onClickItem,noTag }) {
     const { t } = useTranslation();
 const showStatusComponent = () => {
     if (data?.status === 'closed') {
-        return <StatusBox>{t('Project.Closed')}</StatusBox>;
+        return <StatusBox className="close">{t('Project.Closed')}</StatusBox>;
     }
     if (data?.status === 'open') {
         // @ts-ignore
@@ -100,7 +100,7 @@ const StatusBox = styled.div`
     background: #f9b617;
   }
   &.close {
-    background: #ff7193;
+    background: rgb(163, 160, 160);
   }
 `;
 

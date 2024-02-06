@@ -131,10 +131,9 @@ export default function Project() {
 
   const getList = async (useGlobalLoading) => {
     if (activeTab > 2) return;
-    const stt = activeTab === 1 ? "closed" : "open,pending_close";
     useGlobalLoading && store.dispatch(saveLoading(true));
     const obj = {
-      status: stt,
+      status: "open,pending_close,closed",
       page: pageCur,
       size: pageSize,
       sort_order: "desc",

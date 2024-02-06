@@ -72,18 +72,18 @@ const MBox = styled.div`
 `;
 
 const StatusBox = styled.div`
-    font-size: 12px;
-    color: #fff;
-    background: var(--primary-color);
-    padding: 4px 12px;
-    border-radius: 4px;
+  font-size: 12px;
+  color: #fff;
+  background: var(--primary-color);
+  padding: 4px 12px;
+  border-radius: 4px;
 
-    &.pending_close {
-        background: #f9b617;
-    }
-    &.close {
-        background: #ff7193;
-    }
+  &.pending_close {
+    background: #f9b617;
+  }
+  &.close {
+    background: rgb(163, 160, 160);
+  }
 `;
 
 const SipTagStyle = styled.a`
@@ -233,7 +233,7 @@ export default function ProjectInner({id}){
 
     const showStatusComponent = () => {
         if (data?.status === 'closed') {
-            return <StatusBox>{t('Project.Closed')}</StatusBox>;
+            return <StatusBox className="close">{t("Project.Closed")}</StatusBox>;
         }
         if (data?.status === 'open') {
             // @ts-ignore
