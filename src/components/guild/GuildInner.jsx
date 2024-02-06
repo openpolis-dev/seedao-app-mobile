@@ -213,6 +213,11 @@ export default function GuildInner({id}){
     const [data,setData] = useState();
     const { t } = useTranslation();
 
+    const returnSNS = (str) =>{
+
+    }
+
+
     useEffect(() => {
         const getProjectData = async () => {
             store.dispatch(saveLoading(true));
@@ -245,18 +250,8 @@ export default function GuildInner({id}){
             <a href={data?.OfficialLink} target="_blank" rel="noreferrer">
                 <Abox>{t('Guild.viewMore')} &gt;&gt;</Abox>
             </a>
-            <BorderBox>
-                <MemberBox>
-                    <dt>{t('Guild.Moderator')}</dt>
-                    <dd>
-                        <ProjectMember data={data}/>
-                    </dd>
-                </MemberBox>
-                <MemberBox>
-                    <dt>{t('Guild.Contact')}</dt>
-                    <dd className="dd">{data?.ContantWay}</dd>
-                </MemberBox>
-            </BorderBox>
+            <ProjectMember data={data}/>
+
 
         </MainBox>
         {/*<ProposalsBox>*/}

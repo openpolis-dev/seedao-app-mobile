@@ -284,18 +284,7 @@ export default function ProjectInner({id}){
             <a href={data?.OfficialLink} target="_blank" rel="noreferrer">
                 <Abox>{t('Project.viewMore')} &gt;&gt;</Abox>
             </a>
-                <BorderBox>
-                    <MemberBox>
-                        <dt>{t('Project.Moderator')}</dt>
-                        <dd>
-                            <ProjectMember data={data}/>
-                        </dd>
-                    </MemberBox>
-                    <MemberBox>
-                        <dt>{t('Project.Contact')}</dt>
-                        <dd className="dd">{data?.ContantWay}</dd>
-                    </MemberBox>
-                </BorderBox>
+            <ProjectMember data={data} />
 
                 <BtmBox>
                     <FlexBtnBox>
