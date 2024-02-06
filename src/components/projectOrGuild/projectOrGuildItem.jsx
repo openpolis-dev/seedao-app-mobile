@@ -65,6 +65,7 @@ const DescBox = styled.div`
   color: var(--font-light-color);
   line-height: 18px;
   margin-top: 3px;
+  word-break: break-all;
 `;
 
 const Title = styled.div`
