@@ -133,8 +133,9 @@ const BorderBox = styled.div`
 const MemberBox = styled.dl`
     width: 50%;
     text-align: center;
-    padding: 10px 0;
+    padding: 10px;
     display: flex;
+    box-sizing: border-box;
     flex-direction: column;
     &:first-child{
         border-right: 1px  solid var(--border-color-1);
