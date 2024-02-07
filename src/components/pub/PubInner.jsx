@@ -206,6 +206,7 @@ export default function PubInner({id}){
             let arr = [];
             contactArr.map(async (item) => {
                 let idStr = item.mention?.page?.id;
+                if(!idStr)return;
                 let rt = await getInfo(idStr);
 
                 arr.push({
@@ -243,7 +244,6 @@ export default function PubInner({id}){
         const elements = [];
         let str;
         for (const key in detail) {
-            console.log(detail)
             if (detail.hasOwnProperty(key)) {
                 switch (detail[key].type) {
                     case 'multi_select':
