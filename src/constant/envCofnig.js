@@ -1,7 +1,7 @@
 import EthereumIcon from "assets/Imgs/network/ethereum.svg";
 import PolygonIcon from "assets/Imgs/network/polygon.svg";
 
-const VERSION = "0.4.9";
+const VERSION = "0.4.10";
 
 const SENTRY_DSN = "https://54ec7357966342699d508a552ec1927c@o4505590144106496.ingest.sentry.io/4505590153805824";
 

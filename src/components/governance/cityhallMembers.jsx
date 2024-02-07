@@ -86,7 +86,7 @@ export default function CityhallMembers() {
     try {
       const res = await getUsers(wallets);
       const userData = {};
-      res.data.forEach((r) => {
+      res.data?.forEach((r) => {
         userData[(r.wallet || "").toLowerCase()] = r;
       });
       setUserMap(userData);

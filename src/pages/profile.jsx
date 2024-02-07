@@ -338,6 +338,7 @@ export default function Profile() {
   }
 
   useEffect(() => {
+    if(!userToken)return;
     getMyDetail();
   }, []);
   const getMyDetail = async () => {
@@ -512,7 +513,7 @@ export default function Profile() {
     }
     clearStorage();
     // store.dispatch(saveLogout(true));
-    navigate("/login");
+    navigate("/");
   };
 
   return (

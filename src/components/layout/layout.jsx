@@ -79,18 +79,23 @@ export default function Layout({
   }, []);
 
   useEffect(() => {
-    if (pathname === "/sns" || pathname === "/login") {
+    if (pathname === "/login") {
       return;
     }
-    // check token
-    if (!checkTokenValid(userToken?.token, userToken?.token_exp)) {
-      clearStorage();
 
-      if (pathname === "/sns/register") {
-        localStorage.setItem("==sns==", "1");
+    if (pathname.indexOf("profile")>-1 || pathname.indexOf("sns")>-1) {
+      if (!checkTokenValid(userToken?.token, userToken?.token_exp)) {
+        clearStorage();
+
+        if (pathname === "/sns/register") {
+          localStorage.setItem("==sns==", "1");
+        }
+        navigate("/login");
       }
-      navigate("/login");
     }
+
+    // check token
+
   }, [userToken, pathname]);
 
   useEffect(() => {

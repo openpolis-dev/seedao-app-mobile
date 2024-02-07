@@ -29,6 +29,7 @@ export default function Setting() {
     const userToken = useSelector(state=> state.userToken);
     const walletType = useSelector(state => state.walletType);
     const { disconnect } = useDisconnect();
+
     const toGo = (url) =>{
         navigate(url)
     }

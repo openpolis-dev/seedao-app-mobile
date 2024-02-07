@@ -92,7 +92,7 @@ export default function AppList() {
 
   const { Toast, toast } = useToast();
   const wallet = useSelector((state) => state.walletType);
-
+  const userToken = useSelector(state=> state.userToken);
   const events = useMemo(() => {
     return apps.map((item) => ({ ...item, name: t(item.name) }));
   }, [t]);
@@ -107,6 +107,11 @@ export default function AppList() {
   };
 
   const handleClickChat = () => {
+    if(!userToken){
+      navigate("/login")
+      return;
+    }
+
     if (wallet !== Wallet.METAMASK) {
       toast.danger("please switch to metamask");
       return;

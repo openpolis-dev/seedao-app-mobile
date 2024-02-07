@@ -27,6 +27,7 @@ export default function Project() {
   const [total, setTotal] = useState(1);
   const prevPath = useCurrentPath();
   const cache = useSelector((state) => state.cache);
+  const userToken = useSelector(state=> state.userToken);
 
   const { getMultiSNS } = useQuerySNS();
   // const [snsMap, setSnsMap] = useState({});
@@ -214,7 +215,9 @@ export default function Project() {
   return (
     <Layout title={t("Project.Projects")}>
       <div style={{ marginTop: "14px" }}>
-        <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
+        {
+            !!userToken && <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
+        }
       </div>
       <LayoutContainer>
         <InfiniteScroll

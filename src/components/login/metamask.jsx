@@ -126,11 +126,13 @@ export default function  Metamask(){
               deschool: loginResp[1].data.jwtToken,
             }),
           );
-          localStorage.setItem(
-            METAFORO_TOKEN,
-            JSON.stringify({ id: loginResp[0].data.user_id, account: address, token: loginResp[0].data.token }),
-          );
-
+          if (loginResp[0].data.user_id) {
+            localStorage.setItem(
+              METAFORO_TOKEN,
+              JSON.stringify({ id: loginResp[0].data.user_id, account: address, token: loginResp[0].data.token }),
+            );
+          }
+         
           setResult(rt.data);
           const now = Date.now();
           rt.data.token_exp = now + rt.data.token_exp * 1000;
@@ -146,7 +148,7 @@ export default function  Metamask(){
           } catch (error) {
             logError("OneSignal login error", error);
           }
-          prepareMetaforo(loginResp[0].data.user_id);
+          loginResp[0].data.user_id && prepareMetaforo(loginResp[0].data.user_id);
 
           ReactGA.event("login_success", {
             type: "metamask",
