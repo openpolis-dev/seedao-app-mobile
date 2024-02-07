@@ -29,22 +29,21 @@ export default function Guild() {
   const [total, setTotal] = useState(1);
   const prevPath = useCurrentPath();
   const cache = useSelector(state => state.cache);
-
+  const userToken = useSelector(state=> state.userToken);
 
   const { getMultiSNS } = useQuerySNS();
-  const [snsMap, setSnsMap] = useState({});
-  const [userMap, setUserMap] = useState({});
-
 
   useEffect(() => {
     const _list = [
       {
         label: t("Guild.AllProjects"),
         value: 0,
+        disabled:false
       },
       {
         label: t("Guild.Joined"),
         id: 2,
+        disabled:false
       },
     ];
     setList(_list);
@@ -237,7 +236,10 @@ export default function Guild() {
   return (
     <Layout title={t("Guild.Guild")}>
       <div style={{ marginTop: "14px" }}>
-        <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
+        {
+          !!userToken && <Tab data={list} value={activeTab} onChangeTab={handleTabChange} />
+        }
+
       </div>
       <LayoutContainer>
         <InfiniteScroll

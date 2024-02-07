@@ -194,7 +194,7 @@ export default function PubInner({id}){
 
             let detail = detailInfo.data.properties;
             setProps(detail);
-            
+
             const titleStr = detail?.['悬赏名称'].title[0].text.content ?? '';
             setTitle(titleStr);
             let url = detailInfo?.data?.cover?.file?.url || detailInfo?.data?.cover?.external.url;
@@ -205,7 +205,7 @@ export default function PubInner({id}){
             let contactArr = detail?.['👫 对接人']?.rich_text;
             let arr = [];
             contactArr.map(async (item) => {
-                let idStr = item.mention.page.id;
+                let idStr = item.mention?.page?.id;
                 let rt = await getInfo(idStr);
 
                 arr.push({
