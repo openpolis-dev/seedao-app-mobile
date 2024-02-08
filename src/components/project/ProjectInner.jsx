@@ -318,13 +318,17 @@ export default function ProjectInner({id}){
             <ProjectMember data={data} />
 
                 <BtmBox>
-                    <FlexBtnBox>
-                        <Link to={data?.ApprovalLink} target="_blank">
-                            <BtnBox><span>{t('Project.StartProjectLink')}</span> <img src={LinkImg} alt=""/></BtnBox>
-                        </Link>
-                        <Link to={data?.OverLink} target="_blank">
-                            <BtnBox><span>{t('Project.EndProjectLink')}</span> <img src={LinkImg} alt=""/></BtnBox>
-                        </Link>
+                <FlexBtnBox>
+                        {data?.ApprovalLink && (
+                            <Link to={data?.ApprovalLink} target="_blank">
+                                <BtnBox><span>{t('Project.StartProjectLink')}</span> <img src={LinkImg} alt=""/></BtnBox>
+                            </Link>
+                        )}
+                        {data?.OverLink && (
+                            <Link to={data?.OverLink} target="_blank">
+                                <BtnBox><span>{t('Project.EndProjectLink')}</span> <img src={LinkImg} alt=""/></BtnBox>
+                            </Link>
+                        )}                       
                     </FlexBtnBox>
                     <DlBox>
                         <dl>
