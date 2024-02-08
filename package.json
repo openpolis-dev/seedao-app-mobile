@@ -67,7 +67,7 @@
     "config": "node ./writeManifest.js",
     "dev": "react-scripts start",
     "start": "npm run dev",
-    "build:online": "npm run config && react-app-rewired build && npm run sentry:sourcemaps",
+    "build:online": "npm run config && react-app-rewired build",
     "build": "REACT_APP_ENV_VERSION=dev npm run build:online",
     "build:dev": "npm run build",
     "build:preview": "REACT_APP_ENV_VERSION=preview npm run build:online",
