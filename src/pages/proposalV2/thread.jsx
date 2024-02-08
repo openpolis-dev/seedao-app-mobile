@@ -261,9 +261,9 @@ export default function ProposalThread() {
   };
   const currentCategory = getCurrentCategory();
 
-  useEffect(() => {
-    checkMetaforoLogin();
-  }, []);
+  // useEffect(() => {
+  //   checkMetaforoLogin();
+  // }, []);
 
   return (
     <Layout
