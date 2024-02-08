@@ -11,6 +11,7 @@ import DefaultLogo from "assets/Imgs/defaultLogo.png"
 import LinkImg from "assets/Imgs/linkHome.svg";
 import dayjs from "dayjs";
 import {Link} from "react-router-dom";
+import ReactQuill from 'react-quill';
 
 
 const FlexBox = styled.div`
@@ -52,6 +53,21 @@ const DescBox = styled.div`
   padding: 15px 20px 10px;
   color: #9a9a9a;
   font-size: 14px;
+
+    .quill {
+        width: 100%;
+    }
+    .ql-container {
+        width: 100% !important;
+        border: 0;
+    }
+    p {
+        padding: 0;
+    }
+    .ql-editor {
+        width: 100%;
+        padding: 0;
+    }
 `;
 
 const ContentBlock = styled.div`
@@ -201,6 +217,20 @@ const DlBox = styled.div`
     align-items: center;
     gap: 10px;
   }
+    .quill {
+        width: 100%;
+    }
+    .ql-container {
+        width: 100% !important;
+        border: 0;
+    }
+    p {
+        padding: 0;
+    }
+    .ql-editor {
+        width: 100%;
+        padding: 0;
+    }
 `;
 const FlexBoxBg = styled.div`
   display: flex;
@@ -279,7 +309,8 @@ export default function ProjectInner({id}){
             </FlexLine>
 
 </FlexBox>
-    <DescBox>{data?.desc}</DescBox>
+    {/*<DescBox>{data?.desc}</DescBox>*/}
+    <DescBox>     <ReactQuill theme="snow" value={data?.desc} modules={{ toolbar: false }} readOnly={true} /></DescBox>
         <MainBox>
             <a href={data?.OfficialLink} target="_blank" rel="noreferrer">
                 <Abox>{t('Project.viewMore')} &gt;&gt;</Abox>
@@ -309,7 +340,9 @@ export default function ProjectInner({id}){
                         </dl>
                         <dl>
                             <dt>{t('Project.Deliverables')}</dt>
-                            <dd>{data?.Deliverable}</dd>
+                            {/*<dd>{data?.Deliverable}</dd>*/}
+                            <dd>  <ReactQuill theme="snow" value={data?.Deliverable} modules={{ toolbar: false }} readOnly={true} /></dd>
+
                         </dl>
                         <dl>
                             <dt>{t('Project.PlanFinishTime')}</dt>
