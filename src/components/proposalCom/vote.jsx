@@ -187,7 +187,6 @@ export default function ProposalVote({
     <CardStyle id="vote-block">
       <VoteHead>
         <span>
-          {" "}
           {t("Proposal.TotalVotes")}: {poll.totalVotes}
         </span>
         <TotalVoters>{voteStatusTag}</TotalVoters>
@@ -236,6 +235,8 @@ const VoteHead = styled.div`
   font-style: normal;
   font-weight: 600;
   margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 6px;
 `;
 
 const VoteHeadLeft = styled.div``;
