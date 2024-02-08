@@ -12,6 +12,7 @@ import LinkImg from "assets/Imgs/linkHome.svg";
 import dayjs from "dayjs";
 import {Link} from "react-router-dom";
 import ReactQuill from 'react-quill';
+import { formatCategory } from "components/proposalCom/categoryTag";
 
 
 const FlexBox = styled.div`
@@ -301,8 +302,8 @@ export default function ProjectInner({id}){
                 <TitleBox>{data?.name}</TitleBox>
                 <FlexFirst>
 
-                    <SipTagStyle>SIP - {data?.SIP}</SipTagStyle>
-                    {data?.Category && <CategoryTag>{data?.Category}</CategoryTag>}
+                    {data?.SIP && <SipTagStyle>SIP - {data?.SIP}</SipTagStyle>}
+                    {data?.Category && <CategoryTag>{formatCategory(data?.Category)}</CategoryTag>}
                     {/*<StatusBox className={detail?.status}>{t(`Project.Edit`)}</StatusBox>*/}
                     {showStatusComponent()}
                 </FlexFirst>
