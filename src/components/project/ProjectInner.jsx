@@ -312,9 +312,11 @@ export default function ProjectInner({id}){
     {/*<DescBox>{data?.desc}</DescBox>*/}
     <DescBox>     <ReactQuill theme="snow" value={data?.desc} modules={{ toolbar: false }} readOnly={true} /></DescBox>
         <MainBox>
-            <a href={data?.OfficialLink} target="_blank" rel="noreferrer">
-                <Abox>{t('Project.viewMore')} &gt;&gt;</Abox>
-            </a>
+            {data?.OfficialLink && (
+                <a href={data?.OfficialLink} target="_blank" rel="noreferrer">
+                    <Abox>{t('Project.viewMore')} &gt;&gt;</Abox>
+                </a>
+            )}
             <ProjectMember data={data} />
 
                 <BtmBox>
