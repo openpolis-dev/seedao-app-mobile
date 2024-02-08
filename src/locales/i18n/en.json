@@ -227,7 +227,9 @@
   "apps": {
     "SeeU": "SeeU Network",
     "SNS": "SNS",
-    "Newcomer": "Newcomer"
+    "Newcomer": "Newcomer",
+    "Echo": "Echo",
+    "EchoDesc": "Echo is a social network that gives your echos to same habbies, passions or interests."
   },
   "roles": {
     "SEED_HOLDER": "SEED Holder",
@@ -261,7 +263,7 @@
     "Members": "Members",
     "Intro": "Guild Intro",
     "Detail": "Guild Detail",
-    "Contact": "Guild Moderator Contact",
+    "Contact": "Moderator Contact",
     "viewMore": "View More"
   },
   "Event": {

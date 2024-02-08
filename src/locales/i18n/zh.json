@@ -229,7 +229,9 @@
   "apps": {
     "SeeU": "SeeU Network",
     "SNS": "SNS",
-    "Newcomer": "新手村"
+    "Newcomer": "新手村",
+    "Echo": "Echo",
+    "EchoDesc": "Echo is a social network that gives your echos to same habbies, passions or interests."
   },
   "roles": {
     "SEED_HOLDER": "SEED持有者",
@@ -263,7 +265,7 @@
     "Members": "公会成员",
     "Intro": "公会介绍",
     "Detail": "公会详情",
-    "Contact": "公会负责人联系方式",
+    "Contact": "负责人联系方式",
     "viewMore": "查看更多公会详情"
   },
   "Event": {

@@ -6,6 +6,7 @@ import Cascad3Icon from '../assets/Imgs/home/Cascad3.png';
 import Wormhole3Icon from '../assets/Imgs/home/Wormhole3.png';
 import SeeUImg from '../assets/Imgs/home/seeuNetwork.png';
 import SNSImg from "../assets/Imgs/home/SNS.jpg";
+import EchoImg from "../assets/Imgs/home/echo.svg";
 
 const apps =  [
     {
@@ -79,10 +80,24 @@ const apps =  [
       desc: "apps.SNSDesc",
     },
     {
-      id: "module-newcomer",
-      name: "apps.Newcomer",
-      link: "/newcomer",
-      desc: ""
-    }
+      id: 'echo',
+      name: 'apps.Echo',
+      link: 'https://echo3.world/',
+      icon: EchoImg,
+      desc: 'apps.EchoDesc',
+    },
+    {
+      id: 'coming-soon',
+      name: 'See Swap',
+      link: '',
+      icon: 'https://avatars.githubusercontent.com/u/36115574?s=200&v=4',
+      desc: 'Coming Soon',
+    },
+    // {
+    //   id: "module-newcomer",
+    //   name: "apps.Newcomer",
+    //   link: "/newcomer",
+    //   desc: ""
+    // }
 ];
  export default apps;
