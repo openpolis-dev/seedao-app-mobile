@@ -246,10 +246,13 @@ export default function GuildInner({id}){
 
         <DescBox>{data?.desc}</DescBox>
 
-        <MainBox>
-            <a href={data?.OfficialLink} target="_blank" rel="noreferrer">
-                <Abox>{t('Guild.viewMore')} &gt;&gt;</Abox>
+      <MainBox>
+        {data?.OfficialLink && (
+           <a href={data?.OfficialLink} target="_blank" rel="noreferrer">
+              <Abox>{t('Guild.viewMore')} &gt;&gt;</Abox>
             </a>
+        )}
+           
             <ProjectMember data={data}/>
 
 
