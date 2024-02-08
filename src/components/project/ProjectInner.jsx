@@ -337,7 +337,6 @@ export default function ProjectInner({id}){
                                 {formatBudget(data?.Budgets)?.map((i, index) => (
                                     <FlexBoxBg key={`budget_${index}`}>
                                         <span>{i.name}</span>
-                                        <span>{i.total_amount}</span>
                                     </FlexBoxBg>
                                 ))}
                             </dd>
