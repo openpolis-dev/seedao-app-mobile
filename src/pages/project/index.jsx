@@ -129,7 +129,6 @@ export default function Project() {
     useGlobalLoading && store.dispatch(saveLoading(true));
 
     const obj = {
-      status: "open,pending_close,closed",
       page: pageCur,
       size: pageSize,
       sort_order: "desc",

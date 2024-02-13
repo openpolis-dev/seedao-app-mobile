@@ -87,6 +87,8 @@
     "EndProjectLink": "结项链接",
     "Open": "进行中",
     "Closed": "已结项",
+    "Closing": "结项中",
+    "CloseFailed": "结项失败",
     "PlanFinishTime": "计划完成时限",
     "Budget": "项目预算",
     "Moderator": "项目负责人",
