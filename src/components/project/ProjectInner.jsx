@@ -100,6 +100,9 @@ const StatusBox = styled.div`
   &.close {
     background: rgb(163, 160, 160);
   }
+  &.close-failed {
+    background: rgb(255, 51, 51);
+  }
 `;
 
 const SipTagStyle = styled.a`
@@ -265,12 +268,14 @@ export default function ProjectInner({ id }) {
       return <StatusBox className="close">{t("Project.Closed")}</StatusBox>;
     }
     if (data?.status === "open") {
-      // @ts-ignore
-      return <StatusBox className="pending">{t("Project.Open")}</StatusBox>;
+      return <StatusBox>{t("Project.Open")}</StatusBox>;
     }
-    if (data?.status === "pending_close") {
-      return <StatusBox>{t("Project.Pending")}</StatusBox>;
+    if (data?.status === "closing") {
+      return <StatusBox >{t("Project.Closing")}</StatusBox>;
     }
+    if (data?.status === "close_failed") {
+      return <StatusBox className="close-failed">{t("Project.CloseFailed")}</StatusBox>;
+    }  
   };
 
   const formatBudget = (str) => {
@@ -311,8 +316,7 @@ export default function ProjectInner({ id }) {
       </FlexBox>
       {/*<DescBox>{data?.desc}</DescBox>*/}
       <DescBox>
-        {" "}
-        <ReactQuill theme="snow" value={data?.desc} modules={{ toolbar: false }} readOnly={true} />
+        <Desc>{data?.desc}</Desc>
       </DescBox>
       <MainBox>
         {data?.OfficialLink && (
@@ -384,3 +388,7 @@ export default function ProjectInner({ id }) {
     </>
   );
 }
+
+const Desc = styled.div`
+  white-space: pre-wrap;
+`;

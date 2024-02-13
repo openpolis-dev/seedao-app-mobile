@@ -8,18 +8,20 @@ import DefaultAvatar from "assets/Imgs/avatar.svg";
 
 export default function ProjectOrGuildItemDetail({ data, onClickItem,noTag }) {
     const { t } = useTranslation();
-const showStatusComponent = () => {
-    if (data?.status === 'closed') {
-        return <StatusBox className="close">{t('Project.Closed')}</StatusBox>;
-    }
-    if (data?.status === 'open') {
-        // @ts-ignore
-        return <StatusBox className="pending">{t('Project.Open')}</StatusBox>;
-    }
-    if (data?.status === 'pending_close') {
-        return <StatusBox>{t('Project.Pending')}</StatusBox>;
-    }
-};
+  const showStatusComponent = () => {
+      if (data?.status === "closed") {
+        return <StatusBox className="close">{t("Project.Closed")}</StatusBox>;
+      }
+      if (data?.status === "open") {
+        return <StatusBox>{t("Project.Open")}</StatusBox>;
+      }
+      if (data?.status === "closing") {
+        return <StatusBox>{t("Project.Closing")}</StatusBox>;
+      }
+      if (data?.status === "close_failed") {
+        return <StatusBox className="close-failed">{t("Project.CloseFailed")}</StatusBox>;
+      }  
+  };
   return (
     <Item onClick={() => onClickItem(data.id)}>
       <ImageBox>
@@ -101,6 +103,9 @@ const StatusBox = styled.div`
   }
   &.close {
     background: rgb(163, 160, 160);
+  }
+  &.close-failed {
+    background: rgb(255, 51, 51);
   }
 `;
 
