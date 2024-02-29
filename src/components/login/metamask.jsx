@@ -97,9 +97,10 @@ export default function  Metamask(){
 
     useEffect(()=>{
         if(!result)return;
-        if (localStorage.getItem(`==sns==`) === "1") {
+        const sns = localStorage.getItem(`==sns==`);
+        if (sns?.startsWith("1_")) {
           localStorage.removeItem(`==sns==`);
-          navigate("/sns/register");
+          navigate(`/sns/register${sns?.split("_")[1] || ""}`);
         } else {
           navigate("/home");
         }

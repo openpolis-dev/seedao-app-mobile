@@ -88,7 +88,7 @@ export default function Layout({
         clearStorage();
 
         if (pathname === "/sns/register") {
-          localStorage.setItem("==sns==", "1");
+          localStorage.setItem("==sns==", `1_${window.location.search}`);
         }
         navigate("/login");
       }
