@@ -5,6 +5,10 @@ export const ProposalState = {
   Approved: "approved",
   Rejected: "rejected",
   Voting: "voting",
-  VotingPassed: 'vote_passed',
-  VotingFailed: 'vote_failed',
+  VotingPassed: "vote_passed",
+  VotingFailed: "vote_failed",
+  PendingExecution: "pending_execution",
+  Executed: "executed",
+  ExecutionFailed: "execution_failed",
+  Vetoed: "vetoed",
 };

@@ -13,4 +13,5 @@ export default {
   rpc: "",
   currentSeason: "",
   metaforoToken: null,
+  deschoolToken: null,
 };

@@ -90,23 +90,31 @@ export default function AppList() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const { Toast, toast } = useToast();
+  const { Toast, toast, showToast } = useToast();
   const wallet = useSelector((state) => state.walletType);
-
+  const userToken = useSelector((state) => state.userToken);
   const events = useMemo(() => {
     return apps.map((item) => ({ ...item, name: t(item.name) }));
   }, [t]);
 
   const handleClickEvent = (data) => {
     const { link } = data;
-    if (data.id.startsWith("module-")) {
+    if (data.id === "coming-soon") {
+      showToast("Coming Soon");
+      return;
+    } else if (data.id.startsWith("module-")) {
       navigate(link);
-    } else {
+    } else if (link) {
       window.open(link, "_blank");
     }
   };
 
   const handleClickChat = () => {
+    if (!userToken) {
+      navigate("/login");
+      return;
+    }
+
     if (wallet !== Wallet.METAMASK) {
       toast.danger("please switch to metamask");
       return;

@@ -1,12 +1,12 @@
 
 import {useEffect, useState} from "react";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount, useDisconnect, useSwitchNetwork } from "wagmi";
 import {useEthersSigner } from '../../utils/ethersNew';
 import store from "../../store";
-import {saveLoading,saveAccount,saveUserToken,saveWalletType} from "../../store/reducer";
+import { saveLoading, saveAccount, saveUserToken, saveWalletType, saveThirdPartyToken } from "../../store/reducer";
 import {ethers} from "ethers";
-import {getNonce,login} from "../../api/user";
+import { getNonce, loginWithSeeAuth, loginToMetafo, loginToDeschool } from "../../api/user";
 import {createSiweMessage} from "../../utils/publicJs";
 import {useNavigate} from "react-router-dom";
 import AppConfig from "../../AppConfig";
@@ -15,9 +15,10 @@ import usePushPermission from "hooks/usePushPermission";
 import MetamaskLogo from "../../assets/Imgs/METAmask.svg";
 import ArrImg from "../../assets/Imgs/arrow.svg";
 import OneSignal from "react-onesignal";
-import { SELECT_WALLET, Wallet } from "utils/constant";
+import { SELECT_WALLET, Wallet, SEE_AUTH } from "utils/constant";
+import { METAFORO_TOKEN } from "utils/constant";
+import { prepareMetaforo } from "api/proposalV2";
 import getConfig from "constant/envCofnig";
-const network = getConfig().NETWORK;
 
 // https://github.com/MetaMask/metamask-sdk/issues/381
 // https://github.com/MetaMask/metamask-mobile/issues/7165
@@ -31,7 +32,8 @@ export default function  Metamask(){
     const [msg,setMsg] = useState();
     const [signInfo,setSignInfo] = useState();
     const [result,setResult] = useState(null);
-    const [connectWallet,setConnectWallet] = useState(false);
+    const [connectWallet, setConnectWallet] = useState(false);
+    const { switchNetworkAsync } = useSwitchNetwork();
 
 
     const handlePermission = usePushPermission();
@@ -67,30 +69,38 @@ export default function  Metamask(){
         return rt.data.nonce;
     }
 
-    const sign = async() =>{
-        if(!isConnected || !signer.provider)return;
-        try{
-            const eip55Addr = ethers.utils.getAddress(address);
-            const {chainId} =  await signer.provider.getNetwork();
-            let nonce = await getMyNonce(address);
-            const siweMessage = createSiweMessage(eip55Addr, chainId, nonce, 'Welcome to SeeDAO!');
-            setMsg(siweMessage)
-            let signData = await signer.signMessage(siweMessage);
-            setSignInfo(signData)
-            setConnectWallet(false);
-        }catch (e) {
-            setConnectWallet(true);
-            disconnect();
-            logError("error",JSON.stringify(e))
+    const sign = async () => {
+      if (!isConnected || !signer.provider) return;
+      try{
+        const eip55Addr = ethers.utils.getAddress(address);
+        try {
+          const { chainId } = await signer.provider.getNetwork();
+          let nonce = await getMyNonce(address);
+          const siweMessage = createSiweMessage(eip55Addr, chainId, nonce, "Welcome to SeeDAO!");
+          setMsg(siweMessage);
+          let signData = await signer.signMessage(siweMessage);
+          setSignInfo(signData);
+          setConnectWallet(false);
+        } catch (error) {
+          // switch
+          await switchNetworkAsync(getConfig().NETWORK.chainId);
+          return;
         }
+          
+      }catch (e) {
+          setConnectWallet(true);
+          disconnect();
+          logError("error",JSON.stringify(e))
+      }
 
     }
 
     useEffect(()=>{
         if(!result)return;
-        if (localStorage.getItem(`==sns==`) === "1") {
+        const sns = localStorage.getItem(`==sns==`);
+        if (sns?.startsWith("1_")) {
           localStorage.removeItem(`==sns==`);
-          navigate("/sns/register");
+          navigate(`/sns/register${sns?.split("_")[1] || ""}`);
         } else {
           navigate("/home");
         }
@@ -101,37 +111,51 @@ export default function  Metamask(){
 
 
         const { host} = AppConfig;
-        let obj = {
+        try{
+          let rt = await loginWithSeeAuth({
             wallet: address,
             message: msg,
             signature: signInfo,
             domain: host,
-            wallet_type: 'EOA',
-            is_eip191_prefix: true,
-        };
-        try{
-            let rt = await login(obj);
-            setResult(rt.data)
-            const now = Date.now();
-            rt.data.token_exp = now + rt.data.token_exp * 1000;
-            store.dispatch(saveUserToken(rt.data));
-            store.dispatch(saveWalletType(Wallet.METAMASK));
-            store.dispatch(saveAccount(address))
-            store.dispatch(saveLoading(false));
+            walletName: "metamask",
+          });
+          // login to third party
+          const loginResp = await Promise.all([loginToMetafo(rt.data.see_auth), loginToDeschool(rt.data.see_auth)]);
+          store.dispatch(
+            saveThirdPartyToken({
+              metaforo: loginResp[0].data.token,
+              deschool: loginResp[1].data.jwtToken,
+            }),
+          );
+          if (loginResp[0].data.user_id) {
+            localStorage.setItem(
+              METAFORO_TOKEN,
+              JSON.stringify({ id: loginResp[0].data.user_id, account: address, token: loginResp[0].data.token }),
+            );
+          }
+         
+          setResult(rt.data);
+          const now = Date.now();
+          rt.data.token_exp = now + rt.data.token_exp * 1000;
+          store.dispatch(saveUserToken(rt.data));
+          store.dispatch(saveWalletType(Wallet.METAMASK));
+          store.dispatch(saveAccount(address));
+          store.dispatch(saveLoading(false));
 
-            localStorage.setItem(SELECT_WALLET, Wallet.METAMASK);
+          localStorage.setItem(SELECT_WALLET, Wallet.METAMASK);
 
-            try {
-               await OneSignal.login(address.toLocaleLowerCase());
-            } catch (error) {
-               logError("OneSignal login error", error);
-            }
+          try {
+            await OneSignal.login(address.toLocaleLowerCase());
+          } catch (error) {
+            logError("OneSignal login error", error);
+          }
+          loginResp[0].data.user_id && prepareMetaforo(loginResp[0].data.user_id);
 
-            ReactGA.event("login_success",{
-                type: "metamask",
-                account:"account:"+address
-            });
-
+          ReactGA.event("login_success", {
+            type: "metamask",
+            account: "account:" + address,
+          });
+          
         }catch (e){
             logError(e)
             ReactGA.event("login_failed",{type: "metamask"});
