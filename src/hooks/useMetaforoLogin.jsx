@@ -16,6 +16,8 @@ import LoadingModal from "components/LoadingModal";
 
 import { signTypedDataWithRedirect } from "@joyid/evm";
 import { useLocation, useNavigate } from "react-router-dom";
+import { checkTokenValid, clearStorage } from "utils/auth";
+
 const CONFIG = getConfig();
 
 const buildRedirectUrl = (action, current) => {
@@ -28,6 +30,7 @@ export default function useMetaforoLogin() {
   const account = useSelector((state) => state.account);
   const metaforoToken = useSelector((state) => state.metaforoToken);
   const wallet = useSelector((state) => state.walletType);
+  const userToken = useSelector((state) => state.userToken);
   const { pathname } = useLocation();
 
   const [showLogin, setShowLogin] = useState(false);
@@ -93,9 +96,14 @@ export default function useMetaforoLogin() {
   };
 
   const checkMetaforoLogin = async () => {
-    if (metaforoToken?.token && account?.toLocaleLowerCase() === metaforoToken?.account?.toLocaleLowerCase()) {
-      return true;
+    if (!checkTokenValid(userToken?.token, userToken?.token_exp)) {
+      clearStorage();
+      navigate("/login");
+      return;
     }
+      if (metaforoToken) {
+        return true;
+      }
     setShowLogin(true);
   };
 

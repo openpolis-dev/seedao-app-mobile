@@ -15,7 +15,8 @@
     "Version": "当前版本",
     "Search": "搜索",
     "JustNow": "刚刚",
-    "MinutesAgo": "{{time}}分钟前"
+    "MinutesAgo": "{{time}}分钟前",
+    "Close": "关闭"
   },
   "Buttons": {
     "Check": "查看",
@@ -77,7 +78,21 @@
     "JoinedProjects": "已加入",
     "Members": "项目成员",
     "Intro": "项目介绍",
-    "Detail": "项目详情"
+    "Detail": "项目详情",
+    "OfficialLink": "项目官方链接",
+    "Deliverables": "交付物",
+    "Contact": "项目负责人联系方式",
+    "SIPNumber": "SIP 编号",
+    "StartProjectLink": "立项链接",
+    "EndProjectLink": "结项链接",
+    "Open": "进行中",
+    "Closed": "已结项",
+    "Closing": "结项中",
+    "CloseFailed": "结项失败",
+    "PlanFinishTime": "计划完成时限",
+    "Budget": "项目预算",
+    "Moderator": "项目负责人",
+    "viewMore": "查看更多项目详情"
   },
   "home": {
     "title": "城邦日历",
@@ -108,18 +123,22 @@
     "PollNFT": "投票NFT地址",
     "VoteClose": "投票结束",
     "VoteEndAt": "投票剩余时间 {{leftTime}}",
+    "DraftEndAt": "公示期剩余时间 {{leftTime}}",
     "VoteStartAt": "距离开始还剩 {{leftTime}}",
     "TotalVotes": "总投票数",
-    "Draft": "草案",
+    "Draft": "公示中",
     "Audit": "去审核",
     "all": "全部提案",
-    "Rejected": "被驳回",
+    "Discard": "被驳回",
     "WithDrawn": "已撤回",
     "Voting": "投票中",
     "Passed": "已通过",
     "Approved": "已通过",
     "Failed": "未通过",
-    "PendingCommit": "待提交",
+    "Vetoed": "被否决",
+    "PendingExecution": "待执行",
+    "ExecutedFailed": "执行失败",
+    "PendingCommit": "未提交",
     "NotPendingCommit": "已提交",
     "ThreeLayerType": "三层提案 - P3",
     "TwoLayerType": "二层提案 - P2",
@@ -151,6 +170,7 @@
     "ConfirmBackCreate": "离开当前页面，修改内容将不会被保存，确定离开吗？",
     "ConfirmVoteOption": "确定投票\"{{option}}\"吗？",
     "NotSupportWallet": "该操作暂不支持使用{{wallet}}, 请切换使用其他钱包",
+    "VoteNotStart": "投票未开始",
     "Vote": "投票",
     "Share": "分享",
     "Edit": "修改",
@@ -175,7 +195,12 @@
     "Loging": "正在登录Metaforo...",
     "Time": "时间",
     "Category": "类型",
-    "State": "状态"
+    "State": "状态",
+    "AutoExecuteLeftTime": "自动执行等待剩余时间 {{h}}小时{{m}}分钟",
+    "CloseVote": "提前结束投票",
+    "ConfirmToCloseVote": "确认提前结束投票吗",
+    "ExecutionTip": "当前投票已结束，进入 24 小时等待期，在此期间市政厅可对提案结果进行否决，如市政厅未否决，则提案按照投票结果结束。",
+    "Veto": "市政厅一票否决"
   },
   "My": {
     "MyProfile": "我的信息",
@@ -206,7 +231,9 @@
   "apps": {
     "SeeU": "SeeU Network",
     "SNS": "SNS",
-    "Newcomer": "新手村"
+    "Newcomer": "新手村",
+    "Echo": "Echo",
+    "EchoDesc": "Echo is a social network that gives your echos to same habbies, passions or interests."
   },
   "roles": {
     "SEED_HOLDER": "SEED持有者",
@@ -239,7 +266,9 @@
     "Joined": "已加入",
     "Members": "公会成员",
     "Intro": "公会介绍",
-    "Detail": "公会详情"
+    "Detail": "公会详情",
+    "Contact": "负责人联系方式",
+    "viewMore": "查看更多公会详情"
   },
   "Event": {
     "ListTitle": "城邦活动",
@@ -341,7 +370,9 @@
     "CopyError": "复制错误",
     "Error": "糟糕出错了",
     "CloseLoading": "关闭",
-    "NotEnoughBalance": "{{token}} 余额不足"
+    "NotEnoughBalance": "{{token}} 余额不足",
+    "ShareInviteLink": "分享我的邀请链接",
+    "InviteLinkCopied": "邀请链接已复制"
   },
   "Onboarding": {
     "UnlockTip": "获取SNS后即可解锁",

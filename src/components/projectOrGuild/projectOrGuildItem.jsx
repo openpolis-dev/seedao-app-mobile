@@ -6,6 +6,13 @@ import DefaultLogo from "assets/Imgs/defaultLogo.png";
 
 export default function ProjectOrGuildItem({ data, onClickItem }) {
   const { t } = useTranslation();
+
+    const formatContent = (html) => {
+        html = html.replace(/<!--[\s\S]*?-->/g, '');
+        html = html.replace(/<[^>]*>/g, '');
+        return html;
+    };
+
   return (
     <Item onClick={() => onClickItem(data.id)}>
       <ImageBox>
@@ -14,7 +21,7 @@ export default function ProjectOrGuildItem({ data, onClickItem }) {
       <RightBox className="_right">
         <div>
           <Title>{data.name}</Title>
-          <DescBox>{data.desc}</DescBox>
+          <DescBox>{formatContent(data.desc)}</DescBox>
         </div>
         <div>
           <LookButton>{t("Buttons.Check")}</LookButton>
@@ -65,6 +72,7 @@ const DescBox = styled.div`
   color: var(--font-light-color);
   line-height: 18px;
   margin-top: 3px;
+  word-break: break-all;
 `;
 
 const Title = styled.div`
@@ -74,6 +82,12 @@ const Title = styled.div`
   color: var(--font-color);
     word-break: break-all;
     line-height: 1.5em;
+
+    overflow:hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp:2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
 `;
 
 const LookButton = styled.span`

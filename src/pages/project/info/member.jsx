@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import store from "store";
 import { saveLoading } from "store/reducer";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { getUsers } from "api/user";
 import UserList from "components/userList";
 import { useParseSNSList } from "hooks/useParseSNS";
@@ -75,11 +75,29 @@ export default function ProjectMember({data}) {
   const showUser = (u) => {
     setUser(u);
   };
+
+
+
   return (
-    <MemberContent>
-      {user && <UserModal user={{ ...user, sns: nameMap[user?.wallet] }} handleClose={() => setUser(undefined)} />}
-      <UserList data={[...useArr]} nameMap={nameMap} onChooseUser={showUser} />
-    </MemberContent>
+
+      <BorderBox>
+        <MemberBox>
+          <dt>{t('Guild.Moderator')}</dt>
+          <dd>
+            <MemberContent>
+              {user && <UserModal user={{ ...user, sns: nameMap[user?.wallet] }} handleClose={() => setUser(undefined)} />}
+              <UserList data={[...useArr]} nameMap={nameMap} onChooseUser={showUser} />
+            </MemberContent>
+          </dd>
+        </MemberBox>
+        <MemberBox>
+
+          <dt>{t('Guild.Contact')}</dt>
+          <dd className="dd"> {data?.ContantWay ? data?.ContantWay : (nameMap[sponsors[0]]?.endsWith('.seedao') ? nameMap[sponsors[0]] : "")}</dd>
+        </MemberBox>
+      </BorderBox>
+
+
   );
 }
 
@@ -88,3 +106,33 @@ const MemberContent = styled.div`
   align-items: flex-start;
   flex-wrap: wrap;
 `;
+
+const BorderBox = styled.div`
+    border: 1px solid var(--border-color-1);
+    display: flex ;
+    align-items: stretch;
+    border-radius: 8px;
+    margin-bottom: 20px;
+`
+const MemberBox = styled.dl`
+    width: 50%;
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: column;
+    &:first-child{
+        border-right: 1px  solid var(--border-color-1);
+    }
+    dt{
+        font-size: 12px;
+        opacity: 0.8;
+    }
+    .dd{
+        flex-grow: 1;
+        align-items: center;
+        justify-content: center;
+        line-height: 40px;
+      font-size: 12px;
+    }
+`

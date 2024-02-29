@@ -4,6 +4,7 @@ import { formatDate } from "utils/time";
 import ProposalStateTag from "components/proposalCom/stateTag";
 import Avatar from "components/common/avatar";
 import { MultiLineStyle } from "assets/styles/common";
+import { getProposalSIPSlug } from "utils";
 
 const CardBody = styled.div``;
 
@@ -18,7 +19,10 @@ export default function ProposalItem({ data, sns }) {
     <CardBox key={data.id}>
       <div onClick={openProposal}>
         <CardHeaderStyled>
-          <Title line={2}>{data.title}</Title>
+          <Title line={2}>
+            {getProposalSIPSlug(data.sip)}
+            {data.title}
+          </Title>
         </CardHeaderStyled>
         <Flexlft>
           <ProposalStateTag state={data.state} />
@@ -28,12 +32,12 @@ export default function ProposalItem({ data, sns }) {
           <FlexLine>
             <AvaBox>
               <div className="left">
-                <Avatar src={data.applicant_avatar} alt="" size="28px"/>
+                <Avatar src={data.applicant_avatar} alt="" size="28px" />
               </div>
               <div className="name">{sns}</div>
             </AvaBox>
             <div className="date">
-            <span>{formatDate(new Date(data.create_ts * 1000))}</span>
+              <span>{formatDate(new Date(data.create_ts * 1000))}</span>
             </div>
           </FlexLine>
         </CardBody>

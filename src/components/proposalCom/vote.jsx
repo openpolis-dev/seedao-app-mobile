@@ -12,14 +12,15 @@ import BaseModal from "components/baseModal";
 import VoteRulesModal from "./voteRules";
 import VoterListModal from "./voterList";
 import VoteRuleIcon from "assets/Imgs/proposal/rule.svg";
+import { ProposalState } from "constant/proposal";
 
-const VoteType = {
+export const VoteType = {
   Waite: "waite",
   Open: "open",
   Closed: "closed",
 };
 
-const getPollStatus = (start_t, close_t) => {
+export const getPollStatus = (start_t, close_t) => {
   const start_at = new Date(start_t).getTime();
   const close_at = new Date(close_t).getTime();
   if (start_at > Date.now()) {
@@ -31,21 +32,39 @@ const getPollStatus = (start_t, close_t) => {
   return VoteType.Open;
 };
 
-export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
+export default function ProposalVote({
+  execution_ts,
+  proposalState,
+  id,
+  poll,
+  voteGate,
+  updateStatus,
+  voteOptionType,
+}) {
   const { t } = useTranslation();
   const [selectOption, setSelectOption] = useState();
   const [openVoteItem, setOpenVoteItem] = useState();
   const [showConfirmVote, setShowConfirmVote] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
   const [showVoteRules, setShowVoteRules] = useState(false);
+  const [showExecutionTip, setShowExecutionTip] = useState(false);
 
   const { checkMetaforoLogin, LoginMetafoModal } = useMetaforoLogin();
   const { toast, Toast } = useToast();
 
   const pollStatus = getPollStatus(poll.poll_start_at, poll.close_at);
 
+  const onlyShowVoteOption =
+    (voteOptionType === 99 || voteOptionType === 98) &&
+    [ProposalState.Rejected, ProposalState.Withdrawn, ProposalState.PendingSubmit, ProposalState.Draft].includes(
+      proposalState,
+    );
+
   const voteStatusTag = useMemo(() => {
-    if (pollStatus === VoteType.Closed) {
+    if (onlyShowVoteOption) {
+      return <OpenTag>{t("Proposal.VoteNotStart")}</OpenTag>;
+    }
+    if (proposalState === ProposalState.Executed || pollStatus === VoteType.Closed) {
       return <CloseTag>{t("Proposal.VoteClose")}</CloseTag>;
     } else if (pollStatus === VoteType.Open) {
       return (
@@ -64,7 +83,7 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
         </OpenTag>
       );
     }
-  }, [pollStatus, t]);
+  }, [pollStatus, t, proposalState, showExecutionTip, execution_ts, onlyShowVoteOption]);
 
   const onConfirmVote = async () => {
     const canVote = await checkMetaforoLogin();
@@ -102,13 +121,13 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
         setHasPermission(r.data);
       });
     };
-    if (pollStatus === VoteType.Open && !poll.is_vote) {
+    if (!onlyShowVoteOption && pollStatus === VoteType.Open && !poll.is_vote) {
       getVotePermission();
     }
-  }, [poll, pollStatus]);
+  }, [poll, pollStatus, onlyShowVoteOption]);
 
   const showVoteContent = () => {
-    if ((pollStatus === VoteType.Open && !!poll.is_vote) || pollStatus === VoteType.Closed) {
+    if (!onlyShowVoteOption && ((pollStatus === VoteType.Open && !!poll.is_vote) || pollStatus === VoteType.Closed)) {
       return (
         <table cellSpacing="0" cellPadding="0">
           <tbody>
@@ -144,13 +163,13 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
         <>
           {poll.options.map((option, index) => (
             <VoteOptionSelect key={index}>
-                <input
-                  type="radio"
-                  checked={selectOption?.id === option.id}
-                  onChange={(e) => setSelectOption(e.target.checked ? option : undefined)}
-                  disabled={!hasPermission}
-                  id={`select_${index}`}
-                />
+              <input
+                type="radio"
+                checked={selectOption?.id === option.id}
+                onChange={(e) => setSelectOption(e.target.checked ? option : undefined)}
+                disabled={!hasPermission}
+                id={`select_${index}`}
+              />
               <OptionContentPure htmlFor={`select_${index}`}>{option.html}</OptionContentPure>
             </VoteOptionSelect>
           ))}
@@ -168,7 +187,6 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
     <CardStyle id="vote-block">
       <VoteHead>
         <span>
-          {" "}
           {t("Proposal.TotalVotes")}: {poll.totalVotes}
         </span>
         <TotalVoters>{voteStatusTag}</TotalVoters>
@@ -188,7 +206,10 @@ export default function ProposalVote({ id, poll, voteGate, updateStatus }) {
       )}
       <Bottom>
         {voteGate?.name && <span className="alias">{voteGate.name}</span>}
-        <span className="rule" onClick={() => setShowVoteRules(true)}>
+        <span
+          className="rule"
+          onClick={() => window.open("https://docs.seedao.tech/seedao/Governance/proposal", "_blank")}
+        >
           <span> {t("Proposal.VoteRules")}</span>
           <img src={VoteRuleIcon} alt="" />
         </span>
@@ -214,6 +235,8 @@ const VoteHead = styled.div`
   font-style: normal;
   font-weight: 600;
   margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 6px;
 `;
 
 const VoteHeadLeft = styled.div``;
@@ -241,6 +264,8 @@ const TotalVoters = styled.div`
   font-style: normal;
   font-weight: 600;
   line-height: 22px;
+  display: flex;
+  align-items: center;
 `;
 
 const CloseTag = styled.span`
@@ -262,7 +287,7 @@ const VoteOptionSelect = styled(VoteOptionBlock)`
   display: flex;
   align-items: center;
   gap: 8px;
-  input[type="radio"]:disabled + label{
+  input[type="radio"]:disabled + label {
     //background-color: #d9d9d980;
     //border-color: rgba(217, 217, 217, 0.5);
     opacity: 0.4;
@@ -332,4 +357,15 @@ const Bottom = styled.div`
       top: 2px;
     }
   }
+`;
+
+const TipBox = styled.div`
+  height: 18px;
+`;
+
+const ModalCloseButton = styled.div`
+  line-height: 45px;
+  text-align: center;
+  border-top: 1px solid #f0f1f2;
+  color: var(--primary-color);
 `;

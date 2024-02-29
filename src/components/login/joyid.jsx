@@ -7,8 +7,8 @@ import {
 } from "@joyid/evm";
 import {useEffect, useState} from "react";
 import store from "../../store";
-import {saveAccount, saveUserToken, saveWalletType} from "../../store/reducer";
-import {getNonce, login} from "../../api/user";
+import { saveAccount, saveUserToken, saveWalletType, saveThirdPartyToken } from "../../store/reducer";
+import { getNonce, loginWithSeeAuth, loginToMetafo, loginToDeschool } from "../../api/user";
 import {ethers} from "ethers";
 import {createSiweMessage} from "../../utils/publicJs";
 import AppConfig from "../../AppConfig";
@@ -19,7 +19,8 @@ import JoyidImg from "../../assets/Imgs/joyid.png";
 import ArrImg from "../../assets/Imgs/arrow.svg";
 import OneSignal from "react-onesignal";
 import getConfig from "constant/envCofnig";
-import { SELECT_WALLET, Wallet } from "utils/constant";
+import { SELECT_WALLET, Wallet, METAFORO_TOKEN } from "utils/constant";
+import { prepareMetaforo } from "api/proposalV2";
 
 const CONFIG = getConfig();
 
@@ -143,16 +144,29 @@ export default function Joyid(){
         localStorage.setItem("joyid-status",null)
         const { host} = AppConfig;
         let ms =  localStorage.getItem("joyid-msg")
-        let obj = {
-            wallet: account,
-            message: ms,
-            signature: sig,
-            domain: host,
-            wallet_type: 'EOA',
-            is_eip191_prefix: true
-        };
         try{
-            let rt = await login(obj);
+            let rt = await loginWithSeeAuth({
+              wallet: account,
+              message: ms,
+              signature: sig,
+              domain: host,
+              walletName: "joyid",
+            });
+            // login to third party
+            const loginResp = await Promise.all([loginToMetafo(rt.data.see_auth), loginToDeschool(rt.data.see_auth)]);
+            store.dispatch(
+              saveThirdPartyToken({
+                metaforo: loginResp[0].data.token,
+                deschool: loginResp[1].data.jwtToken,
+              }),
+            );
+            if (loginResp[0].data.user_id) {
+              localStorage.setItem(
+                METAFORO_TOKEN,
+                JSON.stringify({ id: loginResp[0].data.user_id, account, token: loginResp[0].data.token }),
+              );
+            }
+
             const now = Date.now();
             rt.data.token_exp = now + rt.data.token_exp * 1000;
             store.dispatch(saveUserToken(rt.data));
@@ -168,6 +182,8 @@ export default function Joyid(){
             } catch (error) {
               logError("OneSignal login error", error);
             }
+            loginResp[0].data.user_id && prepareMetaforo(loginResp[0].data.user_id);
+
         }catch (e){
             logError(e)
             ReactGA.event("login_failed",{type: "joyid"});
@@ -177,11 +193,12 @@ export default function Joyid(){
 
     useEffect(()=>{
         if (!result) return;
-        if (localStorage.getItem(`==sns==`) === "1") {
-            localStorage.removeItem(`==sns==`);
-            navigate("/sns/register");
+        const sns = localStorage.getItem(`==sns==`)
+        if (sns?.startsWith("1_")) {
+          localStorage.removeItem(`==sns==`);
+          navigate(`/sns/register${sns?.split("_")[1] || ""}`);
         } else {
-            navigate("/home");
+          navigate("/home");
         }
 
     },[result])

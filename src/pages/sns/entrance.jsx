@@ -65,7 +65,7 @@ export default function SNSEntrancePage() {
           <img src={LogoImg} alt="" />
           <TitleBox>{t("SNS.EntranceTitle")}</TitleBox>
           <TipBox>{t("SNS.EntranceDesc")}</TipBox>
-          <Link to="/sns/register">
+          <Link to={`/sns/register${window.location.search}`}>
             <ButtonBox>{t("SNS.Start")}</ButtonBox>
           </Link>
         </TopBox>

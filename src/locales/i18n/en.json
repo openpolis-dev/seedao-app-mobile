@@ -15,7 +15,8 @@
     "Version": "Current version",
     "Search": "Search",
     "JustNow": "just now",
-    "MinutesAgo": "{{time}} minutes ago"
+    "MinutesAgo": "{{time}} minutes ago",
+    "Close": "Close"
   },
   "Buttons": {
     "Check": "View",
@@ -77,7 +78,21 @@
     "JoinedProjects": "Joined",
     "Members": "Members",
     "Intro": "Introduction",
-    "Detail": "Project Detail"
+    "Detail": "Project Detail",
+    "OfficialLink": "Official link",
+    "Deliverables": "Deliverables",
+    "Contact": "Project Moderator Contact",
+    "SIPNumber": "SIP No.",
+    "StartProjectLink": "立项链接",
+    "EndProjectLink": "结项链接",
+    "Open": "Open",
+    "Closed": "Closed",
+    "Closing": "Closing",
+    "CloseFailed": "Close failed",
+    "PlanFinishTime": "Planned completion time",
+    "Budget": "Budget",
+    "Moderator": "Moderator",
+    "viewMore": "View More"
   },
   "home": {
     "title": "See Calendar",
@@ -108,18 +123,22 @@
     "PollNFT": "Poll NFT address",
     "VoteClose": "Voting Closed",
     "VoteEndAt": "Voting ends in {{leftTime}}",
+    "DraftEndAt": "Under review in {{leftTime}}",
     "VoteStartAt": "Start in {{leftTime}}",
     "TotalVotes": "Total Votes",
-    "Draft": "Draft",
+    "Draft": "Under review",
     "Audit": "Audit",
     "all": "All",
-    "Rejected": "Rejected",
+    "Discard": "Discard",
     "WithDrawn": "Withdrawn",
     "Voting": "Voting",
     "Approved": "Approved",
     "Passed": "Passed",
     "Failed": "Failed",
-    "PendingCommit": "Unsubmitted",
+    "Vetoed": "Rejected",
+    "PendingExecution": "Pending",
+    "ExecutedFailed": "Execution failed",
+    "PendingCommit": "Unsubmit",
     "NotPendingCommit": "Submitted",
     "ThreeLayerType": "三层提案 - P3",
     "TwoLayerType": "二层提案 - P2",
@@ -151,6 +170,7 @@
     "ConfirmBackCreate": "Leaving this webpage will result in the loss of unsaved changes. Continue?",
     "ConfirmVoteOption": "Confirm to vote '{{option}}' ?",
     "NotSupportWallet": "This operation is not supported by {{wallet}}, please change to others",
+    "VoteNotStart": "Voting has not started",
     "Vote": "Vote",
     "Share": "Share",
     "Edit": "Edit",
@@ -175,7 +195,12 @@
     "Loging": "Login to Metaforo...",
     "Time": "Time",
     "Category": "Category",
-    "State": "State"
+    "State": "State",
+    "AutoExecuteLeftTime": "Auto-execute wait time left {{h}} hour(s) {{m}} minute(s)",
+    "CloseVote": "Early closure of polls",
+    "ConfirmToCloseVote": "Confirmation of the early closing of the polls?",
+    "ExecutionTip": "The current ballot has closed and there is a 24-hour waiting period during which the City Council may veto the results of the proposal, or if the City Council does not veto the proposal, the proposal closes in accordance with the results of the ballot.",
+    "Veto": "City Hall veto"
   },
   "My": {
     "MyProfile": "My Profile",
@@ -206,7 +231,9 @@
   "apps": {
     "SeeU": "SeeU Network",
     "SNS": "SNS",
-    "Newcomer": "Newcomer"
+    "Newcomer": "Newcomer",
+    "Echo": "Echo",
+    "EchoDesc": "Echo is a social network that gives your echos to same habbies, passions or interests."
   },
   "roles": {
     "SEED_HOLDER": "SEED Holder",
@@ -239,7 +266,9 @@
     "Joined": "Joined",
     "Members": "Members",
     "Intro": "Guild Intro",
-    "Detail": "Guild Detail"
+    "Detail": "Guild Detail",
+    "Contact": "Moderator Contact",
+    "viewMore": "View More"
   },
   "Event": {
     "ListTitle": "Events",
@@ -341,6 +370,8 @@
     "CopyError": "Copy Error",
     "Error": "oh, something went wrong",
     "CloseLoading": "Close",
-    "NotEnoughBalance": "{{token}} Not Enough"
+    "NotEnoughBalance": "{{token}} Not Enough",
+    "ShareInviteLink": "Share invite link",
+    "InviteLinkCopied": "The invite link has been copied to your clipboard!"
   }
 }

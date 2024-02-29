@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { formatTime } from "utils/time";
 import ProposalStateTag from "components/proposalCom/stateTag";
 import CategoryTag from "components/proposalCom/categoryTag";
+import TemplateTag from "components/proposalCom/templateTag";
 import Avatar from "components/common/avatar";
 import store from "store";
 import { saveLoading } from "store/reducer";
@@ -14,13 +15,15 @@ import publicJs from "utils/publicJs";
 import useQuerySNS from "hooks/useQuerySNS";
 import { PreviewMobie } from "@taoist-labs/components";
 import { MdPreview } from "md-editor-rt";
-import ProposalVote from "components/proposalCom/vote";
+import ProposalVote, { getPollStatus, VoteType } from "components/proposalCom/vote";
 import { ProposalState } from "constant/proposal";
 import ThreadTabbar from "components/proposalCom/threadTabbar";
 import LinkImg from "assets/Imgs/proposal/link.png";
 import useMetaforoLogin from "hooks/useMetaforoLogin";
 import { useSelector } from "react-redux";
 import useProposalCategories from "hooks/useProposalCategories";
+import { formatDeltaDate } from "utils/time";
+import { getProposalSIPSlug } from "utils";
 
 export default function ProposalThread() {
   const { id } = useParams();
@@ -40,6 +43,11 @@ export default function ProposalThread() {
   const [commentsArray, setCommentsArray] = useState([]);
   const [currentCommentArrayIdx, setCurrentCommentArrayIdx] = useState(0);
   const [dataSource, setDatasource] = useState();
+
+  const [componentName, setComponentName] = useState("");
+  const [beforeList, setBeforeList] = useState([]);
+  const [preview, setPreview] = useState([]);
+  const [previewTitle, setPreviewTitle] = useState("");
 
   const [contentBlocks, setContentBlocks] = useState([]);
 
@@ -67,7 +75,31 @@ export default function ProposalThread() {
       }
       setData(res.data);
 
-      setContentBlocks(res.data.content_blocks);
+      const arr = res.data.content_blocks;
+      const componentsIndex = arr.findIndex((i) => i.type === "components");
+
+      const beforeComponents = arr.filter(
+        (item) => item.type !== "components" && item.type !== "preview" && arr.indexOf(item) < componentsIndex,
+      );
+      let componentsList = arr.filter((item) => item.type === "components") || [];
+      const afterComponents = arr.filter(
+        (item) => item.type !== "components" && item.type !== "preview" && arr.indexOf(item) > componentsIndex,
+      );
+
+      const preview = arr.filter((i) => i.type === "preview");
+
+      if (preview.length) {
+        const preArr = JSON.parse(preview[0].content);
+        setPreview(preArr);
+        setPreviewTitle(preview[0].title);
+      }
+
+      setComponentName(componentsList[0]?.title);
+      setBeforeList(beforeComponents ?? []);
+
+      setContentBlocks(afterComponents);
+
+      // setContentBlocks(res.data.content_blocks);
       const comStr = res.data.components || [];
       comStr.map((item) => {
         if (typeof item.data === "string") {
@@ -162,7 +194,9 @@ export default function ProposalThread() {
     if (
       [ProposalState.Rejected, ProposalState.Withdrawn, ProposalState.PendingSubmit, ProposalState.Draft].includes(
         data?.state,
-      )
+      ) &&
+      data.vote_type !== 99 &&
+      data.vote_type !== 98
     ) {
       return false;
     }
@@ -182,11 +216,54 @@ export default function ProposalThread() {
       return "";
     }
   };
+  const getTimeTagDisplay = () => {
+    if (data?.state === ProposalState.Draft) {
+      if (!data?.publicity_ts) {
+        return null;
+      }
+      return (
+        <TimeTag>
+          {t("Proposal.DraftEndAt", {
+            leftTime: t("Proposal.TimeDisplay", {
+              ...formatDeltaDate(new Date(data?.publicity_ts * 1000).getTime()),
+            }),
+          })}
+        </TimeTag>
+      );
+    }
+    if (data?.state === ProposalState.PendingExecution) {
+      if (data?.execution_ts && data?.execution_ts * 1000 > Date.now()) {
+        return (
+          <TimeTag>
+            {t("Proposal.AutoExecuteLeftTime", {
+              ...formatDeltaDate((data?.execution_ts || 0) * 1000),
+            })}
+          </TimeTag>
+        );
+      }
+    }
+    const poll = data?.votes?.[0];
+    if (!poll) {
+      return;
+    }
+    if (data?.state === ProposalState.Voting) {
+      const pollStatus = getPollStatus(poll.poll_start_at, poll.close_at);
+      if (pollStatus === VoteType.Open) {
+        return (
+          <TimeTag>
+            {t("Proposal.VoteEndAt", {
+              leftTime: t("Proposal.TimeDisplay", { ...formatDeltaDate(new Date(poll.close_at).getTime()) }),
+            })}
+          </TimeTag>
+        );
+      }
+    }
+  };
   const currentCategory = getCurrentCategory();
 
-  useEffect(() => {
-    checkMetaforoLogin();
-  }, []);
+  // useEffect(() => {
+  //   checkMetaforoLogin();
+  // }, []);
 
   return (
     <Layout
@@ -204,6 +281,7 @@ export default function ProposalThread() {
     >
       <ThreadHead>
         <div className="title">
+          {getProposalSIPSlug(data?.sip)}
           {data?.title}{" "}
           {data?.arweave && (
             <a
@@ -219,8 +297,9 @@ export default function ProposalThread() {
         <FlexLine>
           {data?.state && <ProposalStateTag state={data.state} />}
           {currentCategory && <CategoryTag>{currentCategory}</CategoryTag>}
+          {data?.template_name && <TemplateTag>{data?.template_name}</TemplateTag>}
         </FlexLine>
-
+        {getTimeTagDisplay()}
         <InfoBox>
           <UserBox>
             <Avatar src={applicantAvatar} size="30px" />
@@ -244,18 +323,32 @@ export default function ProposalThread() {
         </RejectOuter>
       )}
       <ContentOuter>
-        {contentBlocks.map((block, i) => (
-          <ProposalContentBlock key={block.title} $radius={i === 0 && !dataSource?.length ? "4px 4px 0 0" : "0"}>
-            <div className="title">{block.title}</div>
-            <div className="content">
-              <MdPreview modelValue={block.content || ""} />
-            </div>
-          </ProposalContentBlock>
-        ))}
+        {!!preview?.length && (
+          <>
+            <ComponnentBox>
+              <div className="title">{previewTitle}</div>
+            </ComponnentBox>
+            <PreviewMobie
+              DataSource={JSON.parse(JSON.stringify(preview || []))}
+              language={i18n.language}
+              initialItems={components}
+            />
+          </>
+        )}
+
+        {!!beforeList?.length &&
+          beforeList.map((block, i) => (
+            <ProposalContentBlock key={block.title} $radius={i === 0 && !dataSource?.length ? "4px 4px 0 0" : "0"}>
+              <div className="title">{block.title}</div>
+              <div className="content">
+                <MdPreview modelValue={block.content || ""} />
+              </div>
+            </ProposalContentBlock>
+          ))}
 
         {!!dataSource?.length && (
           <ComponnentBox>
-            <div className="title">{t("Proposal.proposalComponents")}</div>
+            <div className="title">{componentName || t("Proposal.proposalComponents")}</div>
           </ComponnentBox>
         )}
         <PreviewMobie
@@ -263,9 +356,27 @@ export default function ProposalThread() {
           language={i18n.language.indexOf("zh") > -1 ? "zh" : "en"}
           initialItems={components}
         />
+
+        {!!contentBlocks?.length &&
+          contentBlocks.map((block, i) => (
+            <ProposalContentBlock key={block.title} $radius={i === 0 && !dataSource?.length ? "4px 4px 0 0" : "0"}>
+              <div className="title">{block.title}</div>
+              <div className="content">
+                <MdPreview modelValue={block.content || ""} />
+              </div>
+            </ProposalContentBlock>
+          ))}
       </ContentOuter>
       {showVote() && (
-        <ProposalVote voteGate={data?.vote_gate} poll={data.votes[0]} id={Number(id)} updateStatus={getProposal} />
+        <ProposalVote
+          voteGate={data?.vote_gate}
+          poll={data.votes[0]}
+          id={Number(id)}
+          updateStatus={getProposal}
+          proposalState={data?.state}
+          execution_ts={data?.execution_ts}
+          voteOptionType={data?.vote_type}
+        />
       )}
       {LoginMetafoModal}
     </Layout>
@@ -340,6 +451,7 @@ const FlexLine = styled.div`
   align-items: center;
   margin: 10px 0;
   gap: 6px;
+  flex-wrap: wrap;
 `;
 
 const InfoBox = styled.div`
@@ -395,4 +507,24 @@ const ProposalContentBlock = styled.div`
 
 const ComponnentBox = styled(ProposalContentBlock)`
   margin-bottom: 10px;
+`;
+
+const StatusTag = styled.div`
+  background-color: #fb4e4e;
+  border: 1px solid;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 4px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  box-sizing: border-box;
+`;
+
+const TimeTag = styled.div`
+  color: var(--primary-color);
+  font-size: 12px;
+  margin-bottom: 4px;
 `;

@@ -24,6 +24,9 @@ instance.interceptors.request.use(function (config) {
   ) {
     return config;
   }
+  if (["/user/login", "/user/refresh_nonce", "/seeauth/login"].includes(config.url)) {
+    return config;
+  }
   const tokenstr = store.getState().userToken;
   console.log(tokenstr);
   if (!tokenstr) {
