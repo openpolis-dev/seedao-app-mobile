@@ -370,6 +370,8 @@
     "CopyError": "Copy Error",
     "Error": "oh, something went wrong",
     "CloseLoading": "Close",
-    "NotEnoughBalance": "{{token}} Not Enough"
+    "NotEnoughBalance": "{{token}} Not Enough",
+    "ShareInviteLink": "Share invite link",
+    "InviteLinkCopied": "The invite link has been copied to your clipboard!"
   }
 }

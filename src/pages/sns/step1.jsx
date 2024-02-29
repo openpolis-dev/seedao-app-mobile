@@ -18,6 +18,11 @@ import useCheckBalance from "./useCheckBalance";
 import { useNetwork, useSwitchNetwork } from "wagmi";
 import getConfig from "constant/envCofnig";
 import { Wallet } from "utils/constant";
+import { useSearchParams } from "react-router-dom";
+import { inviteBy, getInviteCode } from "api/invite";
+import { saveLoading } from "store/reducer";
+import store from "store";
+
 const networkConfig = getConfig().NETWORK;
 const PAY_TOKEN = networkConfig.tokens[0];
 const PAY_NUMBER = PAY_TOKEN.price;
@@ -35,6 +40,8 @@ const buildCommitData = (commitment) => {
 
 export default function RegisterSNSStep1({ sns: _sns }) {
   const { t } = useTranslation();
+  const [search] = useSearchParams();
+
   const [val, setVal] = useState(_sns || "");
   const [searchVal, setSearchVal] = useState(_sns || "");
   const [isPending, setPending] = useState(false);
@@ -58,6 +65,37 @@ export default function RegisterSNSStep1({ sns: _sns }) {
   const { toast, Toast } = useToast();
 
   // const isLogin = useCheckLogin(account);
+
+  const requestBindInvite = () => {
+    const inviteCode = search.get("invite");
+    if (!inviteCode) {
+      return;
+    }
+    inviteBy(inviteCode)
+      .then((r) => {
+        console.log("inviteBy called");
+      })
+      .catch((e) => {
+        logError(`use ${inviteCode} to invite ${account} failed`, e);
+      });
+  };
+
+  const getInviteLink = () => {
+    store.dispatch(saveLoading(true));
+    getInviteCode()
+      .then((r) => {
+        toast.success(t("SNS.InviteLinkCopied"));
+        navigator.clipboard.writeText(`${window.location.origin}/sns?invite=${r.data.invite_code}`);
+      })
+      .catch((e) => {
+        logError("get invite code failed", e);
+        toast.danger("get invite code failed, please try again");
+      })
+      .finally(() => {
+            store.dispatch(saveLoading(false));
+
+      });
+  };
 
   const handleSearchAvailable = async (v) => {
     setSearchVal(v);
@@ -216,6 +254,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
           hasResult = true;
           // means tx success
           _d[account].stepStatus = "success";
+          requestBindInvite();
           provider.getBlock(r.blockNumber).then((block) => {
             _d[account].timestamp = block.timestamp;
             dispatchSNS({ type: ACTIONS.SET_STORAGE, payload: JSON.stringify(_d) });
@@ -283,6 +322,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         </SearchBox>
         <Tip>{t("SNS.InputTip")}</Tip>
         <OperateBox>{showButton()}</OperateBox>
+        <ShareButton onClick={getInviteLink}>{t("SNS.ShareInviteLink")}</ShareButton>
       </ContainerWrapper>
       {Toast}
     </Container>
@@ -388,6 +428,7 @@ const SearchRight = styled.div`
 const OperateBox = styled.div`
   margin-top: 32px;
   width: 100%;
+  margin-bottom: 24px;
 `;
 
 const MintButton = styled.button`
@@ -431,4 +472,10 @@ const Tip = styled.div`
   margin: 0 auto;
   margin-top: 8px;
   text-align: left;
+`;
+
+const ShareButton = styled.span`
+  text-align: center;
+  color: var(--primary-color);
+  font-size: 14px;
 `;
