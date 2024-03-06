@@ -242,6 +242,7 @@
     "NODE_S3": "S3 Node",
     "NODE_S4": "S4 Node",
     "NODE_S5": "S5 Node",
+    "NODE_S": "Node",
     "CITYHALL_S1": "Cityhall S1",
     "CITYHALL_S2": "Cityhall S2",
     "CITYHALL_S3": "Cityhall S3",
