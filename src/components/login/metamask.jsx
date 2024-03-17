@@ -120,20 +120,29 @@ export default function  Metamask(){
             walletName: "metamask",
           });
           // login to third party
-          const loginResp = await Promise.all([loginToMetafo(rt.data.see_auth), loginToDeschool(rt.data.see_auth)]);
-          store.dispatch(
-            saveThirdPartyToken({
-              metaforo: loginResp[0].data.token,
-              deschool: loginResp[1].data.jwtToken,
-            }),
-          );
-          if (loginResp[0].data.user_id) {
-            localStorage.setItem(
-              METAFORO_TOKEN,
-              JSON.stringify({ id: loginResp[0].data.user_id, account: address, token: loginResp[0].data.token }),
+          let metaforoUserId = undefined;
+          try {
+            const loginResp = await Promise.all([
+              loginToMetafo(rt.data.see_auth),
+              // loginToDeschool(rt.data.see_auth)
+            ]);
+            store.dispatch(
+              saveThirdPartyToken({
+                metaforo: loginResp[0].data.token,
+                // deschool: loginResp[1].data.jwtToken,
+              }),
             );
+            if (loginResp[0].data.user_id) {
+              metaforoUserId = loginResp[0].data.user_id;
+              localStorage.setItem(
+                METAFORO_TOKEN,
+                JSON.stringify({ id: loginResp[0].data.user_id, account: address, token: loginResp[0].data.token }),
+              );
+            }
+          } catch (error) {
+            console.error("3rd party login error", error);
           }
-         
+          
           setResult(rt.data);
           const now = Date.now();
           rt.data.token_exp = now + rt.data.token_exp * 1000;
@@ -149,7 +158,7 @@ export default function  Metamask(){
           } catch (error) {
             logError("OneSignal login error", error);
           }
-          loginResp[0].data.user_id && prepareMetaforo(loginResp[0].data.user_id);
+          metaforoUserId && prepareMetaforo(metaforoUserId);
 
           ReactGA.event("login_success", {
             type: "metamask",
