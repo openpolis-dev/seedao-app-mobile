@@ -132,12 +132,21 @@ export default function CalendarItem({detail}){
 
     const formatDay = () =>{
         const arr = detail.eventInfo;
-        setList(arr.map(item=>{
-            return{
-                ...item,
-                status:false
-            }
-        }));
+
+       let newArr = []
+           arr.map(item=>{
+             let changedArr =item.changedEvents.filter((d)=>dayjs(d.originalStartTime).isSame(detail.day,"day"))
+            let cancelArr = item.cancelledEvents.filter((d)=>dayjs(d).isSame(detail.day,"day"))
+               if(!changedArr?.length && !cancelArr?.length){
+                   newArr.push({
+                       ...item,
+                       status:false
+                   })
+               }
+
+        })
+        setList(newArr);
+
         setMore(arr.length > SliceNum)
         let cDay = dayjs().format("YYYYMMDD")
         setCurrentDay(cDay);
@@ -164,71 +173,76 @@ export default function CalendarItem({detail}){
 
         setList(arr);
     }
-
     const handleMore = () =>{
         setMore(!more);
     }
+    return <>
+        {
+            !!showList.length &&<DlBox key={`calendar_${index}}`}  className={currentDay=== detail.day? "activeBox":""}>
+                <dt>{switchWeek()}</dt>
 
-    return <DlBox key={`calendar_${index}}`}  className={currentDay=== detail.day? "activeBox":""}>
-        <dt>{switchWeek()}</dt>
-
-        <dd>
-            <ul>
-                {
-                    showList.map((innerItem,innerIndex)=><li key={`events_${detail.day}_${innerIndex}}`}>
-                        <EventBox onClick={()=>handleShow(innerIndex,innerItem.event.description,innerItem.event.location)}>
-                            <LineBox>
-                                <div className="time">{getTime(innerItem)} </div>
-                                <div>{innerItem.event.summary}</div>
-                            </LineBox>
-
-                            {
-                                !innerItem.status && (!!innerItem.event.description || !!innerItem.event.location) && <img src={currentDay===detail.day ?PlusWhite:PlusImg} alt=""/>
-                            }
-                            {
-                                innerItem.status && (!!innerItem.event.description || !!innerItem.event.location) && <img src={currentDay===detail.day ?SubWhite:SubImg} alt=""/>
-                            }
-                        </EventBox>
-
+                <dd>
+                    <ul>
                         {
-                            innerItem.status &&<EventDesc>
+                            showList.map((innerItem,innerIndex)=><li key={`events_${detail.day}_${innerIndex}}`}>
+
+                                <EventBox onClick={()=>handleShow(innerIndex,innerItem.event.description,innerItem.event.location)}>
+                                    <LineBox>
+                                        <div className="time">{getTime(innerItem)} </div>
+                                        <div>{innerItem.event.summary}</div>
+                                    </LineBox>
+
+
+                                    {
+                                        !innerItem.status && (!!innerItem.event.description || !!innerItem.event.location) && <img src={currentDay===detail.day ?PlusWhite:PlusImg} alt=""/>
+                                    }
+                                    {
+                                        innerItem.status && (!!innerItem.event.description || !!innerItem.event.location) && <img src={currentDay===detail.day ?SubWhite:SubImg} alt=""/>
+                                    }
+                                </EventBox>
+
                                 {
-                                    !!innerItem.event.description &&<div className="line">
-                                        <div className="lft">
-                                            <img src={currentDay===detail.day ?TitleWhite:TitleImg} alt=""/>
-                                        </div>
-                                        <div className="location"  dangerouslySetInnerHTML={{__html: innerItem.event.description}}></div>
-                                    </div>
-                                }
-                                {
-                                    !!innerItem.event.location &&<div className="line">
-                                        <div className="lft">
-                                            <img src={currentDay===detail.day?LocationWhite:LocationImg} alt=""/>
-                                        </div>
-                                        <div className="location">{innerItem.event.location}</div>
-                                    </div>
+                                    innerItem.status &&<EventDesc>
+                                        {
+                                            !!innerItem.event.description &&<div className="line">
+                                                <div className="lft">
+                                                    <img src={currentDay===detail.day ?TitleWhite:TitleImg} alt=""/>
+                                                </div>
+                                                <div className="location"  dangerouslySetInnerHTML={{__html: innerItem.event.description}}></div>
+                                            </div>
+                                        }
+                                        {
+                                            !!innerItem.event.location &&<div className="line">
+                                                <div className="lft">
+                                                    <img src={currentDay===detail.day?LocationWhite:LocationImg} alt=""/>
+                                                </div>
+                                                <div className="location">{innerItem.event.location}</div>
+                                            </div>
+                                        }
+
+                                    </EventDesc>
                                 }
 
-                            </EventDesc>
+                            </li>)
+                        }
+                        {
+                            more &&<li className="moreLi" onClick={()=>handleMore()}>
+                                <div>
+                                    {
+                                        t("Calendar.more", { item: list.length - SliceNum  })
+                                    }
+                                </div>
+                                <div>
+                                    <img src={currentDay===index?MoreWhite:MoreImg} alt=""/>
+                                </div>
+                            </li>
                         }
 
-                    </li>)
-                }
-                {
-                   more &&<li className="moreLi" onClick={()=>handleMore()}>
-                        <div>
-                            {
-                                t("Calendar.more", { item: list.length - SliceNum  })
-                            }
-                        </div>
-                        <div>
-                            <img src={currentDay===index?MoreWhite:MoreImg} alt=""/>
-                        </div>
-                    </li>
-                }
+                    </ul>
 
-            </ul>
+                </dd>
+            </DlBox>
+        }
 
-        </dd>
-    </DlBox>
+        </>
 }
