@@ -7,9 +7,11 @@ import dayjs from "dayjs";
 import {useTranslation} from "react-i18next";
 import {getCalenderEvents} from "../../api/calendar";
 import utc from "dayjs/plugin/utc"
+import duration from "dayjs/plugin/duration"
 import store from "../../store";
 import {saveLoading} from "../../store/reducer";
 dayjs.extend(utc);
+dayjs.extend(duration)
 
 
 const Box = styled.div`
@@ -63,7 +65,6 @@ export default function NewCalendar(){
 
 
     useEffect(() => {
-
         getMonth()
         getCurrent()
         getEvent()
@@ -156,31 +157,86 @@ export default function NewCalendar(){
             const begin = dayjs().subtract(5,"month").toDate();
             const end = dayjs().add(6,"month").toDate();
             return rruleSet.between(begin, end);
-        }else{
+        }
+        else{
             const date = dayjs(dStr).utc().toDate();
             return [date]
         }
     }
+
+    // const isMultiEvent = (startTime, endTime) => {
+    //
+    //     const startTimeFormat = dayjs(startTime);
+    //     const endTimeFormat = dayjs(endTime)
+    //     const hour1 =  dayjs.duration(endTimeFormat.diff(startTimeFormat)).asHours()
+    //     let hour2 = !startTimeFormat.isSame(endTimeFormat, 'day') && endTimeFormat.hour() >= 12
+    //     return hour1 >=24 || hour2
+    // }
+
 
     const getEvent = async() =>{
         store.dispatch(saveLoading(true));
         try{
             let rt = await getCalenderEvents('','');
 
-            const validTimeArr = rt.data.items.filter((item)=>item.status === "confirmed");
+
+            const aaa = rt.data.items.filter((item)=>item.summary === "市政厅通气会： Queeny");
+            console.log(aaa)
+
+            const validTimeArr = rt.data.items.filter((item)=>item.status == "confirmed" || !item.originalStartTime);
             let eventArr = [];
-
+            const inValidTimeArr = rt.data.items.filter((item)=>item.originalStartTime);
             validTimeArr.map((event)=>{
-                let eventStr =  formatDateTime(event.start?.dateTime,event.recurrence);
 
+
+                // let isMultiEventRt = isMultiEvent(event.start?.dateTime,event.end?.dateTime)
+                let eventStr =  formatDateTime(event.start?.dateTime,event.recurrence);
                 let arr = eventStr.map((item)=> {
                     return {
                         dayTime:item,
-                        event
+                        event,
+                        changedEvents: [],
+                        cancelledEvents: [],
                     }
                 })
                 eventArr.push(...arr);
             })
+
+            let changed = [];
+            let cancelled = [];
+            inValidTimeArr.map((event)=>{
+                if (event.status == "cancelled") { //cancelled events
+                    cancelled.push({
+                        recurringEventId: event.recurringEventId,
+                        originalStartTime: event.originalStartTime.dateTime ? dayjs(event.originalStartTime.dateTime) :"",
+                    });
+                } else if (event.status == "confirmed") { //changed events
+                    console.log("-changed--",event)
+                    changed.push({
+                        recurringEventId: event.recurringEventId,
+                        name: event.summary,
+                        description: event.description,
+                        location: event.location,
+                        originalStartTime: event.originalStartTime.dateTime ? dayjs(event.originalStartTime.dateTime) : "",
+                        newStartTime: event.start.dateTime ? dayjs(event.start.dateTime) : dayjs.parseZone(event.start.date),
+                        newEndTime: event.end.dateTime ? dayjs(event.end.dateTime) : dayjs.parseZone(event.end.date),
+                    });
+                }
+            })
+            eventArr.forEach((event, idx, arr) => {
+                if (event.event.recurrence) {
+                    //push changed events
+                    changed.filter(change => change.recurringEventId == event.event.id).forEach((change) => {
+                        console.error("===arr[idx]==",arr[idx],change)
+                        arr[idx].changedEvents.push(change);
+                    });
+
+                    //push cancelled events
+                    cancelled.filter(cancel => cancel.recurringEventId == event.event.id).forEach((cancel) => {
+                        arr[idx].cancelledEvents.push(cancel.originalStartTime);
+                    });
+                }
+            });
             setEventList(eventArr)
         }catch (e) {
             console.log(e)
