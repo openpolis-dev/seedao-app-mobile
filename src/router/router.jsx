@@ -116,6 +116,7 @@ function RouterLink() {
         {/* <Route path="/sns/user" element={<UserSNS />} /> */}
         {/* redirect */}
         <Route path="/redirect" element={<JoyIDRedirect />} />
+        <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
       {/*<EventHandler />*/}
     </>
