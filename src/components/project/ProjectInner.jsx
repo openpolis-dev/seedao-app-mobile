@@ -17,8 +17,10 @@ import { formatCategory } from "components/proposalCom/categoryTag";
 const FlexBox = styled.div`
   display: flex;
   align-items: center;
-  padding-inline: 20px;
-  margin-top: 24px;
+  padding: 20px 0;
+  margin: 0 20px;
+  border-top: 1px solid rgba(217, 217, 217, 0.5);
+  border-bottom: 1px solid rgba(217, 217, 217, 0.5);
 `;
 
 const ImgBlock = styled.div`
@@ -50,9 +52,11 @@ const ProposalsBox = styled.div`
 `;
 
 const DescBox = styled.div`
-  padding: 15px 20px 10px;
+  padding: 15px 0 10px;
+  margin: 0 20px 20px;
   color: #9a9a9a;
   font-size: 14px;
+  border-bottom: 1px solid rgba(217, 217, 217, 0.5);
 
   .quill {
     width: 100%;
@@ -67,6 +71,14 @@ const DescBox = styled.div`
   .ql-editor {
     width: 100%;
     padding: 0;
+  }
+  .title{
+    color: rgba(41, 40, 47, 0.80);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -241,6 +253,56 @@ const FlexBoxBg = styled.div`
   gap: 10px;
 `;
 
+const LineBox = styled.div`
+  margin: 0 20px;
+  padding-bottom: 20px;
+  
+  .title{
+    color: rgba(41, 40, 47, 0.80);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+    margin-bottom: 10px;
+  }
+  .content,.contentBtm{
+    border-bottom: 1px solid rgba(217, 217, 217, 0.5);
+    &>dl{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-bottom: 10px;
+      &>dt{
+        color: rgba(156, 164, 171, 0.80);
+
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px;
+      }
+    }
+    .colLine{
+      flex-direction: column;
+      align-items: flex-start;
+      &>dt{
+        padding-bottom: 10px;
+      }
+    }
+  }
+  a{
+    color: var(--primary-color);
+  }
+  .contentBtm{
+    border-bottom: 0;
+    font-size: 14px;
+    color: rgba(156, 164, 171, 0.80);
+  }
+  .intro{
+    width: 100%;
+  }
+
+`
+
 export default function ProjectInner({ id }) {
   const { t } = useTranslation();
   const [data, setData] = useState();
@@ -275,7 +337,7 @@ export default function ProjectInner({ id }) {
     }
     if (data?.status === "close_failed") {
       return <StatusBox className="close-failed">{t("Project.CloseFailed")}</StatusBox>;
-    }  
+    }
   };
 
   const formatBudget = (str) => {
@@ -314,17 +376,95 @@ export default function ProjectInner({ id }) {
           </FlexFirst>
         </FlexLine>
       </FlexBox>
-      {/*<DescBox>{data?.desc}</DescBox>*/}
+
       <DescBox>
+        <div className="title">项目简介</div>
         <Desc>{data?.desc}</Desc>
       </DescBox>
+      <LineBox>
+        <div className="title">项目负责人</div>
+        <div className="content">
+          <ProjectMember data={data} />
+        </div>
+      </LineBox>
+
+      <LineBox>
+        <div className="title">立项信息</div>
+        <ul className="content">
+          <dl>
+            <dt>立项提案链接</dt>
+            <dd><a href="#">点击查看</a></dd>
+          </dl>
+          <dl>
+            <dt>项目预算</dt>
+            <dd>10000 SCR, 1000 USDT</dd>
+          </dl>
+          <dl>
+            <dt>计划完成时限</dt>
+            <dd>2024-08-07</dd>
+          </dl>
+          <dl className="colLine">
+            <dt>交付物</dt>
+            <dd className="intro">文档10-篇，公众号文章20篇，播客10篇，文档10-篇公众号文章20篇</dd>
+          </dl>
+        </ul>
+      </LineBox>
+
+      <LineBox>
+        <div className="title">项目预算使用情况</div>
+        <div className="content">
+          <dl>
+            <dt>项目预算</dt>
+            <dd>10000 SCR, 1000 USDT</dd>
+          </dl>
+          <dl>
+            <dt>预付比例</dt>
+            <dd>50%</dd>
+          </dl>
+          <dl>
+            <dt>可预支数额</dt>
+            <dd>10000 SCR, 1000 USDT</dd>
+          </dl>
+          <dl>
+            <dt>当前已预支</dt>
+            <dd>10000 SCR, 1000 USDT</dd>
+          </dl>
+          <dl>
+            <dt>预算余额</dt>
+            <dd>10000 SCR, 1000 USDT</dd>
+          </dl>
+          <dl>
+            <dt>可预支余额</dt>
+            <dd>10000 SCR, 1000 USDT</dd>
+          </dl>
+        </div>
+      </LineBox>
+      <LineBox>
+        <div className="title">结项信息</div>
+        <div className="content">
+          <dl>
+            <dt>结项提案链接</dt>
+            <dd><Link to="/project/budget/22">点击查看</Link></dd>
+          </dl>
+        </div>
+
+      </LineBox>
+
+      <LineBox>
+        <div className="title">项目官方链接</div>
+        <div className="contentBtm">项目暂无官方链接~</div>
+      </LineBox>
+
+
+      {/*<DescBox>{data?.desc}</DescBox>*/}
+
       <MainBox>
         {data?.OfficialLink && (
           <a href={data?.OfficialLink} target="_blank" rel="noreferrer">
             <Abox>{t("Project.viewMore")} &gt;&gt;</Abox>
           </a>
         )}
-        <ProjectMember data={data} />
+
 
         <BtmBox>
           <FlexBtnBox>
@@ -358,7 +498,6 @@ export default function ProjectInner({ id }) {
               <dt>{t("Project.Deliverables")}</dt>
               {/*<dd>{data?.Deliverable}</dd>*/}
               <dd>
-                {" "}
                 <ReactQuill theme="snow" value={data?.Deliverable} modules={{ toolbar: false }} readOnly={true} />
               </dd>
             </dl>
