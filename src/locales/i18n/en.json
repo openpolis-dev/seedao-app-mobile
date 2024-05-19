@@ -374,5 +374,23 @@
     "NotEnoughBalance": "{{token}} Not Enough",
     "ShareInviteLink": "Share invite link",
     "InviteLinkCopied": "The invite link has been copied to your clipboard!"
+  },
+  "Credit": {
+    "Title": "信用贷",
+    "MyBorrowings": "我的借款",
+    "VaultBorrowings": "社区借款",
+    "MyBorrowingQuota": "我的借款额度（USDT）",
+    "MyBorrowingTip1": "日利率（单利）0.10‰，1 SCR 可借 0.01 USDT",
+    "MyBorrowingTip2": "最长可借 30 日",
+    "VaultTotalQuota": "社区总额度 >>",
+    "MySCR": "我的SCR",
+    "MyTotalQuota": "总额度",
+    "GoToBorrow": "去借款",
+    "GoToRepay": "去还款",
+    "MyBorrowingsState": "我的借款状态",
+    "MyInuseCount": "当前在借 {{num}} 笔",
+    "OverdueCount": "已逾期 {{num}} 笔",
+    "LatestRepayDate": "最近还款日",
+    "RepayTip": "逾期未还，$SCR 将被罚没至社区金库"
   }
 }
