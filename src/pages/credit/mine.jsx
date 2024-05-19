@@ -5,6 +5,7 @@ import SCRIcon from "assets/Imgs/credit/scr.svg";
 import QuotaIcon from "assets/Imgs/credit/quota.svg";
 import CountIcon from "assets/Imgs/credit/count.svg";
 import AmountIcon from "assets/Imgs/credit/amount.svg";
+import TipIcon from "assets/Imgs/credit/tip.svg";
 
 const MineCard = () => {
   const { t } = useTranslation();
@@ -56,7 +57,9 @@ const MineCard = () => {
           </div>
         </StateLine>
         <div className="repay-tip">{t("Credit.LatestRepayDate")} 2022-01-02</div>
-        <div className="repay-tip">{t("Credit.RepayTip")}</div>
+        <div className="repay-tip">
+          {t("Credit.RepayTip")} <img src={TipIcon} alt="" />
+        </div>
       </StateBlock>
     </>
   );
@@ -160,7 +163,7 @@ const OperateBox = styled.div`
   }
 `;
 
-const BlockTitle = styled.div`
+export const BlockTitle = styled.div`
   font-family: "Inter-SemiBold";
   font-weight: 600;
   font-size: 16px;
@@ -177,10 +180,14 @@ const StateBlock = styled.div`
   .repay-tip {
     font-size: 12px;
     color: #1814f3;
+    img {
+        position: relative;
+        top: 1px;
+    }
   }
 `;
 
-const StateLine = styled.div`
+export const StateLine = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;

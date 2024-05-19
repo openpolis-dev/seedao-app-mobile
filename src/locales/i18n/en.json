@@ -391,6 +391,14 @@
     "MyInuseCount": "当前在借 {{num}} 笔",
     "OverdueCount": "已逾期 {{num}} 笔",
     "LatestRepayDate": "最近还款日",
-    "RepayTip": "逾期未还，$SCR 将被罚没至社区金库"
+    "RepayTip": "逾期未还，$SCR 将被罚没至社区金库",
+    "Details": "详情 >>",
+    "VaultBorrowingsQuota": "社区总借款额度（USDT）",
+    "ClearCount": "已结清 {{num}} 笔",
+    "BorrowCount": "已借出 {{num}} 笔",
+    "BorrowingsState": "社区借款状态",
+    "TotalForfeit": "已罚没质押物",
+    "MyBorrowingsRecord": "我的借款记录",
+    "AllBorrowingsRecord": "社区借款记录"
   }
 }

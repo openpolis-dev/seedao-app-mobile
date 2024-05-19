@@ -1,26 +1,40 @@
 import styled from "styled-components";
 import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
-import { useEffect, useMemo, useState } from "react";
-import MyBorrowings from "./mine";
+import { useState } from "react";
+import MyBorrowings, { BlockTitle } from "./mine";
+import VaultBorrows from "./vault";
+import FilterIcon from "assets/Imgs/credit/filters.svg";
 
-const CreditTabs = () => {
+const CreditTabs = ({ tab, onChange }) => {
   const { t } = useTranslation();
   return (
     <CreditTabsStyle>
-      <div>{t("Credit.MyBorrowings")}</div>
+      <div onClick={() => onChange("mine")} className={tab === "mine" ? "active" : ""}>
+        {t("Credit.MyBorrowings")}
+      </div>
       <span className="line"></span>
-      <div>{t("Credit.VaultBorrowings")}</div>
+      <div onClick={() => onChange("all")} className={tab === "all" ? "active" : ""}>
+        {t("Credit.VaultBorrowings")}
+      </div>
     </CreditTabsStyle>
   );
 };
 
 export default function CreditPage() {
   const { t } = useTranslation();
+  const [tab, setTab] = useState("mine");
+
+  const title = tab === "all" ? t("Credit.AllBorrowingsRecord") : t("Credit.MyBorrowingsRecord");
   return (
-    <Layout title={t("Credit.Title")} customTab={<CreditTabs />} bgColor="#F5F7FA">
+    <Layout title={t("Credit.Title")} customTab={<CreditTabs tab={tab} onChange={setTab} />} bgColor="#F5F7FA">
       <LayoutContainer>
-        <MyBorrowings />
+        {tab === "mine" && <MyBorrowings />}
+        {tab === "all" && <VaultBorrows />}
+        <RecordTitle>
+          <span>{title}</span>
+          <img src={FilterIcon} alt="" />
+        </RecordTitle>
       </LayoutContainer>
     </Layout>
   );
@@ -59,5 +73,11 @@ const CreditTabsStyle = styled.div`
 `;
 
 const LayoutContainer = styled.div`
-  padding-inline: 20px;
+  padding: 30px 20px 0;
+`;
+
+const RecordTitle = styled(BlockTitle)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
