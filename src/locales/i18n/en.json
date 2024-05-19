@@ -399,6 +399,12 @@
     "BorrowingsState": "社区借款状态",
     "TotalForfeit": "已罚没质押物",
     "MyBorrowingsRecord": "我的借款记录",
-    "AllBorrowingsRecord": "社区借款记录"
+    "AllBorrowingsRecord": "社区借款记录",
+    "RecordOverdue": "已逾期",
+    "RecordClear": "已结清",
+    "RecordInUse": "使用中",
+    "CheckMore": "查看详情",
+    "BorrowId": "借款ID",
+    "Borrower": "借款人"
   }
 }

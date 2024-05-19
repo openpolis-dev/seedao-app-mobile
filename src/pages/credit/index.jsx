@@ -5,6 +5,7 @@ import { useState } from "react";
 import MyBorrowings, { BlockTitle } from "./mine";
 import VaultBorrows from "./vault";
 import FilterIcon from "assets/Imgs/credit/filters.svg";
+import CreditRecords from "./records";
 
 const CreditTabs = ({ tab, onChange }) => {
   const { t } = useTranslation();
@@ -35,6 +36,7 @@ export default function CreditPage() {
           <span>{title}</span>
           <img src={FilterIcon} alt="" />
         </RecordTitle>
+        <CreditRecords />
       </LayoutContainer>
     </Layout>
   );
