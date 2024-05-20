@@ -453,10 +453,13 @@
     "RepayStepButton3": "签名确认还款",
     "RepayStepButton4": "查看我的还款记录",
     "NeedForfeit": "您需质押",
-    "RateAmount": "日利率（单利） {{rate}}‰，预计每日产生利息 {{amount}} USDT",
+    "RateAmount": "日利率（单利） {{rate}}‰",
+    "RateAmount2": "预计每日产生利息 {{amount}} USDT",
     "ForfeitTip": "质押的 $SCR 将从您的钱包中扣除",
     "BorrowTip1": "借款期限最长为 30 日，30 日内随时可还款。逾期未还，您的 $SCR 将被罚没至社区金库！",
     "BorrowTip2": "*利息及借款期限按北京时间（UTC+8）自然日计算",
-    "BorrowTip3": "签名前，需要先授权合约使用您的SCR"
+    "BorrowTip3": "签名前，需要先授权合约使用您的SCR",
+    "BorrowAmount": "借款金额",
+    "MaxBorrow": "最大金额"
   }
 }

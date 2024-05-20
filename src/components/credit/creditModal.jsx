@@ -20,7 +20,7 @@ const CreditModalModal = styled.div`
 
 const CreditModalMask = styled.div`
   position: absolute;
-  background: rgba(244, 244, 248, 0.9);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(10px);
   left: 0;
@@ -38,7 +38,6 @@ const CreditModalModalContent = styled.div`
   bottom: 0;
   width: 100%;
   padding-top: 20px;
-  text-align: center;
   padding-inline: 24px;
   padding-bottom: 29px;
   box-sizing: border-box;
