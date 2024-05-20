@@ -405,6 +405,14 @@
     "RecordInUse": "使用中",
     "CheckMore": "查看详情",
     "BorrowId": "借款ID",
-    "Borrower": "借款人"
+    "Borrower": "借款人",
+    "FilterTimeLatest": "Time: Most Recent",
+    "FilterTimeEarliest": "Time: Earliest",
+    "FilterAmountFromLarge": "Amount: High to Low",
+    "FilterAmountFromSmall": "Amount: Low to High",
+    "FilterStatusInUse": "Status: In Use",
+    "FilterStatusOverdue": "Status: Overdue",
+    "FilterStatusClear": "Status: Cleared",
+    "FilterAll": "All"
   }
 }

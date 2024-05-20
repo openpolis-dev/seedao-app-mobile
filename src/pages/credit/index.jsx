@@ -2,9 +2,8 @@ import styled from "styled-components";
 import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import MyBorrowings, { BlockTitle } from "./mine";
+import MyBorrowings from "./mine";
 import VaultBorrows from "./vault";
-import FilterIcon from "assets/Imgs/credit/filters.svg";
 import CreditRecords from "./records";
 
 const CreditTabs = ({ tab, onChange }) => {
@@ -32,11 +31,8 @@ export default function CreditPage() {
       <LayoutContainer>
         {tab === "mine" && <MyBorrowings />}
         {tab === "all" && <VaultBorrows />}
-        <RecordTitle>
-          <span>{title}</span>
-          <img src={FilterIcon} alt="" />
-        </RecordTitle>
-        <CreditRecords />
+
+        <CreditRecords title={title} />
       </LayoutContainer>
     </Layout>
   );
@@ -76,10 +72,4 @@ const CreditTabsStyle = styled.div`
 
 const LayoutContainer = styled.div`
   padding: 30px 20px 0;
-`;
-
-const RecordTitle = styled(BlockTitle)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 `;
