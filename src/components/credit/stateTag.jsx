@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import {CreditRecordStatus} from "constant/credit"
+import { CreditRecordStatus } from "constant/credit";
 
 export default function StateTag({ state, strong }) {
   const { t } = useTranslation();
@@ -26,9 +26,16 @@ export default function StateTag({ state, strong }) {
     default:
       text = "";
   }
+  if (strong) {
+    color = "#fff";
+  }
 
   return (
-    <StatusTagStyle $color={color} $bg={bg}>
+    <StatusTagStyle
+      $color={color}
+      $bg={bg}
+      style={{ fontSize: strong ? "14px" : "10px", lineHeight: strong ? "24px" : "16px", paddingInline: strong ? "8px" : "6px"}}
+    >
       {text}
     </StatusTagStyle>
   );
@@ -38,10 +45,6 @@ const StatusTagStyle = styled.div`
   background-color: ${(props) => props.$bg};
   color: ${(props) => props.$color};
   display: inline-block;
-  height: 16px;
-  line-height: 16px;
   text-align: center;
-  font-size: 10px;
   border-radius: 5px;
-  padding-inline: 6px;
 `;

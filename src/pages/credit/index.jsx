@@ -25,14 +25,13 @@ export default function CreditPage() {
   const { t } = useTranslation();
   const [tab, setTab] = useState("mine");
 
-  const title = tab === "all" ? t("Credit.AllBorrowingsRecord") : t("Credit.MyBorrowingsRecord");
   return (
     <Layout title={t("Credit.Title")} customTab={<CreditTabs tab={tab} onChange={setTab} />} bgColor="#F5F7FA">
       <LayoutContainer>
         {tab === "mine" && <MyBorrowings />}
         {tab === "all" && <VaultBorrows />}
 
-        <CreditRecords title={title} />
+        <CreditRecords tab={tab} />
       </LayoutContainer>
     </Layout>
   );

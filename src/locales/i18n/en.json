@@ -454,6 +454,21 @@
     "CurrentBorrowDays": "已借时长",
     "ReturnForfeit": "退回质押物",
     "BorrowTime": "Borrow Time",
-    "Interest": "Interest"
+    "Interest": "Interest",
+    "Records": "Record Details",
+    "BorrowName": "Borrower",
+    "BorrowHash": "Borrow Tx Hash",
+    "Forfeit": "Collateral",
+    "Rate": "Interest Rate",
+    "BorrowDuration": "Borrow Duration",
+    "LastRepaymentTime": "Last Repayment Time",
+    "DayRate01": "Daily interest rate (simple interest) {{rate}}‰",
+    "RepayRecord": "Repayment Record",
+    "TotalRepay": "Total Repayment",
+    "Principal": "Principal",
+    "RepayTime": "Repayment Time",
+    "RepayHash": "Repayment Transaction Hash",
+    "ForfeitRepay": "Collateral Returned",
+    "Days": "{{days}} day(s)"
   }
 }

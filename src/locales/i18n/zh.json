@@ -468,6 +468,21 @@
     "CurrentBorrowDays": "已借时长",
     "ReturnForfeit": "退回质押物",
     "BorrowTime": "借款时间",
-    "Interest": "利息"
+    "Interest": "利息",
+    "Records": "借款记录",
+    "BorrowName": "借款人",
+    "BorrowHash": "借款交易hash",
+    "Forfeit": "质押物",
+    "Rate": "利率",
+    "BorrowDuration": "已借款时长",
+    "LastRepaymentTime": "最晚还款时间",
+    "DayRate01": "日利率（单利） {{rate}}‰",
+    "RepayRecord": "还款记录",
+    "TotalRepay": "合计还款",
+    "Principal": "本金",
+    "RepayTime": "还款时间",
+    "RepayHash": "还款交易hash",
+    "ForfeitRepay": "质押物退还",
+    "Days": "{{days}}日"
   }
 }

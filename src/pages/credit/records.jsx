@@ -2,9 +2,17 @@ import styled from "styled-components";
 import StateTag from "components/credit/stateTag";
 import { CreditRecordStatus } from "constant/credit";
 import { useTranslation } from "react-i18next";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { BlockTitle } from "./mine";
 import FilterIcon from "assets/Imgs/credit/filters.svg";
+import { useNavigate } from "react-router-dom";
+import store from "../../store";
+import { saveLoading } from "../../store/reducer";
+import { useSelector } from "react-redux";
+import { getBorrowList } from "api/credit";
+import InfiniteScroll from "react-infinite-scroll-component";
+import useQuerySNS from "hooks/useQuerySNS";
+import publicJs from "utils/publicJs";
 
 const FILTER_OPTIONS = [
   [
@@ -23,41 +31,116 @@ const FILTER_OPTIONS = [
   ],
 ];
 
-export default function CreditRecords({ title }) {
+export default function CreditRecords({ tab }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const title = tab === "all" ? t("Credit.AllBorrowingsRecord") : t("Credit.MyBorrowingsRecord");
+
+  const account = useSelector((state) => state.account);
+  const snsMap = useSelector((state) => state.snsMap);
+
   const [showFiltersModal, setShowFiltersModal] = useState(false);
   const handleCloseModal = () => setShowFiltersModal(false);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [list, setList] = useState([]);
+
+  const { getMultiSNS } = useQuerySNS();
+
   // filter
   const [selectValue, setSeletValue] = useState(FILTER_OPTIONS[0][0].value);
   const handleSelect = (v) => {
     setSeletValue(v);
   };
+  const go2detail = (data) => {
+    // navigate(`/credit/record/${data.lendId}`, { state: data });
+    navigate(`/credit/record/25`, { state: data });
+  };
+
+  const formatSNS = (wallet) => {
+    const sns = snsMap[wallet.toLocaleLowerCase()] || wallet;
+    return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns);
+  };
+
+  const getRecords = (init) => {
+    const _page = init ? 1 : page;
+    store.dispatch(saveLoading(true));
+    const params = {
+      page: _page,
+      size: 10,
+    };
+    if (selectValue) {
+      const [field, v] = selectValue.split(";");
+      if (field === "lendStatus") {
+        params.lendStatus = Number(v);
+      } else if (field !== "all") {
+        params.sortField = field;
+        params.sortOrder = v;
+      }
+    }
+    if (tab === "mine" && account) {
+      params.debtor = account;
+    }
+    getBorrowList(params)
+      .then((r) => {
+        setTotal(r.total);
+        setList(init ? r.data : [...list, ...r.data]);
+
+        const _wallets = r.data.map((item) => item.debtor);
+        getMultiSNS(Array.from(_wallets));
+
+        // handleSNS(Array.from(_wallets));
+        setPage(_page + 1);
+      })
+      .finally(() => {
+        store.dispatch(saveLoading(false));
+      });
+  };
+
+  const hasMore = useMemo(() => {
+    return list.length < total;
+  }, [total, list]);
+
+  useEffect(() => {
+    getRecords();
+  }, []);
+
   return (
     <>
       <RecordTitle>
         <span>{title}</span>
         <img src={FilterIcon} alt="" onClick={() => setShowFiltersModal(true)} />
       </RecordTitle>
-      <RecordsList>
-        {Array.from({ length: 10 }).map((_, index) => (
-          <RecordItem key={index}>
-            <RecordContentLine>
-              <div className="values">
-                <span>1,000.00 USDT</span>
-                <StateTag state={CreditRecordStatus.INUSE} />
-              </div>
-              <MoreButton>{t("Credit.CheckMore")}</MoreButton>
-            </RecordContentLine>
-            <RecordContentLine className="content">
-              <span>{t("Credit.BorrowID")}: 80001</span>
-              <span>2021-09-21 14:00:00</span>
-            </RecordContentLine>
-            <RecordContentLine className="content">
-              <span>{t("Credit.Borrower")}: AA.seedao</span>
-            </RecordContentLine>
-          </RecordItem>
-        ))}
-      </RecordsList>
+      <InfiniteScroll scrollableTarget="inner" dataLength={list.length} next={getRecords} hasMore={hasMore}>
+        <RecordsList>
+          {list.map((item, index) => (
+            <RecordItem key={index} onClick={() => go2detail(item)}>
+              <RecordContentLine>
+                <div className="values">
+                  <span>{item.borrowAmount.format()} USDT</span>
+                  <StateTag state={item.status} />
+                </div>
+                <MoreButton>{t("Credit.CheckMore")}</MoreButton>
+              </RecordContentLine>
+              <RecordContentLine className="content">
+                <span>
+                  {t("Credit.BorrowID")}: {item.lendIdDisplay}
+                </span>
+                <span>{item.borrowTime}</span>
+              </RecordContentLine>
+              {tab !== "mine" && (
+                <RecordContentLine className="content">
+                  <span>
+                    {t("Credit.Borrower")}: {formatSNS(item.debtor)}
+                  </span>
+                </RecordContentLine>
+              )}
+            </RecordItem>
+          ))}
+        </RecordsList>
+      </InfiniteScroll>
+
       {showFiltersModal && (
         <Modal onClick={handleCloseModal}>
           <FilterMask>
@@ -119,6 +202,7 @@ const RecordContentLine = styled.div`
   &.content {
     color: #718ebf;
     font-size: 12px;
+    line-height: 22px;
   }
 `;
 
