@@ -49,7 +49,7 @@ export default function CreditRecords({ title }) {
               <MoreButton>{t("Credit.CheckMore")}</MoreButton>
             </RecordContentLine>
             <RecordContentLine className="content">
-              <span>{t("Credit.BorrowId")}: 80001</span>
+              <span>{t("Credit.BorrowID")}: 80001</span>
               <span>2021-09-21 14:00:00</span>
             </RecordContentLine>
             <RecordContentLine className="content">

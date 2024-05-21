@@ -404,7 +404,7 @@
     "RecordClear": "已结清",
     "RecordInUse": "使用中",
     "CheckMore": "查看详情",
-    "BorrowId": "借款ID",
+    "BorrowID": "借款ID",
     "Borrower": "借款人",
     "FilterTimeLatest": "Time: Most Recent",
     "FilterTimeEarliest": "Time: Earliest",
@@ -441,11 +441,19 @@
     "NeedForfeit": "You need to pledge",
     "RateAmount": "Daily interest rate (simple interest) {{rate}}%",
     "RateAmount2": "expected daily interest generated {{amount}} USDT",
+    "RateAmount3": "日利率（单利)",
     "ForfeitTip": "The pledged $SCR will be deducted from your wallet",
     "BorrowTip1": "The maximum loan term is 30 days, and you can repay at any time within 30 days. If you are overdue, your $SCR will be forfeited to the community treasury!",
     "BorrowTip2": "*Interest and loan term are calculated based on Beijing time (UTC+8) natural days",
     "BorrowTip3": "Before signing, you need to authorize the contract to use your SCR",
     "BorrowAmount": "Loan amount",
-    "MaxBorrow": "Max"
+    "MaxBorrow": "Max",
+    "ShouldRepay": "Total repayable",
+    "TotalInterest": "Total interest",
+    "BorrowPrincipal": "借款本金",
+    "CurrentBorrowDays": "已借时长",
+    "ReturnForfeit": "退回质押物",
+    "BorrowTime": "Borrow Time",
+    "Interest": "Interest"
   }
 }

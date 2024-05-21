@@ -40,6 +40,17 @@ const LOCAL = {
       },
     ],
     whitelistId: 0,
+    SCRContract: { address: "0xdC907cd32Bc3D6bb2c63Ede4E28c3fAcdd1d5189", decimals: 18 },
+    lend: {
+      : 5000,
+      bondNFTContract: "0x04053dC2B8EFf181Dff6aaCB095fCab92c05Bbdc",
+      scoreLendContract: "0x6a5552112bB3b3e0AbF3c675c9819CAc805806F0",
+      lendToken: {
+        address: "0xca152522f26811fF8FcAf967d4040F7C6BbF8eaA",
+        decimals: 6,
+        symbol: "USDT",
+      },
+    },
   },
   INDEXER_ENDPOINT: "https://test-spp-indexer.seedao.tech",
   SENDINGME_ENABLE: true,

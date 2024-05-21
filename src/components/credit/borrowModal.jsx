@@ -15,8 +15,12 @@ export default function BorrowModal() {
 
   const [calculating, setCalculating] = useState(false);
 
-  const checkApprove = () => {};
-  const checkBorrow = () => {};
+  const checkApprove = () => {
+    setStep((s) => s + 1);
+  };
+  const checkBorrow = () => {
+    setStep((s) => s + 1);
+  };
   const checkMine = () => {};
 
   const steps = [
@@ -136,7 +140,7 @@ export default function BorrowModal() {
           </BorrowContent>
         )}
         <ConfirmBox>
-          {step === 0 && <LineTip>{t("Credit.BorrowTip3")}</LineTip>}
+          <LineTip style={{ visibility: step === 0 ? "visible" : "hidden" }}>{t("Credit.BorrowTip3")}</LineTip>
           {steps[step].button}
         </ConfirmBox>
       </ContentStyle>
@@ -243,9 +247,8 @@ const BorrowTips = styled.div`
 `;
 
 const FinishContent = styled.div`
-  height: 200px;
   text-align: center;
-  line-height: 200px;
+  line-height: 160px;
   font-size: 24px;
   font-family: Inter-SemiBold;
   font-weight: 600;
