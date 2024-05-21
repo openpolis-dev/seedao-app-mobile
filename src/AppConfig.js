@@ -10,7 +10,7 @@ const AppConfig = {
     url: window.location.origin,
   },
   privacy: 'https://taoist-labs.github.io/privacy-policy/index.html',
-  SCR_CONTRACT: '0xc74dee15a4700d5df797bdd3982ee649a3bb8c6c',
+  SCR_CONTRACT: '0xE4825A1a31a76f72befa47f7160B132AA03813E0',
   XAPIKEY: '3zrxnAwBgp72veeonB8KW2fa',
   deschool: 'https://deschool.app/origin/learn',
   OneSignalAppID: '2ba5cc16-6973-4361-864f-2a2c08aa383e',
