@@ -11,7 +11,7 @@ import { ethers } from "ethers";
 import getConfig from "constant/envCofnig";
 import useToast from "hooks/useToast";
 import useCreditTransaction, { buildBorrowData } from "hooks/useCreditTransaction";
-import parseError from "pages/sns/parseError";
+import parseError from "./parseError";
 const networkConfig = getConfig().NETWORK;
 
 export default function BorrowModal({ handleClose }) {
@@ -66,7 +66,7 @@ export default function BorrowModal({ handleClose }) {
     try {
       setLoading(t("Credit.WaitingTx"));
       // send borrow tx
-      await handleTransaction(buildBorrowData(inputNum), networkConfig.lend.scoreLendContract, "");
+      await handleTransaction(buildBorrowData(inputNum), networkConfig.lend.scoreLendContract, "credit-borrow");
       setStep(2);
     } catch (error) {
       logError("[borrow]", error);
