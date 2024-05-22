@@ -312,6 +312,34 @@ export default function ProjectInner({ id }) {
       store.dispatch(saveLoading(true));
       try {
         const data = await getProjectById(id);
+
+
+        const { budgets } = data.data;
+
+        let total = [];
+        let ratio = [];
+        let paid= [];
+        let remainAmount = [];
+        let prepayTotal = [];
+        let prepayRemain = [];
+
+        budgets?.map((item) => {
+          console.log(item);
+          total.push(`${item.total_amount} ${item.asset_name}`);
+          ratio.push(`${item.advance_ratio * 100}% ${item.asset_name}`);
+          paid.push(`${item.used_advance_amount} ${item.asset_name}`);
+          remainAmount.push(`${item.remain_amount} ${item.asset_name}`);
+          prepayTotal.push(`${item.total_advance_amount} ${item.asset_name}`);
+          prepayRemain.push(`${item.remain_advance_amount} ${item.asset_name}`);
+        });
+
+        data.data.total = total.join(',');
+        data.data.ratio = ratio.join(',');
+        data.data.paid = paid.join(',');
+        data.data.remainAmount = remainAmount.join(',');
+        data.data.prepayTotal = prepayTotal.join(',');
+        data.data.prepayRemain = prepayRemain.join(',');
+
         setData(data.data);
       } catch (error) {
         logError(error);
@@ -378,136 +406,156 @@ export default function ProjectInner({ id }) {
       </FlexBox>
 
       <DescBox>
-        <div className="title">项目简介</div>
+        <div className="title">{t("Project.Intro")}</div>
         <Desc>{data?.desc}</Desc>
       </DescBox>
       <LineBox>
-        <div className="title">项目负责人</div>
+        <div className="title">{t("Project.Moderator")}</div>
         <div className="content">
           <ProjectMember data={data} />
         </div>
       </LineBox>
 
       <LineBox>
-        <div className="title">立项信息</div>
+        <div className="title">{t('Project.projectproposalInfo')}</div>
         <ul className="content">
           <dl>
-            <dt>立项提案链接</dt>
-            <dd><a href="#">点击查看</a></dd>
+            <dt>{t('Project.StartProjectLink')}</dt>
+
+            <dd>{data?.ApprovalLink && (
+                <Link to={data?.ApprovalLink} target="_blank">
+                  {t('Project.ClickToView')}
+                </Link>
+            )}
+            </dd>
+
+            {/*<dd><a href="#">{t('Project.ClickToView')}</a></dd>*/}
           </dl>
           <dl>
-            <dt>项目预算</dt>
-            <dd>10000 SCR, 1000 USDT</dd>
+            <dt>{t('Project.Budget')}</dt>
+            <dd> {data?.total}</dd>
           </dl>
           <dl>
-            <dt>计划完成时限</dt>
-            <dd>2024-08-07</dd>
+            <dt>{t('Project.PlanFinishTime')}</dt>
+            <dd>{formatDate(data?.PlanTime)}</dd>
           </dl>
           <dl className="colLine">
-            <dt>交付物</dt>
-            <dd className="intro">文档10-篇，公众号文章20篇，播客10篇，文档10-篇公众号文章20篇</dd>
+            <dt>{t('Project.Deliverables')}</dt>
+            <dd>{data?.Deliverable}</dd>
           </dl>
         </ul>
       </LineBox>
 
       <LineBox>
-        <div className="title">项目预算使用情况</div>
+        <div className="title">{t('Project.budgetUtil')}</div>
         <div className="content">
           <dl>
-            <dt>项目预算</dt>
-            <dd>10000 SCR, 1000 USDT</dd>
+            <dt>{t('Project.projectBudget')}</dt>
+            <dd> {data?.total}</dd>
           </dl>
           <dl>
-            <dt>预付比例</dt>
-            <dd>50%</dd>
+            <dt>{t('Project.PrepayRatio')}</dt>
+            <dd>{data?.ratio}</dd>
           </dl>
           <dl>
-            <dt>可预支数额</dt>
-            <dd>10000 SCR, 1000 USDT</dd>
+            <dt>{t('Project.AvailableAmount')}</dt>
+            <dd>{data?.prepayTotal}</dd>
           </dl>
           <dl>
-            <dt>当前已预支</dt>
-            <dd>10000 SCR, 1000 USDT</dd>
+            <dt>{t('Project.CurrentlyPrepaid')}</dt>
+            <dd>{data?.paid}</dd>
           </dl>
           <dl>
-            <dt>预算余额</dt>
-            <dd>10000 SCR, 1000 USDT</dd>
+            <dt>{t('Project.BudgetBalance')}</dt>
+            <dd>{data?.remainAmount}</dd>
           </dl>
           <dl>
-            <dt>可预支余额</dt>
-            <dd>10000 SCR, 1000 USDT</dd>
+            <dt>{t('Project.AvailableBalance')}</dt>
+            <dd>{data?.prepayRemain}</dd>
           </dl>
         </div>
       </LineBox>
       <LineBox>
-        <div className="title">结项信息</div>
+        <div className="title">{t('Project.CompletionInformation')}</div>
         <div className="content">
           <dl>
-            <dt>结项提案链接</dt>
-            <dd><Link to="/project/budget/22">点击查看</Link></dd>
+            <dt>{t('Project.EndProjectLink')}</dt>
+            <dd>{data?.OverLink && (
+                <Link to={data?.OverLink} target="_blank">
+                  {t('Project.ClickToView')}
+                </Link>
+            )}
+            </dd>
           </dl>
         </div>
 
       </LineBox>
 
       <LineBox>
-        <div className="title">项目官方链接</div>
-        <div className="contentBtm">项目暂无官方链接~</div>
+        <div className="title">{t('Project.OfficialLink')}</div>
+        <div className="contentBtm">
+          {!data?.OfficialLink && <span>{t('Project.officialTips')}</span>}
+          {!!data?.OfficialLink && (
+              <a href={data?.OfficialLink} target="_blank" rel="noreferrer">
+                {data?.OfficialLink}
+              </a>
+          )}
+          ~</div>
       </LineBox>
 
 
       {/*<DescBox>{data?.desc}</DescBox>*/}
 
-      <MainBox>
-        {data?.OfficialLink && (
-          <a href={data?.OfficialLink} target="_blank" rel="noreferrer">
-            <Abox>{t("Project.viewMore")} &gt;&gt;</Abox>
-          </a>
-        )}
+      {/*<MainBox>*/}
+      {/*  {data?.OfficialLink && (*/}
+      {/*    <a href={data?.OfficialLink} target="_blank" rel="noreferrer">*/}
+      {/*      <Abox>{t("Project.viewMore")} &gt;&gt;</Abox>*/}
+      {/*    </a>*/}
+      {/*  )}*/}
 
 
-        <BtmBox>
-          <FlexBtnBox>
-            {data?.ApprovalLink && (
-              <Link to={data?.ApprovalLink} target="_blank">
-                <BtnBox>
-                  <span>{t("Project.StartProjectLink")}</span> <img src={LinkImg} alt="" />
-                </BtnBox>
-              </Link>
-            )}
-            {data?.OverLink && (
-              <Link to={data?.OverLink} target="_blank">
-                <BtnBox>
-                  <span>{t("Project.EndProjectLink")}</span> <img src={LinkImg} alt="" />
-                </BtnBox>
-              </Link>
-            )}
-          </FlexBtnBox>
-          <DlBox>
-            <dl>
-              <dt>{t("Project.Budget")}</dt>
-              <dd>
-                {formatBudget(data?.Budgets)?.map((i, index) => (
-                  <FlexBoxBg key={`budget_${index}`}>
-                    <span>{i.name}</span>
-                  </FlexBoxBg>
-                ))}
-              </dd>
-            </dl>
-            <dl>
-              <dt>{t("Project.Deliverables")}</dt>
-              {/*<dd>{data?.Deliverable}</dd>*/}
-              <dd>
-                <ReactQuill theme="snow" value={data?.Deliverable} modules={{ toolbar: false }} readOnly={true} />
-              </dd>
-            </dl>
-            <dl>
-              <dt>{t("Project.PlanFinishTime")}</dt>
-              <dd>{formatDate(data?.PlanTime)}</dd>
-            </dl>
-          </DlBox>
-        </BtmBox>
-      </MainBox>
+      {/*  <BtmBox>*/}
+      {/*    <FlexBtnBox>*/}
+      {/*      {data?.ApprovalLink && (*/}
+      {/*        <Link to={data?.ApprovalLink} target="_blank">*/}
+      {/*          <BtnBox>*/}
+      {/*            <span>{t("Project.StartProjectLink")}</span> <img src={LinkImg} alt="" />*/}
+      {/*          </BtnBox>*/}
+      {/*        </Link>*/}
+      {/*      )}*/}
+      {/*      {data?.OverLink && (*/}
+      {/*        <Link to={data?.OverLink} target="_blank">*/}
+      {/*          <BtnBox>*/}
+      {/*            <span>{t("Project.EndProjectLink")}</span> <img src={LinkImg} alt="" />*/}
+      {/*          </BtnBox>*/}
+      {/*        </Link>*/}
+      {/*      )}*/}
+      {/*    </FlexBtnBox>*/}
+      {/*    <DlBox>*/}
+      {/*      <dl>*/}
+      {/*        <dt>{t("Project.Budget")}</dt>*/}
+      {/*        <dd>*/}
+      {/*          {formatBudget(data?.Budgets)?.map((i, index) => (*/}
+      {/*            <FlexBoxBg key={`budget_${index}`}>*/}
+      {/*              <span>{i.name}</span>*/}
+      {/*            </FlexBoxBg>*/}
+      {/*          ))}*/}
+      {/*        </dd>*/}
+      {/*      </dl>*/}
+      {/*      <dl>*/}
+      {/*        <dt>{t("Project.Deliverables")}</dt>*/}
+      {/*        /!*<dd>{data?.Deliverable}</dd>*!/*/}
+      {/*        <dd>*/}
+      {/*          <ReactQuill theme="snow" value={data?.Deliverable} modules={{ toolbar: false }} readOnly={true} />*/}
+      {/*        </dd>*/}
+      {/*      </dl>*/}
+      {/*      <dl>*/}
+      {/*        <dt>{t("Project.PlanFinishTime")}</dt>*/}
+      {/*        <dd>{formatDate(data?.PlanTime)}</dd>*/}
+      {/*      </dl>*/}
+      {/*    </DlBox>*/}
+      {/*  </BtmBox>*/}
+      {/*</MainBox>*/}
 
       {/*<ProposalsBox>*/}
       {/*    {data?.proposals?.map((item, index) => (*/}

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+import { getProposalDetail } from "api/proposalV2";
 
 const Box = styled.div`
     border-top: 1px solid rgba(217, 217, 217, 0.5);
@@ -65,8 +66,51 @@ const LineBox = styled.div`
 
 export default function Budget({ id }) {
     const { t } = useTranslation();
-    const [data, setData] = useState();
+    const [detail, setDetail] = useState();
 
+    useEffect(()=>{
+        if(!id)return;
+        getDetail()
+    },[id])
+
+    const getDetail = async() =>{
+
+       const  res = await getProposalDetail(
+            Number(id)
+        );
+
+
+
+        const { associated_project_budgets: budgets } = res.data;
+
+        let data = {};
+
+        let total = [];
+        let ratio = [];
+        let paid = [];
+        let remainAmount = [];
+        let prepayTotal = [];
+        let prepayRemain = [];
+
+        budgets?.map((item) => {
+            total.push(`${item.total_amount} ${item.asset_name}`);
+            ratio.push(`${item.advance_ratio * 100}% ${item.asset_name}`);
+            paid.push(`${item.used_advance_amount} ${item.asset_name}`);
+            remainAmount.push(`${item.remain_amount} ${item.asset_name}`);
+            prepayTotal.push(`${item.total_advance_amount} ${item.asset_name}`);
+            prepayRemain.push(`${item.remain_advance_amount} ${item.asset_name}`);
+        });
+
+        data.total = total.join(',');
+        data.ratio = ratio.join(',');
+        data.paid = paid.join(',');
+        data.remainAmount = remainAmount.join(',');
+        data.prepayTotal = prepayTotal.join(',');
+        data.prepayRemain = prepayRemain.join(',');
+
+        setDetail(data);
+        
+    }
 
 
     return (
@@ -74,33 +118,33 @@ export default function Budget({ id }) {
 
             <LineBox>
                 <div className="title">
-                    <span>当前可申请资产</span>
+                    <span>{t('Project.CurrentAvailable')}</span>
                     <span>10000 SCR, 1000 USDT</span>
                 </div>
                 <div className="content">
                     <dl>
-                        <dt>项目预算</dt>
-                        <dd>10000 SCR, 1000 USDT</dd>
+                        <dt>{t('Project.projectBudget')}</dt>
+                        <dd> {detail?.total}</dd>
                     </dl>
                     <dl>
-                        <dt>预付比例</dt>
-                        <dd>50%</dd>
+                        <dt>{t('Project.PrepayRatio')}</dt>
+                        <dd>{detail?.ratio}</dd>
                     </dl>
                     <dl>
-                        <dt>可预支数额</dt>
-                        <dd>10000 SCR, 1000 USDT</dd>
+                        <dt>{t('Project.AvailableAmount')}</dt>
+                        <dd> {detail?.prepayTotal}</dd>
                     </dl>
                     <dl>
-                        <dt>当前已预支</dt>
-                        <dd>10000 SCR, 1000 USDT</dd>
+                        <dt>{t('Project.CurrentlyPrepaid')}</dt>
+                        <dd>{detail?.paid}</dd>
                     </dl>
                     <dl>
-                        <dt>预算余额</dt>
-                        <dd>10000 SCR, 1000 USDT</dd>
+                        <dt>{t('Project.BudgetBalance')}</dt>
+                        <dd>{detail?.remainAmount}</dd>
                     </dl>
                     <dl>
-                        <dt>可预支余额</dt>
-                        <dd>10000 SCR, 1000 USDT</dd>
+                        <dt>{t('Project.AvailableBalance')}</dt>
+                        <dd>{detail?.prepayRemain}</dd>
                     </dl>
                 </div>
             </LineBox>

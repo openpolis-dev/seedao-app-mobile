@@ -77,7 +77,7 @@
     "AllProjects": "所有项目",
     "JoinedProjects": "已加入",
     "Members": "项目成员",
-    "Intro": "项目介绍",
+    "Intro": "项目简介",
     "Detail": "项目详情",
     "OfficialLink": "项目官方链接",
     "Deliverables": "交付物",
@@ -92,7 +92,21 @@
     "PlanFinishTime": "计划完成时限",
     "Budget": "项目预算",
     "Moderator": "项目负责人",
-    "viewMore": "查看更多项目详情"
+    "viewMore": "查看更多项目详情",
+    "projectproposalInfo": "立项信息",
+    "budgetUtil": "项目预算使用情况",
+    "projectBudget": "项目预算",
+    "PrepayRatio": "预付比例",
+    "AvailableAmount": "总可预支",
+    "CurrentlyPrepaid": "当前已预支",
+    "BudgetBalance": "预算余额",
+    "AvailableBalance": "可预支余额",
+    "CompletionInformation": "结项信息",
+    "introTips": "该项目未填写项目简介～",
+    "officialTips": "该项目未填写官方链接～",
+    "ClickToView": "点击查看",
+    "CurrentAvailable": "当前可以申请资产"
+
   },
   "home": {
     "title": "城邦日历",

@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import useProposalCategories from "hooks/useProposalCategories";
 import { formatDeltaDate } from "utils/time";
 import { getProposalSIPSlug } from "utils";
+import { Link } from "react-router-dom";
 
 export default function ProposalThread() {
   const { id } = useParams();
@@ -351,6 +352,12 @@ export default function ProposalThread() {
             <div className="title">{componentName || t("Proposal.proposalComponents")}</div>
           </ComponnentBox>
         )}
+        {componentName === '激励申请表' && <ViewMore>
+          <div>{t('Project.budgetUtil')}</div>
+          <div>
+            <Link to={`/project/thread/${data?.id}/budget`}> {t('Project.ClickToView')}</Link></div>
+        </ViewMore>
+        }
         <PreviewMobie
           DataSource={dataSource}
           language={i18n.language.indexOf("zh") > -1 ? "zh" : "en"}
@@ -382,6 +389,19 @@ export default function ProposalThread() {
     </Layout>
   );
 }
+const ViewMore = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  margin:10px 15px;
+  background: #f5f5f5;
+  padding: 10px 5px;
+  border-radius: 4px;
+  a{
+    color: var(--primary-color);
+  }
+`
 
 const RejectBlock = styled.div`
   border-radius: 8px;
