@@ -59,7 +59,11 @@ const VaultCard = () => {
         <div className="tip" style={{ marginTop: "8px" }}>
           {t("Credit.MyBorrowingTip1")}
         </div>
-        <div className="tip" style={{ marginBottom: "18px" }}>
+        <div
+          className="tip"
+          style={{ marginBottom: "18px" }}
+          onClick={() => window.open("https://app.seedao.xyz/proposal/thread/55", "_blank")}
+        >
           {t("Credit.Details")}
         </div>
         <div className="vault" style={{ visibility: "hidden" }}>
