@@ -18,8 +18,61 @@ import { erc20ABI } from "wagmi";
 import { ethers } from "ethers";
 import { getBorrowList } from "api/credit";
 import { CreditRecordStatus } from "constant/credit";
+import store from "store";
+import { saveLoading } from "store/reducer";
+import useToast from "hooks/useToast";
 
 const networkConfig = getConfig().NETWORK;
+
+const BorrowAndRepay = () => {
+  const { t } = useTranslation();
+
+  const {
+    state: { scoreLendContract },
+  } = useCreditContext();
+  const { toast, Toast } = useToast();
+  const account = useSelector((state) => state.account);
+
+  const [showModal, setShowModal] = useState("");
+  const [showItemsModal, setShowItemsModal] = useState("");
+
+  const go2Borrow = () => {
+    store.dispatch(saveLoading(true));
+    scoreLendContract
+      .userIsInBorrowCooldownPeriod(account)
+      .then((r) => {
+        if (r.isIn) {
+          toast.danger(t("Credit.BorrowCooldownMsg"));
+        } else {
+          setShowItemsModal("");
+          setShowModal("borrow");
+        }
+      })
+      .finally(() => {
+        store.dispatch(saveLoading(false));
+      });
+  };
+  const go2Repay = () => {
+    setShowItemsModal("");
+    setShowModal("repay");
+  };
+
+  return (
+    <OperateBox>
+      <OperateItem className="borrow" onClick={() => setShowItemsModal("borrow")}>
+        {t("Credit.GoToBorrow")}
+      </OperateItem>
+      <OperateItem onClick={() => setShowItemsModal("repay")}>{t("Credit.GoToRepay")}</OperateItem>
+      {showModal === "borrow" && <BorrowModal handleClose={() => setShowModal("")} />}
+      {showModal === "repay" && <RepayModal handleClose={() => setShowModal("")} />}
+      {showItemsModal === "borrow" && (
+        <BorrowItemsModal onConfirm={go2Borrow} handleClose={() => setShowItemsModal("")} />
+      )}
+      {showItemsModal === "repay" && <RepayItemsModal onConfirm={go2Repay} handleClose={() => setShowItemsModal("")} />}
+      {Toast}
+    </OperateBox>
+  );
+};
 
 export default function MyBorrowings() {
   const { t } = useTranslation();
@@ -132,10 +185,7 @@ export default function MyBorrowings() {
           <div className="value">{Number(myInuseAmount + myAvaliableQuota + myOverdueAmount).format()}</div>
         </div>
       </SubCardStyle>
-      <OperateBox>
-        <div className="borrow">{t("Credit.GoToBorrow")}</div>
-        <div>{t("Credit.GoToRepay")}</div>
-      </OperateBox>
+      <BorrowAndRepay />
       <BlockTitle>{t("Credit.MyBorrowingsState")}</BlockTitle>
       <StateBlock>
         <StateLine>
@@ -152,15 +202,13 @@ export default function MyBorrowings() {
             <div className="value">{myOverdueAmount.format()} USDT</div>
           </div>
         </StateLine>
-        <div className="repay-tip">{t("Credit.LatestRepayDate", { date: earlyDate })}</div>
+        <div className="repay-tip">
+          {myInUseCount > 0 ? t("Credit.LatestRepayDate", { date: earlyDate }) : t("Credit.NoDate")}
+        </div>
         <div className="repay-tip">
           {t("Credit.RepayTip")} <img src={TipIcon} alt="" />
         </div>
       </StateBlock>
-      {/* <BorrowItemsModal />
-      <BorrowModal />
-      <RepayItemsModal />
-      <RepayModal /> */}
     </>
   );
 }
@@ -237,20 +285,21 @@ const OperateBox = styled.div`
   display: flex;
   gap: 10px;
   margin-top: 20px;
-  > div {
-    flex: 1;
-    background-color: #fff;
-    color: #343c6a;
-    font-size: 15px;
-    font-weight: 500;
-    font-family: "Inter-Medium";
-    line-height: 48px;
-    border-radius: 10px;
-    text-align: center;
-    &.borrow {
-      background-color: #1814f3;
-      color: #fff;
-    }
+`;
+
+const OperateItem = styled.div`
+  flex: 1;
+  background-color: #fff;
+  color: #343c6a;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: "Inter-Medium";
+  line-height: 48px;
+  border-radius: 10px;
+  text-align: center;
+  &.borrow {
+    background-color: #1814f3;
+    color: #fff;
   }
 `;
 

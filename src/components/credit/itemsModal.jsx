@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import CreditButton from "./button";
 
-export default function ItemsModal({ title, steps, confirmText, onConfirm, handleClose, w }) {
+export default function ItemsModal({ title, steps, confirmText, onConfirm, handleClose }) {
   return (
-    <CreditModal>
+    <CreditModal handleClose={handleClose}>
       <ModalTitle>{title}</ModalTitle>
       <StepsBox>
         {steps.map((step, index) => (

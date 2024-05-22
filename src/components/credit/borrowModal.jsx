@@ -7,7 +7,7 @@ import { debounce } from "utils";
 import CalculateLoading from "./calculateLoading";
 import { getShortDisplay } from "utils/number";
 
-export default function BorrowModal() {
+export default function BorrowModal({ handleClose }) {
   const { t } = useTranslation();
   const [step, setStep] = useState(0);
   const [inputNum, setInputNum] = useState("100.00");
@@ -99,7 +99,7 @@ export default function BorrowModal() {
   const dayIntrestAmount = inputNum ? getShortDisplay((Number(inputNum) * 10000 * Number(0.0001)) / 10000, 5) : 0;
 
   return (
-    <CreditModal>
+    <CreditModal handleClose={handleClose}>
       <ContentStyle>
         <ModalTitle>{steps[step].title}</ModalTitle>
         {step === 2 ? (

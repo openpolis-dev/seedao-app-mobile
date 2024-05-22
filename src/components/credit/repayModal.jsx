@@ -13,7 +13,7 @@ import { getBorrowList } from "api/credit";
 
 const lendToken = getConfig().NETWORK.lend.lendToken;
 
-export default function RepayModal() {
+export default function RepayModal({ handleClose }) {
   const { t } = useTranslation();
   const [step, setStep] = useState(0);
   const [list, setList] = useState([]);
@@ -114,7 +114,7 @@ export default function RepayModal() {
   );
 
   return (
-    <CreditModal>
+    <CreditModal handleClose={handleClose}>
       <ContentStyle>
         <ModalTitle>{steps[step].title}</ModalTitle>
 

@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-export default function CreditModal({ children }) {
+export default function CreditModal({ children, handleClose }) {
   return (
     <CreditModalModal>
-      <CreditModalMask />
+      <CreditModalMask onClick={() => handleClose?.()} />
       <CreditModalModalContent>{children}</CreditModalModalContent>
     </CreditModalModal>
   );
@@ -21,7 +21,7 @@ const CreditModalModal = styled.div`
 const CreditModalMask = styled.div`
   position: absolute;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.05);
-  background-color: #16151875;
+  background-color: rgba(22, 21, 24, 0.46);
   left: 0;
   top: 0;
   bottom: 0;

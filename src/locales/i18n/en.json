@@ -469,6 +469,10 @@
     "RepayTime": "Repayment Time",
     "RepayHash": "Repayment Transaction Hash",
     "ForfeitRepay": "Collateral Returned",
-    "Days": "{{days}} day(s)"
+    "Days": "{{days}} day(s)",
+    "BorrowCooldownMsg": "Cannot borrow again if less than 24 hours have elapsed since last repayment",
+    "InsufficientQuota": "Your loan quota is insufficient",
+    "InsufficientBalance": "Insufficient balance",
+    "NoDate": "Currently there are no loans"
   }
 }
