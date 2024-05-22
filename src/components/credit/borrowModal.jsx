@@ -66,7 +66,7 @@ export default function BorrowModal({ handleClose }) {
     try {
       setLoading(t("Credit.WaitingTx"));
       // send borrow tx
-      await handleTransaction(buildBorrowData(inputNum), networkConfig.lend.lendToken.address, "");
+      await handleTransaction(buildBorrowData(inputNum), networkConfig.lend.scoreLendContract, "");
       setStep(2);
     } catch (error) {
       logError("[borrow]", error);
@@ -175,7 +175,7 @@ export default function BorrowModal({ handleClose }) {
                     onChange={onChangeInput}
                     onBlur={handleBlur}
                   />
-                  <MaxButton onClick={handleBorrowMax}>{t("Credit.MaxBorrow")}</MaxButton>
+                  {step === 0 && <MaxButton onClick={handleBorrowMax}>{t("Credit.MaxBorrow")}</MaxButton>}
                 </div>
               </div>
               <span className="right">USDT</span>
