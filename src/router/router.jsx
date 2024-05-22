@@ -86,7 +86,7 @@ function RouterLink() {
         <Route path="/proposal/thread/:id" element={<ProposalThread />} />
         <Route path="/proposal/thread/:id/comments" element={<ProposalComment />} />
         <Route path="/proposal/thread/:id/history" element={<ProposalHistory />} />
-        <Route path="/project/thread/:id/budget" element={<ProjectBudget />} />
+        <Route path="/proposal/thread/:id/budget" element={<ProjectBudget />} />
         <Route path="/assets" element={<Assets />} />
         <Route path="/assets/application" element={<AssetsApplication />} />
         <Route path="/user/edit" element={<ProfileEdit />} />

@@ -355,7 +355,7 @@ export default function ProposalThread() {
         {componentName === '激励申请表' && <ViewMore>
           <div>{t('Project.budgetUtil')}</div>
           <div>
-            <Link to={`/project/thread/${data?.id}/budget`}> {t('Project.ClickToView')}</Link></div>
+            <Link to={`/proposal/thread/${data?.id}/budget`}> {t('Project.ClickToView')}</Link></div>
         </ViewMore>
         }
         <PreviewMobie
