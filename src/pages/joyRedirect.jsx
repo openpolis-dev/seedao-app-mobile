@@ -69,6 +69,10 @@ export default function JoyIDRedirect() {
     navigate(pathname, { replace: true });
   };
 
+  const handleBorrowData = () => {
+    return { from: search.get("from"), to: search.get("to") };
+  };
+
   useEffect(() => {
     console.log("===> joyid redirect action:", action);
     if (action === "sign-metaforo") {
@@ -83,7 +87,7 @@ export default function JoyIDRedirect() {
         switch (action) {
           case "sns-commit":
             handleCommitData(res.tx);
-            navigate("/sns/register", {replace: true});
+            navigate("/sns/register", { replace: true });
             break;
           case "sns-register":
             handleRegisterData(res.tx);
@@ -99,6 +103,12 @@ export default function JoyIDRedirect() {
       }
     } catch (error) {
       logError(error);
+    }
+    if (["credit-borrow", "credit-borrow-approve", "credit-repay", "credit-repay-approve"].includes(action)) {
+      console.log("res.tx", res.tx);
+      window.open(`https://rpc-amoy.polygon.technology/tx/${res.tx}`, "_blank");
+      navigate("/credit", { state: { action, ...handleBorrowData(), tx: res?.tx }, replace: true });
+      return;
     }
     if (!res) {
       switch (action) {

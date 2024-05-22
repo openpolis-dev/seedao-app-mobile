@@ -10,6 +10,8 @@ import { useCreditContext } from "pages/credit/provider";
 import { ethers } from "ethers";
 import getConfig from "constant/envCofnig";
 import useToast from "hooks/useToast";
+import useCreditTransaction, { buildBorrowData } from "hooks/useCreditTransaction";
+import parseError from "pages/sns/parseError";
 const networkConfig = getConfig().NETWORK;
 
 export default function BorrowModal({ handleClose }) {
@@ -26,7 +28,9 @@ export default function BorrowModal({ handleClose }) {
     state: { scoreLendContract, myAvaliableQuota, myScore },
   } = useCreditContext();
 
-  const checkApprove = () => {
+  const { handleTransaction, approveToken, checkNetwork } = useCreditTransaction("credit-borrow");
+
+  const checkApprove = async () => {
     if (calculating || Number(inputNum) < 100) {
       return;
     }
@@ -35,20 +39,49 @@ export default function BorrowModal({ handleClose }) {
       toast.danger(t("Credit.InsufficientQuota"));
       return;
     }
-    // approve
-    setLoading(true);
+    // check network
     try {
-      // TODO check network
+      setLoading(t("Credit.CheckingNetwork"));
+      await checkNetwork();
     } catch (error) {
-      
+      console.error("switch network", error);
+      return;
+    } finally {
+      setLoading(false);
     }
-
-    setStep((s) => s + 1);
+    // approve
+    try {
+      setLoading(t("Credit.Approving"));
+      await approveToken("scr", forfeitNum);
+      toast.success("Approve successfully");
+      setStep(1);
+    } catch (error) {
+      console.error(error);
+      toast.danger("Approve failed");
+    } finally {
+      setLoading(false);
+    }
   };
-  const checkBorrow = () => {
-    setStep((s) => s + 1);
+  const checkBorrow = async () => {
+    try {
+      setLoading(t("Credit.WaitingTx"));
+      // send borrow tx
+      await handleTransaction(buildBorrowData(inputNum), networkConfig.lend.lendToken.address, "");
+      setStep(2);
+    } catch (error) {
+      logError("[borrow]", error);
+      let errorMsg = `${parseError(error)}`;
+      if (errorMsg === "BorrowCooldownTimeTooShort") {
+        errorMsg = t("Credit.BorrowCooldownMsg");
+      }
+      toast.danger(errorMsg);
+    } finally {
+      setLoading(false);
+    }
   };
-  const checkMine = () => {};
+  const checkMine = () => {
+    handleClose(true);
+  };
 
   const steps = [
     {
@@ -102,7 +135,6 @@ export default function BorrowModal({ handleClose }) {
   const handleBlur = () => {
     const numericValue = parseFloat(inputNum);
     if (!isNaN(numericValue)) {
-      
       if (numericValue > myAvaliableQuota) {
         setInputNum(getShortDisplay(myAvaliableQuota));
         onChangeVal(myAvaliableQuota);
@@ -124,7 +156,7 @@ export default function BorrowModal({ handleClose }) {
   const dayIntrestAmount = inputNum ? getShortDisplay((Number(inputNum) * 10000 * Number(0.0001)) / 10000, 5) : 0;
 
   return (
-    <CreditModal handleClose={handleClose}>
+    <CreditModal handleClose={() => handleClose()}>
       <ContentStyle>
         <ModalTitle>{steps[step].title}</ModalTitle>
         {step === 2 ? (
@@ -167,7 +199,7 @@ export default function BorrowModal({ handleClose }) {
         )}
         <ConfirmBox>
           <p style={{ visibility: step === 0 ? "visible" : "hidden" }}>{t("Credit.BorrowTip3")}</p>
-          {steps[step].button}
+          {loading ? <CreditButton>{loading}</CreditButton> : steps[step].button}
         </ConfirmBox>
         {Toast}
       </ContentStyle>

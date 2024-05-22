@@ -474,6 +474,9 @@
     "InsufficientQuota": "Your loan quota is insufficient",
     "InsufficientBalance": "Insufficient balance",
     "NoDate": "Currently there are no loans",
-    "MinBorrow": "至少借款 100 USDT！"
+    "MinBorrow": "至少借款 100 USDT！",
+    "Approving": "Approving...",
+    "WaitingTx": "Waiting transaction...",
+    "CheckingNetwork": "Checking network..."
   }
 }
