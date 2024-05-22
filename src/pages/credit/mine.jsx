@@ -6,8 +6,11 @@ import QuotaIcon from "assets/Imgs/credit/quota.svg";
 import CountIcon from "assets/Imgs/credit/count.svg";
 import AmountIcon from "assets/Imgs/credit/amount.svg";
 import TipIcon from "assets/Imgs/credit/tip.svg";
+import { BorrowItemsModal, RepayItemsModal } from "components/credit/itemsModal";
+import BorrowModal from "components/credit/borrowModal";
+import RepayModal from "components/credit/repayModal";
 
-const MineCard = () => {
+export default function MyBorrowings() {
   const { t } = useTranslation();
 
   return (
@@ -61,15 +64,10 @@ const MineCard = () => {
           {t("Credit.RepayTip")} <img src={TipIcon} alt="" />
         </div>
       </StateBlock>
-    </>
-  );
-};
-
-export default function MyBorrowings() {
-  const { t } = useTranslation();
-  return (
-    <>
-      <MineCard />
+      {/* <BorrowItemsModal />
+      <BorrowModal />
+      <RepayItemsModal />
+      <RepayModal /> */}
     </>
   );
 }
@@ -181,8 +179,8 @@ const StateBlock = styled.div`
     font-size: 12px;
     color: #1814f3;
     img {
-        position: relative;
-        top: 1px;
+      position: relative;
+      top: 1px;
     }
   }
 `;
