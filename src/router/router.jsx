@@ -8,6 +8,7 @@ const Home = lazy(() => import("../pages/home"));
 const Login = lazy(() => import("../pages/login"));
 const Project = lazy(() => import("pages/project"));
 const ProjectInfoRoot = lazy(() => import("pages/project/info/info"));
+const ProjectBudget = lazy(() => import("pages/project/info/budget"));
 const Guild = lazy(() => import("pages/guild"));
 const GuildInfoRoot = lazy(() => import("pages/guild/info/info"));
 const Proposal = lazy(() => import("../pages/proposalV2/list"));
@@ -78,12 +79,14 @@ function RouterLink() {
         <Route path="/login" element={<Login />} />
         <Route path="/project" element={<Project />} />
         <Route path="/project/info/:id" element={<ProjectInfoRoot />} />
+
         <Route path="/guild" element={<Guild />} />
         <Route path="/guild/info/:id" element={<GuildInfoRoot />} />
         <Route path="/proposal" element={<Proposal />} />
         <Route path="/proposal/thread/:id" element={<ProposalThread />} />
         <Route path="/proposal/thread/:id/comments" element={<ProposalComment />} />
         <Route path="/proposal/thread/:id/history" element={<ProposalHistory />} />
+        <Route path="/proposal/thread/:id/budget" element={<ProjectBudget />} />
         <Route path="/assets" element={<Assets />} />
         <Route path="/assets/application" element={<AssetsApplication />} />
         <Route path="/user/edit" element={<ProfileEdit />} />

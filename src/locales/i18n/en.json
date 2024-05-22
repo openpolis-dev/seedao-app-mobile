@@ -92,7 +92,20 @@
     "PlanFinishTime": "Planned completion time",
     "Budget": "Budget",
     "Moderator": "Moderator",
-    "viewMore": "View More"
+    "viewMore": "View More",
+    "projectproposalInfo": "Project Proposal Information",
+    "budgetUtil": "Project Budget Utilization",
+    "projectBudget": "Project Budget",
+    "PrepayRatio": "Prepayment Ratio",
+    "AvailableAmount": "Total Available Prepayment",
+    "CurrentlyPrepaid": "Currently Prepaid",
+    "BudgetBalance": " Budget Balance",
+    "AvailableBalance": "Available Prepayment Balance",
+    "CompletionInformation": "Project Completion Information",
+    "introTips": "The project has not filled in the project introduction～",
+    "officialTips": "The project has not filled in the official link～",
+    "ClickToView": "Click to view",
+    "CurrentAvailable": "Currently Amount"
   },
   "home": {
     "title": "See Calendar",
