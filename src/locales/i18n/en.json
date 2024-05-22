@@ -461,7 +461,7 @@
     "Forfeit": "Collateral",
     "Rate": "Interest Rate",
     "BorrowDuration": "Borrow Duration",
-    "LastRepaymentTime": "Last Repayment Time",
+    "LastRepaymentTime": "You have a loan that needs to be repaid by {{date}}",
     "DayRate01": "Daily interest rate (simple interest) {{rate}}‰",
     "RepayRecord": "Repayment Record",
     "TotalRepay": "Total Repayment",

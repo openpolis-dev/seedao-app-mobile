@@ -59,7 +59,7 @@ export default function MyBorrowings() {
             <div className="value">3,000.00 USDT</div>
           </div>
         </StateLine>
-        <div className="repay-tip">{t("Credit.LatestRepayDate")} 2022-01-02</div>
+        <div className="repay-tip">{t("Credit.LatestRepayDate", { date: "2022-01-02" })}</div>
         <div className="repay-tip">
           {t("Credit.RepayTip")} <img src={TipIcon} alt="" />
         </div>
@@ -177,7 +177,7 @@ const StateBlock = styled.div`
   padding: 20px 20px 16px;
   .repay-tip {
     font-size: 12px;
-    color: #1814f3;
+    color: #ff7193;
     img {
       position: relative;
       top: 1px;
