@@ -1,37 +1,83 @@
 import styled from "styled-components";
 import Layout from "components/layout/layout";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MyBorrowings from "./mine";
 import VaultBorrows from "./vault";
 import CreditRecords from "./records";
+import CreditProvider, { useCreditContext, ACTIONS } from "./provider";
+import { ethers } from "ethers";
+import getConfig from "constant/envCofnig";
+import { amoy } from "utils/chain";
+import BondNFTABI from "assets/abi/BondNFT.json";
+import ScoreLendABI from "assets/abi/ScoreLend.json";
+import { useNavigate } from "react-router-dom";
+import { checkTokenValid, clearStorage } from "utils/auth";
+import { useSelector } from "react-redux";
+
+const networkConfig = getConfig().NETWORK;
 
 const CreditTabs = ({ tab, onChange }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const userToken = useSelector((state) => state.userToken);
+
+  const handleChangeTab = (newTab) => {
+    if (newTab === "mine") {
+      console.log("userToken", userToken, checkTokenValid(userToken?.token, userToken?.token_exp));
+      if (!checkTokenValid(userToken?.token, userToken?.token_exp)) {
+        clearStorage();
+        navigate("/login");
+        return;
+      }
+    }
+    onChange(newTab);
+  };
   return (
     <CreditTabsStyle>
-      <div onClick={() => onChange("mine")} className={tab === "mine" ? "active" : ""}>
+      <div onClick={() => handleChangeTab("mine")} className={tab === "mine" ? "active" : ""}>
         {t("Credit.MyBorrowings")}
       </div>
       <span className="line"></span>
-      <div onClick={() => onChange("all")} className={tab === "all" ? "active" : ""}>
+      <div onClick={() => handleChangeTab("all")} className={tab === "all" ? "active" : ""}>
         {t("Credit.VaultBorrowings")}
       </div>
     </CreditTabsStyle>
   );
 };
 
+const CreditCards = ({ tab }) => {
+  const { dispatch: dispatchCreditEvent } = useCreditContext();
+
+  useEffect(() => {
+    const _provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.public.http[0], amoy.id);
+    const bondNFTContract = new ethers.Contract(networkConfig.lend.bondNFTContract, BondNFTABI, _provider);
+    dispatchCreditEvent({ type: ACTIONS.SET_BOND_NFT_CONTRACT, payload: bondNFTContract });
+    const scoreLendontract = new ethers.Contract(networkConfig.lend.scoreLendContract, ScoreLendABI, _provider);
+    dispatchCreditEvent({ type: ACTIONS.SET_LEND_CONTRACT, payload: scoreLendontract });
+  }, []);
+
+  switch (tab) {
+    case "mine":
+      return <MyBorrowings />;
+    case "all":
+      return <VaultBorrows />;
+    default:
+      return null;
+  }
+};
+
 export default function CreditPage() {
   const { t } = useTranslation();
-  const [tab, setTab] = useState("mine");
+  const [tab, setTab] = useState("all");
 
   return (
     <Layout title={t("Credit.Title")} customTab={<CreditTabs tab={tab} onChange={setTab} />} bgColor="#F5F7FA">
       <LayoutContainer>
-        {tab === "mine" && <MyBorrowings />}
-        {tab === "all" && <VaultBorrows />}
-
-        <CreditRecords tab={tab} />
+        <CreditProvider>
+          <CreditCards tab={tab} />
+          <CreditRecords tab={tab} />
+        </CreditProvider>
       </LayoutContainer>
     </Layout>
   );

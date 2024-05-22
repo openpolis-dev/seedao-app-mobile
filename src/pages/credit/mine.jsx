@@ -9,15 +9,108 @@ import TipIcon from "assets/Imgs/credit/tip.svg";
 import { BorrowItemsModal, RepayItemsModal } from "components/credit/itemsModal";
 import BorrowModal from "components/credit/borrowModal";
 import RepayModal from "components/credit/repayModal";
+import { useSelector } from "react-redux";
+import { amoy } from "utils/chain";
+import { useCreditContext, ACTIONS } from "./provider";
+import getConfig from "constant/envCofnig";
+import { useEffect, useState, useCallback } from "react";
+import { erc20ABI } from "wagmi";
+import { ethers } from "ethers";
+import { getBorrowList } from "api/credit";
+import { CreditRecordStatus } from "constant/credit";
+
+const networkConfig = getConfig().NETWORK;
 
 export default function MyBorrowings() {
   const { t } = useTranslation();
+
+  const account = useSelector((state) => state.account);
+  const userToken = useSelector((state) => state.userToken);
+
+  const {
+    dispatch: dispatchCreditEvent,
+    state: {
+      bondNFTContract,
+      scoreLendContract,
+      myScore,
+      myInUseCount,
+      myInuseAmount,
+      myAvaliableQuota,
+      myOverdueCount,
+      myOverdueAmount,
+    },
+  } = useCreditContext();
+
+  const [earlyDate, setEarlyDate] = useState("");
+
+  const getSCR = () => {
+    const _provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.public.http[0], amoy.id);
+    const scoreContract = new ethers.Contract(networkConfig.SCRContract.address, erc20ABI, _provider);
+    scoreContract.balanceOf(account).then((r) => {
+      dispatchCreditEvent({
+        type: ACTIONS.SET_MY_SCORE,
+        payload: Number(ethers.utils.formatUnits(r, networkConfig.SCRContract.decimals)),
+      });
+    });
+  };
+
+  const getLatestDate = () => {
+    getBorrowList({
+      debtor: account,
+      lendStatus: CreditRecordStatus.INUSE,
+      sortField: "borrowTimestamp",
+      sortOrder: "asc",
+      page: 1,
+      size: 1,
+    }).then((r) => {
+      if (r.data.length) {
+        const d = r.data[0];
+        setEarlyDate(d.overdueTime.slice(0, -5));
+      }
+    });
+  };
+
+  const getDataFromContract = useCallback(() => {
+    const decimals = networkConfig.lend.lendToken.decimals;
+    bondNFTContract?.userBorrow(account).then((r) => {
+      dispatchCreditEvent({
+        type: ACTIONS.SET_MY_DATA,
+        payload: {
+          overdueCount: r.overdueCount.toNumber(),
+          overdueAmount: Number(ethers.utils.formatUnits(r.overdueAmount, decimals)),
+          inUseCount: r.inUseCount.toNumber(),
+          inUseAmount: Number(ethers.utils.formatUnits(r.inUseAmount, decimals)),
+        },
+      });
+    });
+    scoreLendContract?.userAvailableAmount(account).then((r) => {
+      dispatchCreditEvent({
+        type: ACTIONS.SET_MY_QUOTA,
+        payload: Number(ethers.utils.formatUnits(r.availableAmount, decimals)),
+      });
+    });
+  }, [bondNFTContract, scoreLendContract, account, dispatchCreditEvent]);
+
+  useEffect(() => {
+    account && userToken && getSCR();
+  }, [account, userToken]);
+
+  useEffect(() => {
+    if (!account) {
+      return;
+    }
+    getDataFromContract();
+  }, [scoreLendContract, account, getDataFromContract]);
+
+  useEffect(() => {
+    myInUseCount > 0 && getLatestDate();
+  }, [myInUseCount]);
 
   return (
     <>
       <CardStyle>
         <div className="label">{t("Credit.MyBorrowingQuota")}</div>
-        <div className="value">2,000.00</div>
+        <div className="value">{myAvaliableQuota.format()}</div>
         <div className="tip">{t("Credit.MyBorrowingTip1")}</div>
         <div className="btn-tip">{t("Credit.MyBorrowingTip2")}</div>
         <div className="vault">{t("Credit.VaultTotalQuota")}</div>
@@ -29,14 +122,14 @@ export default function MyBorrowings() {
             <img src={SCRIcon} alt="" />
             <span>{t("Credit.MySCR")}</span>
           </div>
-          <div className="value">100,000.00</div>
+          <div className="value">{myScore.format()}</div>
         </div>
         <div>
           <div className="label">
             <img src={QuotaIcon} alt="" />
             <span>{t("Credit.MyTotalQuota")}</span>
           </div>
-          <div className="value">1,000.00</div>
+          <div className="value">{Number(myInuseAmount + myAvaliableQuota + myOverdueAmount).format()}</div>
         </div>
       </SubCardStyle>
       <OperateBox>
@@ -48,18 +141,18 @@ export default function MyBorrowings() {
         <StateLine>
           <img src={CountIcon} alt="" />
           <div>
-            <div className="label">{t("Credit.MyInuseCount", { num: 1 })}</div>
-            <div className="value">3,000.00 USDT</div>
+            <div className="label">{t("Credit.MyInuseCount", { num: myInUseCount })}</div>
+            <div className="value">{myInuseAmount} USDT</div>
           </div>
         </StateLine>
         <StateLine>
           <img src={AmountIcon} alt="" />
           <div>
-            <div className="label">{t("Credit.OverdueCount", { num: 1 })}</div>
-            <div className="value">3,000.00 USDT</div>
+            <div className="label">{t("Credit.OverdueCount", { num: myOverdueCount })}</div>
+            <div className="value">{myOverdueAmount.format()} USDT</div>
           </div>
         </StateLine>
-        <div className="repay-tip">{t("Credit.LatestRepayDate", { date: "2022-01-02" })}</div>
+        <div className="repay-tip">{t("Credit.LatestRepayDate", { date: earlyDate })}</div>
         <div className="repay-tip">
           {t("Credit.RepayTip")} <img src={TipIcon} alt="" />
         </div>
