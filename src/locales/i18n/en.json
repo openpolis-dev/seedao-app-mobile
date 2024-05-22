@@ -473,6 +473,7 @@
     "BorrowCooldownMsg": "Cannot borrow again if less than 24 hours have elapsed since last repayment",
     "InsufficientQuota": "Your loan quota is insufficient",
     "InsufficientBalance": "Insufficient balance",
-    "NoDate": "Currently there are no loans"
+    "NoDate": "Currently there are no loans",
+    "MinBorrow": "至少借款 100 USDT！"
   }
 }

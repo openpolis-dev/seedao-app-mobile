@@ -6,6 +6,11 @@ import CreditButton from "./button";
 import { debounce } from "utils";
 import CalculateLoading from "./calculateLoading";
 import { getShortDisplay } from "utils/number";
+import { useCreditContext } from "pages/credit/provider";
+import { ethers } from "ethers";
+import getConfig from "constant/envCofnig";
+import useToast from "hooks/useToast";
+const networkConfig = getConfig().NETWORK;
 
 export default function BorrowModal({ handleClose }) {
   const { t } = useTranslation();
@@ -14,8 +19,30 @@ export default function BorrowModal({ handleClose }) {
   const [forfeitNum, setForfeitNum] = useState(0);
 
   const [calculating, setCalculating] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { Toast, toast } = useToast();
+
+  const {
+    state: { scoreLendContract, myAvaliableQuota, myScore },
+  } = useCreditContext();
 
   const checkApprove = () => {
+    if (calculating || Number(inputNum) < 100) {
+      return;
+    }
+    // check if scr enough
+    if (forfeitNum === 0 || myScore < forfeitNum) {
+      toast.danger(t("Credit.InsufficientQuota"));
+      return;
+    }
+    // approve
+    setLoading(true);
+    try {
+      // TODO check network
+    } catch (error) {
+      
+    }
+
     setStep((s) => s + 1);
   };
   const checkBorrow = () => {
@@ -43,16 +70,16 @@ export default function BorrowModal({ handleClose }) {
       setForfeitNum(0);
       return;
     }
-    //   setCalculating(true);
-    //   const v = ethers.utils.parseUnits(String(num), networkConfig.lend.lendToken.decimals);
-    //   scoreLendContract
-    //     ?.calculateMortgageSCRAmount(v)
-    //     .then((r: ethers.BigNumber) => {
-    //       setForfeitNum(Number(ethers.utils.formatUnits(r, networkConfig.SCRContract.decimals)));
-    //     })
-    //     .finally(() => {
-    //       setCalculating(false);
-    //     });
+    setCalculating(true);
+    const v = ethers.utils.parseUnits(String(num), networkConfig.lend.lendToken.decimals);
+    scoreLendContract
+      ?.calculateMortgageSCRAmount(v)
+      .then((r) => {
+        setForfeitNum(Number(ethers.utils.formatUnits(r, networkConfig.SCRContract.decimals)));
+      })
+      .finally(() => {
+        setCalculating(false);
+      });
   };
 
   const onChangeVal = useCallback(debounce(computeAmount, 1500), []);
@@ -73,23 +100,21 @@ export default function BorrowModal({ handleClose }) {
   };
 
   const handleBlur = () => {
-    // const numericValue = parseFloat(inputNum);
-    // if (!isNaN(numericValue)) {
-    //   if (numericValue < 100) {
-    //     setInputNum("100.00");
-    //     onChangeVal(100);
-    //   } else if (numericValue > myAvaliableQuota) {
-    //     setInputNum(getShortDisplay(myAvaliableQuota));
-    //     onChangeVal(myAvaliableQuota);
-    //   } else {
-    //     setInputNum(getShortDisplay(numericValue));
-    //   }
-    // }
+    const numericValue = parseFloat(inputNum);
+    if (!isNaN(numericValue)) {
+      
+      if (numericValue > myAvaliableQuota) {
+        setInputNum(getShortDisplay(myAvaliableQuota));
+        onChangeVal(myAvaliableQuota);
+      } else {
+        setInputNum(getShortDisplay(numericValue));
+      }
+    }
   };
 
   const handleBorrowMax = () => {
-    // setInputNum(String(myAvaliableQuota));
-    // onChangeVal(myAvaliableQuota);
+    setInputNum(String(myAvaliableQuota));
+    onChangeVal(myAvaliableQuota);
   };
 
   useEffect(() => {
@@ -123,6 +148,7 @@ export default function BorrowModal({ handleClose }) {
               </div>
               <span className="right">USDT</span>
             </LineBox>
+            {Number(inputNum) < 100 && <NumberCheckLabel>{t("Credit.MinBorrow")}</NumberCheckLabel>}
             <LineTip style={{ marginBottom: 0 }}>{t("Credit.RateAmount", { rate: 0.1 })}</LineTip>
             <LineTip style={{ marginTop: 0 }}>{t("Credit.RateAmount2", { amount: dayIntrestAmount })}</LineTip>
             <LineLabel>{t("Credit.NeedForfeit")}</LineLabel>
@@ -135,20 +161,21 @@ export default function BorrowModal({ handleClose }) {
             <LineTip>{t("Credit.ForfeitTip")}</LineTip>
             <BorrowTips>
               <p>{t("Credit.BorrowTip1")}</p>
-              <p>{t("Credit.BorrowTip2")}</p>
+              <p style={{ color: "#1814f3" }}>{t("Credit.BorrowTip2")}</p>
             </BorrowTips>
           </BorrowContent>
         )}
         <ConfirmBox>
-          <LineTip style={{ visibility: step === 0 ? "visible" : "hidden" }}>{t("Credit.BorrowTip3")}</LineTip>
+          <p style={{ visibility: step === 0 ? "visible" : "hidden" }}>{t("Credit.BorrowTip3")}</p>
           {steps[step].button}
         </ConfirmBox>
+        {Toast}
       </ContentStyle>
     </CreditModal>
   );
 }
 const ContentStyle = styled.div`
-  color: #343c6a;
+  color: #718ebf;
 `;
 
 const ModalTitle = styled.div`
@@ -157,12 +184,17 @@ const ModalTitle = styled.div`
   font-family: Inter-SemiBold;
   font-weight: 600;
   line-height: 54px;
+  color: #343c6a;
 `;
 
 const ConfirmBox = styled.div`
   width: 100%;
   margin: 0 auto;
   margin-top: 26px;
+  p {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
 `;
 
 const BorrowContent = styled.div`
@@ -173,6 +205,7 @@ const BorrowContent = styled.div`
 const LineLabel = styled.div`
   font-size: 14px;
   margin-bottom: 10px;
+  color: #343c6a;
 `;
 
 const MaxButton = styled.span`
@@ -189,6 +222,7 @@ const LineBox = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+  color: #343c6a;
   .left {
     background-color: #e6eff5;
     border-radius: 8px;
@@ -232,7 +266,6 @@ const LineBox = styled.div`
 `;
 
 const LineTip = styled.div`
-  color: #1814f3;
   font-size: 14px;
   margin-bottom: 16px;
   margin-top: 4px;
@@ -253,4 +286,11 @@ const FinishContent = styled.div`
   font-family: Inter-SemiBold;
   font-weight: 600;
   color: #1814f3;
+`;
+
+const NumberCheckLabel = styled.p`
+  font-size: 14px;
+  color: #ff7193;
+  margin-bottom: 10px;
+  margin-top: 4px;
 `;
