@@ -22,6 +22,11 @@ export const buildBorrowData = (amount) => {
   return iface.encodeFunctionData("borrow", [amountNB, 28800, true]);
 };
 
+export const buildRepayData = (ids) => {
+  const iface = new ethers.utils.Interface(ScoreLendABI);
+  return iface.encodeFunctionData("paybackBatch", [ids]);
+};
+
 const checkTransaction = (hash) => {
   const provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.default.http[0]);
   return new Promise((resolve, reject) => {
@@ -126,5 +131,17 @@ export default function useCreditTransaction(action) {
       );
     }
   };
-  return { handleTransaction, approveToken, checkNetwork };
+  const checkEnoughBalance = async (account, amount) => {
+    const address = CONFIG.NETWORK.lend.lendToken.address;
+    const balance = await readContract({
+      address: address,
+      abi: erc20ABI,
+      functionName: "balanceOf",
+      args: [account],
+    });
+    return ethers.BigNumber.from(balance.toString()).gte(
+      ethers.utils.parseUnits(String(amount), CONFIG.NETWORK.lend.lendToken.decimals),
+    );
+  };
+  return { handleTransaction, approveToken, checkNetwork, checkEnoughBalance };
 }

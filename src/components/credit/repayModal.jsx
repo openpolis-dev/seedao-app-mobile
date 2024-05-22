@@ -10,8 +10,14 @@ import NoItem from "components/noItem";
 import getConfig from "constant/envCofnig";
 import { CreditRecordStatus } from "constant/credit";
 import { getBorrowList } from "api/credit";
+import { useCreditContext } from "pages/credit/provider";
+import { useSelector } from "react-redux";
+import useToast from "hooks/useToast";
+import useCreditTransaction, { buildRepayData } from "hooks/useCreditTransaction";
+import parseError from "./parseError";
 
-const lendToken = getConfig().NETWORK.lend.lendToken;
+const networkConfig = getConfig().NETWORK;
+const lendToken = networkConfig.lend.lendToken;
 
 export default function RepayModal({ handleClose }) {
   const { t } = useTranslation();
@@ -21,19 +27,80 @@ export default function RepayModal({ handleClose }) {
 
   const selectedList = list.filter((l) => !!l.selected);
 
-  const checkApprove = () => {
-    setStep((s) => s + 1);
+  const account = useSelector((state) => state.account);
+  const {
+    state: { bondNFTContract },
+  } = useCreditContext();
+
+  const [loading, setLoading] = useState(false);
+  const { Toast, toast } = useToast();
+
+  const { handleTransaction, approveToken, checkNetwork, checkEnoughBalance } = useCreditTransaction();
+
+  const checkApprove = async () => {
+    // network
+    try {
+      setLoading(t("Credit.CheckingNetwork"));
+      await checkNetwork();
+    } catch (error) {
+      console.error(error);
+      return;
+    } finally {
+      setLoading(false);
+    }
+    try {
+      // add one more day interest
+      const totalApproveBN = selectedList.reduce(
+        (acc, item) =>
+          acc.add(
+            ethers.utils
+              .parseUnits(String(item.data.interestAmount), lendToken.decimals)
+              .div(ethers.BigNumber.from(item.data.interestDays)),
+          ),
+        ethers.utils.parseUnits(String(selectedTotalAmount), lendToken.decimals),
+      );
+      const totalApproveAmount = Number(ethers.utils.formatUnits(totalApproveBN, lendToken.decimals));
+      // check if enough
+      const enough = await checkEnoughBalance(account, totalApproveAmount);
+      if (!enough) {
+        throw new Error(t("Credit.InsufficientBalance"));
+      }
+      setLoading(t("Credit.Approving"));
+      await approveToken("usdt", totalApproveAmount);
+      toast.success("Approve successfully");
+      setStep(2);
+    } catch (error) {
+      console.error(error);
+      toast.danger(parseError(error));
+    } finally {
+      setLoading(false);
+    }
   };
-  const checkRepay = () => {
-    setStep((s) => s + 1);
+  const checkRepay = async () => {
+    setLoading(t("Credit.WaitingTx"));
+    try {
+      await handleTransaction(
+        buildRepayData(selectedList.map((item) => Number(item.id))),
+        networkConfig.lend.scoreLendContract,
+        "credit-repay",
+      );
+      setStep(3);
+    } catch (error) {
+      console.error(error);
+      toast.danger(parseError(error));
+    } finally {
+      setLoading(false);
+    }
   };
-  const checkMine = () => {};
+  const checkMine = () => {
+    handleClose(true);
+  };
 
   const getData = async () => {
     try {
       setGetting(true);
       const r = await getBorrowList({
-        debtor: "0xa2f87DC5ec6F659dC7A13c8f12663D251E72B698",
+        debtor: account,
         lendStatus: CreditRecordStatus.INUSE,
         sortField: "borrowTimestamp",
         sortOrder: "desc",
@@ -42,24 +109,21 @@ export default function RepayModal({ handleClose }) {
       });
       const ids = r.data.map((d) => Number(d.lendId));
       const _list = r.data.map((item) => ({ id: item.lendId, data: item, selected: false, total: 0 }));
-      //   const result = (await bondNFTContract?.calculateInterestBatch(ids)) as {
-      //     interestAmounts: ethers.BigNumber[];
-      //     interestDays: ethers.BigNumber[];
-      //   };
-      //   ids.forEach((id, idx) => {
-      //     _list[idx].data.interestAmount = Number(
-      //       ethers.utils.formatUnits(result.interestAmounts[idx], lendToken.decimals),
-      //     );
-      //     _list[idx].data.interestDays = result.interestDays[idx].toNumber();
-      //     _list[idx].total = Number(
-      //       ethers.utils.formatUnits(
-      //         result.interestAmounts[idx].add(
-      //           ethers.utils.parseUnits(String(_list[idx].data.borrowAmount), lendToken.decimals),
-      //         ),
-      //         lendToken.decimals,
-      //       ),
-      //     );
-      //   });
+      const result = await bondNFTContract?.calculateInterestBatch(ids);
+      ids.forEach((_, idx) => {
+        _list[idx].data.interestAmount = Number(
+          ethers.utils.formatUnits(result.interestAmounts[idx], lendToken.decimals),
+        );
+        _list[idx].data.interestDays = result.interestDays[idx].toNumber();
+        _list[idx].total = Number(
+          ethers.utils.formatUnits(
+            result.interestAmounts[idx].add(
+              ethers.utils.parseUnits(String(_list[idx].data.borrowAmount), lendToken.decimals),
+            ),
+            lendToken.decimals,
+          ),
+        );
+      });
       setList(_list);
     } catch (error) {
       console.error(error);
@@ -76,10 +140,7 @@ export default function RepayModal({ handleClose }) {
     {
       title: t("Credit.RepayStepTitle1"),
       button: (
-        <CreditButton
-          onClick={() => setStep(1)}
-          //   disabled={!selectedList.length}
-        >
+        <CreditButton onClick={() => setStep(1)} disabled={!selectedList.length}>
           {t("Credit.RepayStepButton1", { num: selectedList.length })}
         </CreditButton>
       ),
@@ -114,7 +175,7 @@ export default function RepayModal({ handleClose }) {
   );
 
   return (
-    <CreditModal handleClose={handleClose}>
+    <CreditModal handleClose={() => handleClose()}>
       <ContentStyle>
         <ModalTitle>{steps[step].title}</ModalTitle>
 
@@ -160,6 +221,7 @@ export default function RepayModal({ handleClose }) {
           {steps[step].button}
           {/* {step === 1 && <RepayTip>{t("Credit.RepayTip")}</RepayTip>} */}
         </ConfirmBox>
+        <Toast />
       </ContentStyle>
     </CreditModal>
   );
