@@ -5,7 +5,6 @@ import SCRIcon from "assets/Imgs/credit/scr.svg";
 import QuotaIcon from "assets/Imgs/credit/quota.svg";
 import CountIcon from "assets/Imgs/credit/count.svg";
 import AmountIcon from "assets/Imgs/credit/amount.svg";
-import TipIcon from "assets/Imgs/credit/tip.svg";
 import { BorrowItemsModal, RepayItemsModal } from "components/credit/itemsModal";
 import BorrowModal from "components/credit/borrowModal";
 import RepayModal from "components/credit/repayModal";
@@ -205,9 +204,7 @@ export default function MyBorrowings() {
         <div className="repay-tip">
           {myInUseCount > 0 ? t("Credit.LatestRepayDate", { date: earlyDate }) : t("Credit.NoDate")}
         </div>
-        <div className="repay-tip">
-          {t("Credit.RepayTip")} <img src={TipIcon} alt="" />
-        </div>
+        <div className="repay-tip">{t("Credit.RepayTip")}</div>
       </StateBlock>
     </>
   );

@@ -405,7 +405,7 @@
     "MyInuseCount": "当前在借 {{num}} 笔",
     "OverdueCount": "已逾期 {{num}} 笔",
     "LatestRepayDate": "你有一笔借款需在 {{date}} 前还款",
-    "RepayTip": "逾期未还，$SCR 将被罚没至社区金库",
+    "RepayTip": "逾期未还，$SCR 将被罚没至社区金库！",
     "Details": "详情 >>",
     "VaultBorrowingsQuota": "社区总借款额度（USDT）",
     "ClearCount": "已结清 {{num}} 笔",
