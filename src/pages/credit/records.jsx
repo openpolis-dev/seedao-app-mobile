@@ -52,6 +52,9 @@ export default function CreditRecords({ tab }) {
   const [selectValue, setSeletValue] = useState(FILTER_OPTIONS[0][0].value);
   const handleSelect = (v) => {
     setSeletValue(v);
+    if (selectValue !== v) {
+      getRecords(true, v);
+    }
   };
   const go2detail = (data) => {
     navigate(`/credit/record/${data.lendId}`, { state: data });
@@ -62,15 +65,16 @@ export default function CreditRecords({ tab }) {
     return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns);
   };
 
-  const getRecords = (init) => {
+  const getRecords = (init, initSelectValue) => {
     const _page = init ? 1 : page;
     store.dispatch(saveLoading(true));
     const params = {
       page: _page,
       size: 10,
     };
-    if (selectValue) {
-      const [field, v] = selectValue.split(";");
+    const _selectValue = initSelectValue || selectValue;
+    if (_selectValue) {
+      const [field, v] = _selectValue.split(";");
       if (field === "lendStatus") {
         params.lendStatus = Number(v);
       } else if (field !== "all") {
@@ -102,8 +106,9 @@ export default function CreditRecords({ tab }) {
   }, [total, list]);
 
   useEffect(() => {
-    getRecords();
-  }, []);
+    setSeletValue('all')
+    getRecords(true);
+  }, [tab]);
 
   return (
     <>
