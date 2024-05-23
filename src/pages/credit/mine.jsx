@@ -60,6 +60,8 @@ const BorrowAndRepay = ({ onUpdate }) => {
     setShowModal("");
     if (openMine) {
       onUpdate();
+      const evt = new Event("openMine");
+      document.dispatchEvent(evt);
     }
   };
 

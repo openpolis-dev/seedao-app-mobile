@@ -107,9 +107,15 @@ export default function CreditRecords({ tab }) {
   }, [total, list]);
 
   useEffect(() => {
-    setSeletValue('all')
+    setSeletValue("all");
     getRecords(true);
   }, [tab]);
+
+  useEffect(() => {
+    const refreshList = () => getRecords(true);
+    document.addEventListener("openMine", refreshList);
+    return () => document.removeEventListener("openMine", refreshList);
+  }, []);
 
   return (
     <>
