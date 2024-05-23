@@ -216,12 +216,8 @@ export default function RepayModal({ handleClose }) {
             </ListBox>
           </RepayContent>
         )}
-        <ConfirmBox>
-          {/* {(step === 1 || step === 2) && <BorrowTip1>{t("Credit.BorrowTip2")}</BorrowTip1>} */}
-          {steps[step].button}
-          {/* {step === 1 && <RepayTip>{t("Credit.RepayTip")}</RepayTip>} */}
-        </ConfirmBox>
-        <Toast />
+        <ConfirmBox>{loading ? <CreditButton>{loading}</CreditButton> : steps[step].button}</ConfirmBox>
+        {Toast}
       </ContentStyle>
     </CreditModal>
   );
