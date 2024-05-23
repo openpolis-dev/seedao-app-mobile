@@ -492,6 +492,7 @@
     "MinBorrow": "至少借款 100 USDT！",
     "Approving": "正在授权...",
     "WaitingTx": "等待交易确认...",
-    "CheckingNetwork": "正在检查网络..."
+    "CheckingNetwork": "正在检查网络...",
+    "TxTip": "交易卡住，点击取消"
   }
 }

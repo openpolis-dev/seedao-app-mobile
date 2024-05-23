@@ -200,6 +200,7 @@ export default function BorrowModal({ handleClose }) {
         <ConfirmBox>
           <p style={{ visibility: step === 0 ? "visible" : "hidden" }}>{t("Credit.BorrowTip3")}</p>
           {loading ? <CreditButton>{loading}</CreditButton> : steps[step].button}
+          {loading && <TxTip onClick={() => setLoading(false)}>{t("Credit.TxTip")}</TxTip>}
         </ConfirmBox>
         {Toast}
       </ContentStyle>
@@ -325,4 +326,11 @@ const NumberCheckLabel = styled.p`
   color: #ff7193;
   margin-bottom: 10px;
   margin-top: 4px;
+`;
+
+
+const TxTip = styled.p`
+  text-align: center;
+  margin-top: 8px;
+  font-size: 14px;
 `;

@@ -216,7 +216,10 @@ export default function RepayModal({ handleClose }) {
             </ListBox>
           </RepayContent>
         )}
-        <ConfirmBox>{loading ? <CreditButton>{loading}</CreditButton> : steps[step].button}</ConfirmBox>
+        <ConfirmBox>
+          {loading ? <CreditButton>{loading}</CreditButton> : steps[step].button}
+          {loading && <TxTip onClick={() => setLoading(false)}>{t("Credit.TxTip")}</TxTip>}
+        </ConfirmBox>
         {Toast}
       </ContentStyle>
     </CreditModal>
@@ -484,4 +487,10 @@ const ListBox = styled.div`
   flex-direction: column;
   gap: 10px;
   min-height: 321px;
+`;
+
+const TxTip = styled.p`
+  text-align: center;
+  margin-top: 8px;
+  font-size: 14px;
 `;
