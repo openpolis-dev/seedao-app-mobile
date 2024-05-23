@@ -8,12 +8,14 @@ export default function ItemsModal({ title, steps, confirmText, onConfirm, handl
     <CreditModal handleClose={handleClose}>
       <ModalTitle>{title}</ModalTitle>
       <StepsBox>
-        {steps.map((step, index) => (
-          <li key={index}>
-            <span className="number">{index + 1}</span>
-            <span>{step}</span>
-          </li>
-        ))}
+        <ul>
+          {steps.map((step, index) => (
+            <li key={index}>
+              <span className="number">{index + 1}</span>
+              <span>{step}</span>
+            </li>
+          ))}
+        </ul>
       </StepsBox>
       <ConfirmBox>
         <CreditButton onClick={onConfirm}>{confirmText}</CreditButton>
@@ -59,10 +61,17 @@ const ModalTitle = styled.div`
   line-height: 54px;
 `;
 
-const StepsBox = styled.ul`
+const StepsBox = styled.div`
   color: #343c6a;
-  margin: 40px auto;
-  display: inline-block;
+  font-size: 14px;
+  margin-block: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  ul {
+    display: inline-block;
+  }
 
   li {
     display: flex;
