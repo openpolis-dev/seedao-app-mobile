@@ -28,6 +28,7 @@ const CreditTabs = ({ tab, onChange }) => {
       console.log("userToken", userToken, checkTokenValid(userToken?.token, userToken?.token_exp));
       if (!checkTokenValid(userToken?.token, userToken?.token_exp)) {
         clearStorage();
+        localStorage.setItem('before-login', '/credit?tab=mine');
         navigate("/login");
         return;
       }
