@@ -23,7 +23,7 @@ import useToast from "hooks/useToast";
 
 const networkConfig = getConfig().NETWORK;
 
-const BorrowAndRepay = () => {
+const BorrowAndRepay = ({ onUpdate }) => {
   const { t } = useTranslation();
 
   const {
@@ -56,14 +56,21 @@ const BorrowAndRepay = () => {
     setShowModal("repay");
   };
 
+  const handleCloseModal = (openMine) => {
+    setShowModal("");
+    if (openMine) {
+      onUpdate();
+    }
+  };
+
   return (
     <OperateBox>
       <OperateItem className="borrow" onClick={() => setShowItemsModal("borrow")}>
         {t("Credit.GoToBorrow")}
       </OperateItem>
       <OperateItem onClick={() => setShowItemsModal("repay")}>{t("Credit.GoToRepay")}</OperateItem>
-      {showModal === "borrow" && <BorrowModal handleClose={() => setShowModal("")} />}
-      {showModal === "repay" && <RepayModal handleClose={() => setShowModal("")} />}
+      {showModal === "borrow" && <BorrowModal handleClose={handleCloseModal} />}
+      {showModal === "repay" && <RepayModal handleClose={handleCloseModal} />}
       {showItemsModal === "borrow" && (
         <BorrowItemsModal onConfirm={go2Borrow} handleClose={() => setShowItemsModal("")} />
       )}
@@ -158,6 +165,11 @@ export default function MyBorrowings() {
     myInUseCount > 0 && getLatestDate();
   }, [myInUseCount]);
 
+  const handleUpdate = () => {
+    getSCR();
+    getDataFromContract();
+  };
+
   return (
     <>
       <CardStyle>
@@ -184,7 +196,7 @@ export default function MyBorrowings() {
           <div className="value">{Number(myInuseAmount + myAvaliableQuota + myOverdueAmount).format()}</div>
         </div>
       </SubCardStyle>
-      <BorrowAndRepay />
+      <BorrowAndRepay onUpdate={handleUpdate} />
       <BlockTitle>{t("Credit.MyBorrowingsState")}</BlockTitle>
       <StateBlock>
         <StateLine>
