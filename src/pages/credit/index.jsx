@@ -11,7 +11,7 @@ import getConfig from "constant/envCofnig";
 import { amoy } from "utils/chain";
 import BondNFTABI from "assets/abi/BondNFT.json";
 import ScoreLendABI from "assets/abi/ScoreLend.json";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { checkTokenValid, clearStorage } from "utils/auth";
 import { useSelector } from "react-redux";
 
@@ -20,6 +20,7 @@ const networkConfig = getConfig().NETWORK;
 const CreditTabs = ({ tab, onChange }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
   const userToken = useSelector((state) => state.userToken);
 
   const handleChangeTab = (newTab) => {
@@ -32,6 +33,7 @@ const CreditTabs = ({ tab, onChange }) => {
       }
     }
     onChange(newTab);
+    navigate(`/credit?tab=${newTab}`);
   };
   return (
     <CreditTabsStyle>
@@ -69,7 +71,9 @@ const CreditCards = ({ tab }) => {
 
 export default function CreditPage() {
   const { t } = useTranslation();
-  const [tab, setTab] = useState("all");
+  const [search] = useSearchParams();
+  const tabFromUrl = search.get("tab");
+  const [tab, setTab] = useState(["all", "mine"].includes(tabFromUrl) ? tabFromUrl : "all");
 
   return (
     <Layout title={t("Credit.Title")} customTab={<CreditTabs tab={tab} onChange={setTab} />} bgColor="#F5F7FA">
