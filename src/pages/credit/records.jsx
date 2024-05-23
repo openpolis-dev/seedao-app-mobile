@@ -13,6 +13,7 @@ import { getBorrowList } from "api/credit";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useQuerySNS from "hooks/useQuerySNS";
 import publicJs from "utils/publicJs";
+import CreditModal from "components/credit/creditModal";
 
 const FILTER_OPTIONS = [
   [
@@ -146,25 +147,23 @@ export default function CreditRecords({ tab }) {
       </InfiniteScroll>
 
       {showFiltersModal && (
-        <Modal onClick={handleCloseModal}>
-          <FilterMask>
-            <ModalContent>
-              {FILTER_OPTIONS.map((grp, idx) => (
-                <ListBox key={idx}>
-                  {grp.map((item, index) => (
-                    <li
-                      key={`time_${index}`}
-                      onClick={() => handleSelect(item.value)}
-                      className={item.value === selectValue ? "selected" : ""}
-                    >
-                      {t(item.label)}
-                    </li>
-                  ))}
-                </ListBox>
-              ))}
-            </ModalContent>
-          </FilterMask>
-        </Modal>
+        <CreditModal handleClose={handleCloseModal}>
+          <ModalContent>
+            {FILTER_OPTIONS.map((grp, idx) => (
+              <ListBox key={idx}>
+                {grp.map((item, index) => (
+                  <li
+                    key={`time_${index}`}
+                    onClick={() => handleSelect(item.value)}
+                    className={item.value === selectValue ? "selected" : ""}
+                  >
+                    {t(item.label)}
+                  </li>
+                ))}
+              </ListBox>
+            ))}
+          </ModalContent>
+        </CreditModal>
       )}
     </>
   );
@@ -210,39 +209,11 @@ const RecordContentLine = styled.div`
   }
 `;
 
-const Modal = styled.div`
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 9999;
-`;
 
 const ModalContent = styled.div`
-  background-color: var(--background-color-1);
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.05);
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding-top: 46px;
-  padding-inline: 24px;
-  padding-bottom: 29px;
-  box-sizing: border-box;
+  margin-top: 18px;
 `;
 
-const FilterMask = styled.div`
-  position: absolute;
-  background: rgba(244, 244, 248, 0.9);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(10px);
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-`;
 
 const ListBox = styled.ul`
   margin-bottom: 20px;
