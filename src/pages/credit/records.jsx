@@ -54,8 +54,7 @@ export default function CreditRecords({ tab }) {
     setSeletValue(v);
   };
   const go2detail = (data) => {
-    // navigate(`/credit/record/${data.lendId}`, { state: data });
-    navigate(`/credit/record/25`, { state: data });
+    navigate(`/credit/record/${data.lendId}`, { state: data });
   };
 
   const formatSNS = (wallet) => {

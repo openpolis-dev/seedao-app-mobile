@@ -10,8 +10,14 @@ import { useLocation, useParams } from "react-router-dom";
 import useQuerySNS from "hooks/useQuerySNS";
 import getConfig from "constant/envCofnig";
 import { ethers } from "ethers";
+import { useCreditContext } from "./provider";
+import store from "store";
+import { saveLoading } from "store/reducer";
+import { getRecordDetail } from "api/credit";
+import useToast from "hooks/useToast";
+import BondNFTABI from "assets/abi/BondNFT.json";
 
-const lendToken = getConfig().NETWORK.lend;
+const lendConfig = getConfig().NETWORK.lend;
 
 export default function CreditRecordPage() {
   const { t } = useTranslation();
@@ -23,6 +29,12 @@ export default function CreditRecordPage() {
   const [borrower, setBorrower] = useState(data?.borrower);
   const [interestDays, setInterestDays] = useState(data?.interestDays || 0);
   const [interestAmount, setInterestAmount] = useState(data?.interestAmount || 0);
+
+  const {
+    state: { bondNFTContract },
+  } = useCreditContext();
+
+  const { Toast, toast } = useToast();
 
   const { getMultiSNS } = useQuerySNS();
 
@@ -36,19 +48,55 @@ export default function CreditRecordPage() {
     }
   };
 
+  const getInterest = () => {
+    let contract = bondNFTContract;
+    if (!contract) {
+      const _provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.public.http[0], amoy.id);
+      contract = new ethers.Contract(lendConfig.bondNFTContract, BondNFTABI, _provider);
+    }
+    store.dispatch(saveLoading(true));
+    contract
+      .calculateInterest(Number(id))
+      .then((r) => {
+        setInterestDays(r.interestDays.toNumber());
+        setInterestAmount(Number(ethers.utils.formatUnits(r.interestAmount, lendConfig.lendToken.decimals)));
+      })
+      .catch((e) => {
+        console.error("calculateInterest failed", e);
+        toast.danger(`get interest failed: ${e}`);
+      })
+      .finally(() => {
+        store.dispatch(saveLoading(false));
+      });
+  };
+
+  useEffect(() => {
+    if (fullData?.interestDays === 0 && fullData?.status === CreditRecordStatus.INUSE) {
+      getInterest();
+    }
+  }, [fullData]);
+
   useEffect(() => {
     if (data) {
       handleSNS(data.debtor);
       setFullData(data);
-      if (data.interestDays === 0 && data.status === CreditRecordStatus.INUSE) {
-        //   bondNFTContract?.calculateInterest(Number(id)).then((r) => {
-        //     setInterestDays(r.interestDays.toNumber());
-        //     setInterestAmount(Number(ethers.utils.formatUnits(r.interestAmount, lendToken.decimals)));
-        //   });
-      }
     } else {
+      store.dispatch(saveLoading(true));
+      getRecordDetail(id)
+        .then((r) => {
+          setFullData(r);
+          setInterestDays(r.interestDays);
+          setInterestAmount(r.interestAmount);
+        })
+        .catch((e) => {
+          console.error("getRecordDetail failed", e);
+          toast.danger(`get data failed: ${e}`);
+        })
+        .finally(() => {
+          store.dispatch(saveLoading(false));
+        });
     }
-  }, [data, id]);
+  }, [data, id, bondNFTContract]);
 
   return (
     <Layout title={t("Credit.Records")} noTab bgColor="#F5F7FA">
@@ -97,19 +145,13 @@ export default function CreditRecordPage() {
                 {fullData?.status === CreditRecordStatus.OVERDUE ? (
                   <NoData>-</NoData>
                 ) : (
-                  t("Credit.Days", { days: fullData?.interestDays })
+                  t("Credit.Days", { days: interestDays })
                 )}
               </dd>
             </Line>
             <Line>
               <dt>{t("Credit.TotalInterest")}</dt>
-              <dd>
-                {fullData?.status === CreditRecordStatus.OVERDUE ? (
-                  <NoData>-</NoData>
-                ) : (
-                  `${fullData?.interestAmount} USDT`
-                )}
-              </dd>
+              <dd>{fullData?.status === CreditRecordStatus.OVERDUE ? <NoData>-</NoData> : `${interestAmount} USDT`}</dd>
             </Line>
             <Line>
               <dt>{t("Credit.LastRepaymentTime")}</dt>
@@ -157,7 +199,9 @@ export default function CreditRecordPage() {
               </DetailLines>
             </>
           )}
+          <Interest>{t("Credit.BorrowTip2")}</Interest>
         </DetailBox>
+        {Toast}
       </LayoutContainer>
     </Layout>
   );
@@ -237,4 +281,10 @@ const RepayTtile = styled.div`
 
 const NoData = styled.span`
   color: red;
+`;
+
+const Interest = styled.p`
+  font-size: 12px;
+  color: #1814f3;
+  margin-top: 20px;
 `;
