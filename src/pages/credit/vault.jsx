@@ -56,8 +56,12 @@ const VaultCard = () => {
       <CardStyle>
         <div className="label">{t("Credit.VaultBorrowingsQuota")}</div>
         <div className="value">{total}</div>
-        <div className="tip" style={{ marginTop: "8px" }}>
-          {t("Credit.MyBorrowingTip1")}
+        <div
+          className="tip"
+          style={{ marginTop: "8px" }}
+          onClick={() => window.open("https://app.seedao.xyz/proposal/thread/55", "_blank")}
+        >
+          {t("Credit.DaoTip")}
         </div>
         <div
           className="tip"
