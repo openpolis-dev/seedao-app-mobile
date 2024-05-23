@@ -36,20 +36,8 @@ const BorrowAndRepay = ({ onUpdate }) => {
   const [showItemsModal, setShowItemsModal] = useState("");
 
   const go2Borrow = () => {
-    store.dispatch(saveLoading(true));
-    scoreLendContract
-      .userIsInBorrowCooldownPeriod(account)
-      .then((r) => {
-        if (r.isIn) {
-          toast.danger(t("Credit.BorrowCooldownMsg"));
-        } else {
-          setShowItemsModal("");
-          setShowModal("borrow");
-        }
-      })
-      .finally(() => {
-        store.dispatch(saveLoading(false));
-      });
+     setShowItemsModal("");
+     setShowModal("borrow");
   };
   const go2Repay = () => {
     setShowItemsModal("");
@@ -65,9 +53,25 @@ const BorrowAndRepay = ({ onUpdate }) => {
     }
   };
 
+  const openBorrow = () => {
+    store.dispatch(saveLoading(true));
+    scoreLendContract
+      .userIsInBorrowCooldownPeriod(account)
+      .then((r) => {
+        if (r.isIn) {
+          toast.danger(t("Credit.BorrowCooldownMsg"));
+        } else {
+          setShowItemsModal("borrow")
+        }
+      })
+      .finally(() => {
+        store.dispatch(saveLoading(false));
+      });
+  }
+
   return (
     <OperateBox>
-      <OperateItem className="borrow" onClick={() => setShowItemsModal("borrow")}>
+      <OperateItem className="borrow" onClick={openBorrow}>
         {t("Credit.GoToBorrow")}
       </OperateItem>
       <OperateItem onClick={() => setShowItemsModal("repay")}>{t("Credit.GoToRepay")}</OperateItem>
