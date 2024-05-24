@@ -69,7 +69,7 @@ export default function JoyIDRedirect() {
     navigate(pathname, { replace: true });
   };
 
-  const handleBorrowData = () => {
+  const handleCreditData = () => {
     return { from: search.get("from"), to: search.get("to") };
   };
 
@@ -107,7 +107,7 @@ export default function JoyIDRedirect() {
     if (["credit-borrow", "credit-borrow-approve", "credit-repay", "credit-repay-approve"].includes(action)) {
       console.log("res.tx", res.tx);
       window.open(`https://rpc-amoy.polygon.technology/tx/${res.tx}`, "_blank");
-      navigate("/credit", { state: { action, ...handleBorrowData(), tx: res?.tx }, replace: true });
+      navigate("/credit?tab=mine", { state: { action, ...handleCreditData(), tx: res?.tx }, replace: true });
       return;
     }
     if (!res) {

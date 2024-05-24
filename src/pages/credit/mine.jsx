@@ -20,11 +20,14 @@ import { CreditRecordStatus } from "constant/credit";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import useToast from "hooks/useToast";
+import { useSearchParams } from "react-router-dom";
 
 const networkConfig = getConfig().NETWORK;
 
 const BorrowAndRepay = ({ onUpdate }) => {
   const { t } = useTranslation();
+  const [search] = useSearchParams();
+  const action = search.get("action");
 
   const {
     state: { scoreLendContract },
@@ -35,9 +38,25 @@ const BorrowAndRepay = ({ onUpdate }) => {
   const [showModal, setShowModal] = useState("");
   const [showItemsModal, setShowItemsModal] = useState("");
 
+  const [stepData, setStepData] = useState(0);
+
+  useEffect(() => {
+    if (!action) {
+      return;
+    }
+    const arr = action.split("-");
+    if (arr[1] === "borrow") {
+      setShowModal("borrow");
+      setStepData({ step: arr[2] === "approve" ? 1 : 2, from: search.get("from"), to: search.get("to") });
+    } else if (arr[1] === "repay") {
+      setShowModal("repay");
+      setStepData({ step: arr[2] === "approve" ? 2 : 3, from: search.get("from"), to: search.get("to") });
+    }
+  }, [action]);
+
   const go2Borrow = () => {
-     setShowItemsModal("");
-     setShowModal("borrow");
+    setShowItemsModal("");
+    setShowModal("borrow");
   };
   const go2Repay = () => {
     setShowItemsModal("");
@@ -61,13 +80,13 @@ const BorrowAndRepay = ({ onUpdate }) => {
         if (r.isIn) {
           toast.danger(t("Credit.BorrowCooldownMsg"));
         } else {
-          setShowItemsModal("borrow")
+          setShowItemsModal("borrow");
         }
       })
       .finally(() => {
         store.dispatch(saveLoading(false));
       });
-  }
+  };
 
   return (
     <OperateBox>
@@ -75,8 +94,8 @@ const BorrowAndRepay = ({ onUpdate }) => {
         {t("Credit.GoToBorrow")}
       </OperateItem>
       <OperateItem onClick={() => setShowItemsModal("repay")}>{t("Credit.GoToRepay")}</OperateItem>
-      {showModal === "borrow" && <BorrowModal handleClose={handleCloseModal} />}
-      {showModal === "repay" && <RepayModal handleClose={handleCloseModal} />}
+      {showModal === "borrow" && <BorrowModal handleClose={handleCloseModal} stepData={stepData} />}
+      {showModal === "repay" && <RepayModal handleClose={handleCloseModal} stepData={stepData} />}
       {showItemsModal === "borrow" && (
         <BorrowItemsModal onConfirm={go2Borrow} handleClose={() => setShowItemsModal("")} />
       )}
