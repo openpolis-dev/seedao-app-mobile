@@ -109,7 +109,7 @@ export default function RepayModal({ handleClose }) {
       });
       const ids = r.data.map((d) => Number(d.lendId));
       const _list = r.data.map((item) => ({ id: item.lendId, data: item, selected: false, total: 0 }));
-      const result = await bondNFTContract?.calculateInterestBatch(ids);
+      const result = await bondNFTContract?.calculateLendsInterest(ids);
       ids.forEach((_, idx) => {
         _list[idx].data.interestAmount = Number(
           ethers.utils.formatUnits(result.interestAmounts[idx], lendToken.decimals),
