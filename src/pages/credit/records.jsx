@@ -7,13 +7,14 @@ import { BlockTitle } from "./mine";
 import FilterIcon from "assets/Imgs/credit/filters.svg";
 import { useNavigate } from "react-router-dom";
 import store from "../../store";
-import { saveLoading } from "../../store/reducer";
+import { saveLoading, saveCache } from "../../store/reducer";
 import { useSelector } from "react-redux";
 import { getBorrowList } from "api/credit";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useQuerySNS from "hooks/useQuerySNS";
 import publicJs from "utils/publicJs";
 import CreditModal from "components/credit/creditModal";
+import useCurrentPath from "hooks/useCurrentPath";
 
 const FILTER_OPTIONS = [
   [
@@ -46,6 +47,10 @@ export default function CreditRecords({ tab }) {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [list, setList] = useState([]);
+  const cache = useSelector((state) => state.cache);
+  const prevPath = useCurrentPath();
+
+  const [init, setInit] = useState(false);
 
   const { getMultiSNS } = useQuerySNS();
 
@@ -57,7 +62,21 @@ export default function CreditRecords({ tab }) {
       getRecords(true, v);
     }
   };
+
+  const storageList = (id) => {
+    const element = document.querySelector(`#inner`);
+    const height = element.scrollTop;
+    let obj = {
+      type: "creditRecord",
+      id: id,
+      list,
+      page,
+      height,
+    };
+    store.dispatch(saveCache(obj));
+  };
   const go2detail = (data) => {
+    storageList(data.lendId);
     navigate(`/credit/record/${data.lendId}`, { state: data });
   };
 
@@ -107,8 +126,32 @@ export default function CreditRecords({ tab }) {
   }, [total, list]);
 
   useEffect(() => {
+    if (!prevPath || prevPath?.indexOf("/credit") === -1 || cache?.type !== "creditRecord") return;
+
+    const { list, page, height, id } = cache;
+
+    setList(list);
+    setPage(page);
+
+    setTimeout(() => {
+      const element = document.querySelector(`#inner`);
+      // const targetElement = document.querySelector(`#assets_${id}`);
+      element.scrollTo({
+        top: height,
+        behavior: "auto",
+      });
+    }, 0);
+  }, [prevPath]);
+
+  useEffect(() => {
     setSeletValue("all");
-    getRecords(true);
+
+    if (init && cache?.type === "creditRecord" && cache?.page >= page) {
+      return;
+    } else {
+      init && setInit(false);
+      getRecords(true);
+    }
   }, [tab]);
 
   useEffect(() => {
@@ -215,11 +258,9 @@ const RecordContentLine = styled.div`
   }
 `;
 
-
 const ModalContent = styled.div`
   margin-top: 18px;
 `;
-
 
 const ListBox = styled.ul`
   margin-bottom: 20px;
