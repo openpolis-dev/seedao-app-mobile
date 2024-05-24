@@ -35,6 +35,8 @@ const JoyIDRedirect = lazy(() => import("pages/joyRedirect"));
 const ChatPage = lazy(() => import("pages/chat"));
 const Newcomer = lazy(() => import("pages/newcomer"));
 const NewcomerCourse = lazy(() => import("pages/newcomer/course"));
+const CreditLending = lazy(() => import("pages/credit/index"));
+const CreditRecordDetail = lazy(() => import("pages/credit/recordDetail"));
 
 // import Home from "../pages/home";
 // import Login from "../pages/login";
@@ -113,6 +115,9 @@ function RouterLink() {
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/newcomer" element={<Newcomer />} />
         <Route path="/course" element={<NewcomerCourse />} />
+        {/* credit */}
+        <Route path="/credit" element={<CreditLending />} />
+        <Route path="/credit/record/:id" element={<CreditRecordDetail />} />
 
         <Route path="/sns" element={<SNSEntrancePage />} />
         <Route path="/sns/register" element={<RegisterSNS />} />

@@ -93,6 +93,13 @@ const apps =  [
       icon: 'https://avatars.githubusercontent.com/u/36115574?s=200&v=4',
       desc: 'Coming Soon',
     },
+    {
+      id: 'module-credit',
+      name: 'Lend',
+      link: '/credit',
+      icon: '',
+      desc: 'Coming Soon',
+    },
     // {
     //   id: "module-newcomer",
     //   name: "apps.Newcomer",
