@@ -77,7 +77,7 @@ const BorrowAndRepay = ({ onUpdate }) => {
     scoreLendContract
       .userBorrowCooldownEndTimestamp(account)
       .then((endTime) => {
-        if (endTime && endTime.toNumber() * 1000 < Date.now()) {
+        if (endTime && endTime.toNumber() * 1000 > Date.now()) {
           toast.danger(t("Credit.BorrowCooldownMsg"));
         } else {
           setShowItemsModal("borrow");

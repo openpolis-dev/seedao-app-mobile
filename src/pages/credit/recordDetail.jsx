@@ -56,13 +56,13 @@ export default function CreditRecordPage() {
     }
     store.dispatch(saveLoading(true));
     contract
-      .calculateInterest(Number(id))
+      .calculateLendInterest(Number(id))
       .then((r) => {
         setInterestDays(r.interestDays.toNumber());
         setInterestAmount(Number(ethers.utils.formatUnits(r.interestAmount, lendConfig.lendToken.decimals)));
       })
       .catch((e) => {
-        console.error("calculateInterest failed", e);
+        console.error("calculateLendInterest failed", e);
         toast.danger(`get interest failed: ${e}`);
       })
       .finally(() => {
