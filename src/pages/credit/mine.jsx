@@ -75,9 +75,9 @@ const BorrowAndRepay = ({ onUpdate }) => {
   const openBorrow = () => {
     store.dispatch(saveLoading(true));
     scoreLendContract
-      .userIsInBorrowCooldownPeriod(account)
-      .then((r) => {
-        if (r.isIn) {
+      .userBorrowCooldownEndTimestamp(account)
+      .then((endTime) => {
+        if (endTime && endTime.toNumber() * 1000 < Date.now()) {
           toast.danger(t("Credit.BorrowCooldownMsg"));
         } else {
           setShowItemsModal("borrow");
@@ -167,7 +167,7 @@ export default function MyBorrowings() {
         },
       });
     });
-    scoreLendContract?.userAvailableAmount(account).then((r) => {
+    scoreLendContract?.userAvailableBorrowAmount(account).then((r) => {
       dispatchCreditEvent({
         type: ACTIONS.SET_MY_QUOTA,
         payload: Number(ethers.utils.formatUnits(r.availableAmount, decimals)),

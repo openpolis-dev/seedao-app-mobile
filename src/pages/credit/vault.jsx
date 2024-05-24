@@ -32,7 +32,7 @@ const VaultCard = () => {
   });
 
   const getData = useCallback(() => {
-    scoreLendContract?.totalAvailableAmount().then((r) => {
+    scoreLendContract?.totalAvailableBorrowAmount().then((r) => {
       const value = ethers.utils.formatUnits(r, networkConfig.lend.lendToken.decimals);
       setTotal(Number(value).format());
     });

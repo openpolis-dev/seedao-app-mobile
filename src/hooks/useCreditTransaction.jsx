@@ -19,7 +19,7 @@ const buildApproveTokenData = (contractAddress, decimals, num) => {
 export const buildBorrowData = (amount) => {
   const iface = new ethers.utils.Interface(ScoreLendABI);
   const amountNB = ethers.utils.parseUnits(String(amount), CONFIG.NETWORK.lend.lendToken.decimals);
-  return iface.encodeFunctionData("borrow", [amountNB, 28800, true]);
+  return iface.encodeFunctionData("borrow", [amountNB]);
 };
 
 export const buildRepayData = (ids) => {
