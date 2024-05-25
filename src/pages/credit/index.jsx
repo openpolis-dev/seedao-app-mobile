@@ -77,7 +77,7 @@ export default function CreditPage() {
   const [tab, setTab] = useState(["all", "mine"].includes(tabFromUrl) ? tabFromUrl : "all");
 
   return (
-    <Layout title={t("Credit.Title")} customTab={<CreditTabs tab={tab} onChange={setTab} />} bgColor="#F5F7FA">
+    <Layout title={t("Credit.Title")} customTab={<CreditTabs tab={tab} onChange={setTab} />} bgColor="#F5F7FA" tabHeight="46px">
       <LayoutContainer>
         <CreditProvider>
           <CreditCards tab={tab} />
