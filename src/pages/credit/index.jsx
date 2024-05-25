@@ -97,6 +97,9 @@ const CreditTabsStyle = styled.div`
   margin-inline: 20px;
   line-height: 40px;
   position: relative;
+  * {
+    font-family: "Inter-Regular";
+  }
   .line {
     position: absolute;
     display: block;

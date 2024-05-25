@@ -55,11 +55,11 @@ export default function CreditRecords({ tab }) {
   const { getMultiSNS } = useQuerySNS();
 
   // filter
-  const [selectValue, setSeletValue] = useState(FILTER_OPTIONS[0][0].value);
+  const [selectValue, setSeletValue] = useState(FILTER_OPTIONS[0][0]);
   const handleSelect = (v) => {
     setSeletValue(v);
-    if (selectValue !== v) {
-      getRecords(true, v);
+    if (selectValue?.value !== v.value) {
+      getRecords(true, v.value);
     }
   };
 
@@ -92,7 +92,7 @@ export default function CreditRecords({ tab }) {
       page: _page,
       size: 10,
     };
-    const _selectValue = initSelectValue || selectValue;
+    const _selectValue = initSelectValue || selectValue?.value;
     if (_selectValue) {
       const [field, v] = _selectValue.split(";");
       if (field === "lendStatus") {
@@ -144,7 +144,7 @@ export default function CreditRecords({ tab }) {
   }, [prevPath]);
 
   useEffect(() => {
-    setSeletValue("all");
+    setSeletValue(FILTER_OPTIONS[0][0]);
 
     if (init && cache?.type === "creditRecord" && cache?.page >= page) {
       return;
@@ -160,11 +160,17 @@ export default function CreditRecords({ tab }) {
     return () => document.removeEventListener("openMine", refreshList);
   }, []);
 
+  console.log("selectValue", selectValue);
+
   return (
     <>
       <RecordTitle>
         <span>{title}</span>
-        <img src={FilterIcon} alt="" onClick={() => setShowFiltersModal(true)} />
+        {selectValue?.value === "all" ? (
+          <img src={FilterIcon} alt="" onClick={() => setShowFiltersModal(true)} />
+        ) : (
+          <SelectedBox onClick={() => setShowFiltersModal(true)}>{t(selectValue.label)}</SelectedBox>
+        )}
       </RecordTitle>
       <InfiniteScroll scrollableTarget="inner" dataLength={list.length} next={getRecords} hasMore={hasMore}>
         <RecordsList>
@@ -203,8 +209,8 @@ export default function CreditRecords({ tab }) {
                 {grp.map((item, index) => (
                   <li
                     key={`time_${index}`}
-                    onClick={() => handleSelect(item.value)}
-                    className={item.value === selectValue ? "selected" : ""}
+                    onClick={() => handleSelect(item)}
+                    className={item.value === selectValue?.value ? "selected" : ""}
                   >
                     {t(item.label)}
                   </li>
@@ -300,4 +306,14 @@ const RecordTitle = styled(BlockTitle)`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+const SelectedBox = styled.div`
+  line-height: 24px;
+  border: 1px solid #343c6a;
+  border-radius: 15px;
+  font-size: 12px;
+  padding-inline: 10px;
+  font-family: "Inter-Regular";
+  font-weight: 400;
 `;
