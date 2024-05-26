@@ -70,9 +70,6 @@ const VaultCard = () => {
         >
           {t("Credit.Details")}
         </div>
-        <div className="vault" style={{ visibility: "hidden" }}>
-          {t("Credit.VaultTotalQuota")}
-        </div>
         <img src={CreditLogo} alt="" />
       </CardStyle>
       <BlockTitle>{t("Credit.BorrowingsState")}</BlockTitle>
@@ -133,22 +130,19 @@ const CardStyle = styled.div`
   }
   .label {
     color: #f2f4f7ad;
-    font-size: 12px;
+    font-size: 14px;
   }
   .value {
     font-size: 32px;
     font-family: "Inter-SemiBold";
     font-weight: 600;
-    font-size: 38px;
-    margin-top: 20px;
+    margin-block: 20px;
   }
   .tip {
-    font-size: 10px;
-  }
-  .vault {
-    text-align: right;
-    cursor: pointer;
-    font-size: 12px;
+    font-size: 14px;
+    &:last-child {
+      margin-bottom: 20px;
+    }
   }
 `;
 

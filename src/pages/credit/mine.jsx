@@ -201,8 +201,7 @@ export default function MyBorrowings() {
         <div className="label">{t("Credit.MyBorrowingQuota")}</div>
         <div className="value">{myAvaliableQuota.format()}</div>
         <div className="tip">{t("Credit.MyBorrowingTip1")}</div>
-        <div className="btn-tip">{t("Credit.MyBorrowingTip2")}</div>
-        <div className="vault">{t("Credit.VaultTotalQuota")}</div>
+        <div className="tip">{t("Credit.MyBorrowingTip2")}</div>
         <img src={CreditLogo} alt="" />
       </CardStyle>
       <SubCardStyle>
@@ -263,30 +262,20 @@ const CardStyle = styled.div`
   }
   .label {
     color: #f2f4f7ad;
-    font-size: 12px;
+    font-size: 14px;
   }
   .value {
     font-size: 32px;
     font-family: "Inter-SemiBold";
     font-weight: 600;
-    font-size: 38px;
-    margin-top: 20px;
+    margin-block: 20px;
   }
   .tip {
-    font-size: 10px;
-    margin-block: 8px;
-  }
-  .vault {
-    text-align: right;
-    cursor: pointer;
-    font-size: 12px;
-  }
-  .btn-tip {
-    display: inline-block;
-    line-height: 22px;
-    font-size: 12px;
-    padding-inline: 8px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%);
+    font-size: 14px;
+    color: #fff;
+    &:last-of-type {
+      margin-bottom: 20px;
+    }
   }
 `;
 
@@ -301,7 +290,7 @@ const SubCardStyle = styled.div`
     padding: 16px;
 
     .label {
-      font-size: 10px;
+      font-size: 12px;
       color: #718ebf;
       display: flex;
       align-items: center;

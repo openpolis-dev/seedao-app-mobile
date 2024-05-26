@@ -34,7 +34,7 @@ export default function StateTag({ state, strong }) {
     <StatusTagStyle
       $color={color}
       $bg={bg}
-      style={{ fontSize: strong ? "14px" : "10px", lineHeight: strong ? "24px" : "16px", paddingInline: strong ? "8px" : "6px"}}
+      style={{ fontSize: strong ? "14px" : "12px", lineHeight: strong ? "24px" : "18px", paddingInline: strong ? "8px" : "6px"}}
     >
       {text}
     </StatusTagStyle>

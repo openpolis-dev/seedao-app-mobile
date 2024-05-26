@@ -238,7 +238,7 @@ const RecordItem = styled.li`
 `;
 
 const MoreButton = styled.span`
-  font-size: 11px;
+  font-size: 14px;
   color: #1814f3;
   font-weight: 500;
   font-family: "Inter-Medium";
