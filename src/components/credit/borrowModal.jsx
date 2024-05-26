@@ -57,7 +57,7 @@ export default function BorrowModal({ handleClose }) {
       setStep(1);
     } catch (error) {
       console.error(error);
-      toast.danger("Approve failed");
+      toast.danger(`Approve failed: ${error}`);
     } finally {
       setLoading(false);
     }
