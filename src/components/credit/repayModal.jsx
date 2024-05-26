@@ -217,6 +217,7 @@ export default function RepayModal({ handleClose }) {
           </RepayContent>
         )}
         <ConfirmBox>
+          {step === 1 && <ApproveTip>{t("Credit.ApproveTip")}</ApproveTip>}
           {loading ? <CreditButton>{loading}</CreditButton> : steps[step].button}
           {loading && <TxTip onClick={() => setLoading(false)}>{t("Credit.TxTip")}</TxTip>}
         </ConfirmBox>
@@ -493,4 +494,10 @@ const TxTip = styled.p`
   text-align: center;
   margin-top: 8px;
   font-size: 14px;
+`;
+
+const ApproveTip = styled.p`
+  font-size: 12px;
+  color: #718ebf;
+  margin-bottom: 18px;
 `;
