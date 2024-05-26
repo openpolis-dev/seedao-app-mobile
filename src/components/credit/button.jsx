@@ -21,4 +21,8 @@ const ButtonStyle = styled.button`
   font-family: "Inter-Medium";
   font-weight: 500;
   color: #fff;
+  &:disabled {
+    background: #7c7c96;
+    cursor: not-allowed;
+  }
 `;

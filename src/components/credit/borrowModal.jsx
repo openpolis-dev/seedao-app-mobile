@@ -86,7 +86,11 @@ export default function BorrowModal({ handleClose }) {
   const steps = [
     {
       title: t("Credit.BorrowStepTitle1"),
-      button: <CreditButton onClick={checkApprove}>{t("Credit.BorrowStepButton1")}</CreditButton>,
+      button: (
+        <CreditButton onClick={checkApprove} disabled={calculating || Number(inputNum) < 100 || forfeitNum === 0}>
+          {t("Credit.BorrowStepButton1")}
+        </CreditButton>
+      ),
     },
     {
       title: t("Credit.BorrowStepTitle2"),
@@ -101,6 +105,7 @@ export default function BorrowModal({ handleClose }) {
   const computeAmount = (num) => {
     if (num === 0) {
       setForfeitNum(0);
+      setCalculating(false);
       return;
     }
     setCalculating(true);
@@ -110,6 +115,7 @@ export default function BorrowModal({ handleClose }) {
       .then((r) => {
         setForfeitNum(Number(ethers.utils.formatUnits(r, networkConfig.SCRContract.decimals)));
       })
+      .catch((e) => setForfeitNum(0))
       .finally(() => {
         setCalculating(false);
       });
@@ -129,6 +135,7 @@ export default function BorrowModal({ handleClose }) {
       return;
     }
     setInputNum(newValue);
+    setCalculating(true);
     onChangeVal(Number(newValue));
   };
 
@@ -137,6 +144,7 @@ export default function BorrowModal({ handleClose }) {
     if (!isNaN(numericValue)) {
       if (numericValue > myAvaliableQuota) {
         setInputNum(getShortDisplay(myAvaliableQuota));
+        setCalculating(true);
         onChangeVal(myAvaliableQuota);
       } else {
         setInputNum(getShortDisplay(numericValue));
@@ -145,11 +153,16 @@ export default function BorrowModal({ handleClose }) {
   };
 
   const handleBorrowMax = () => {
+    if (myAvaliableQuota === Number(inputNum)) {
+      return;
+    }
     setInputNum(String(myAvaliableQuota));
     onChangeVal(myAvaliableQuota);
+    setCalculating(true);
   };
 
   useEffect(() => {
+    setCalculating(true);
     onChangeVal(100);
   }, []);
 
@@ -327,7 +340,6 @@ const NumberCheckLabel = styled.p`
   margin-bottom: 10px;
   margin-top: 4px;
 `;
-
 
 const TxTip = styled.p`
   text-align: center;
