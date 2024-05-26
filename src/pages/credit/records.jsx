@@ -60,6 +60,7 @@ export default function CreditRecords({ tab }) {
     setSeletValue(v);
     if (selectValue?.value !== v.value) {
       getRecords(true, v.value);
+      handleCloseModal();
     }
   };
 
