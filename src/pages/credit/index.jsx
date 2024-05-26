@@ -119,6 +119,7 @@ const CreditTabsStyle = styled.div`
     &.active {
       font-family: "Inter-SemiBold";
       font-weight: 600;
+      color: #1814f3;
     }
   }
 `;
