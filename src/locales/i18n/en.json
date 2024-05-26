@@ -492,6 +492,7 @@
     "WaitingTx": "Waiting transaction...",
     "CheckingNetwork": "Checking network...",
     "TxTip": "交易卡住，点击取消",
-    "ApproveTip": "Due to the uncertainty of the on-chain transaction time, in order to ensure the success of the repayment, we will default to an additional 1 day of interest when you Approve, and if it is not used in the end, the excess USDT will be returned to your wallet!"
+    "ApproveTip": "Due to the uncertainty of the on-chain transaction time, in order to ensure the success of the repayment, we will default to an additional 1 day of interest when you Approve, and if it is not used in the end, the excess USDT will be returned to your wallet!",
+    "Back": "Back"
   }
 }

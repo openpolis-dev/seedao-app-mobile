@@ -19,8 +19,9 @@ import { getBorrowList } from "api/credit";
 import { CreditRecordStatus } from "constant/credit";
 import store from "store";
 import { saveLoading } from "store/reducer";
-import useToast from "hooks/useToast";
 import { useSearchParams } from "react-router-dom";
+import CreditModal from "components/credit/creditModal";
+import CreditButton from "components/credit/button";
 
 const networkConfig = getConfig().NETWORK;
 
@@ -32,13 +33,13 @@ const BorrowAndRepay = ({ onUpdate }) => {
   const {
     state: { scoreLendContract },
   } = useCreditContext();
-  const { toast, Toast } = useToast();
   const account = useSelector((state) => state.account);
 
   const [showModal, setShowModal] = useState("");
   const [showItemsModal, setShowItemsModal] = useState("");
 
   const [stepData, setStepData] = useState(0);
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     if (!action) {
@@ -78,7 +79,7 @@ const BorrowAndRepay = ({ onUpdate }) => {
       .userBorrowCooldownEndTimestamp(account)
       .then((endTime) => {
         if (endTime && endTime.toNumber() * 1000 > Date.now()) {
-          toast.danger(t("Credit.BorrowCooldownMsg"));
+          setShowAlert(true);
         } else {
           setShowItemsModal("borrow");
         }
@@ -100,7 +101,14 @@ const BorrowAndRepay = ({ onUpdate }) => {
         <BorrowItemsModal onConfirm={go2Borrow} handleClose={() => setShowItemsModal("")} />
       )}
       {showItemsModal === "repay" && <RepayItemsModal onConfirm={go2Repay} handleClose={() => setShowItemsModal("")} />}
-      {Toast}
+      {showAlert && (
+        <CreditModal>
+          <AlertContent>
+            <p>{t("Credit.BorrowCooldownMsg")}</p>
+            <CreditButton onClick={() => setShowAlert(false)}>{t("Credit.Back")}</CreditButton>
+          </AlertContent>
+        </CreditModal>
+      )}
     </OperateBox>
   );
 };
@@ -365,5 +373,14 @@ export const StateLine = styled.div`
     font-size: 16px;
     font-family: "Inter-SemiBold";
     font-weight: 600;
+  }
+`;
+
+const AlertContent = styled.div`
+  p {
+    line-height: 200px;
+    font-size: 14px;
+    color: #1814f3;
+    text-align: center;
   }
 `;
