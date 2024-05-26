@@ -22,7 +22,7 @@ const ButtonStyle = styled.button`
   font-weight: 500;
   color: #fff;
   &:disabled {
-    background: #7c7c96;
+    background: rgba(24, 20, 243, 0.7);
     cursor: not-allowed;
   }
 `;
