@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import CreditLogo from "assets/Imgs/credit/credit-logo.svg";
+import CreditLogo from "assets/Imgs/credit/credit-logo.jpg";
 import SCRIcon from "assets/Imgs/credit/scr.svg";
 import QuotaIcon from "assets/Imgs/credit/quota.svg";
 import CountIcon from "assets/Imgs/credit/count.svg";
@@ -259,6 +259,7 @@ const CardStyle = styled.div`
     position: absolute;
     right: 16px;
     top: 18px;
+    width: 35px;
   }
   .label {
     color: #f2f4f7ad;
