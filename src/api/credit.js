@@ -10,7 +10,7 @@ export const getVaultData = () => {
 const formatRecord = (item) => {
   return {
     lendId: item.lendId,
-    lendIdDisplay: String(88000 + Number(item.lendId)),
+    lendIdDisplay: String(8800000 + Number(item.lendId)),
     status: item.lendStatus,
     debtor: item.debtor,
     borrowAmount: Number(item.borrowAmount),
