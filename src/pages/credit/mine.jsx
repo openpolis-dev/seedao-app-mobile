@@ -207,7 +207,7 @@ export default function MyBorrowings() {
     <>
       <CardStyle>
         <div className="label">{t("Credit.MyBorrowingQuota")}</div>
-        <div className="value">{myAvaliableQuota.format()}</div>
+        <div className="value">{myAvaliableQuota.format(4)}</div>
         <div className="tip">{t("Credit.MyBorrowingTip1")}</div>
         <div className="tip">{t("Credit.MyBorrowingTip2")}</div>
         <img src={CreditLogo} alt="" />
@@ -218,14 +218,14 @@ export default function MyBorrowings() {
             <img src={SCRIcon} alt="" />
             <span>{t("Credit.MySCR")}</span>
           </div>
-          <div className="value">{myScore.format()}</div>
+          <div className="value">{myScore.format(4)}</div>
         </div>
         <div>
           <div className="label">
             <img src={QuotaIcon} alt="" />
             <span>{t("Credit.MyTotalQuota")}</span>
           </div>
-          <div className="value">{Number(myInuseAmount + myAvaliableQuota + myOverdueAmount).format()}</div>
+          <div className="value">{Number(myInuseAmount + myAvaliableQuota + myOverdueAmount).format(4)}</div>
         </div>
       </SubCardStyle>
       <BorrowAndRepay onUpdate={handleUpdate} />
@@ -235,14 +235,14 @@ export default function MyBorrowings() {
           <img src={CountIcon} alt="" />
           <div>
             <div className="label">{t("Credit.MyInuseCount", { num: myInUseCount })}</div>
-            <div className="value">{myInuseAmount} USDT</div>
+            <div className="value">{myInuseAmount.format(4)} USDT</div>
           </div>
         </StateLine>
         <StateLine>
           <img src={AmountIcon} alt="" />
           <div>
             <div className="label">{t("Credit.OverdueCount", { num: myOverdueCount })}</div>
-            <div className="value">{myOverdueAmount.format()} USDT</div>
+            <div className="value">{myOverdueAmount.format(4)} USDT</div>
           </div>
         </StateLine>
         <div className="repay-tip">

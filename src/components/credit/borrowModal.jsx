@@ -17,7 +17,7 @@ const networkConfig = getConfig().NETWORK;
 export default function BorrowModal({ handleClose }) {
   const { t } = useTranslation();
   const [step, setStep] = useState(0);
-  const [inputNum, setInputNum] = useState("100.00");
+  const [inputNum, setInputNum] = useState("100");
   const [forfeitNum, setForfeitNum] = useState(0);
 
   const [calculating, setCalculating] = useState(false);
@@ -143,11 +143,11 @@ export default function BorrowModal({ handleClose }) {
     const numericValue = parseFloat(inputNum);
     if (!isNaN(numericValue)) {
       if (numericValue > myAvaliableQuota) {
-        setInputNum(getShortDisplay(myAvaliableQuota));
+        setInputNum(getShortDisplay(myAvaliableQuota, 0));
         setCalculating(true);
         onChangeVal(myAvaliableQuota);
       } else {
-        setInputNum(getShortDisplay(numericValue));
+        setInputNum(getShortDisplay(numericValue, 0));
       }
     }
   };
@@ -166,7 +166,7 @@ export default function BorrowModal({ handleClose }) {
     onChangeVal(100);
   }, []);
 
-  const dayIntrestAmount = inputNum ? getShortDisplay((Number(inputNum) * 10000 * Number(0.0001)) / 10000, 5) : 0;
+  const dayIntrestAmount = inputNum ? getShortDisplay((Number(inputNum) * 10000 * Number(0.0001)) / 10000, 4) : 0;
 
   return (
     <CreditModal handleClose={() => handleClose()}>
@@ -199,7 +199,7 @@ export default function BorrowModal({ handleClose }) {
             <LineLabel>{t("Credit.NeedForfeit")}</LineLabel>
             <LineBox>
               <div className="left">
-                {calculating ? <CalculateLoading style={{ margin: "20px" }} /> : forfeitNum.format()}
+                {calculating ? <CalculateLoading style={{ margin: "20px" }} /> : forfeitNum}
               </div>
               <span className="right">SCR</span>
             </LineBox>

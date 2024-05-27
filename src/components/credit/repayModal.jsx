@@ -242,12 +242,12 @@ const RecordCheckbox = ({ id, selected, data, onSelect }) => {
           <span>
             {t("Credit.BorrowID")}: {data.lendIdDisplay}
           </span>
-          <span> {data.borrowAmount.format()} USDT</span>
+          <span> {data.borrowAmount.format(4)} USDT</span>
         </li>
         <li>
           <span>{data.borrowTime}</span>
           <span>
-            {t("Credit.TotalInterest")} {data.interestAmount} USDT
+            {t("Credit.TotalInterest")} {data.interestAmount.format(4)} USDT
           </span>
         </li>
       </RecordRight>
@@ -269,7 +269,7 @@ const SelectedRecord = ({ data, total }) => {
       </li>
       <li>
         <span>{t("Credit.BorrowPrincipal")}</span>
-        <span>{data.borrowAmount.format()} USDT</span>
+        <span>{data.borrowAmount.format(4)} USDT</span>
       </li>
       <li>
         <span>{t("Credit.BorrowTime")}</span>
@@ -286,12 +286,12 @@ const SelectedRecord = ({ data, total }) => {
       </li>
       <li>
         <span>{t("Credit.Interest")}</span>
-        <span>{data.interestAmount}</span>
+        <span>{data.interestAmount.format(4)}</span>
       </li>
 
       <li>
         <span>{t("Credit.ReturnForfeit")}</span>
-        <span>{data.mortgageSCRAmount.format()} SCR</span>
+        <span>{data.mortgageSCRAmount.format(4)} SCR</span>
       </li>
     </SelectRecordStyle>
   );

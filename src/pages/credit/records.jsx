@@ -179,7 +179,7 @@ export default function CreditRecords({ tab }) {
             <RecordItem key={index} onClick={() => go2detail(item)}>
               <RecordContentLine>
                 <div className="values">
-                  <span>{item.borrowAmount.format()} USDT</span>
+                  <span>{item.borrowAmount.format(4)} USDT</span>
                   <StateTag state={item.status} />
                 </div>
                 <MoreButton>{t("Credit.CheckMore")}</MoreButton>

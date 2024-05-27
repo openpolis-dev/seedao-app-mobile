@@ -103,7 +103,7 @@ export default function CreditRecordPage() {
       <LayoutContainer>
         <DetailBox>
           <TotalBox>
-            <div className="amount">{fullData?.borrowAmount?.format() || "0.00"} USDT</div>
+            <div className="amount">{fullData?.borrowAmount?.format(4) || "0.0000"} USDT</div>
             <StateTag state={fullData?.status} strong />
           </TotalBox>
           <div className="id">
@@ -116,7 +116,7 @@ export default function CreditRecordPage() {
             </Line>
             <Line>
               <dt>{t("Credit.Forfeit")}</dt>
-              <dd>{fullData?.mortgageSCRAmount?.format()} SCR</dd>
+              <dd>{fullData?.mortgageSCRAmount?.format(4)} SCR</dd>
             </Line>
             <Line>
               <dt>{t("Credit.BorrowHash")}</dt>
@@ -151,7 +151,13 @@ export default function CreditRecordPage() {
             </Line>
             <Line>
               <dt>{t("Credit.TotalInterest")}</dt>
-              <dd>{fullData?.status === CreditRecordStatus.OVERDUE ? <NoData>-</NoData> : `${interestAmount} USDT`}</dd>
+              <dd>
+                {fullData?.status === CreditRecordStatus.OVERDUE ? (
+                  <NoData>-</NoData>
+                ) : (
+                  `${interestAmount?.format(4)} USDT`
+                )}
+              </dd>
             </Line>
             <Line>
               <dt>{t("Credit.LastRepaymentTime")}</dt>
@@ -169,15 +175,15 @@ export default function CreditRecordPage() {
                 </Line>
                 <Line>
                   <dt>{t("Credit.Principal")}</dt>
-                  <dd>{fullData?.borrowAmount?.format() || "0.00"} USDT</dd>
+                  <dd>{fullData?.borrowAmount?.format(4) || "0.0000"} USDT</dd>
                 </Line>
                 <Line>
                   <dt>{t("Credit.Interest")}</dt>
-                  <dd>{fullData?.interestAmount?.format() || "0.00"} USDT</dd>
+                  <dd>{fullData?.interestAmount?.format(4) || "0.0000"} USDT</dd>
                 </Line>
                 <Line>
                   <dt>{t("Credit.ForfeitRepay")}</dt>
-                  <dd>{fullData?.mortgageSCRAmount?.format() || "0.00"} SCR</dd>
+                  <dd>{fullData?.mortgageSCRAmount?.format(4) || "0.0000"} SCR</dd>
                 </Line>
                 <Line>
                   <dt>{t("Credit.RepayHash")}</dt>

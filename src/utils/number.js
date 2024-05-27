@@ -15,8 +15,8 @@ export const getShortDisplay = (v, num = 2) => {
     if (more.length < num + 1) {
       res += "0".repeat(num + 1 - more.length);
     }
-  } else {
-    res += ".00";
+  } else if (num > 0) {
+    res += "." + "0".repeat(num);
   }
   return res;
 };
