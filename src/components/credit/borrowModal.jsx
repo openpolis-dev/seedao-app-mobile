@@ -194,7 +194,7 @@ export default function BorrowModal({ handleClose }) {
               <span className="right">USDT</span>
             </LineBox>
             {Number(inputNum) < 100 && <NumberCheckLabel>{t("Credit.MinBorrow")}</NumberCheckLabel>}
-            <LineTip style={{ marginBottom: 0 }}>{t("Credit.RateAmount", { rate: 0.1 })}</LineTip>
+            <LineTip style={{ marginBottom: 0 }}>{t("Credit.RateAmount", { rate: 0.01 })}</LineTip>
             <LineTip style={{ marginTop: 0 }}>{t("Credit.RateAmount2", { amount: dayIntrestAmount })}</LineTip>
             <LineLabel>{t("Credit.NeedForfeit")}</LineLabel>
             <LineBox>
