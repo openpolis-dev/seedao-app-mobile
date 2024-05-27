@@ -1,6 +1,9 @@
 export const formatNumber = (num) => {
   if (isNaN(num)) return "0";
-  return (num >= 0 ? "" : "-") + Math.abs(num).toLocaleString("en-US");
+  const prefix = num >= 0 ? "" : "-";
+  const numSplitStr = String(num).split(".");
+  const intNum = Math.abs(Number(numSplitStr[0])).toLocaleString("en-US");
+  return prefix + intNum + (numSplitStr.length > 1 ? `.${numSplitStr[1]}` : "");
 };
 
 export const getShortDisplay = (v, num = 2) => {
