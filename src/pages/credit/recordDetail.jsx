@@ -171,7 +171,7 @@ export default function CreditRecordPage() {
               <DetailLines>
                 <Line>
                   <dt>{t("Credit.TotalRepay")}</dt>
-                  <dd className="total">{fullData?.borrowAmount + fullData?.interestAmount || 0} USDT</dd>
+                  <dd className="total">{(fullData?.borrowAmount + fullData?.interestAmount || 0).format(4)} USDT</dd>
                 </Line>
                 <Line>
                   <dt>{t("Credit.Principal")}</dt>
