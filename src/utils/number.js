@@ -14,9 +14,10 @@ export const getShortDisplay = (v, num = 2) => {
   let res = arr[0];
   if (arr[1]) {
     const more = `.${arr[1].slice(0, num)}`;
-    res += more;
     if (more.length < num + 1) {
-      res += "0".repeat(num + 1 - more.length);
+      res += more + "0".repeat(num + 1 - more.length);
+    } else if (more.length === num + 1) {
+      res += more;
     }
   } else if (num > 0) {
     res += "." + "0".repeat(num);
