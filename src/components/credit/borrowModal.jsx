@@ -87,7 +87,10 @@ export default function BorrowModal({ handleClose }) {
     {
       title: t("Credit.BorrowStepTitle1"),
       button: (
-        <CreditButton onClick={checkApprove} disabled={calculating || Number(inputNum) < 100 || forfeitNum === 0}>
+        <CreditButton
+          onClick={checkApprove}
+          disabled={calculating || Number(inputNum) < 100 || forfeitNum === 0 || Number(inputNum) > myAvaliableQuota}
+        >
           {t("Credit.BorrowStepButton1")}
         </CreditButton>
       ),
@@ -145,7 +148,7 @@ export default function BorrowModal({ handleClose }) {
       if (numericValue > myAvaliableQuota) {
         setInputNum(getShortDisplay(myAvaliableQuota, 0));
         setCalculating(true);
-        onChangeVal(myAvaliableQuota);
+        onChangeVal(Number(getShortDisplay(myAvaliableQuota, 0)));
       } else {
         setInputNum(getShortDisplay(numericValue, 0));
       }
@@ -156,8 +159,8 @@ export default function BorrowModal({ handleClose }) {
     if (myAvaliableQuota === Number(inputNum)) {
       return;
     }
-    setInputNum(String(myAvaliableQuota));
-    onChangeVal(myAvaliableQuota);
+    setInputNum(getShortDisplay(myAvaliableQuota, 0));
+    onChangeVal(Number(getShortDisplay(myAvaliableQuota, 0)));
     setCalculating(true);
   };
 
@@ -193,14 +196,15 @@ export default function BorrowModal({ handleClose }) {
               </div>
               <span className="right">USDT</span>
             </LineBox>
+            {Number(inputNum) > myAvaliableQuota && (
+              <NumberCheckLabel>{t("Credit.MaxBorrowAmount", { amount: myAvaliableQuota.format(0) })}</NumberCheckLabel>
+            )}
             {Number(inputNum) < 100 && <NumberCheckLabel>{t("Credit.MinBorrow")}</NumberCheckLabel>}
             <LineTip style={{ marginBottom: 0 }}>{t("Credit.RateAmount", { rate: 0.01 })}</LineTip>
             <LineTip style={{ marginTop: 0 }}>{t("Credit.RateAmount2", { amount: dayIntrestAmount })}</LineTip>
             <LineLabel>{t("Credit.NeedForfeit")}</LineLabel>
             <LineBox>
-              <div className="left">
-                {calculating ? <CalculateLoading style={{ margin: "20px" }} /> : forfeitNum}
-              </div>
+              <div className="left">{calculating ? <CalculateLoading style={{ margin: "20px" }} /> : forfeitNum}</div>
               <span className="right">SCR</span>
             </LineBox>
             <LineTip>{t("Credit.ForfeitTip")}</LineTip>
