@@ -19,9 +19,9 @@ import parseError from "./parseError";
 const networkConfig = getConfig().NETWORK;
 const lendToken = networkConfig.lend.lendToken;
 
-export default function RepayModal({ handleClose }) {
+export default function RepayModal({ handleClose, stepData }) {
   const { t } = useTranslation();
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(stepData?.step || 0);
   const [list, setList] = useState([]);
   const [getting, setGetting] = useState(false);
 
@@ -33,9 +33,67 @@ export default function RepayModal({ handleClose }) {
   } = useCreditContext();
 
   const [loading, setLoading] = useState(false);
+  const [checking, setChecking] = useState(false);
   const { Toast, toast } = useToast();
 
   const { handleTransaction, approveToken, checkNetwork, checkEnoughBalance } = useCreditTransaction();
+  const getData = async () => {
+    try {
+      setGetting(true);
+      const r = await getBorrowList({
+        debtor: account,
+        lendStatus: CreditRecordStatus.INUSE,
+        sortField: "borrowTimestamp",
+        sortOrder: "desc",
+        page: 1,
+        size: 100,
+      });
+      const idsFromStepData = stepData?.ids?.split(",") || [];
+      const ids = r.data.map((d) => Number(d.lendId));
+      const _list = r.data.map((item) => ({ id: item.lendId, data: item, selected: false, total: 0 }));
+      const result = await bondNFTContract?.calculateLendsInterest(ids);
+      ids.forEach((_id, idx) => {
+        _list[idx].data.interestAmount = Number(
+          ethers.utils.formatUnits(result.interestAmounts[idx], lendToken.decimals),
+        );
+        _list[idx].data.interestDays = result.interestDays[idx].toNumber();
+        _list[idx].total = Number(
+          ethers.utils.formatUnits(
+            result.interestAmounts[idx].add(
+              ethers.utils.parseUnits(String(_list[idx].data.borrowAmount), lendToken.decimals),
+            ),
+            lendToken.decimals,
+          ),
+        );
+        if (idsFromStepData.includes(_id)) {
+          _list[idx].selected = true;
+        }
+      });
+      if (idsFromStepData && idsFromStepData.length) {
+        setList(_list.filter((d) => idsFromStepData.includes(d.id)));
+      } else {
+        setList(_list);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setGetting(false);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const selectedTotalAmount = Number(
+    ethers.utils.formatUnits(
+      selectedList.reduce(
+        (acc, item) => acc.add(ethers.utils.parseUnits(String(item.total), lendToken.decimals)),
+        ethers.constants.Zero,
+      ),
+      lendToken.decimals,
+    ),
+  );
 
   const checkApprove = async () => {
     // network
@@ -61,12 +119,17 @@ export default function RepayModal({ handleClose }) {
       );
       const totalApproveAmount = Number(ethers.utils.formatUnits(totalApproveBN, lendToken.decimals));
       // check if enough
+      setChecking(true);
       const enough = await checkEnoughBalance(account, totalApproveAmount);
       if (!enough) {
+        setChecking(false);
         throw new Error(t("Credit.InsufficientBalance"));
       }
+
       setLoading(t("Credit.Approving"));
-      await approveToken("usdt", totalApproveAmount);
+      await approveToken("usdt", totalApproveAmount, {
+        ids: selectedList.map((item) => item.id).join(","),
+      });
       toast.success("Approve successfully");
       setStep(2);
     } catch (error) {
@@ -96,46 +159,6 @@ export default function RepayModal({ handleClose }) {
     handleClose(true);
   };
 
-  const getData = async () => {
-    try {
-      setGetting(true);
-      const r = await getBorrowList({
-        debtor: account,
-        lendStatus: CreditRecordStatus.INUSE,
-        sortField: "borrowTimestamp",
-        sortOrder: "desc",
-        page: 1,
-        size: 100,
-      });
-      const ids = r.data.map((d) => Number(d.lendId));
-      const _list = r.data.map((item) => ({ id: item.lendId, data: item, selected: false, total: 0 }));
-      const result = await bondNFTContract?.calculateLendsInterest(ids);
-      ids.forEach((_, idx) => {
-        _list[idx].data.interestAmount = Number(
-          ethers.utils.formatUnits(result.interestAmounts[idx], lendToken.decimals),
-        );
-        _list[idx].data.interestDays = result.interestDays[idx].toNumber();
-        _list[idx].total = Number(
-          ethers.utils.formatUnits(
-            result.interestAmounts[idx].add(
-              ethers.utils.parseUnits(String(_list[idx].data.borrowAmount), lendToken.decimals),
-            ),
-            lendToken.decimals,
-          ),
-        );
-      });
-      setList(_list);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setGetting(false);
-    }
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
-
   const steps = [
     {
       title: t("Credit.RepayStepTitle1"),
@@ -147,7 +170,11 @@ export default function RepayModal({ handleClose }) {
     },
     {
       title: t("Credit.RepayStepTitle2"),
-      button: <CreditButton onClick={checkApprove}>{t("Credit.RepayStepButton2")}</CreditButton>,
+      button: (
+        <CreditButton onClick={checkApprove} disabled={checking}>
+          {t("Credit.RepayStepButton2")}
+        </CreditButton>
+      ),
     },
     {
       title: t("Credit.RepayStepTitle3"),
@@ -163,16 +190,6 @@ export default function RepayModal({ handleClose }) {
     const newList = list.map((item) => (item.id === id ? { ...item, selected } : item));
     setList(newList);
   };
-
-  const selectedTotalAmount = Number(
-    ethers.utils.formatUnits(
-      selectedList.reduce(
-        (acc, item) => acc.add(ethers.utils.parseUnits(String(item.total), lendToken.decimals)),
-        ethers.constants.Zero,
-      ),
-      lendToken.decimals,
-    ),
-  );
 
   return (
     <CreditModal handleClose={() => handleClose()}>

@@ -50,7 +50,7 @@ const BorrowAndRepay = ({ onUpdate }) => {
       setStepData({ step: arr[2] === "approve" ? 1 : 2, from: state.from, to: state.to });
     } else if (arr[1] === "repay") {
       setShowModal("repay");
-      setStepData({ step: arr[2] === "approve" ? 2 : 3, from: state.from, to: state.to });
+      setStepData({ step: arr[2] === "approve" ? 2 : 3, ids: state.ids });
     }
   }, [state]);
 
