@@ -36,7 +36,7 @@ const BorrowAndRepay = ({ onUpdate }) => {
   const [showModal, setShowModal] = useState("");
   const [showItemsModal, setShowItemsModal] = useState("");
 
-  const [stepData, setStepData] = useState(0);
+  const [stepData, setStepData] = useState();
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
@@ -65,6 +65,7 @@ const BorrowAndRepay = ({ onUpdate }) => {
 
   const handleCloseModal = (openMine) => {
     setShowModal("");
+    setStepData({});
     if (openMine) {
       onUpdate();
       const evt = new Event("openMine");
