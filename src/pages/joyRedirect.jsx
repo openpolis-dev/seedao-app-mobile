@@ -99,17 +99,18 @@ export default function JoyIDRedirect() {
           default:
             break;
         }
+        if (["credit-borrow", "credit-borrow-approve", "credit-repay", "credit-repay-approve"].includes(action)) {
+          console.log("res.tx", res.tx);
+          window.open(`https://rpc-amoy.polygon.technology/tx/${res.tx}`, "_blank");
+          navigate("/credit?tab=mine", { state: { action, ...handleCreditData(), tx: res?.tx }, replace: true });
+          return;
+        }
         return;
       }
     } catch (error) {
       logError(error);
     }
-    if (["credit-borrow", "credit-borrow-approve", "credit-repay", "credit-repay-approve"].includes(action)) {
-      console.log("res.tx", res.tx);
-      window.open(`https://rpc-amoy.polygon.technology/tx/${res.tx}`, "_blank");
-      navigate("/credit?tab=mine", { state: { action, ...handleCreditData(), tx: res?.tx }, replace: true });
-      return;
-    }
+    
     if (!res) {
       switch (action) {
         case "sns-commit":

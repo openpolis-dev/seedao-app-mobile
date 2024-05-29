@@ -14,11 +14,11 @@ import useCreditTransaction, { buildBorrowData } from "hooks/useCreditTransactio
 import parseError from "./parseError";
 const networkConfig = getConfig().NETWORK;
 
-export default function BorrowModal({ handleClose }) {
+export default function BorrowModal({ handleClose, stepData }) {
   const { t } = useTranslation();
-  const [step, setStep] = useState(0);
-  const [inputNum, setInputNum] = useState("100");
-  const [forfeitNum, setForfeitNum] = useState(0);
+  const [step, setStep] = useState(stepData?.step || 0);
+  const [inputNum, setInputNum] = useState(stepData?.from || "100");
+  const [forfeitNum, setForfeitNum] = useState(Number(stepData?.to) || 0);
 
   const [calculating, setCalculating] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -52,7 +52,10 @@ export default function BorrowModal({ handleClose }) {
     // approve
     try {
       setLoading(t("Credit.Approving"));
-      await approveToken("scr", forfeitNum);
+      await approveToken("scr", forfeitNum, {
+        from: inputNum,
+        to: forfeitNum,
+      });
       toast.success("Approve successfully");
       setStep(1);
     } catch (error) {
@@ -66,7 +69,10 @@ export default function BorrowModal({ handleClose }) {
     try {
       setLoading(t("Credit.WaitingTx"));
       // send borrow tx
-      await handleTransaction(buildBorrowData(inputNum), networkConfig.lend.scoreLendContract, "credit-borrow");
+      await handleTransaction(buildBorrowData(inputNum), networkConfig.lend.scoreLendContract, "credit-borrow", {
+        from: inputNum,
+        to: forfeitNum,
+      });
       setStep(2);
     } catch (error) {
       logError("[borrow]", error);

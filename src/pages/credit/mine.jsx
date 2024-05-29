@@ -19,7 +19,7 @@ import { getBorrowList } from "api/credit";
 import { CreditRecordStatus } from "constant/credit";
 import store from "store";
 import { saveLoading } from "store/reducer";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import CreditModal from "components/credit/creditModal";
 import CreditButton from "components/credit/button";
 
@@ -27,9 +27,7 @@ const networkConfig = getConfig().NETWORK;
 
 const BorrowAndRepay = ({ onUpdate }) => {
   const { t } = useTranslation();
-  const [search] = useSearchParams();
-  const action = search.get("action");
-
+  const { state } = useLocation();
   const {
     state: { scoreLendContract },
   } = useCreditContext();
@@ -42,18 +40,19 @@ const BorrowAndRepay = ({ onUpdate }) => {
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
+    const action = state?.action;
     if (!action) {
       return;
     }
     const arr = action.split("-");
     if (arr[1] === "borrow") {
       setShowModal("borrow");
-      setStepData({ step: arr[2] === "approve" ? 1 : 2, from: search.get("from"), to: search.get("to") });
+      setStepData({ step: arr[2] === "approve" ? 1 : 2, from: state.from, to: state.to });
     } else if (arr[1] === "repay") {
       setShowModal("repay");
-      setStepData({ step: arr[2] === "approve" ? 2 : 3, from: search.get("from"), to: search.get("to") });
+      setStepData({ step: arr[2] === "approve" ? 2 : 3, from: state.from, to: state.to });
     }
-  }, [action]);
+  }, [state]);
 
   const go2Borrow = () => {
     setShowItemsModal("");
