@@ -45,7 +45,7 @@ const findQueryItem = (queryStr) => {
 };
 
 export default function CreditRecords({ tab }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const title = tab === "all" ? t("Credit.AllBorrowingsRecord") : t("Credit.MyBorrowingsRecord");
@@ -216,7 +216,7 @@ export default function CreditRecords({ tab }) {
         <CreditModal handleClose={handleCloseModal}>
           <ModalContent>
             {FILTER_OPTIONS.map((grp, idx) => (
-              <ListBox key={idx}>
+              <ListBox key={idx} className={i18n.language === "zh" ? "" : "full"}>
                 {grp.map((item, index) => (
                   <li
                     key={`time_${index}`}
@@ -309,6 +309,12 @@ const ListBox = styled.ul`
         margin-left: 0;
         margin-right: 0;
       }
+    }
+  }
+  &.full {
+    flex-direction: column;
+    li {
+      width: 100%;
     }
   }
 `;
