@@ -82,6 +82,13 @@ const VaultCard = () => {
           </div>
         </StateLine2>
         <StateLine2>
+          <img src={CountIcon} alt="" />
+          <div>
+            <div className="label">{t("Credit.MyInuseCount", { num: data.inUseCount })}</div>
+            <div className="value">{Number(data.inUseAmount).format(4)} USDT</div>
+          </div>
+        </StateLine2>
+        <StateLine2>
           <img src={AmountIcon} alt="" />
           <div>
             <div className="label">{t("Credit.ClearCount", { num: data.paybackCount })}</div>
@@ -91,15 +98,8 @@ const VaultCard = () => {
         <StateLine2>
           <img src={CountIcon} alt="" />
           <div>
-            <div className="label">{t("Credit.OverdueCount", { num: data.overdueCount })}</div>
+            <div className="label">{t("Credit.OverdueCount")}</div>
             <div className="value">{Number(data.overdueAmount).format(4)} USDT</div>
-          </div>
-        </StateLine2>
-        <StateLine2>
-          <img src={AmountIcon} alt="" />
-          <div>
-            <div className="label">{t("Credit.TotalForfeit", { num: data.overdueAmount })}</div>
-            <div className="value">{Number(data.forfeitSCRAmount).format(4)} SCR</div>
           </div>
         </StateLine2>
       </StateBlock>

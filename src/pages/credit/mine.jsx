@@ -220,13 +220,14 @@ export default function MyBorrowings() {
           </div>
           <div className="value">{myScore.format(4)}</div>
         </div>
-        <div>
+        <div style={{ visibility: "hidden" }}></div>
+        {/* <div>
           <div className="label">
             <img src={QuotaIcon} alt="" />
             <span>{t("Credit.MyTotalQuota")}</span>
           </div>
           <div className="value">{Number(myInuseAmount + myAvaliableQuota + myOverdueAmount).format(4)}</div>
-        </div>
+        </div> */}
       </SubCardStyle>
       <BorrowAndRepay onUpdate={handleUpdate} />
       <BlockTitle>{t("Credit.MyBorrowingsState")}</BlockTitle>
