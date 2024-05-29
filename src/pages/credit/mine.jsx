@@ -104,7 +104,9 @@ const BorrowAndRepay = ({ onUpdate }) => {
       {showAlert && (
         <CreditModal>
           <AlertContent>
-            <p>{t("Credit.BorrowCooldownMsg")}</p>
+            <div className="content">
+              <p>{t("Credit.BorrowCooldownMsg")}</p>
+            </div>
             <CreditButton onClick={() => setShowAlert(false)}>{t("Credit.Back")}</CreditButton>
           </AlertContent>
         </CreditModal>
@@ -378,8 +380,14 @@ export const StateLine = styled.div`
 `;
 
 const AlertContent = styled.div`
+  .content {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
   p {
-    line-height: 200px;
     font-size: 14px;
     color: #1814f3;
     text-align: center;
