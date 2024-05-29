@@ -91,7 +91,7 @@ export default function BorrowModal({ handleClose, stepData }) {
 
   const steps = [
     {
-      title: t("Credit.BorrowStepTitle1"),
+      title: t("Credit.Borrow"),
       button: (
         <CreditButton
           onClick={checkApprove}
@@ -102,7 +102,7 @@ export default function BorrowModal({ handleClose, stepData }) {
       ),
     },
     {
-      title: t("Credit.BorrowStepTitle2"),
+      title: t("Credit.Borrow"),
       button: <CreditButton onClick={checkBorrow}>{t("Credit.BorrowStepButton2")}</CreditButton>,
     },
     {

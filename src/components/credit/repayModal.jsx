@@ -161,7 +161,7 @@ export default function RepayModal({ handleClose, stepData }) {
 
   const steps = [
     {
-      title: t("Credit.RepayStepTitle1"),
+      title: t("Credit.Repay"),
       button: (
         <CreditButton onClick={() => setStep(1)} disabled={!selectedList.length}>
           {t("Credit.RepayStepButton1", { num: selectedList.length })}
@@ -169,7 +169,7 @@ export default function RepayModal({ handleClose, stepData }) {
       ),
     },
     {
-      title: t("Credit.RepayStepTitle2"),
+      title: t("Credit.Repay"),
       button: (
         <CreditButton onClick={checkApprove} disabled={checking}>
           {t("Credit.RepayStepButton2")}
@@ -195,6 +195,8 @@ export default function RepayModal({ handleClose, stepData }) {
     <CreditModal handleClose={() => handleClose()}>
       <ContentStyle>
         <ModalTitle>{steps[step].title}</ModalTitle>
+        {step === 0 && <LineLabel>{t("Credit.RepayStepTitle1")}</LineLabel>}
+        {step === 1 && <LineLabel>{t("Credit.RepayStepTitle2")}</LineLabel>}
 
         {step === 3 && <FinishContent>{selectedTotalAmount} USDT</FinishContent>}
         {step === 0 && (
@@ -517,4 +519,9 @@ const ApproveTip = styled.p`
   font-size: 12px;
   color: #718ebf;
   margin-bottom: 18px;
+`;
+const LineLabel = styled.div`
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #343c6a;
 `;
