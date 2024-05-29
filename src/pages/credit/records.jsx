@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useState, useMemo, useEffect } from "react";
 import { BlockTitle } from "./mine";
 import FilterIcon from "assets/Imgs/credit/filters.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import store from "../../store";
 import { saveLoading, saveCache } from "../../store/reducer";
 import { useSelector } from "react-redux";
@@ -33,6 +33,17 @@ const FILTER_OPTIONS = [
   ],
 ];
 
+const findQueryItem = (queryStr) => {
+  for (const grp of FILTER_OPTIONS) {
+    for (const item of grp) {
+      if (item.value === queryStr) {
+        return item;
+      }
+    }
+  }
+  return FILTER_OPTIONS[0][0];
+};
+
 export default function CreditRecords({ tab }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -50,7 +61,7 @@ export default function CreditRecords({ tab }) {
   const cache = useSelector((state) => state.cache);
   const prevPath = useCurrentPath();
 
-  const [init, setInit] = useState(false);
+  const [init, setInit] = useState(true);
 
   const { getMultiSNS } = useQuerySNS();
 
@@ -73,6 +84,7 @@ export default function CreditRecords({ tab }) {
       list,
       page,
       height,
+      queryValue: selectValue?.value,
     };
     store.dispatch(saveCache(obj));
   };
@@ -129,10 +141,11 @@ export default function CreditRecords({ tab }) {
   useEffect(() => {
     if (!prevPath || prevPath?.indexOf("/credit") === -1 || cache?.type !== "creditRecord") return;
 
-    const { list, page, height, id } = cache;
+    const { list, page, height, queryValue } = cache;
 
     setList(list);
     setPage(page);
+    setSeletValue(findQueryItem(queryValue));
 
     setTimeout(() => {
       const element = document.querySelector(`#inner`);
@@ -145,13 +158,12 @@ export default function CreditRecords({ tab }) {
   }, [prevPath]);
 
   useEffect(() => {
-    setSeletValue(FILTER_OPTIONS[0][0]);
-
     if (init && cache?.type === "creditRecord" && cache?.page >= page) {
       return;
     } else {
       init && setInit(false);
       getRecords(true);
+      setSeletValue(FILTER_OPTIONS[0][0]);
     }
   }, [tab]);
 
@@ -160,8 +172,6 @@ export default function CreditRecords({ tab }) {
     document.addEventListener("openMine", refreshList);
     return () => document.removeEventListener("openMine", refreshList);
   }, []);
-
-  console.log("selectValue", selectValue);
 
   return (
     <>
