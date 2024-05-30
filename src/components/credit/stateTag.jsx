@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useTranslation } from "react-i18next";
 import { CreditRecordStatus } from "constant/credit";
 
@@ -30,21 +30,35 @@ export default function StateTag({ state, strong }) {
     color = "#fff";
   }
 
-  return (
-    <StatusTagStyle
-      $color={color}
-      $bg={bg}
-      style={{ fontSize: strong ? "14px" : "12px", lineHeight: strong ? "24px" : "18px", paddingInline: strong ? "8px" : "6px"}}
-    >
+  return strong ? (
+    <StrongTagStyle $color={color} $bg={bg}>
       {text}
-    </StatusTagStyle>
+    </StrongTagStyle>
+  ) : (
+    <LightStyle $color={color} $bg={bg}>
+      {text}
+    </LightStyle>
   );
 }
 
-const StatusTagStyle = styled.div`
+const TagStyle = styled.div`
   background-color: ${(props) => props.$bg};
   color: ${(props) => props.$color};
   display: inline-block;
   text-align: center;
   border-radius: 5px;
+`;
+
+const LightStyle = styled(TagStyle)`
+  font-size: 12px;
+  height: 18px;
+  line-height: 19px;
+  padding-inline: 6px;
+`;
+
+const StrongTagStyle = styled(TagStyle)`
+  font-size: 14px;
+  height: 24px;
+  line-height: 25px;
+  padding-inline: 8px;
 `;
