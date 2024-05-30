@@ -28,7 +28,7 @@ const CreditTabs = ({ tab, onChange }) => {
       console.log("userToken", userToken, checkTokenValid(userToken?.token, userToken?.token_exp));
       if (!checkTokenValid(userToken?.token, userToken?.token_exp)) {
         clearStorage();
-        localStorage.setItem('before-login', '/credit?tab=mine');
+        localStorage.setItem("before-login", "/credit?tab=mine");
         navigate("/login");
         return;
       }
@@ -77,7 +77,13 @@ export default function CreditPage() {
   const [tab, setTab] = useState(["all", "mine"].includes(tabFromUrl) ? tabFromUrl : "all");
 
   return (
-    <Layout title={t("Credit.Title")} customTab={<CreditTabs tab={tab} onChange={setTab} />} bgColor="#F5F7FA" tabHeight="46px">
+    <Layout
+      title={t("Credit.Title")}
+      headerProps={{ backPath: "/home" }}
+      customTab={<CreditTabs tab={tab} onChange={setTab} />}
+      bgColor="#F5F7FA"
+      tabHeight="46px"
+    >
       <LayoutContainer>
         <CreditProvider>
           <CreditCards tab={tab} />
