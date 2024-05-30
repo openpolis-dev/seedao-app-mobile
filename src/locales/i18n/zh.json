@@ -507,7 +507,7 @@
     "WaitingTx": "等待交易确认...",
     "CheckingNetwork": "正在检查网络...",
     "TxTip": "交易卡住，点击取消",
-    "ApproveTip": "由于链上交易时间的不确定性，为了确保还款成功，我们将在您Approve时默认多加1天利息，如最终未使用，多出的USDT将退回至您的钱包！",
+    "ApproveTip": "由于交易确认时间的不确定性，为了确保还款成功，我们将在您Appove时默认多加1天利息，最终利息以实际扣除为准。",
     "Back": "返回",
     "MaxBorrowAmount": "最多可借 {{amount}} USDT",
     "Borrow": "借款",
