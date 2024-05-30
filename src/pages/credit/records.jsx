@@ -44,11 +44,9 @@ const findQueryItem = (queryStr) => {
   return FILTER_OPTIONS[0][0];
 };
 
-export default function CreditRecords({ tab }) {
+const Records = ({ title, isMine, tab }) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-
-  const title = tab === "all" ? t("Credit.AllBorrowingsRecord") : t("Credit.MyBorrowingsRecord");
 
   const account = useSelector((state) => state.account);
   const snsMap = useSelector((state) => state.snsMap);
@@ -79,7 +77,7 @@ export default function CreditRecords({ tab }) {
     const element = document.querySelector(`#inner`);
     const height = element.scrollTop;
     let obj = {
-      type: "creditRecord",
+      type: `creditRecord${tab}`,
       id: id,
       list,
       page,
@@ -115,7 +113,7 @@ export default function CreditRecords({ tab }) {
         params.sortOrder = v;
       }
     }
-    if (tab === "mine" && account) {
+    if (isMine && account) {
       params.debtor = account;
     }
     getBorrowList(params)
@@ -139,7 +137,7 @@ export default function CreditRecords({ tab }) {
   }, [total, list]);
 
   useEffect(() => {
-    if (!prevPath || prevPath?.indexOf("/credit") === -1 || cache?.type !== "creditRecord") return;
+    if (!prevPath || prevPath?.indexOf("/credit") === -1 || cache?.type !== `creditRecord${tab}`) return;
 
     const { list, page, height, queryValue } = cache;
 
@@ -158,14 +156,14 @@ export default function CreditRecords({ tab }) {
   }, [prevPath]);
 
   useEffect(() => {
-    if (init && cache?.type === "creditRecord" && cache?.page >= page) {
+    if (init && cache?.type === `creditRecord${tab}` && cache?.page >= page) {
       return;
     } else {
       init && setInit(false);
       getRecords(true);
       setSeletValue(FILTER_OPTIONS[0][0]);
     }
-  }, [tab]);
+  }, []);
 
   useEffect(() => {
     const refreshList = () => getRecords(true);
@@ -176,7 +174,7 @@ export default function CreditRecords({ tab }) {
   return (
     <>
       <RecordTitle>
-        <span>{title}</span>
+        <span>{t(title)}</span>
         {selectValue?.value === "all" ? (
           <img src={FilterIcon} alt="" onClick={() => setShowFiltersModal(true)} />
         ) : (
@@ -200,7 +198,7 @@ export default function CreditRecords({ tab }) {
                 </span>
                 <span>{item.borrowTime}</span>
               </RecordContentLine>
-              {tab !== "mine" && (
+              {!isMine && (
                 <RecordContentLine className="content">
                   <span>
                     {t("Credit.Borrower")}: {formatSNS(item.debtor)}
@@ -233,6 +231,16 @@ export default function CreditRecords({ tab }) {
       )}
     </>
   );
+};
+
+export default function CreditRecords({ tab }) {
+  if (tab === "mine") {
+    return <Records title="Credit.MyBorrowingsRecord" isMine={true} tab={tab} key={tab} />;
+  }
+  if (tab === "all") {
+    return <Records title="Credit.AllBorrowingsRecord" tab={tab} key={tab} />;
+  }
+  return null;
 }
 
 const RecordsList = styled.ul`
