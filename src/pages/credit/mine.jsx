@@ -350,7 +350,7 @@ const StateBlock = styled.div`
   border-radius: 15px;
   padding: 20px 20px 16px;
   .repay-tip {
-    font-size: 12px;
+    font-size: 14px;
     color: #ff7193;
     img {
       position: relative;
