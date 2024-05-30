@@ -139,7 +139,7 @@ export default function BorrowModal({ handleClose, stepData }) {
       onChangeVal(0);
       return;
     }
-    const numberRegex = /^\d*\.?\d{0,2}$/;
+    const numberRegex = /^\d*$/;
     if (!numberRegex.test(newValue)) {
       return;
     }
