@@ -411,7 +411,7 @@
     "MyBorrowingTip1": "日利率（单利）0.01%",
     "MyBorrowingTip2": "1 SCR 可借 0.01 USDT，最长可借 30 日",
     "MySCR": "我的SCR",
-    "MyTotalQuota": "总额度（USDT）",
+    "MaxBorrowAmountTip": "最高可借 {{amount}} USDT",
     "GoToBorrow": "去借款",
     "GoToRepay": "去还款",
     "MyBorrowingsState": "我的借款状态",

@@ -34,7 +34,7 @@ const VaultCard = () => {
   const getData = useCallback(() => {
     scoreLendContract?.totalAvailableBorrowAmount().then((r) => {
       const value = ethers.utils.formatUnits(r, networkConfig.lend.lendToken.decimals);
-      setTotal(Number(value).format(4));
+      setTotal(Number(value).format(4, true));
     });
   }, [scoreLendContract]);
 
@@ -78,28 +78,28 @@ const VaultCard = () => {
           <img src={CountIcon} alt="" />
           <div>
             <div className="label">{t("Credit.BorrowCount", { num: data.totalBorrowed })}</div>
-            <div className="value">{Number(data.totalBorrowedAmount).format(4)} USDT</div>
+            <div className="value">{Number(data.totalBorrowedAmount).format(4, true)} USDT</div>
           </div>
         </StateLine2>
         <StateLine2>
           <img src={CountIcon} alt="" />
           <div>
             <div className="label">{t("Credit.MyInuseCount", { num: data.inUseCount })}</div>
-            <div className="value">{Number(data.inUseAmount).format(4)} USDT</div>
+            <div className="value">{Number(data.inUseAmount).format(4, true)} USDT</div>
           </div>
         </StateLine2>
         <StateLine2>
           <img src={AmountIcon} alt="" />
           <div>
             <div className="label">{t("Credit.ClearCount", { num: data.paybackCount })}</div>
-            <div className="value">{Number(data.paybackAmount).format(4)} USDT</div>
+            <div className="value">{Number(data.paybackAmount).format(4, true)} USDT</div>
           </div>
         </StateLine2>
         <StateLine2>
           <img src={CountIcon} alt="" />
           <div>
             <div className="label">{t("Credit.OverdueCount")}</div>
-            <div className="value">{Number(data.overdueAmount).format(4)} USDT</div>
+            <div className="value">{Number(data.overdueAmount).format(4, true)} USDT</div>
           </div>
         </StateLine2>
       </StateBlock>

@@ -136,6 +136,7 @@ export default function MyBorrowings() {
   } = useCreditContext();
 
   const [earlyDate, setEarlyDate] = useState("");
+  const [maxAmount, setMaxAmount] = useState(0);
 
   const getSCR = () => {
     const _provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.public.http[0], amoy.id);
@@ -183,6 +184,9 @@ export default function MyBorrowings() {
         payload: Number(ethers.utils.formatUnits(r.availableAmount, decimals)),
       });
     });
+    scoreLendContract?.maxTotalBorrowAmount().then((r) => {
+      setMaxAmount(Number(ethers.utils.formatUnits(r, decimals)));
+    });
   }, [bondNFTContract, scoreLendContract, account, dispatchCreditEvent]);
 
   useEffect(() => {
@@ -209,9 +213,10 @@ export default function MyBorrowings() {
     <>
       <CardStyle>
         <div className="label">{t("Credit.MyBorrowingQuota")}</div>
-        <div className="value">{myAvaliableQuota.format(4)}</div>
+        <div className="value">{myAvaliableQuota.format(4, true)}</div>
         <div className="tip">{t("Credit.MyBorrowingTip1")}</div>
         <div className="tip">{t("Credit.MyBorrowingTip2")}</div>
+        <div className="tip">{t("Credit.MaxBorrowAmountTip", { amount: maxAmount?.format(0) })}</div>
         <img src={CreditLogo} alt="" />
       </CardStyle>
       <SubCardStyle>
@@ -220,16 +225,8 @@ export default function MyBorrowings() {
             <img src={SCRIcon} alt="" />
             <span>{t("Credit.MySCR")}</span>
           </div>
-          <div className="value">{myScore.format(4)}</div>
+          <div className="value">{myScore.format(4, true)}</div>
         </div>
-        <div style={{ visibility: "hidden" }}></div>
-        {/* <div>
-          <div className="label">
-            <img src={QuotaIcon} alt="" />
-            <span>{t("Credit.MyTotalQuota")}</span>
-          </div>
-          <div className="value">{Number(myInuseAmount + myAvaliableQuota + myOverdueAmount).format(4)}</div>
-        </div> */}
       </SubCardStyle>
       <BorrowAndRepay onUpdate={handleUpdate} />
       <BlockTitle>{t("Credit.MyBorrowingsState")}</BlockTitle>
@@ -238,14 +235,14 @@ export default function MyBorrowings() {
           <img src={CountIcon} alt="" />
           <div>
             <div className="label">{t("Credit.MyInuseCount", { num: myInUseCount })}</div>
-            <div className="value">{myInuseAmount.format(4)} USDT</div>
+            <div className="value">{myInuseAmount.format(4, true)} USDT</div>
           </div>
         </StateLine>
         <StateLine>
           <img src={AmountIcon} alt="" />
           <div>
             <div className="label">{t("Credit.OverdueCount", { num: myOverdueCount })}</div>
-            <div className="value">{myOverdueAmount.format(4)} USDT</div>
+            <div className="value">{myOverdueAmount.format(4, true)} USDT</div>
           </div>
         </StateLine>
         <div className="repay-tip">
