@@ -7,6 +7,7 @@ import Wormhole3Icon from '../assets/Imgs/home/Wormhole3.png';
 import SeeUImg from '../assets/Imgs/home/seeuNetwork.png';
 import SNSImg from "../assets/Imgs/home/SNS.jpg";
 import EchoImg from "../assets/Imgs/home/echo.svg";
+import CreditImg from "../assets/Imgs/home/credit.jpg";
 
 const apps =  [
     {
@@ -97,7 +98,7 @@ const apps =  [
       id: 'module-credit',
       name: 'Lend',
       link: '/credit',
-      icon: '',
+      icon: CreditImg,
       desc: 'Coming Soon',
     },
     // {
