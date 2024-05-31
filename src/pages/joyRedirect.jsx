@@ -101,7 +101,6 @@ export default function JoyIDRedirect() {
         }
         if (["credit-borrow", "credit-borrow-approve", "credit-repay", "credit-repay-approve"].includes(action)) {
           console.log("res.tx", res.tx);
-          window.open(`https://rpc-amoy.polygon.technology/tx/${res.tx}`, "_blank");
           navigate("/credit?tab=mine", { state: { action, ...handleCreditData(), tx: res?.tx }, replace: true });
           return;
         }
@@ -124,6 +123,10 @@ export default function JoyIDRedirect() {
           break;
         default:
           break;
+      }
+      if (["credit-borrow", "credit-borrow-approve", "credit-repay", "credit-repay-approve"].includes(action)) {
+        navigate("/credit?tab=mine", { replace: true });
+        return;
       }
     }
   }, []);

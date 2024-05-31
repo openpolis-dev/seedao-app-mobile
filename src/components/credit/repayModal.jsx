@@ -25,6 +25,11 @@ export default function RepayModal({ handleClose, stepData }) {
   const [list, setList] = useState([]);
   const [getting, setGetting] = useState(false);
 
+  const [allowanceBN, setAllowanceBN] = useState(ethers.constants.Zero);
+  const [tokenBN, setTokenBN] = useState(ethers.constants.Zero);
+  const [allowanceGetting, setAllownceGetting] = useState(false);
+  const [tokenBalanceGetting, setTokenBalanceGetting] = useState(false);
+
   const selectedList = list.filter((l) => !!l.selected);
 
   const account = useSelector((state) => state.account);
@@ -38,7 +43,8 @@ export default function RepayModal({ handleClose, stepData }) {
   const [checking, setChecking] = useState(false);
   const { Toast, toast } = useToast();
 
-  const { handleTransaction, approveToken, checkNetwork, checkEnoughBalance } = useCreditTransaction();
+  const { handleTransaction, approveToken, checkNetwork, checkEnoughBalance, getTokenBalance, getTokenAllowance } =
+    useCreditTransaction();
   const getData = async () => {
     try {
       setGetting(true);
@@ -67,7 +73,7 @@ export default function RepayModal({ handleClose, stepData }) {
             lendToken.decimals,
           ),
         );
-        if (idsFromStepData.includes(_id)) {
+        if (idsFromStepData.includes(String(_id))) {
           _list[idx].selected = true;
         }
       });
@@ -113,6 +119,21 @@ export default function RepayModal({ handleClose, stepData }) {
     ethers.utils.parseUnits(String(selectedTotalAmount), lendToken.decimals),
   );
   const totalApproveAmount = Number(ethers.utils.formatUnits(totalApproveBN, lendToken.decimals));
+
+  const tokenEnough = tokenBN.gte(totalApproveBN);
+  const allowanceEnough = allowanceBN.gte(totalApproveBN);
+
+  const getButtonText = () => {
+    if (tokenBalanceGetting) {
+      return t("Credit.RepayStepButton2");
+    }
+    if (!tokenEnough) {
+      return t("Credit.InsufficientBalance", { token: "USDT" });
+    }
+    if (!allowanceEnough) {
+      return t("Credit.RepayStepButton2");
+    }
+  };
 
   const checkApprove = async () => {
     // check network
@@ -171,6 +192,7 @@ export default function RepayModal({ handleClose, stepData }) {
         buildRepayData(selectedList.map((item) => Number(item.id))),
         networkConfig.lend.scoreLendContract,
         "credit-repay",
+        { ids: selectedList.map((item) => item.id).join(",") },
       );
       if (wallet === Wallet.METAMASK) {
         setStep(3);
@@ -198,13 +220,16 @@ export default function RepayModal({ handleClose, stepData }) {
     {
       title: t("Credit.Repay"),
       button: (
-        <CreditButton onClick={checkApprove} disabled={checking}>
-          {t("Credit.RepayStepButton2")}
+        <CreditButton
+          onClick={checkApprove}
+          disabled={checking || !tokenEnough || tokenBalanceGetting || allowanceGetting}
+        >
+          {getButtonText()}
         </CreditButton>
       ),
     },
     {
-      title: t("Credit.RepayStepTitle3"),
+      title: t("Credit.Repay"),
       button: <CreditButton onClick={checkRepay}>{t("Credit.RepayStepButton3")}</CreditButton>,
     },
     {
@@ -217,6 +242,38 @@ export default function RepayModal({ handleClose, stepData }) {
     const newList = list.map((item) => (item.id === id ? { ...item, selected } : item));
     setList(newList);
   };
+
+  useEffect(() => {
+    if (account && step > 0 && step !== 3) {
+      setAllownceGetting(true);
+      getTokenAllowance("usdt")
+        .then((r) => {
+          setAllowanceBN(r);
+        })
+        .finally(() => {
+          setAllownceGetting(false);
+        });
+    }
+  }, [account, step]);
+
+  useEffect(() => {
+    if (account && step > 0 && step !== 3) {
+      setTokenBalanceGetting(true);
+      getTokenBalance("usdt")
+        .then((r) => {
+          setTokenBN(r);
+        })
+        .finally(() => {
+          setTokenBalanceGetting(false);
+        });
+    }
+  }, [account, step]);
+
+  useEffect(() => {
+    if (step === 1 || step === 2) {
+      setStep(tokenEnough && allowanceEnough ? 2 : 1);
+    }
+  }, [tokenEnough, allowanceEnough]);
 
   return (
     <CreditModal handleClose={() => handleClose()}>
