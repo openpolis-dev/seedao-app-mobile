@@ -95,6 +95,18 @@ export default function RepayModal({ handleClose, stepData }) {
     ),
   );
 
+  // add one more day interest
+  const totalApproveBN = selectedList.reduce(
+    (acc, item) =>
+      acc.add(
+        ethers.utils
+          .parseUnits(String(item.data.interestAmount), lendToken.decimals)
+          .div(ethers.BigNumber.from(item.data.interestDays)),
+      ),
+    ethers.utils.parseUnits(String(selectedTotalAmount), lendToken.decimals),
+  );
+  const totalApproveAmount = Number(ethers.utils.formatUnits(totalApproveBN, lendToken.decimals));
+
   const checkApprove = async () => {
     // network
     try {
@@ -107,17 +119,6 @@ export default function RepayModal({ handleClose, stepData }) {
       setLoading(false);
     }
     try {
-      // add one more day interest
-      const totalApproveBN = selectedList.reduce(
-        (acc, item) =>
-          acc.add(
-            ethers.utils
-              .parseUnits(String(item.data.interestAmount), lendToken.decimals)
-              .div(ethers.BigNumber.from(item.data.interestDays)),
-          ),
-        ethers.utils.parseUnits(String(selectedTotalAmount), lendToken.decimals),
-      );
-      const totalApproveAmount = Number(ethers.utils.formatUnits(totalApproveBN, lendToken.decimals));
       // check if enough
       setChecking(true);
       const enough = await checkEnoughBalance(account, totalApproveAmount);
