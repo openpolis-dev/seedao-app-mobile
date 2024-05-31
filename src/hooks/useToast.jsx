@@ -85,4 +85,5 @@ const InnerBox = styled.span`
   color: #fff;
   font-size: 14px;
   border-radius: 4px;
+  max-width: 90vw;
 `;
