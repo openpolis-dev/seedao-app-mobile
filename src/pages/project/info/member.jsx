@@ -82,7 +82,7 @@ export default function ProjectMember({data}) {
 
       <BorderBox>
         <MemberBox>
-          <dt>{t('Guild.Moderator')}</dt>
+          {/*<dt>{t('Guild.Moderator')}</dt>*/}
           <dd>
             <MemberContent>
               {user && <UserModal user={{ ...user, sns: nameMap[user?.wallet] }} handleClose={() => setUser(undefined)} />}
@@ -91,7 +91,6 @@ export default function ProjectMember({data}) {
           </dd>
         </MemberBox>
         <MemberBox>
-
           <dt>{t('Guild.Contact')}</dt>
           <dd className="dd"> {data?.ContantWay ? data?.ContantWay : (nameMap[sponsors[0]]?.endsWith('.seedao') ? nameMap[sponsors[0]] : "")}</dd>
         </MemberBox>
@@ -104,29 +103,27 @@ export default function ProjectMember({data}) {
 const MemberContent = styled.div`
   display: flex;
   align-items: flex-start;
+  justify-content: flex-start;
   flex-wrap: wrap;
+  &>div{
+    justify-content: flex-start;
+  }
+
 `;
 
 const BorderBox = styled.div`
-    border: 1px solid var(--border-color-1);
-    display: flex ;
-    align-items: stretch;
-    border-radius: 8px;
-    margin-bottom: 20px;
 `
 const MemberBox = styled.dl`
-    width: 50%;
-    text-align: center;
-    padding: 10px;
     display: flex;
     box-sizing: border-box;
     flex-direction: column;
-    &:first-child{
-        border-right: 1px  solid var(--border-color-1);
-    }
     dt{
-        font-size: 12px;
-        opacity: 0.8;
+      color: rgba(41, 40, 47, 0.80);
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 20px;
+      margin-top: 20px;
     }
     .dd{
         flex-grow: 1;

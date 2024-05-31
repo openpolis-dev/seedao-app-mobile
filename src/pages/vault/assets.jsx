@@ -117,9 +117,7 @@ export default function Assets() {
   };
 
   const getSCR = async () => {
-    const provider = new ethers.providers.StaticJsonRpcProvider(
-      "https://eth-mainnet.g.alchemy.com/v2/YuNeXto27ejHnOIGOwxl2N_cHCfyLyLE",
-    );
+    const provider = new ethers.providers.StaticJsonRpcProvider(getConfig().NETWORK.rpcs[0]);
     // store.dispatch(saveLoading(true));
     setStatus2(true);
     try {
