@@ -263,8 +263,9 @@ export default function RepayModal({ handleClose, stepData }) {
         {(step === 1 || step === 2) && (
           <RepayContent style={{ gap: "14px" }}>
             <TotalRepay>
-              <div className="number">{selectedTotalAmount} USDT</div>
-              <div className="label">{t("Credit.ShouldRepay")}</div>
+              <div className="number">{totalApproveAmount.format(4)} USDT</div>
+              <div className="label">{t("Credit.ShouldRepayAll", { amount: selectedTotalAmount.format(4) })}</div>
+              <RepayTip>{t("Credit.ApproveTip")}</RepayTip>
             </TotalRepay>
             <ListBox style={{ maxHeight: "352px", minHeight: "unset" }}>
               {selectedList.map((item) => (
@@ -274,7 +275,6 @@ export default function RepayModal({ handleClose, stepData }) {
           </RepayContent>
         )}
         <ConfirmBox>
-          {step === 1 && <ApproveTip>{t("Credit.ApproveTip")}</ApproveTip>}
           {loading ? <CreditButton>{loading}</CreditButton> : steps[step].button}
           {loading && <TxTip onClick={() => setLoading(false)}>{t("Credit.TxTip")}</TxTip>}
         </ConfirmBox>
@@ -556,11 +556,6 @@ const TxTip = styled.p`
   font-size: 14px;
 `;
 
-const ApproveTip = styled.p`
-  font-size: 12px;
-  color: #718ebf;
-  margin-bottom: 18px;
-`;
 const LineLabel = styled.div`
   font-size: 14px;
   margin-bottom: 10px;
@@ -582,4 +577,11 @@ const SelectAllLine = styled.div`
   span {
     font-size: 14px;
   }
+`;
+
+const RepayTip = styled.p`
+  color: #1814f3;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: left;
 `;

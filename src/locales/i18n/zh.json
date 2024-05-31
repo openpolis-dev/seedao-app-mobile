@@ -513,6 +513,7 @@
     "Borrow": "借款",
     "Repay": "还款",
     "TimeDisplay": "{{h}}小时{{m}}分后可借款",
-    "SelectAll": "全选"
+    "SelectAll": "全选",
+    "ShouldRepayAll": "（当前合计应还 {{amount}} USDT）"
   }
 }
