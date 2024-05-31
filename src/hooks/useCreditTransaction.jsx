@@ -24,7 +24,9 @@ export const buildBorrowData = (amount) => {
 
 export const buildRepayData = (ids) => {
   const iface = new ethers.utils.Interface(ScoreLendABI);
-  return iface.encodeFunctionData("paybackBatch", [ids]);
+  return ids.length > 1
+    ? iface.encodeFunctionData("paybackBatch", [ids])
+    : iface.encodeFunctionData("payback", [ids[0]]);
 };
 
 const checkTransaction = (hash) => {
@@ -85,7 +87,8 @@ export default function useCreditTransaction(action) {
     const url = buildRedirectUrl();
     sendTransactionWithRedirect(url, params, account, {
       joyidAppURL: `${CONFIG.JOY_ID_URL}`,
-      rpcURL: rpc || CONFIG.NETWORK.rpcs[0],
+      // rpcURL: rpc || CONFIG.NETWORK.rpcs[0],
+      rpcURL: amoy.rpcUrls.default.http[0],
       network: {
         name: amoy.name,
         chainId: amoy.id,
