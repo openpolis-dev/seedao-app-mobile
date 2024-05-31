@@ -15,7 +15,8 @@ const LOCAL = {
   REACT_APP_ONESIGNAL_ID: "9c6122e1-3de4-4c03-8e68-9f357e9ca1ae",
   REACT_APP_APP_VERSION: `A ${VERSION}`,
   REACT_APP_THEME_ENABLE: true,
-  JOY_ID_URL: "https://app.joy.id",
+  // JOY_ID_URL: "https://app.joy.id",
+  JOY_ID_URL: "https://testnet.joyid.dev",
   NETWORK: {
     name: "Polygon",
     nativeToken: "Matic",
@@ -70,6 +71,7 @@ const PREVIEW = {
   REACT_APP_ONESIGNAL_ID: "5abed421-a9a0-4811-b255-bc48fa7d4fa4",
   SENDINGME_ENABLE: false,
   SENTRY_DSN,
+  JOY_ID_URL: "https://app.joy.id",
 };
 
 const PRODUCTION = {
@@ -82,7 +84,7 @@ const PRODUCTION = {
   REACT_APP_ONESIGNAL_ID: "eda76843-e1a4-40a5-aa01-3d860d9cfa5c",
   SENDINGME_ENABLE: false,
   SENTRY_DSN,
-  // JOY_ID_URL: 'https://app.joy.id',
+  JOY_ID_URL: 'https://app.joy.id',
 };
 
 export default function getConfig() {
