@@ -222,8 +222,6 @@ export default function RepayModal({ handleClose, stepData }) {
     <CreditModal handleClose={() => handleClose()}>
       <ContentStyle>
         <ModalTitle>{steps[step].title}</ModalTitle>
-        {step === 1 && <LineLabel>{t("Credit.RepayStepTitle2")}</LineLabel>}
-
         {step === 3 && <FinishContent>{selectedTotalAmount} USDT</FinishContent>}
         {step === 0 && (
           <RepayContent>
