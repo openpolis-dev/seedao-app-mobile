@@ -237,7 +237,7 @@ export default function BorrowModal({ handleClose, stepData }) {
   }, [scoreLendContract]);
 
   useEffect(() => {
-    if (!stepData.from || !stepData.to) {
+    if (!stepData?.from || !stepData?.to) {
       setCalculating(true);
       onChangeVal(100);
     }
