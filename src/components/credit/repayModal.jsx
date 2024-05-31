@@ -4,17 +4,17 @@ import CreditModal from "./creditModal";
 import { useTranslation } from "react-i18next";
 import CreditButton from "./button";
 import CalculateLoading from "./calculateLoading";
-import { getShortDisplay } from "utils/number";
+import { useSelector } from "react-redux";
 import { ethers } from "ethers";
 import NoItem from "components/noItem";
 import getConfig from "constant/envCofnig";
 import { CreditRecordStatus } from "constant/credit";
 import { getBorrowList } from "api/credit";
 import { useCreditContext } from "pages/credit/provider";
-import { useSelector } from "react-redux";
 import useToast from "hooks/useToast";
 import useCreditTransaction, { buildRepayData } from "hooks/useCreditTransaction";
 import parseError from "./parseError";
+import { Wallet } from "utils/constant";
 
 const networkConfig = getConfig().NETWORK;
 const lendToken = networkConfig.lend.lendToken;
@@ -28,6 +28,8 @@ export default function RepayModal({ handleClose, stepData }) {
   const selectedList = list.filter((l) => !!l.selected);
 
   const account = useSelector((state) => state.account);
+  const wallet = useSelector((state) => state.walletType);
+
   const {
     state: { bondNFTContract },
   } = useCreditContext();
@@ -108,15 +110,17 @@ export default function RepayModal({ handleClose, stepData }) {
   const totalApproveAmount = Number(ethers.utils.formatUnits(totalApproveBN, lendToken.decimals));
 
   const checkApprove = async () => {
-    // network
-    try {
-      setLoading(t("Credit.CheckingNetwork"));
-      await checkNetwork();
-    } catch (error) {
-      console.error(error);
-      return;
-    } finally {
-      setLoading(false);
+    // check network
+    if (wallet === Wallet.METAMASK) {
+      try {
+        setLoading(t("Credit.CheckingNetwork"));
+        await checkNetwork();
+      } catch (error) {
+        console.error("switch network", error);
+        return;
+      } finally {
+        setLoading(false);
+      }
     }
     try {
       // check if enough
@@ -131,8 +135,10 @@ export default function RepayModal({ handleClose, stepData }) {
       await approveToken("usdt", totalApproveAmount, {
         ids: selectedList.map((item) => item.id).join(","),
       });
-      toast.success("Approve successfully");
-      setStep(2);
+      if (wallet === Wallet.METAMASK) {
+        toast.success("Approve successfully");
+        setStep(2);
+      }
     } catch (error) {
       console.error(error);
       toast.danger(parseError(error));
@@ -141,6 +147,19 @@ export default function RepayModal({ handleClose, stepData }) {
     }
   };
   const checkRepay = async () => {
+    // check network
+    if (wallet === Wallet.METAMASK) {
+      try {
+        setLoading(t("Credit.CheckingNetwork"));
+        await checkNetwork();
+      } catch (error) {
+        console.error("switch network", error);
+        return;
+      } finally {
+        setLoading(false);
+      }
+    }
+
     setLoading(t("Credit.WaitingTx"));
     try {
       await handleTransaction(
@@ -148,7 +167,9 @@ export default function RepayModal({ handleClose, stepData }) {
         networkConfig.lend.scoreLendContract,
         "credit-repay",
       );
-      setStep(3);
+      if (wallet === Wallet.METAMASK) {
+        setStep(3);
+      }
     } catch (error) {
       console.error(error);
       toast.danger(parseError(error));
