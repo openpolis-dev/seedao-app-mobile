@@ -8,7 +8,7 @@ import { ethers } from "ethers";
 import { useSNSContext, ACTIONS } from "./snsProvider";
 import { normalize } from "@seedao/sns-namehash";
 import { isAvailable } from "@seedao/sns-safe";
-import { builtin } from "@seedao/sns-js";
+import sns, { builtin } from "@seedao/sns-js";
 import { getRandomCode } from "utils/index";
 import useToast from "hooks/useToast";
 import ABI from "assets/abi/SeeDAORegistrarController.json";
@@ -47,6 +47,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
   const [isPending, setPending] = useState(false);
   const [availableStatus, setAvailable] = useState(AvailableStatus.DEFAULT);
   const [randomSecret, setRandomSecret] = useState("");
+  const [hadSNS, setHadSNS] = useState(false);
   const { handleTransaction } = useTransaction("sns-commit");
 
   const { chain } = useNetwork();
@@ -92,8 +93,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         toast.danger("get invite code failed, please try again");
       })
       .finally(() => {
-            store.dispatch(saveLoading(false));
-
+        store.dispatch(saveLoading(false));
       });
   };
 
@@ -276,6 +276,14 @@ export default function RegisterSNSStep1({ sns: _sns }) {
     return () => timer && clearInterval(timer);
   }, [localData, account, rpc]);
 
+  useEffect(() => {
+    if (account) {
+      sns.name(account).then((r) => {
+        if (r) setHadSNS(true);
+      });
+    }
+  }, [account]);
+
   const showButton = () => {
     if (hasReached) {
       return (
@@ -322,7 +330,7 @@ export default function RegisterSNSStep1({ sns: _sns }) {
         </SearchBox>
         <Tip>{t("SNS.InputTip")}</Tip>
         <OperateBox>{showButton()}</OperateBox>
-        <ShareButton onClick={getInviteLink}>{t("SNS.ShareInviteLink")}</ShareButton>
+        {hadSNS && <ShareButton onClick={getInviteLink}>{t("SNS.ShareInviteLink")}</ShareButton>}
       </ContainerWrapper>
       {Toast}
     </Container>
