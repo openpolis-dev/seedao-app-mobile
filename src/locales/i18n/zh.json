@@ -511,6 +511,7 @@
     "Back": "返回",
     "MaxBorrowAmount": "最多可借 {{amount}} USDT",
     "Borrow": "借款",
-    "Repay": "还款"
+    "Repay": "还款",
+    "TimeDisplay": "{{h}}小时{{m}}分后可借款"
   }
 }

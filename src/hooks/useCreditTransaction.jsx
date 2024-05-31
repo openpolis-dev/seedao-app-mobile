@@ -42,6 +42,20 @@ const checkTransaction = (hash) => {
   });
 };
 
+const getTokenData = (token) => {
+  return token === "usdt"
+    ? {
+        decimals: CONFIG.NETWORK.lend.lendToken.decimals,
+        address: CONFIG.NETWORK.lend.lendToken.address,
+        action: "credit-repay-approve",
+      }
+    : {
+        decimals: CONFIG.NETWORK.SCRContract.decimals,
+        address: CONFIG.NETWORK.SCRContract.address,
+        action: "credit-borrow-approve",
+      };
+};
+
 export default function useCreditTransaction(action) {
   const account = useSelector((state) => state.account);
   const wallet = useSelector((state) => state.walletType);
@@ -167,5 +181,20 @@ export default function useCreditTransaction(action) {
       return balance.gte(bn);
     }
   };
-  return { handleTransaction, approveToken, checkNetwork, checkEnoughBalance };
+  const getTokenBalance = (token) => {
+    const t = getTokenData(token);
+    const provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.default.http[0]);
+    const tokenContract = new ethers.Contract(t.address, erc20ABI, provider);
+    return tokenContract.balanceOf(account);
+  };
+  const getTokenAllowance = async (token) => {
+    const t = getTokenData(token);
+    const provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.default.http[0]);
+    const tokenContract = new ethers.Contract(t.address, erc20ABI, provider);
+    // check approve balance
+    const allowanceResultBN = await tokenContract.allowance(account, CONFIG.NETWORK.lend.scoreLendContract);
+    console.log("=======approveToken allowance=======", allowanceResultBN);
+    return allowanceResultBN;
+  };
+  return { handleTransaction, approveToken, checkNetwork, checkEnoughBalance, getTokenBalance, getTokenAllowance };
 }

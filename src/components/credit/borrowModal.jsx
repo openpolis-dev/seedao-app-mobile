@@ -14,6 +14,7 @@ import useToast from "hooks/useToast";
 import useCreditTransaction, { buildBorrowData } from "hooks/useCreditTransaction";
 import parseError from "./parseError";
 import { Wallet } from "utils/constant";
+import { formatDeltaDate } from "utils/time";
 
 const networkConfig = getConfig().NETWORK;
 
@@ -25,15 +26,37 @@ export default function BorrowModal({ handleClose, stepData }) {
 
   const [calculating, setCalculating] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [allowanceBN, setAllowanceBN] = useState(ethers.constants.Zero);
+  const [leftTime, setLeftTime] = useState("");
   const { Toast, toast } = useToast();
 
   const wallet = useSelector((state) => state.walletType);
+  const account = useSelector((state) => state.account);
+
+  const allowanceEnough = ethers.utils
+    .parseUnits(String(forfeitNum), networkConfig.lend.lendToken.decimals)
+    .lt(allowanceBN);
 
   const {
     state: { scoreLendContract, myAvaliableQuota, myScore },
   } = useCreditContext();
 
-  const { handleTransaction, approveToken, checkNetwork } = useCreditTransaction("credit-borrow");
+  const scrEnough = Number(inputNum) < myAvaliableQuota;
+
+  const { handleTransaction, approveToken, checkNetwork, getTokenBalance, getTokenAllowance } =
+    useCreditTransaction("credit-borrow");
+
+  const getButtonText = () => {
+    if (leftTime) {
+      return leftTime;
+    }
+    if (!scrEnough) {
+      return t("Credit.InsufficientQuota");
+    }
+    if (!allowanceEnough) {
+      return t("Credit.BorrowStepButton1");
+    }
+  };
 
   const checkApprove = async () => {
     if (calculating || Number(inputNum) < 100) {
@@ -65,6 +88,7 @@ export default function BorrowModal({ handleClose, stepData }) {
       });
       if (wallet === Wallet.METAMASK) {
         toast.success("Approve successfully");
+        setAllowanceBN(ethers.utils.parseUnits(String(inputNum), networkConfig.lend.lendToken.decimals));
         setStep(1);
       }
     } catch (error) {
@@ -112,21 +136,25 @@ export default function BorrowModal({ handleClose, stepData }) {
     handleClose(true);
   };
 
+  const btnDisabled =
+    calculating || Number(inputNum) < 100 || forfeitNum === 0 || Number(inputNum) > myAvaliableQuota || leftTime;
+
   const steps = [
     {
       title: t("Credit.Borrow"),
       button: (
-        <CreditButton
-          onClick={checkApprove}
-          disabled={calculating || Number(inputNum) < 100 || forfeitNum === 0 || Number(inputNum) > myAvaliableQuota}
-        >
-          {t("Credit.BorrowStepButton1")}
+        <CreditButton onClick={checkApprove} disabled={btnDisabled}>
+          {getButtonText()}
         </CreditButton>
       ),
     },
     {
       title: t("Credit.Borrow"),
-      button: <CreditButton onClick={checkBorrow}>{t("Credit.BorrowStepButton2")}</CreditButton>,
+      button: (
+        <CreditButton onClick={checkBorrow} disabled={btnDisabled}>
+          {leftTime || t("Credit.BorrowStepButton2")}
+        </CreditButton>
+      ),
     },
     {
       title: t("Credit.BorrowStepTitle3"),
@@ -145,7 +173,8 @@ export default function BorrowModal({ handleClose, stepData }) {
     scoreLendContract
       ?.calculateMortgageSCRAmount(v)
       .then((r) => {
-        setForfeitNum(Number(ethers.utils.formatUnits(r, networkConfig.SCRContract.decimals)));
+        const fval = Number(ethers.utils.formatUnits(r, networkConfig.SCRContract.decimals));
+        setForfeitNum(fval);
       })
       .catch((e) => setForfeitNum(0))
       .finally(() => {
@@ -192,6 +221,21 @@ export default function BorrowModal({ handleClose, stepData }) {
     onChangeVal(Number(getShortDisplay(myAvaliableQuota, 0)));
     setCalculating(true);
   };
+
+  useEffect(() => {
+    if (account) {
+      getTokenAllowance("scr").then((r) => setAllowanceBN(r));
+    }
+  }, [account]);
+
+  useEffect(() => {
+    scoreLendContract?.userBorrowCooldownEndTimestamp(account).then((endTime) => {
+      if (endTime && endTime.toNumber() * 1000 > Date.now()) {
+        setLeftTime(t("Credit.TimeDisplay", { ...formatDeltaDate(endTime.toNumber() * 1000) }));
+        toast.danger(t("Credit.BorrowCooldownMsg"));
+      }
+    });
+  }, [scoreLendContract]);
 
   useEffect(() => {
     setCalculating(true);
