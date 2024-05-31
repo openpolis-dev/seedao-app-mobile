@@ -222,10 +222,12 @@ export default function BorrowModal({ handleClose, stepData }) {
   };
 
   useEffect(() => {
-    if (account) {
+    if (stepData.step === 1) {
+      setAllowanceBN(ethers.utils.parseUnits(String(stepData.to), networkConfig.SCRContract.decimals));
+    } else if (account) {
       getTokenAllowance("scr").then((r) => setAllowanceBN(r));
     }
-  }, [account]);
+  }, [account, stepData]);
 
   useEffect(() => {
     scoreLendContract?.userBorrowCooldownEndTimestamp(account).then((endTime) => {
