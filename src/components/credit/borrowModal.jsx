@@ -8,10 +8,13 @@ import CalculateLoading from "./calculateLoading";
 import { getShortDisplay } from "utils/number";
 import { useCreditContext } from "pages/credit/provider";
 import { ethers } from "ethers";
+import { useSelector } from "react-redux";
 import getConfig from "constant/envCofnig";
 import useToast from "hooks/useToast";
 import useCreditTransaction, { buildBorrowData } from "hooks/useCreditTransaction";
 import parseError from "./parseError";
+import { Wallet } from "utils/constant";
+
 const networkConfig = getConfig().NETWORK;
 
 export default function BorrowModal({ handleClose, stepData }) {
@@ -23,6 +26,8 @@ export default function BorrowModal({ handleClose, stepData }) {
   const [calculating, setCalculating] = useState(false);
   const [loading, setLoading] = useState(false);
   const { Toast, toast } = useToast();
+
+  const wallet = useSelector((state) => state.walletType);
 
   const {
     state: { scoreLendContract, myAvaliableQuota, myScore },
@@ -40,14 +45,16 @@ export default function BorrowModal({ handleClose, stepData }) {
       return;
     }
     // check network
-    try {
-      setLoading(t("Credit.CheckingNetwork"));
-      await checkNetwork();
-    } catch (error) {
-      console.error("switch network", error);
-      return;
-    } finally {
-      setLoading(false);
+    if (wallet === Wallet.METAMASK) {
+      try {
+        setLoading(t("Credit.CheckingNetwork"));
+        await checkNetwork();
+      } catch (error) {
+        console.error("switch network", error);
+        return;
+      } finally {
+        setLoading(false);
+      }
     }
     // approve
     try {
@@ -56,8 +63,10 @@ export default function BorrowModal({ handleClose, stepData }) {
         from: inputNum,
         to: forfeitNum,
       });
-      toast.success("Approve successfully");
-      setStep(1);
+      if (wallet === Wallet.METAMASK) {
+        toast.success("Approve successfully");
+        setStep(1);
+      }
     } catch (error) {
       console.error(error);
       toast.danger(`Approve failed: ${error}`);
@@ -66,6 +75,18 @@ export default function BorrowModal({ handleClose, stepData }) {
     }
   };
   const checkBorrow = async () => {
+    // check network
+    if (wallet === Wallet.METAMASK) {
+      try {
+        setLoading(t("Credit.CheckingNetwork"));
+        await checkNetwork();
+      } catch (error) {
+        console.error("switch network", error);
+        return;
+      } finally {
+        setLoading(false);
+      }
+    }
     try {
       setLoading(t("Credit.WaitingTx"));
       // send borrow tx
@@ -73,7 +94,9 @@ export default function BorrowModal({ handleClose, stepData }) {
         from: inputNum,
         to: forfeitNum,
       });
-      setStep(2);
+      if (wallet === Wallet.METAMASK) {
+        setStep(2);
+      }
     } catch (error) {
       logError("[borrow]", error);
       let errorMsg = `${parseError(error)}`;
