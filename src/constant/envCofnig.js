@@ -15,7 +15,8 @@ const LOCAL = {
   REACT_APP_ONESIGNAL_ID: "9c6122e1-3de4-4c03-8e68-9f357e9ca1ae",
   REACT_APP_APP_VERSION: `A ${VERSION}`,
   REACT_APP_THEME_ENABLE: true,
-  JOY_ID_URL: "https://app.joy.id",
+  // JOY_ID_URL: "https://app.joy.id",
+  JOY_ID_URL: "https://testnet.joyid.dev",
   NETWORK: {
     name: "Polygon",
     nativeToken: "Matic",
@@ -40,6 +41,16 @@ const LOCAL = {
       },
     ],
     whitelistId: 0,
+    SCRContract: { address: "0xdC907cd32Bc3D6bb2c63Ede4E28c3fAcdd1d5189", decimals: 18 },
+    lend: {
+      bondNFTContract: "0x496EBfDe236617821BAc1A2486993204378eE6C8",
+      scoreLendContract: "0xa868415159Dc88506A9A55fe12E98B171491018d",
+      lendToken: {
+        address: "0xca152522f26811fF8FcAf967d4040F7C6BbF8eaA",
+        decimals: 6,
+        symbol: "USDT",
+      },
+    },
   },
   INDEXER_ENDPOINT: "https://test-spp-indexer.seedao.tech",
   SENDINGME_ENABLE: true,
@@ -60,6 +71,7 @@ const PREVIEW = {
   REACT_APP_ONESIGNAL_ID: "5abed421-a9a0-4811-b255-bc48fa7d4fa4",
   SENDINGME_ENABLE: false,
   SENTRY_DSN,
+  JOY_ID_URL: "https://app.joy.id",
 };
 
 const PRODUCTION = {
@@ -72,7 +84,7 @@ const PRODUCTION = {
   REACT_APP_ONESIGNAL_ID: "eda76843-e1a4-40a5-aa01-3d860d9cfa5c",
   SENDINGME_ENABLE: false,
   SENTRY_DSN,
-  // JOY_ID_URL: 'https://app.joy.id',
+  JOY_ID_URL: 'https://app.joy.id',
 };
 
 export default function getConfig() {

@@ -107,6 +107,7 @@ const LineBox = styled.div`
   .time{
     flex-shrink: 0;
     margin-right: 14px;
+      min-width: 100px;
   }
 `
 
