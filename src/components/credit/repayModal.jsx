@@ -87,6 +87,11 @@ export default function RepayModal({ handleClose, stepData }) {
     getData();
   }, []);
 
+  const selectedAll = !!list.length && list.every((item) => item.selected);
+  const handleSelectAll = () => {
+    setList(list.map((item) => ({ ...item, selected: !selectedAll })));
+  };
+
   const selectedTotalAmount = Number(
     ethers.utils.formatUnits(
       selectedList.reduce(
@@ -217,7 +222,6 @@ export default function RepayModal({ handleClose, stepData }) {
     <CreditModal handleClose={() => handleClose()}>
       <ContentStyle>
         <ModalTitle>{steps[step].title}</ModalTitle>
-        {step === 0 && <LineLabel>{t("Credit.RepayStepTitle1")}</LineLabel>}
         {step === 1 && <LineLabel>{t("Credit.RepayStepTitle2")}</LineLabel>}
 
         {step === 3 && <FinishContent>{selectedTotalAmount} USDT</FinishContent>}
@@ -228,17 +232,29 @@ export default function RepayModal({ handleClose, stepData }) {
                 <CalculateLoading />
               </LoadingBox>
             ) : list.length ? (
-              <ListBox>
-                {list.map((item) => (
-                  <RecordCheckbox
-                    key={item.id}
-                    id={item.id}
-                    data={item.data}
-                    selected={item.selected}
-                    onSelect={onSelect}
-                  />
-                ))}
-              </ListBox>
+              <div>
+                <SubTitle>{t("Credit.RepayStepTitle1")}</SubTitle>
+                <SelectAllLine>
+                  <CheckboxStyle className="checkbox-wrapper-40" onClick={handleSelectAll}>
+                    <label>
+                      <input type="checkbox" checked={selectedAll} />
+                      <span className="checkbox"></span>
+                    </label>
+                  </CheckboxStyle>
+                  <span>{t("Credit.SelectAll")}</span>
+                </SelectAllLine>
+                <ListBox>
+                  {list.map((item) => (
+                    <RecordCheckbox
+                      key={item.id}
+                      id={item.id}
+                      data={item.data}
+                      selected={item.selected}
+                      onSelect={onSelect}
+                    />
+                  ))}
+                </ListBox>
+              </div>
             ) : (
               <NoItem />
             )}
@@ -272,12 +288,12 @@ const RecordCheckbox = ({ id, selected, data, onSelect }) => {
   const { t } = useTranslation();
   return (
     <RecordStyle onClick={() => onSelect(id, !selected)} className={selected ? "selected" : ""}>
-      <div className="checkbox-wrapper-40">
+      <CheckboxStyle className="checkbox-wrapper-40">
         <label>
           <input type="checkbox" checked={selected} />
           <span className="checkbox"></span>
         </label>
-      </div>
+      </CheckboxStyle>
       <RecordRight>
         <li>
           <span>
@@ -373,6 +389,66 @@ const RepayContent = styled.div`
   gap: 10px;
 `;
 
+const CheckboxStyle = styled.div`
+  &.checkbox-wrapper-40 {
+    --borderColor: #343c6a;
+    --borderWidth: 0.1em;
+  }
+
+  &.checkbox-wrapper-40 label {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  &.checkbox-wrapper-40 input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    vertical-align: middle;
+    background: #fff;
+    font-size: 1em;
+    border-radius: 0.125em;
+    display: inline-block;
+    border: var(--borderWidth) solid var(--borderColor);
+    width: 1em;
+    height: 1em;
+    position: relative;
+  }
+  &.checkbox-wrapper-40 input[type="checkbox"]:before,
+  &.checkbox-wrapper-40 input[type="checkbox"]:after {
+    content: "";
+    position: absolute;
+    background: var(--borderColor);
+    width: calc(var(--borderWidth) * 3);
+    height: var(--borderWidth);
+    top: 50%;
+    left: 18%;
+    transform-origin: left center;
+  }
+  &.checkbox-wrapper-40 input[type="checkbox"]:before {
+    transform: rotate(45deg) translate(calc(var(--borderWidth) / -2), calc(var(--borderWidth) / -2)) scaleX(0);
+    transition: transform 200ms ease-in 200ms;
+  }
+  &.checkbox-wrapper-40 input[type="checkbox"]:after {
+    width: calc(var(--borderWidth) * 5);
+    transform: rotate(-45deg) translateY(calc(var(--borderWidth) * 2)) scaleX(0);
+    transform-origin: left center;
+    transition: transform 200ms ease-in;
+  }
+  &.checkbox-wrapper-40 input[type="checkbox"]:checked:before {
+    transform: rotate(45deg) translate(calc(var(--borderWidth) / -2), calc(var(--borderWidth) / -2)) scaleX(1);
+    transition: transform 200ms ease-in;
+  }
+  &.checkbox-wrapper-40 input[type="checkbox"]:checked:after {
+    width: calc(var(--borderWidth) * 5);
+    transform: rotate(-45deg) translateY(calc(var(--borderWidth) * 2)) scaleX(1);
+    transition: transform 200ms ease-out 200ms;
+  }
+  &.checkbox-wrapper-40 input[type="checkbox"]:focus {
+    outline: calc(var(--borderWidth) / 2) dotted rgba(0, 0, 0, 0.25);
+  }
+`;
+
 const RecordStyle = styled.div`
   height: 62px;
   border-radius: 8px;
@@ -391,63 +467,6 @@ const RecordStyle = styled.div`
         color: #fff;
       }
     }
-  }
-  .checkbox-wrapper-40 {
-    --borderColor: #343c6a;
-    --borderWidth: 0.1em;
-  }
-
-  .checkbox-wrapper-40 label {
-    display: block;
-    max-width: 100%;
-    margin: 0 auto;
-  }
-
-  .checkbox-wrapper-40 input[type="checkbox"] {
-    -webkit-appearance: none;
-    appearance: none;
-    vertical-align: middle;
-    background: #fff;
-    font-size: 1em;
-    border-radius: 0.125em;
-    display: inline-block;
-    border: var(--borderWidth) solid var(--borderColor);
-    width: 1em;
-    height: 1em;
-    position: relative;
-  }
-  .checkbox-wrapper-40 input[type="checkbox"]:before,
-  .checkbox-wrapper-40 input[type="checkbox"]:after {
-    content: "";
-    position: absolute;
-    background: var(--borderColor);
-    width: calc(var(--borderWidth) * 3);
-    height: var(--borderWidth);
-    top: 50%;
-    left: 10%;
-    transform-origin: left center;
-  }
-  .checkbox-wrapper-40 input[type="checkbox"]:before {
-    transform: rotate(45deg) translate(calc(var(--borderWidth) / -2), calc(var(--borderWidth) / -2)) scaleX(0);
-    transition: transform 200ms ease-in 200ms;
-  }
-  .checkbox-wrapper-40 input[type="checkbox"]:after {
-    width: calc(var(--borderWidth) * 5);
-    transform: rotate(-45deg) translateY(calc(var(--borderWidth) * 2)) scaleX(0);
-    transform-origin: left center;
-    transition: transform 200ms ease-in;
-  }
-  .checkbox-wrapper-40 input[type="checkbox"]:checked:before {
-    transform: rotate(45deg) translate(calc(var(--borderWidth) / -2), calc(var(--borderWidth) / -2)) scaleX(1);
-    transition: transform 200ms ease-in;
-  }
-  .checkbox-wrapper-40 input[type="checkbox"]:checked:after {
-    width: calc(var(--borderWidth) * 5);
-    transform: rotate(-45deg) translateY(calc(var(--borderWidth) * 2)) scaleX(1);
-    transition: transform 200ms ease-out 200ms;
-  }
-  .checkbox-wrapper-40 input[type="checkbox"]:focus {
-    outline: calc(var(--borderWidth) / 2) dotted rgba(0, 0, 0, 0.25);
   }
 `;
 
@@ -546,4 +565,21 @@ const LineLabel = styled.div`
   font-size: 14px;
   margin-bottom: 10px;
   color: #343c6a;
+`;
+
+const SubTitle = styled.div`
+  font-size: 14px;
+  color: #343c6a;
+  margin-bottom: 10px;
+`;
+
+const SelectAllLine = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  line-height: 24px;
+  span {
+    font-size: 14px;
+  }
 `;
