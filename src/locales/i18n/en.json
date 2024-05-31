@@ -392,7 +392,7 @@
     "Title": "信用贷",
     "MyBorrowings": "我的借款",
     "VaultBorrowings": "社区借款",
-    "MyBorrowingQuota": "借款额度（USDT）",
+    "MyBorrowingQuota": "可借额度（USDT）",
     "MyBorrowingTip1": "日利率（单利）0.01%",
     "MyBorrowingTip2": "1 SCR 可借 0.01 USDT，最长可借 30 日",
     "MySCR": "My SCR",
