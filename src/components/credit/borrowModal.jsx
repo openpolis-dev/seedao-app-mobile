@@ -34,17 +34,16 @@ export default function BorrowModal({ handleClose, stepData }) {
   const account = useSelector((state) => state.account);
 
   const allowanceEnough = ethers.utils
-    .parseUnits(String(forfeitNum), networkConfig.lend.lendToken.decimals)
-    .lt(allowanceBN);
+    .parseUnits(String(forfeitNum), networkConfig.SCRContract.decimals)
+    .lte(allowanceBN);
 
   const {
     state: { scoreLendContract, myAvaliableQuota, myScore },
   } = useCreditContext();
 
-  const scrEnough = Number(inputNum) < myAvaliableQuota;
+  const scrEnough = Number(inputNum) <= myAvaliableQuota;
 
-  const { handleTransaction, approveToken, checkNetwork, getTokenBalance, getTokenAllowance } =
-    useCreditTransaction("credit-borrow");
+  const { handleTransaction, approveToken, checkNetwork, getTokenAllowance } = useCreditTransaction("credit-borrow");
 
   const getButtonText = () => {
     if (leftTime) {
@@ -238,9 +237,17 @@ export default function BorrowModal({ handleClose, stepData }) {
   }, [scoreLendContract]);
 
   useEffect(() => {
-    setCalculating(true);
-    onChangeVal(100);
+    if (!stepData.from || !stepData.to) {
+      setCalculating(true);
+      onChangeVal(100);
+    }
   }, []);
+
+  useEffect(() => {
+    if (step !== 2) {
+      setStep(scrEnough && allowanceEnough ? 1 : 0);
+    }
+  }, [step, scrEnough, allowanceEnough]);
 
   const dayIntrestAmount = inputNum ? getShortDisplay((Number(inputNum) * 10000 * Number(0.0001)) / 10000, 4) : 0;
 
@@ -259,14 +266,7 @@ export default function BorrowModal({ handleClose, stepData }) {
             <LineBox>
               <div className="left">
                 <div className="left-content">
-                  <input
-                    type="number"
-                    autoFocus
-                    disabled={step === 1}
-                    value={inputNum}
-                    onChange={onChangeInput}
-                    onBlur={handleBlur}
-                  />
+                  <input type="number" autoFocus value={inputNum} onChange={onChangeInput} onBlur={handleBlur} />
                   {step === 0 && <MaxButton onClick={handleBorrowMax}>{t("Credit.MaxBorrow")}</MaxButton>}
                 </div>
               </div>

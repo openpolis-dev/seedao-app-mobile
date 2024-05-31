@@ -2,7 +2,6 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import CreditLogo from "assets/Imgs/credit/credit-logo.jpg";
 import SCRIcon from "assets/Imgs/credit/scr.svg";
-import QuotaIcon from "assets/Imgs/credit/quota.svg";
 import CountIcon from "assets/Imgs/credit/count.svg";
 import AmountIcon from "assets/Imgs/credit/amount.svg";
 import { BorrowItemsModal, RepayItemsModal } from "components/credit/itemsModal";
@@ -17,27 +16,18 @@ import { erc20ABI } from "wagmi";
 import { ethers } from "ethers";
 import { getBorrowList } from "api/credit";
 import { CreditRecordStatus } from "constant/credit";
-import store from "store";
-import { saveLoading } from "store/reducer";
-import { useLocation, useSearchParams } from "react-router-dom";
-import CreditModal from "components/credit/creditModal";
-import CreditButton from "components/credit/button";
+import { useLocation } from "react-router-dom";
 
 const networkConfig = getConfig().NETWORK;
 
 const BorrowAndRepay = ({ onUpdate }) => {
   const { t } = useTranslation();
   const { state } = useLocation();
-  const {
-    state: { scoreLendContract },
-  } = useCreditContext();
-  const account = useSelector((state) => state.account);
 
   const [showModal, setShowModal] = useState("");
   const [showItemsModal, setShowItemsModal] = useState("");
 
   const [stepData, setStepData] = useState();
-  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     const action = state?.action;
@@ -74,19 +64,7 @@ const BorrowAndRepay = ({ onUpdate }) => {
   };
 
   const openBorrow = () => {
-    store.dispatch(saveLoading(true));
-    scoreLendContract
-      .userBorrowCooldownEndTimestamp(account)
-      .then((endTime) => {
-        if (endTime && endTime.toNumber() * 1000 > Date.now()) {
-          setShowAlert(true);
-        } else {
-          setShowItemsModal("borrow");
-        }
-      })
-      .finally(() => {
-        store.dispatch(saveLoading(false));
-      });
+    setShowItemsModal("borrow");
   };
 
   return (
@@ -101,16 +79,6 @@ const BorrowAndRepay = ({ onUpdate }) => {
         <BorrowItemsModal onConfirm={go2Borrow} handleClose={() => setShowItemsModal("")} />
       )}
       {showItemsModal === "repay" && <RepayItemsModal onConfirm={go2Repay} handleClose={() => setShowItemsModal("")} />}
-      {showAlert && (
-        <CreditModal>
-          <AlertContent>
-            <div className="content">
-              <p>{t("Credit.BorrowCooldownMsg")}</p>
-            </div>
-            <CreditButton onClick={() => setShowAlert(false)}>{t("Credit.Back")}</CreditButton>
-          </AlertContent>
-        </CreditModal>
-      )}
     </OperateBox>
   );
 };
