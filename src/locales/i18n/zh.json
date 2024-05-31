@@ -416,7 +416,7 @@
     "GoToRepay": "去还款",
     "MyBorrowingsState": "我的借款状态",
     "MyInuseCount": "使用中 {{num}} 笔",
-    "OverdueCount": "已逾期",
+    "OverdueCount": "已逾期 {{num}} 笔",
     "LatestRepayDate": "你有借款需在 {{date}} 前还款",
     "RepayTip": "逾期未还，SCR 将被罚没至社区金库！",
     "Details": "详情 >>",

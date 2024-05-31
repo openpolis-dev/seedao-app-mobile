@@ -98,7 +98,7 @@ const VaultCard = () => {
         <StateLine2>
           <img src={CountIcon} alt="" />
           <div>
-            <div className="label">{t("Credit.OverdueCount")}</div>
+            <div className="label">{t("Credit.OverdueCount", { num: data.overdueCount })}</div>
             <div className="value">{Number(data.overdueAmount).format(4, true)} USDT</div>
           </div>
         </StateLine2>
