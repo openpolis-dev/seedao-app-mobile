@@ -276,7 +276,7 @@ export default function RepayModal({ handleClose, stepData }) {
   }, [tokenEnough, allowanceEnough]);
 
   return (
-    <CreditModal handleClose={() => handleClose()}>
+    <CreditModal handleClose={() => handleClose(step === 3)}>
       <ContentStyle>
         <ModalTitle>{steps[step].title}</ModalTitle>
         {step === 3 && <FinishContent>{selectedTotalAmount} USDT</FinishContent>}

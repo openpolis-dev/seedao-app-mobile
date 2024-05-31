@@ -252,7 +252,7 @@ export default function BorrowModal({ handleClose, stepData }) {
   const dayIntrestAmount = inputNum ? getShortDisplay((Number(inputNum) * 10000 * Number(0.0001)) / 10000, 4) : 0;
 
   return (
-    <CreditModal handleClose={() => handleClose()}>
+    <CreditModal handleClose={() => handleClose(step === 2)}>
       <ContentStyle>
         <ModalTitle>{steps[step].title}</ModalTitle>
         {step === 2 ? (
