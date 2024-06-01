@@ -133,37 +133,18 @@ export default function useCreditTransaction(action) {
             address: CONFIG.NETWORK.SCRContract.address,
             action: "credit-borrow-approve",
           };
-    if (wallet === Wallet.METAMASK) {
-      const allowanceResult = await readContract({
-        address: t.address,
-        abi: erc20ABI,
-        functionName: "allowance",
-        args: [account, CONFIG.NETWORK.lend.scoreLendContract],
-      });
-      console.log("=======approveToken allowance=======", allowanceResult);
-      if (
-        !allowanceResult ||
-        ethers.BigNumber.from(allowanceResult.toString()).lt(ethers.utils.parseUnits(String(amount), t.decimals))
-      ) {
-        return handleTransaction(
-          buildApproveTokenData(CONFIG.NETWORK.lend.scoreLendContract, t.decimals, amount),
-          t.address,
-          t.action,
-        );
-      }
-    } else {
-      const provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.default.http[0]);
-      const tokenContract = new ethers.Contract(t.address, erc20ABI, provider);
-      // check approve balance
-      const approve_balance = await tokenContract.allowance(account, CONFIG.NETWORK.lend.scoreLendContract);
-      if (approve_balance.lt(ethers.utils.parseUnits(String(amount), t.decimals))) {
-        return handleTransaction(
-          buildApproveTokenData(CONFIG.NETWORK.lend.scoreLendContract, t.decimals, amount),
-          t.address,
-          t.action,
-          queryData,
-        );
-      }
+    const provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.default.http[0]);
+    const tokenContract = new ethers.Contract(t.address, erc20ABI, provider);
+    // check approve balance
+    const approve_balance = await tokenContract.allowance(account, CONFIG.NETWORK.lend.scoreLendContract);
+    console.log("=======approveToken allowance=======", approve_balance.toString());
+    if (approve_balance.lt(ethers.utils.parseUnits(String(amount), t.decimals))) {
+      return handleTransaction(
+        buildApproveTokenData(CONFIG.NETWORK.lend.scoreLendContract, t.decimals, amount),
+        t.address,
+        t.action,
+        queryData,
+      );
     }
   };
   const checkEnoughBalance = async (account, amount) => {

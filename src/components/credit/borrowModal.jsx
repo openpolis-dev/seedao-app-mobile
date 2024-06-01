@@ -87,7 +87,7 @@ export default function BorrowModal({ handleClose, stepData }) {
       });
       if (wallet === Wallet.METAMASK) {
         toast.success("Approve successfully");
-        setAllowanceBN(ethers.utils.parseUnits(String(inputNum), networkConfig.lend.lendToken.decimals));
+        setAllowanceBN(ethers.utils.parseUnits(String(forfeitNum), networkConfig.SCRContract.decimals));
         setStep(1);
       }
     } catch (error) {
