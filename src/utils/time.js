@@ -1,4 +1,8 @@
 import dayjs from 'dayjs';
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const getUTC = () => {
   const offset = dayjs().utcOffset();
@@ -87,4 +91,8 @@ export const formatMsgTime = (time, t) => {
   function zeroize(num) {
     return num < 10 ? "0" + num : num;
   }
+};
+
+export const formatTimeWithUTC = (timestamp, formatter = "YYYY-MM-DD HH:mm") => {
+  return dayjs.unix(timestamp).utcOffset("+08:00").format(formatter) + " UTC+8";
 };
