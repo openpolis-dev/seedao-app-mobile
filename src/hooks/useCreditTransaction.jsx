@@ -150,20 +150,10 @@ export default function useCreditTransaction(action) {
   const checkEnoughBalance = async (account, amount) => {
     const address = CONFIG.NETWORK.lend.lendToken.address;
     const bn = ethers.utils.parseUnits(String(amount), CONFIG.NETWORK.lend.lendToken.decimals);
-    if (wallet === Wallet.METAMASK) {
-      const balance = await readContract({
-        address: address,
-        abi: erc20ABI,
-        functionName: "balanceOf",
-        args: [account],
-      });
-      return ethers.BigNumber.from(balance.toString()).gte(bn);
-    } else {
-      const provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.default.http[0]);
-      const tokenContract = new ethers.Contract(address, erc20ABI, provider);
-      const balance = await tokenContract.balanceOf(account);
-      return balance.gte(bn);
-    }
+    const provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.default.http[0]);
+    const tokenContract = new ethers.Contract(address, erc20ABI, provider);
+    const balance = await tokenContract.balanceOf(account);
+    return balance.gte(bn);
   };
   const getTokenBalance = (token) => {
     const t = getTokenData(token);
