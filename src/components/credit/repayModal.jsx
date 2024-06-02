@@ -389,7 +389,7 @@ const SelectedRecord = ({ data, total }) => {
       </li>
       <li>
         <span>{t("Credit.CurrentBorrowDays")}</span>
-        <span>{data.interestDays}</span>
+        <span>{t("Credit.Days", { days: data.interestDays })}</span>
       </li>
 
       <li>
