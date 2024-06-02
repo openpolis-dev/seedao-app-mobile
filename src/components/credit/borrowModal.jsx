@@ -268,7 +268,7 @@ export default function BorrowModal({ handleClose, stepData }) {
             <LineBox>
               <div className="left">
                 <div className="left-content">
-                  <input type="number" autoFocus value={inputNum} onChange={onChangeInput} onBlur={handleBlur} />
+                  <input type="number" value={inputNum} onChange={onChangeInput} onBlur={handleBlur} />
                   {step === 0 && <MaxButton onClick={handleBorrowMax}>{t("Credit.MaxBorrow")}</MaxButton>}
                 </div>
               </div>
