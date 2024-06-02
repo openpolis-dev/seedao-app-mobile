@@ -244,7 +244,7 @@ export default function RepayModal({ handleClose, stepData }) {
   };
 
   useEffect(() => {
-    if (account && step > 0 && step !== 3) {
+    if (account && step > 0 && step !== 3 && !stepData?.ids) {
       setAllownceGetting(true);
       getTokenAllowance("usdt")
         .then((r) => {
@@ -276,7 +276,7 @@ export default function RepayModal({ handleClose, stepData }) {
   }, [tokenEnough, allowanceEnough]);
 
   useEffect(() => {
-    if (stepData?.ids && totalApproveBN.gt(ethers.constants.Zero)) {
+    if (stepData?.ids && totalApproveBN.gt(ethers.constants.Zero) && !totalApproveBN.eq(allowanceBN)) {
       setAllowanceBN(totalApproveBN);
     }
   }, [stepData, totalApproveBN]);
