@@ -275,11 +275,24 @@ export default function RepayModal({ handleClose, stepData }) {
     }
   }, [tokenEnough, allowanceEnough]);
 
+  useEffect(() => {
+    if (stepData?.ids && totalApproveBN.gt(ethers.constants.Zero)) {
+      setAllowanceBN(totalApproveBN);
+    }
+  }, [stepData, totalApproveBN]);
+
   return (
     <CreditModal handleClose={() => handleClose(step === 3)}>
       <ContentStyle>
         <ModalTitle>{steps[step].title}</ModalTitle>
-        {step === 3 && <FinishContent>{selectedTotalAmount} USDT</FinishContent>}
+        {step === 3 &&
+          (getting ? (
+            <GettingBox>
+              <CalculateLoading />
+            </GettingBox>
+          ) : (
+            <FinishContent>{selectedTotalAmount} USDT</FinishContent>
+          ))}
         {step === 0 && (
           <RepayContent>
             {getting ? (
@@ -315,20 +328,25 @@ export default function RepayModal({ handleClose, stepData }) {
             )}
           </RepayContent>
         )}
-        {(step === 1 || step === 2) && (
-          <RepayContent style={{ gap: "14px" }}>
-            <TotalRepay>
-              <div className="number">{totalApproveAmount.format(4)} USDT</div>
-              <div className="label">{t("Credit.ShouldRepayAll", { amount: selectedTotalAmount.format(4) })}</div>
-              <RepayTip>{t("Credit.ApproveTip")}</RepayTip>
-            </TotalRepay>
-            <ListBox style={{ maxHeight: "352px", minHeight: "unset" }}>
-              {selectedList.map((item) => (
-                <SelectedRecord key={item.id} data={item.data} total={item.total} />
-              ))}
-            </ListBox>
-          </RepayContent>
-        )}
+        {(step === 1 || step === 2) &&
+          (getting ? (
+            <GettingBox>
+              <CalculateLoading />
+            </GettingBox>
+          ) : (
+            <RepayContent style={{ gap: "14px" }}>
+              <TotalRepay>
+                <div className="number">{totalApproveAmount.format(4)} USDT</div>
+                <div className="label">{t("Credit.ShouldRepayAll", { amount: selectedTotalAmount.format(4) })}</div>
+                <RepayTip>{t("Credit.ApproveTip")}</RepayTip>
+              </TotalRepay>
+              <ListBox style={{ maxHeight: "352px", minHeight: "unset" }}>
+                {selectedList.map((item) => (
+                  <SelectedRecord key={item.id} data={item.data} total={item.total} />
+                ))}
+              </ListBox>
+            </RepayContent>
+          ))}
         <ConfirmBox>
           {loading ? <CreditButton>{loading}</CreditButton> : steps[step].button}
           {loading && <TxTip onClick={() => setLoading(false)}>{t("Credit.TxTip")}</TxTip>}
@@ -394,7 +412,7 @@ const SelectedRecord = ({ data, total }) => {
 
       <li>
         <span>{t("Credit.RateAmount3")}</span>
-        <span>{data.rate}</span>
+        <span>{data.rate}%</span>
       </li>
       <li>
         <span>{t("Credit.Interest")}</span>
@@ -639,4 +657,8 @@ const RepayTip = styled.p`
   font-size: 14px;
   margin-top: 10px;
   text-align: left;
+`;
+
+const GettingBox = styled(LoadingBox)`
+  height: 160px;
 `;
