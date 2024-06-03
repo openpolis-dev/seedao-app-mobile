@@ -449,7 +449,7 @@
     "RepayStepTitle3": "Confirm to repayment",
     "RepayStepTitle4": "Repayment completed!",
     "RepayStepButton1": "Selected {{num}} loans to repay",
-    "RepayStepButton2": "Approve",
+    "RepayStepButton2": "Approve to continue",
     "RepayStepButton3": "Sign and confirm repayment",
     "RepayStepButton4": "View my repayment record",
     "NeedForfeit": "You need to pledge",
