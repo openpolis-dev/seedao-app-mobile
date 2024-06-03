@@ -175,7 +175,10 @@ export default function BorrowModal({ handleClose, stepData }) {
         const fval = Number(ethers.utils.formatUnits(r, networkConfig.SCRContract.decimals));
         setForfeitNum(fval);
       })
-      .catch((e) => setForfeitNum(0))
+      .catch((e) => {
+        setForfeitNum(0);
+        toast.danger(`${"Credit.CalculateFailed"}: ${e}`);
+      })
       .finally(() => {
         setCalculating(false);
       });

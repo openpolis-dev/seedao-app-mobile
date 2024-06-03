@@ -124,8 +124,12 @@ export default function RepayModal({ handleClose, stepData }) {
   const allowanceEnough = allowanceBN.gte(totalApproveBN);
 
   const getButtonText = () => {
-    if (tokenBalanceGetting) {
-      return t("Credit.RepayStepButton2");
+    if (tokenBalanceGetting || tokenBalanceGetting || allowanceGetting) {
+      return (
+        <LoadingWrapper>
+          <CalculateLoading />
+        </LoadingWrapper>
+      );
     }
     if (!tokenEnough) {
       return t("Credit.InsufficientBalance", { token: "USDT" });
@@ -250,6 +254,9 @@ export default function RepayModal({ handleClose, stepData }) {
         .then((r) => {
           setAllowanceBN(r);
         })
+        .catch((e) => {
+          toast.danger(`${t("Credit.GetAllowanceFailed")}: ${e}`);
+        })
         .finally(() => {
           setAllownceGetting(false);
         });
@@ -262,6 +269,9 @@ export default function RepayModal({ handleClose, stepData }) {
       getTokenBalance("usdt")
         .then((r) => {
           setTokenBN(r);
+        })
+        .catch((e) => {
+          toast.danger(`${t("Credit.GetBalanceFailed")}: ${e}`);
         })
         .finally(() => {
           setTokenBalanceGetting(false);
@@ -661,4 +671,10 @@ const RepayTip = styled.p`
 
 const GettingBox = styled(LoadingBox)`
   height: 160px;
+`;
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
