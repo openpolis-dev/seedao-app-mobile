@@ -6,6 +6,8 @@ export const ACTIONS = {
   SET_MY_DATA: "SET_MY_DATA",
   SET_MY_SCORE: "SET_MY_SCORE",
   SET_MY_QUOTA: "SET_MY_QUOTA",
+  SET_MAX_BORROW_DAYS: "SET_MAX_BORROW_DAYS",
+  SET_BORROW_RATE: "SET_BORROW_RATE",
 };
 
 const INIT_STATE = {
@@ -17,6 +19,8 @@ const INIT_STATE = {
   myOverdueCount: 0,
   myInuseAmount: 0,
   myInUseCount: 0,
+  maxBorrowDays: 0,
+  borrowRate: 0,
 };
 
 const CreditContext = createContext({
@@ -42,6 +46,10 @@ const reducer = (state, action) => {
       return { ...state, myAvaliableQuota: action.payload };
     case ACTIONS.SET_MY_SCORE:
       return { ...state, myScore: action.payload };
+    case ACTIONS.SET_MAX_BORROW_DAYS:
+      return { ...state, maxBorrowDays: action.payload };
+    case ACTIONS.SET_BORROW_RATE:
+      return { ...state, borrowRate: action.payload };
     default:
       throw new Error(`Unknown type: ${action.type}`);
   }

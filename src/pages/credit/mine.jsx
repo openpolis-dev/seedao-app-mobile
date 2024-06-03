@@ -100,6 +100,8 @@ export default function MyBorrowings() {
       myAvaliableQuota,
       myOverdueCount,
       myOverdueAmount,
+      maxBorrowDays,
+      borrowRate,
     },
   } = useCreditContext();
 
@@ -162,6 +164,15 @@ export default function MyBorrowings() {
   }, [account, userToken]);
 
   useEffect(() => {
+    scoreLendContract?.maxBorrowPeriod().then(r => {
+      dispatchCreditEvent({ type: ACTIONS.SET_MAX_BORROW_DAYS, payload: r.toNumber() / 86400 });
+    });
+    scoreLendContract?.borrowInterestRate().then((r) => {
+      dispatchCreditEvent({ type: ACTIONS.SET_BORROW_RATE, payload: r.toNumber() / 10000 });
+    });
+  }, [scoreLendContract])
+
+  useEffect(() => {
     if (!account) {
       return;
     }
@@ -182,8 +193,8 @@ export default function MyBorrowings() {
       <CardStyle>
         <div className="label">{t("Credit.MyBorrowingQuota")}</div>
         <div className="value">{myAvaliableQuota.format(4, true)}</div>
-        <div className="tip">{t("Credit.MyBorrowingTip1")}</div>
-        <div className="tip">{t("Credit.MyBorrowingTip2")}</div>
+        <div className="tip">{t("Credit.MyBorrowingTip1", { r: borrowRate })}</div>
+        <div className="tip">{t("Credit.MyBorrowingTip2", { day: maxBorrowDays, r: borrowRate })}</div>
         <div className="tip">{t("Credit.MaxBorrowAmountTip", { amount: maxAmount?.format(0) })}</div>
         <img src={CreditLogo} alt="" />
       </CardStyle>

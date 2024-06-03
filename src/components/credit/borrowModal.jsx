@@ -38,7 +38,7 @@ export default function BorrowModal({ handleClose, stepData }) {
     .lte(allowanceBN);
 
   const {
-    state: { scoreLendContract, myAvaliableQuota, myScore },
+    state: { scoreLendContract, myAvaliableQuota, myScore, borrowRate, maxBorrowDays },
   } = useCreditContext();
 
   const scrEnough = Number(inputNum) <= myAvaliableQuota;
@@ -281,7 +281,7 @@ export default function BorrowModal({ handleClose, stepData }) {
               <NumberCheckLabel>{t("Credit.MaxBorrowAmount", { amount: myAvaliableQuota.format(0) })}</NumberCheckLabel>
             )}
             {Number(inputNum) < 100 && <NumberCheckLabel>{t("Credit.MinBorrow")}</NumberCheckLabel>}
-            <LineTip style={{ marginBottom: 0 }}>{t("Credit.RateAmount", { rate: 0.01 })}</LineTip>
+            <LineTip style={{ marginBottom: 0 }}>{t("Credit.RateAmount", { rate: borrowRate })}</LineTip>
             <LineTip style={{ marginTop: 0 }}>{t("Credit.RateAmount2", { amount: dayIntrestAmount })}</LineTip>
             <LineLabel>{t("Credit.NeedForfeit")}</LineLabel>
             <LineBox>
@@ -290,7 +290,7 @@ export default function BorrowModal({ handleClose, stepData }) {
             </LineBox>
             <LineTip>{t("Credit.ForfeitTip")}</LineTip>
             <BorrowTips>
-              <p>{t("Credit.BorrowTip1")}</p>
+              <p>{t("Credit.BorrowTip1", { day: maxBorrowDays })}</p>
               <p style={{ color: "#1814f3" }}>{t("Credit.BorrowTip2")}</p>
             </BorrowTips>
           </BorrowContent>

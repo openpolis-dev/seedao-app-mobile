@@ -247,7 +247,8 @@
     "SNS": "SNS",
     "Newcomer": "新手村",
     "Echo": "Echo",
-    "EchoDesc": "Echo is a social network that gives your echos to same habbies, passions or interests."
+    "EchoDesc": "Echo is a social network that gives your echos to same habbies, passions or interests.",
+    "Credit": "积分信用贷"
   },
   "roles": {
     "SEED_HOLDER": "SEED持有者",
@@ -404,12 +405,12 @@
     "FinalExamination": "毕业考试"
   },
   "Credit": {
-    "Title": "信用贷",
+    "Title": "积分信用贷",
     "MyBorrowings": "我的借款",
     "VaultBorrowings": "社区借款",
     "MyBorrowingQuota": "可借额度（USDT）",
-    "MyBorrowingTip1": "日利率（单利）0.01%",
-    "MyBorrowingTip2": "1 SCR 可借 0.01 USDT，最长可借 30 日",
+    "MyBorrowingTip1": "日利率（单利）{{r}}%",
+    "MyBorrowingTip2": "1 SCR 可借 {{r}} USDT，最长可借 {{day}} 日",
     "MySCR": "我的SCR",
     "MaxBorrowAmountTip": "最高可借 {{amount}} USDT",
     "GoToBorrow": "去借款",
@@ -467,11 +468,11 @@
     "RepayStepButton3": "签名确认还款",
     "RepayStepButton4": "查看我的还款记录",
     "NeedForfeit": "您需质押",
-    "RateAmount": "日利率（单利） 0.01%",
+    "RateAmount": "日利率（单利）{{rate}}%",
     "RateAmount2": "预计每日产生利息 {{amount}} USDT",
     "RateAmount3": "日利率（单利）",
     "ForfeitTip": "质押的 SCR 将从您的钱包中扣除",
-    "BorrowTip1": "借款期限最长为 30 日，30 日内随时可还款。逾期未还，您的 SCR 将被罚没至社区金库！",
+    "BorrowTip1": "借款期限最长为 {{day}} 日，{{day}} 日内随时可还款。逾期未还，您的 SCR 将被罚没至社区金库！",
     "BorrowTip2": "*利息及借款期限按北京时间（UTC+8）自然日计算",
     "BorrowTip3": "签名前，需要先授权合约使用您的SCR",
     "BorrowAmount": "借款金额",
@@ -490,7 +491,7 @@
     "Rate": "利率",
     "BorrowDuration": "已借款时长",
     "LastRepaymentTime": "最晚还款时间",
-    "DayRate01": "日利率（单利） 0.01%",
+    "DayRate01": "日利率（单利）{{rate}}%",
     "RepayRecord": "还款记录",
     "TotalRepay": "合计还款",
     "Principal": "本金",

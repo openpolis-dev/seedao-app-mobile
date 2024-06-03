@@ -98,7 +98,7 @@ const apps =  [
       id: ['preview', 'production'].includes(process.env.REACT_APP_ENV_VERSION)
         ? 'coming-soon'
         : 'module-credit',
-      name: 'Lend',
+      name: 'apps.Credit',
       link: '/credit',
       icon: CreditImg,
       desc: 'Coming Soon',
