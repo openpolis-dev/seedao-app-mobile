@@ -239,15 +239,15 @@
     "IncorrectMirror": "Please enter the correct Mirror link",
     "EmptySBT": "Not Owning SBT",
     "EditTitle": "Edit Profile",
-    "Avatar": "Avatar",
-    "Credit": "SCR MBL"
+    "Avatar": "Avatar"
   },
   "apps": {
     "SeeU": "SeeU Network",
     "SNS": "SNS",
     "Newcomer": "Newcomer",
     "Echo": "Echo",
-    "EchoDesc": "Echo is a social network that gives your echos to same habbies, passions or interests."
+    "EchoDesc": "Echo is a social network that gives your echos to same habbies, passions or interests.",
+    "Credit": "SCR MBL"
   },
   "roles": {
     "SEED_HOLDER": "SEED Holder",
