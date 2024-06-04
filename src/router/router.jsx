@@ -116,12 +116,8 @@ function RouterLink() {
         <Route path="/newcomer" element={<Newcomer />} />
         <Route path="/course" element={<NewcomerCourse />} />
         {/* credit */}
-        {!["preview", "production"].includes(process.env.REACT_APP_ENV_VERSION) && (
-          <Route path="/credit" element={<CreditLending />} />
-        )}
-        {!["preview", "production"].includes(process.env.REACT_APP_ENV_VERSION) && (
-          <Route path="/credit/record/:id" element={<CreditRecordDetail />} />
-        )}
+        <Route path="/credit" element={<CreditLending />} />
+        <Route path="/credit/record/:id" element={<CreditRecordDetail />} />
 
         <Route path="/sns" element={<SNSEntrancePage />} />
         <Route path="/sns/register" element={<RegisterSNS />} />
