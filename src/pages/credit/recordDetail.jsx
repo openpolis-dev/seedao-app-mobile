@@ -290,7 +290,7 @@ const NoData = styled.span`
 `;
 
 const Interest = styled.p`
-  font-size: 12px;
+  font-size: 14px;
   color: #1814f3;
   margin-top: 20px;
 `;
