@@ -71,7 +71,16 @@ const PREVIEW = {
   REACT_APP_ONESIGNAL_ID: "5abed421-a9a0-4811-b255-bc48fa7d4fa4",
   SENDINGME_ENABLE: false,
   SENTRY_DSN,
-  JOY_ID_URL: "https://app.joy.id",
+  JOY_ID_URL: "https://testnet.joyid.dev",
+  NETWORK: {
+    ...LOCAL.NETWORK,
+    lend: {
+      ...LOCAL.NETWORK.lend,
+      bondNFTContract: "0x5eC2dDFdEACB1a4bB4145908bB29D833Fd810712",
+      scoreLendContract: "0xcF5504045f74f6A51828B9D8766E4d96822311dE",
+    },
+  },
+  INDEXER_ENDPOINT: "https://preview-spp-indexer.seedao.tech",
 };
 
 const PRODUCTION = {
