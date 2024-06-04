@@ -30,6 +30,8 @@ export default function RepayModal({ handleClose, stepData }) {
   const [allowanceGetting, setAllownceGetting] = useState(false);
   const [tokenBalanceGetting, setTokenBalanceGetting] = useState(false);
 
+  const [totalRepayAmount, setTotalRepayAmount] = useState(0);
+
   const selectedList = list.filter((l) => !!l.selected);
 
   const account = useSelector((state) => state.account);
@@ -46,6 +48,9 @@ export default function RepayModal({ handleClose, stepData }) {
   const { handleTransaction, approveToken, checkNetwork, checkEnoughBalance, getTokenBalance, getTokenAllowance } =
     useCreditTransaction();
   const getData = async () => {
+    if (stepData?.step === 3) {
+      return;
+    }
     try {
       setGetting(true);
       const r = await getBorrowList({
@@ -196,7 +201,7 @@ export default function RepayModal({ handleClose, stepData }) {
         buildRepayData(selectedList.map((item) => Number(item.id))),
         networkConfig.lend.scoreLendContract,
         "credit-repay",
-        { ids: selectedList.map((item) => item.id).join(",") },
+        { ids: selectedList.map((item) => item.id).join(","), total: selectedTotalAmount },
       );
       if (wallet === Wallet.METAMASK) {
         setStep(3);
@@ -291,6 +296,45 @@ export default function RepayModal({ handleClose, stepData }) {
     }
   }, [stepData, totalApproveBN]);
 
+  const getRepayAmount = async (ids, totalPrincipal) => {
+    setGetting(true);
+    bondNFTContract
+      ?.calculateLendsInterest(ids)
+      .then((result) => {
+        const total = result.interestAmounts
+          .reduce((acc, item) => acc.add(item), ethers.constants.Zero)
+          .add(totalPrincipal);
+        setTotalRepayAmount(ethers.utils.formatUnits(total, lendToken.decimals));
+      })
+      .catch((r) => {
+        console.error(r);
+        toast.danger("获取实际还款额失败，请到详情中查看");
+      })
+      .finally(() => {
+        setGetting(false);
+      });
+  };
+
+  useEffect(() => {
+    if (bondNFTContract && step === 3) {
+      if (stepData?.ids && stepData?.total) {
+        // joyid
+        const idsFromStepData = stepData?.ids?.split(",") || [];
+        const ids = idsFromStepData.map((d) => Number(d));
+        getRepayAmount(ids, ethers.utils.parseUnits(stepData.total, lendToken.decimals));
+      } else if (selectedList.length) {
+        const totalPrincipal = selectedList.reduce(
+          (acc, item) => acc.add(ethers.utils.parseUnits(String(item.total), lendToken.decimals)),
+          ethers.constants.Zero,
+        );
+        getRepayAmount(
+          selectedList.map((item) => Number(item.id)),
+          totalPrincipal,
+        );
+      }
+    }
+  }, [bondNFTContract, step]);
+
   return (
     <CreditModal handleClose={() => handleClose(step === 3)}>
       <ContentStyle>
@@ -301,7 +345,7 @@ export default function RepayModal({ handleClose, stepData }) {
               <CalculateLoading />
             </GettingBox>
           ) : (
-            <FinishContent>{selectedTotalAmount} USDT</FinishContent>
+            <FinishContent>{totalRepayAmount} USDT</FinishContent>
           ))}
         {step === 0 && (
           <RepayContent>
