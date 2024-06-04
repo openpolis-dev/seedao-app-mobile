@@ -70,7 +70,7 @@ export default function JoyIDRedirect() {
   };
 
   const handleCreditData = () => {
-    return { from: search.get("from"), to: search.get("to"), ids: search.get("ids") };
+    return { from: search.get("from"), to: search.get("to"), ids: search.get("ids"), total: search.get("total") };
   };
 
   useEffect(() => {
