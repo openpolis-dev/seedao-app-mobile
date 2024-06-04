@@ -6,7 +6,7 @@ import CountIcon from "assets/Imgs/credit/count.svg";
 import AmountIcon from "assets/Imgs/credit/amount.svg";
 import { useCallback, useState, useEffect } from "react";
 import { ethers } from "ethers";
-import { useCreditContext } from "./provider";
+import { useCreditContext, ACTIONS } from "./provider";
 import getConfig from "constant/envCofnig";
 import { getVaultData } from "api/credit";
 
@@ -15,7 +15,8 @@ const networkConfig = getConfig().NETWORK;
 const VaultCard = () => {
   const { t } = useTranslation();
   const {
-    state: { scoreLendContract },
+    dispatch: dispatchCreditEvent,
+    state: { scoreLendContract, borrowRate },
   } = useCreditContext();
 
   const [total, setTotal] = useState("0.00");
@@ -43,6 +44,13 @@ const VaultCard = () => {
       r && setData(r);
     });
   };
+
+  useEffect(() => {
+    !borrowRate &&
+      scoreLendContract?.borrowInterestRate().then((r) => {
+        dispatchCreditEvent({ type: ACTIONS.SET_BORROW_RATE, payload: r.toNumber() / 10000 });
+      });
+  }, [scoreLendContract, borrowRate]);
 
   useEffect(() => {
     getData();
