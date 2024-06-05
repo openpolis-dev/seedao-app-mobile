@@ -299,9 +299,9 @@ export default function BorrowModal({ handleClose, stepData }) {
               <NumberCheckLabel>{t("Credit.MaxBorrowAmount", { amount: myAvaliableQuota.format(0) })}</NumberCheckLabel>
             )}
             {Number(inputNum) < 100 && <NumberCheckLabel>{t("Credit.MinBorrow")}</NumberCheckLabel>}
-            {Number(inputNum) > 100 &&
+            {Number(inputNum) >= 100 &&
               Number(inputNum) > totalAvaliableBorrowAmount &&
-              Number(inputNum) < myAvaliableQuota && (
+              Number(inputNum) <= myAvaliableQuota && (
                 <NumberCheckLabel>
                   {t("Credit.RemainBorrowQuota", { amount: totalAvaliableBorrowAmount.format(0) })}
                 </NumberCheckLabel>
