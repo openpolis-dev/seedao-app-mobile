@@ -34,8 +34,9 @@ const VaultCard = () => {
 
   const getData = useCallback(() => {
     scoreLendContract?.totalAvailableBorrowAmount().then((r) => {
-      const value = ethers.utils.formatUnits(r, networkConfig.lend.lendToken.decimals);
-      setTotal(Number(value).format(4, true));
+      const value = Number(ethers.utils.formatUnits(r, networkConfig.lend.lendToken.decimals));
+      setTotal(value.format(4, true));
+      dispatchCreditEvent({ type: ACTIONS.SET_TOTAL_AVAILABLE_BORROW_AMOUNT, payload: value });
     });
   }, [scoreLendContract]);
 

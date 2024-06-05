@@ -38,7 +38,7 @@ export default function BorrowModal({ handleClose, stepData }) {
     .lte(allowanceBN);
 
   const {
-    state: { scoreLendContract, myAvaliableQuota, myScore, borrowRate, maxBorrowDays },
+    state: { scoreLendContract, myAvaliableQuota, myScore, borrowRate, maxBorrowDays, totalAvaliableBorrowAmount },
   } = useCreditContext();
 
   const scrEnough = Number(inputNum) <= myAvaliableQuota;
@@ -255,6 +255,7 @@ export default function BorrowModal({ handleClose, stepData }) {
   }, [step, scrEnough, allowanceEnough]);
 
   const dayIntrestAmount = inputNum ? getShortDisplay((Number(inputNum) * 10000 * Number(0.0001)) / 10000, 4) : 0;
+  console.log("totalAvaliableBorrowAmount", totalAvaliableBorrowAmount);
 
   return (
     <CreditModal handleClose={() => handleClose(step === 2)}>
@@ -281,6 +282,13 @@ export default function BorrowModal({ handleClose, stepData }) {
               <NumberCheckLabel>{t("Credit.MaxBorrowAmount", { amount: myAvaliableQuota.format(0) })}</NumberCheckLabel>
             )}
             {Number(inputNum) < 100 && <NumberCheckLabel>{t("Credit.MinBorrow")}</NumberCheckLabel>}
+            {Number(inputNum) > 100 &&
+              Number(inputNum) > totalAvaliableBorrowAmount &&
+              Number(inputNum) < myAvaliableQuota && (
+                <NumberCheckLabel>
+                  {t("Credit.RemainBorrowQuota", { amount: totalAvaliableBorrowAmount.format(0) })}
+                </NumberCheckLabel>
+              )}
             <LineTip style={{ marginBottom: 0 }}>{t("Credit.RateAmount", { rate: borrowRate })}</LineTip>
             <LineTip style={{ marginTop: 0 }}>{t("Credit.RateAmount2", { amount: dayIntrestAmount })}</LineTip>
             <LineLabel>{t("Credit.NeedForfeit")}</LineLabel>
