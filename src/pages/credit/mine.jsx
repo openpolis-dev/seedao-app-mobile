@@ -40,7 +40,7 @@ const BorrowAndRepay = ({ onUpdate }) => {
       setStepData({ step: arr[2] === "approve" ? 1 : 2, from: state.from, to: state.to });
     } else if (arr[1] === "repay") {
       setShowModal("repay");
-      setStepData({ step: arr[2] === "approve" ? 2 : 3, ids: state.ids, total: state.total});
+      setStepData({ step: arr[2] === "approve" ? 2 : 3, ids: state.ids, total: state.total });
     }
   }, [state]);
 
@@ -157,6 +157,9 @@ export default function MyBorrowings() {
     scoreLendContract?.maxTotalBorrowAmount().then((r) => {
       setMaxAmount(Number(ethers.utils.formatUnits(r, decimals)));
     });
+    scoreLendContract?.minBorrowCooldownPeriod().then((r) => {
+      dispatchCreditEvent({ type: ACTIONS.SET_MIN_BORROW_COOL_DOWN, payload: r.toNumber() });
+    });
   }, [bondNFTContract, scoreLendContract, account, dispatchCreditEvent]);
 
   useEffect(() => {
@@ -164,13 +167,13 @@ export default function MyBorrowings() {
   }, [account, userToken]);
 
   useEffect(() => {
-    scoreLendContract?.maxBorrowPeriod().then(r => {
+    scoreLendContract?.maxBorrowPeriod().then((r) => {
       dispatchCreditEvent({ type: ACTIONS.SET_MAX_BORROW_DAYS, payload: r.toNumber() / 86400 });
     });
     scoreLendContract?.borrowInterestRate().then((r) => {
       dispatchCreditEvent({ type: ACTIONS.SET_BORROW_RATE, payload: r.toNumber() / 10000 });
     });
-  }, [scoreLendContract])
+  }, [scoreLendContract]);
 
   useEffect(() => {
     if (!account) {

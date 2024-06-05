@@ -8,6 +8,7 @@ export const ACTIONS = {
   SET_MY_QUOTA: "SET_MY_QUOTA",
   SET_MAX_BORROW_DAYS: "SET_MAX_BORROW_DAYS",
   SET_BORROW_RATE: "SET_BORROW_RATE",
+  SET_MIN_BORROW_COOL_DOWN: 'SET_MIN_BORROW_COOL_DOWN',
   SET_TOTAL_AVAILABLE_BORROW_AMOUNT: "SET_TOTAL_AVAILABLE_BORROW_AMOUNT",
 };
 
@@ -22,6 +23,7 @@ const INIT_STATE = {
   myInUseCount: 0,
   maxBorrowDays: 0,
   borrowRate: 0,
+  minBorrowCoolDown: 0,
   totalAvaliableBorrowAmount: 0,
 };
 
@@ -52,6 +54,8 @@ const reducer = (state, action) => {
       return { ...state, maxBorrowDays: action.payload };
     case ACTIONS.SET_BORROW_RATE:
       return { ...state, borrowRate: action.payload };
+    case ACTIONS.SET_MIN_BORROW_COOL_DOWN:
+      return { ...state, minBorrowCoolDown: action.payload };
     case ACTIONS.SET_TOTAL_AVAILABLE_BORROW_AMOUNT:
       return { ...state, totalAvaliableBorrowAmount: action.payload };
     default:

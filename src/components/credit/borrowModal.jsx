@@ -38,7 +38,15 @@ export default function BorrowModal({ handleClose, stepData }) {
     .lte(allowanceBN);
 
   const {
-    state: { scoreLendContract, myAvaliableQuota, myScore, borrowRate, maxBorrowDays, totalAvaliableBorrowAmount },
+    state: {
+      scoreLendContract,
+      myAvaliableQuota,
+      myScore,
+      borrowRate,
+      maxBorrowDays,
+      totalAvaliableBorrowAmount,
+      minBorrowCoolDown,
+    },
   } = useCreditContext();
 
   const scrEnough = Number(inputNum) <= myAvaliableQuota;
@@ -237,6 +245,15 @@ export default function BorrowModal({ handleClose, stepData }) {
       if (endTime && endTime.toNumber() * 1000 > Date.now()) {
         setLeftTime(t("Credit.TimeDisplay", { ...formatDeltaDate(endTime.toNumber() * 1000) }));
         toast.danger(t("Credit.BorrowCooldownMsg"));
+        if (minBorrowCoolDown) {
+          const hours = Math.floor(minBorrowCoolDown / 3600);
+          const minutes = minBorrowCoolDown / 60;
+           toast.danger(
+             t("Credit.BorrowCooldownMsg", {
+               time: hours ? t("Credit.LeftTimeHour", { h: hours }) : t("Credit.LeftTimeMinute", { m: minutes }),
+             }),
+           );
+        }
       }
     });
   }, [scoreLendContract]);
