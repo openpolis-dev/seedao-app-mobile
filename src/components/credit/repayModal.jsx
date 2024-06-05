@@ -171,7 +171,7 @@ export default function RepayModal({ handleClose, stepData }) {
         ids: selectedList.map((item) => item.id).join(","),
       });
       if (wallet === Wallet.METAMASK) {
-        toast.success("Approve successfully");
+        toast.success(t("Credit.ApproveSuccessful"));
         setStep(2);
       }
     } catch (error) {

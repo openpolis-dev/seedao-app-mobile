@@ -506,6 +506,7 @@
     "GetAllowanceFailed": "Failed to get the applowance",
     "GetBalanceFailed": "Failed to get USDT balance",
     "CalculateFailed": "Failed to get pledges balance",
-    "RemainBorrowQuota": "Community remains {{amount}} USDT"
+    "RemainBorrowQuota": "Community remains {{amount}} USDT",
+    "ApproveSuccessful": "Approve Successfully"
   }
 }

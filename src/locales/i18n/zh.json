@@ -521,6 +521,7 @@
     "GetAllowanceFailed": "获取授权额度失败",
     "GetBalanceFailed": "获取 USDT 余额失败",
     "CalculateFailed": "计算质押物数量失败",
-    "RemainBorrowQuota": "社区剩余可借资金 {{amount}} USDT"
+    "RemainBorrowQuota": "社区剩余可借资金 {{amount}} USDT",
+    "ApproveSuccessful": "授权成功"
   }
 }

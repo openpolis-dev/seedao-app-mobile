@@ -94,7 +94,7 @@ export default function BorrowModal({ handleClose, stepData }) {
         to: forfeitNum,
       });
       if (wallet === Wallet.METAMASK) {
-        toast.success("Approve successfully");
+        toast.success(t("Credit.ApproveSuccessful"));
         setAllowanceBN(ethers.utils.parseUnits(String(forfeitNum), networkConfig.SCRContract.decimals));
         setStep(1);
       }
