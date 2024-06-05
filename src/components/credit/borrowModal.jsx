@@ -248,11 +248,11 @@ export default function BorrowModal({ handleClose, stepData }) {
         if (minBorrowCoolDown) {
           const hours = Math.floor(minBorrowCoolDown / 3600);
           const minutes = minBorrowCoolDown / 60;
-           toast.danger(
-             t("Credit.BorrowCooldownMsg", {
-               time: hours ? t("Credit.LeftTimeHour", { h: hours }) : t("Credit.LeftTimeMinute", { m: minutes }),
-             }),
-           );
+          toast.danger(
+            t("Credit.BorrowCooldownMsg", {
+              time: hours ? t("Credit.LeftTimeHour", { h: hours }) : t("Credit.LeftTimeMinute", { m: minutes }),
+            }),
+          );
         }
       }
     });
@@ -272,7 +272,24 @@ export default function BorrowModal({ handleClose, stepData }) {
   }, [step, scrEnough, allowanceEnough]);
 
   const dayIntrestAmount = inputNum ? getShortDisplay((Number(inputNum) * 10000 * Number(0.0001)) / 10000, 4) : 0;
-  console.log("totalAvaliableBorrowAmount", totalAvaliableBorrowAmount);
+
+  const getErrorTip = () => {
+    const v = Number(inputNum);
+    if (v < 100) {
+      return <NumberCheckLabel>{t("Credit.MinBorrow")}</NumberCheckLabel>;
+    }
+    if (v > myAvaliableQuota) {
+      return <NumberCheckLabel>{t("Credit.MaxBorrowAmount", { amount: myAvaliableQuota.format(0) })}</NumberCheckLabel>;
+    }
+    if (v > totalAvaliableBorrowAmount) {
+      return (
+        <NumberCheckLabel>
+          {t("Credit.RemainBorrowQuota", { amount: totalAvaliableBorrowAmount.format(0) })}
+        </NumberCheckLabel>
+      );
+    }
+    return null;
+  };
 
   return (
     <CreditModal handleClose={() => handleClose(step === 2)}>
@@ -295,17 +312,7 @@ export default function BorrowModal({ handleClose, stepData }) {
               </div>
               <span className="right">USDT</span>
             </LineBox>
-            {Number(inputNum) > myAvaliableQuota && Number(inputNum) > 100 && (
-              <NumberCheckLabel>{t("Credit.MaxBorrowAmount", { amount: myAvaliableQuota.format(0) })}</NumberCheckLabel>
-            )}
-            {Number(inputNum) < 100 && <NumberCheckLabel>{t("Credit.MinBorrow")}</NumberCheckLabel>}
-            {Number(inputNum) >= 100 &&
-              Number(inputNum) > totalAvaliableBorrowAmount &&
-              Number(inputNum) <= myAvaliableQuota && (
-                <NumberCheckLabel>
-                  {t("Credit.RemainBorrowQuota", { amount: totalAvaliableBorrowAmount.format(0) })}
-                </NumberCheckLabel>
-              )}
+            {getErrorTip()}
             <LineTip style={{ marginBottom: 0 }}>{t("Credit.RateAmount", { rate: borrowRate })}</LineTip>
             <LineTip style={{ marginTop: 0 }}>{t("Credit.RateAmount2", { amount: dayIntrestAmount })}</LineTip>
             <LineLabel>{t("Credit.NeedForfeit")}</LineLabel>
