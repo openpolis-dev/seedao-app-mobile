@@ -69,6 +69,10 @@ export default function JoyIDRedirect() {
     navigate(pathname, { replace: true });
   };
 
+  const handleCreditData = () => {
+    return { from: search.get("from"), to: search.get("to"), ids: search.get("ids"), total: search.get("total") };
+  };
+
   useEffect(() => {
     console.log("===> joyid redirect action:", action);
     if (action === "sign-metaforo") {
@@ -83,7 +87,7 @@ export default function JoyIDRedirect() {
         switch (action) {
           case "sns-commit":
             handleCommitData(res.tx);
-            navigate("/sns/register", {replace: true});
+            navigate("/sns/register", { replace: true });
             break;
           case "sns-register":
             handleRegisterData(res.tx);
@@ -95,11 +99,17 @@ export default function JoyIDRedirect() {
           default:
             break;
         }
+        if (["credit-borrow", "credit-borrow-approve", "credit-repay", "credit-repay-approve"].includes(action)) {
+          console.log("res.tx", res.tx);
+          navigate("/credit?tab=mine", { state: { action, ...handleCreditData(), tx: res?.tx }, replace: true });
+          return;
+        }
         return;
       }
     } catch (error) {
       logError(error);
     }
+    
     if (!res) {
       switch (action) {
         case "sns-commit":
@@ -113,6 +123,10 @@ export default function JoyIDRedirect() {
           break;
         default:
           break;
+      }
+      if (["credit-borrow", "credit-borrow-approve", "credit-repay", "credit-repay-approve"].includes(action)) {
+        navigate("/credit?tab=mine", { replace: true });
+        return;
       }
     }
   }, []);
