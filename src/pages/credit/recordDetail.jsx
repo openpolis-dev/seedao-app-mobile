@@ -18,6 +18,7 @@ import useToast from "hooks/useToast";
 import BondNFTABI from "assets/abi/BondNFT.json";
 
 const lendConfig = getConfig().NETWORK.lend;
+const lendToken = lendConfig.lendToken;
 
 export default function CreditRecordPage() {
   const { t } = useTranslation();
@@ -103,7 +104,9 @@ export default function CreditRecordPage() {
       <LayoutContainer>
         <DetailBox>
           <TotalBox>
-            <div className="amount">{fullData?.borrowAmount?.format(4) || "0.0000"} USDT</div>
+            <div className="amount">
+              {fullData?.borrowAmount?.format(4) || "0.0000"} {lendToken.symbol}
+            </div>
             <StateTag state={fullData?.status} strong />
           </TotalBox>
           <div className="id">
@@ -155,7 +158,7 @@ export default function CreditRecordPage() {
                 {fullData?.status === CreditRecordStatus.OVERDUE ? (
                   <NoData>-</NoData>
                 ) : (
-                  `${interestAmount?.format(4)} USDT`
+                  `${interestAmount?.format(4)} ${lendToken.symbol}`
                 )}
               </dd>
             </Line>
@@ -171,15 +174,21 @@ export default function CreditRecordPage() {
               <DetailLines>
                 <Line>
                   <dt>{t("Credit.TotalRepay")}</dt>
-                  <dd className="total">{(fullData?.borrowAmount + fullData?.interestAmount || 0).format(4)} USDT</dd>
+                  <dd className="total">
+                    {(fullData?.borrowAmount + fullData?.interestAmount || 0).format(4)} {lendToken.symbol}
+                  </dd>
                 </Line>
                 <Line>
                   <dt>{t("Credit.Principal")}</dt>
-                  <dd>{fullData?.borrowAmount?.format(4) || "0.0000"} USDT</dd>
+                  <dd>
+                    {fullData?.borrowAmount?.format(4) || "0.0000"} {lendToken.symbol}
+                  </dd>
                 </Line>
                 <Line>
                   <dt>{t("Credit.Interest")}</dt>
-                  <dd>{fullData?.interestAmount?.format(4) || "0.0000"} USDT</dd>
+                  <dd>
+                    {fullData?.interestAmount?.format(4) || "0.0000"} {lendToken.symbol}
+                  </dd>
                 </Line>
                 <Line>
                   <dt>{t("Credit.ForfeitRepay")}</dt>

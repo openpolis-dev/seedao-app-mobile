@@ -137,10 +137,10 @@ export default function RepayModal({ handleClose, stepData }) {
       );
     }
     if (!tokenEnough) {
-      return t("Credit.InsufficientBalance", { token: "USDT" });
+      return t("Credit.InsufficientBalance", { token: lendToken.symbol });
     }
     if (!allowanceEnough) {
-      return t("Credit.RepayStepButton2");
+      return t("Credit.RepayStepButton2", { token: lendToken.symbol });
     }
   };
 
@@ -167,7 +167,7 @@ export default function RepayModal({ handleClose, stepData }) {
       }
 
       setLoading(t("Credit.Approving"));
-      await approveToken("usdt", totalApproveAmount, {
+      await approveToken(lendToken.symbol, totalApproveAmount, {
         ids: selectedList.map((item) => item.id).join(","),
       });
       if (wallet === Wallet.METAMASK) {
@@ -255,7 +255,7 @@ export default function RepayModal({ handleClose, stepData }) {
   useEffect(() => {
     if (account && step > 0 && step !== 3 && !stepData?.ids) {
       setAllownceGetting(true);
-      getTokenAllowance("usdt")
+      getTokenAllowance(lendToken.symbol)
         .then((r) => {
           setAllowanceBN(r);
         })
@@ -271,12 +271,12 @@ export default function RepayModal({ handleClose, stepData }) {
   useEffect(() => {
     if (account && step > 0 && step !== 3) {
       setTokenBalanceGetting(true);
-      getTokenBalance("usdt")
+      getTokenBalance(lendToken.symbol)
         .then((r) => {
           setTokenBN(r);
         })
         .catch((e) => {
-          toast.danger(`${t("Credit.GetBalanceFailed")}: ${e}`);
+          toast.danger(`${t("Credit.GetBalanceFailed", { token: lendToken.symbol })}: ${e}`);
         })
         .finally(() => {
           setTokenBalanceGetting(false);
@@ -345,7 +345,9 @@ export default function RepayModal({ handleClose, stepData }) {
               <CalculateLoading />
             </GettingBox>
           ) : (
-            <FinishContent>{totalRepayAmount} USDT</FinishContent>
+            <FinishContent>
+              {totalRepayAmount} {lendToken.symbol}
+            </FinishContent>
           ))}
         {step === 0 && (
           <RepayContent>
@@ -390,8 +392,12 @@ export default function RepayModal({ handleClose, stepData }) {
           ) : (
             <RepayContent style={{ gap: "14px" }}>
               <TotalRepay>
-                <div className="number">{totalApproveAmount.format(4)} USDT</div>
-                <div className="label">{t("Credit.ShouldRepayAll", { amount: selectedTotalAmount.format(4) })}</div>
+                <div className="number">
+                  {totalApproveAmount.format(4)} {lendToken.symbol}
+                </div>
+                <div className="label">
+                  {t("Credit.ShouldRepayAll", { amount: selectedTotalAmount.format(4), token: lendToken.symbol })}
+                </div>
                 <RepayTip>{t("Credit.ApproveTip")}</RepayTip>
               </TotalRepay>
               <ListBox style={{ maxHeight: "352px", minHeight: "unset" }}>
@@ -426,12 +432,12 @@ const RecordCheckbox = ({ id, selected, data, onSelect }) => {
           <span>
             {t("Credit.BorrowID")}: {data.lendIdDisplay}
           </span>
-          <span> {data.borrowAmount.format(4)} USDT</span>
+          <span> {data.borrowAmount.format(4)} {lendToken.symbol}</span>
         </li>
         <li>
           <span>{data.borrowTime}</span>
           <span>
-            {t("Credit.TotalInterest")} {data.interestAmount.format(4)} USDT
+            {t("Credit.TotalInterest")} {data.interestAmount.format(4)} {lendToken.symbol}
           </span>
         </li>
       </RecordRight>
@@ -445,7 +451,7 @@ const SelectedRecord = ({ data, total }) => {
     <SelectRecordStyle>
       <li>
         <span> {t("Credit.ShouldRepay")}</span>
-        <span>{total} USDT</span>
+        <span>{total} {lendToken.symbol}</span>
       </li>
       <li>
         <span>{t("Credit.BorrowID")}</span>
@@ -453,7 +459,7 @@ const SelectedRecord = ({ data, total }) => {
       </li>
       <li>
         <span>{t("Credit.BorrowPrincipal")}</span>
-        <span>{data.borrowAmount.format(4)} USDT</span>
+        <span>{data.borrowAmount.format(4)} {lendToken.symbol}</span>
       </li>
       <li>
         <span>{t("Credit.BorrowTime")}</span>

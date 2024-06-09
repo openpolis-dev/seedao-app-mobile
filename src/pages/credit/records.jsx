@@ -15,6 +15,9 @@ import useQuerySNS from "hooks/useQuerySNS";
 import publicJs from "utils/publicJs";
 import CreditModal from "components/credit/creditModal";
 import useCurrentPath from "hooks/useCurrentPath";
+import getConfig from "constant/envCofnig";
+
+const lendToken = getConfig().NETWORK.lend.lendToken;
 
 const FILTER_OPTIONS = [
   [
@@ -187,7 +190,9 @@ const Records = ({ title, isMine, tab }) => {
             <RecordItem key={index} onClick={() => go2detail(item)}>
               <RecordContentLine>
                 <div className="values">
-                  <span>{item.borrowAmount.format(4)} USDT</span>
+                  <span>
+                    {item.borrowAmount.format(4)} {lendToken.symbol}
+                  </span>
                   <StateTag state={item.status} />
                 </div>
                 <MoreButton>{t("Credit.CheckMore")}</MoreButton>
