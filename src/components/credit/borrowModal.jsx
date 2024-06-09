@@ -144,7 +144,12 @@ export default function BorrowModal({ handleClose, stepData }) {
   };
 
   const btnDisabled =
-    calculating || Number(inputNum) < 100 || forfeitNum === 0 || Number(inputNum) > myAvaliableQuota || leftTime;
+    calculating ||
+    Number(inputNum) < 100 ||
+    forfeitNum === 0 ||
+    Number(inputNum) > myAvaliableQuota ||
+    leftTime ||
+    Number(inputNum) > totalAvaliableBorrowAmount;
 
   const steps = [
     {
