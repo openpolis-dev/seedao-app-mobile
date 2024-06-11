@@ -313,7 +313,9 @@ export default function BorrowModal({ handleClose, stepData }) {
           <BorrowContent>
             <LineLabel>
               <span>{t("Credit.BorrowAmount")}</span>
-              <span className="max">{t("Credit.MaxBorrowAmount", { amount: myAvaliableQuota.format(0) })}</span>
+              <span className="max">
+                {t("Credit.MaxBorrowAmount", { amount: myAvaliableQuota.format(0), token: lendToken.symbol })}
+              </span>
             </LineLabel>
             <LineBox>
               <div className="left">
