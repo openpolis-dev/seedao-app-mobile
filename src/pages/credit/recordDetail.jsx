@@ -78,7 +78,7 @@ export default function CreditRecordPage() {
   }, [fullData]);
 
   useEffect(() => {
-    if (data) {
+    if (data?.interestDays) {
       handleSNS(data.debtor);
       setFullData(data);
     } else {
