@@ -103,6 +103,7 @@ export default function MyBorrowings() {
       myOverdueAmount,
       maxBorrowDays,
       borrowRate,
+      totalAvaliableBorrowAmount,
     },
   } = useCreditContext();
 
@@ -160,6 +161,10 @@ export default function MyBorrowings() {
     });
     scoreLendContract?.minBorrowCooldownPeriod().then((r) => {
       dispatchCreditEvent({ type: ACTIONS.SET_MIN_BORROW_COOL_DOWN, payload: r.toNumber() });
+    });
+    !totalAvaliableBorrowAmount && scoreLendContract?.totalAvailableBorrowAmount().then((r) => {
+      const value = Number(ethers.utils.formatUnits(r, lendToken.decimals));
+      dispatchCreditEvent({ type: ACTIONS.SET_TOTAL_AVAILABLE_BORROW_AMOUNT, payload: value });
     });
   }, [bondNFTContract, scoreLendContract, account, dispatchCreditEvent]);
 
