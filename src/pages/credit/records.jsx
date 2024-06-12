@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useState, useMemo, useEffect } from "react";
 import { BlockTitle } from "./mine";
 import FilterIcon from "assets/Imgs/credit/filters.svg";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import store from "../../store";
 import { saveLoading, saveCache } from "../../store/reducer";
 import { useSelector } from "react-redux";
@@ -50,6 +50,7 @@ const findQueryItem = (queryStr) => {
 const Records = ({ title, isMine, tab }) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   const account = useSelector((state) => state.account);
   const snsMap = useSelector((state) => state.snsMap);
@@ -91,7 +92,7 @@ const Records = ({ title, isMine, tab }) => {
   };
   const go2detail = (data) => {
     storageList(data.lendId);
-    navigate(`/credit/record/${data.lendId}`, { state: data });
+    navigate(`/credit/record/${data.lendId}`, { state: { ...data, tab } });
   };
 
   const formatSNS = (wallet) => {
@@ -140,7 +141,7 @@ const Records = ({ title, isMine, tab }) => {
   }, [total, list]);
 
   useEffect(() => {
-    if (!prevPath || prevPath?.indexOf("/credit") === -1 || cache?.type !== `creditRecord${tab}`) return;
+    if (!prevPath || prevPath?.indexOf("/credit/record") === -1 || cache?.type !== `creditRecord${tab}`) return;
 
     const { list, page, height, queryValue } = cache;
 
@@ -159,7 +160,7 @@ const Records = ({ title, isMine, tab }) => {
   }, [prevPath]);
 
   useEffect(() => {
-    if (init && cache?.type === `creditRecord${tab}` && cache?.page >= page) {
+    if (init && state && cache?.type === `creditRecord${tab}` && cache?.page >= page) {
       return;
     } else {
       init && setInit(false);
@@ -172,7 +173,7 @@ const Records = ({ title, isMine, tab }) => {
     const refreshList = () => getRecords(true);
     document.addEventListener("openMine", refreshList);
     return () => document.removeEventListener("openMine", refreshList);
-  }, []);
+  });
 
   return (
     <>

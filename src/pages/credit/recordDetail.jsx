@@ -6,7 +6,7 @@ import StateTag from "components/credit/stateTag";
 import publicJs from "utils/publicJs";
 import { CreditRecordStatus } from "constant/credit";
 import { amoy } from "utils/chain";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useQuerySNS from "hooks/useQuerySNS";
 import getConfig from "constant/envCofnig";
 import { ethers } from "ethers";
@@ -22,6 +22,7 @@ const lendToken = lendConfig.lendToken;
 
 export default function CreditRecordPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const { state: data } = useLocation();
   const { id } = useParams();
@@ -85,7 +86,7 @@ export default function CreditRecordPage() {
       store.dispatch(saveLoading(true));
       getRecordDetail(id)
         .then((r) => {
-          setFullData(r);
+          setFullData({ ...r, tab: data.tab });
           setInterestDays(r.interestDays);
           setInterestAmount(r.interestAmount);
         })
@@ -100,7 +101,12 @@ export default function CreditRecordPage() {
   }, [data, id, bondNFTContract]);
 
   return (
-    <Layout title={t("Credit.Records")} noTab bgColor="#F5F7FA">
+    <Layout
+      title={t("Credit.Records")}
+      noTab
+      bgColor="#F5F7FA"
+      handleBack={() => navigate(`/credit?tab=${data.tab || "all"}`, { state: true })}
+    >
       <LayoutContainer>
         <DetailBox>
           <TotalBox>
