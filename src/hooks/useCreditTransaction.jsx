@@ -45,7 +45,7 @@ const checkTransaction = (hash) => {
 };
 
 const getTokenData = (token) => {
-  return token === "usdt"
+  return token === CONFIG.NETWORK.lend.lendToken.symbol
     ? {
         decimals: CONFIG.NETWORK.lend.lendToken.decimals,
         address: CONFIG.NETWORK.lend.lendToken.address,
@@ -122,7 +122,7 @@ export default function useCreditTransaction(action) {
 
   const approveToken = async (token, amount, queryData) => {
     const t =
-      token === "usdt"
+      token === CONFIG.NETWORK.lend.lendToken.symbol
         ? {
             decimals: CONFIG.NETWORK.lend.lendToken.decimals,
             address: CONFIG.NETWORK.lend.lendToken.address,

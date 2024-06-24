@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useState, useMemo, useEffect } from "react";
 import { BlockTitle } from "./mine";
 import FilterIcon from "assets/Imgs/credit/filters.svg";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import store from "../../store";
 import { saveLoading, saveCache } from "../../store/reducer";
 import { useSelector } from "react-redux";
@@ -15,6 +15,9 @@ import useQuerySNS from "hooks/useQuerySNS";
 import publicJs from "utils/publicJs";
 import CreditModal from "components/credit/creditModal";
 import useCurrentPath from "hooks/useCurrentPath";
+import getConfig from "constant/envCofnig";
+
+const lendToken = getConfig().NETWORK.lend.lendToken;
 
 const FILTER_OPTIONS = [
   [
@@ -47,6 +50,7 @@ const findQueryItem = (queryStr) => {
 const Records = ({ title, isMine, tab }) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   const account = useSelector((state) => state.account);
   const snsMap = useSelector((state) => state.snsMap);
@@ -88,7 +92,7 @@ const Records = ({ title, isMine, tab }) => {
   };
   const go2detail = (data) => {
     storageList(data.lendId);
-    navigate(`/credit/record/${data.lendId}`, { state: data });
+    navigate(`/credit/record/${data.lendId}`, { state: { ...data, tab } });
   };
 
   const formatSNS = (wallet) => {
@@ -137,7 +141,7 @@ const Records = ({ title, isMine, tab }) => {
   }, [total, list]);
 
   useEffect(() => {
-    if (!prevPath || prevPath?.indexOf("/credit") === -1 || cache?.type !== `creditRecord${tab}`) return;
+    if (!prevPath || prevPath?.indexOf("/credit/record") === -1 || cache?.type !== `creditRecord${tab}`) return;
 
     const { list, page, height, queryValue } = cache;
 
@@ -156,7 +160,7 @@ const Records = ({ title, isMine, tab }) => {
   }, [prevPath]);
 
   useEffect(() => {
-    if (init && cache?.type === `creditRecord${tab}` && cache?.page >= page) {
+    if (init && state && cache?.type === `creditRecord${tab}` && cache?.page >= page) {
       return;
     } else {
       init && setInit(false);
@@ -169,7 +173,7 @@ const Records = ({ title, isMine, tab }) => {
     const refreshList = () => getRecords(true);
     document.addEventListener("openMine", refreshList);
     return () => document.removeEventListener("openMine", refreshList);
-  }, []);
+  });
 
   return (
     <>
@@ -187,7 +191,9 @@ const Records = ({ title, isMine, tab }) => {
             <RecordItem key={index} onClick={() => go2detail(item)}>
               <RecordContentLine>
                 <div className="values">
-                  <span>{item.borrowAmount.format(4)} USDT</span>
+                  <span>
+                    {item.borrowAmount.format(4)} {lendToken.symbol}
+                  </span>
                   <StateTag state={item.status} />
                 </div>
                 <MoreButton>{t("Credit.CheckMore")}</MoreButton>

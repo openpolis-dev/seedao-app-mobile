@@ -48,7 +48,7 @@ const LOCAL = {
       lendToken: {
         address: "0xca152522f26811fF8FcAf967d4040F7C6BbF8eaA",
         decimals: 6,
-        symbol: "USDT",
+        symbol: "USDC",
       },
     },
   },

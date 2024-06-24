@@ -19,6 +19,7 @@ import { CreditRecordStatus } from "constant/credit";
 import { useLocation } from "react-router-dom";
 
 const networkConfig = getConfig().NETWORK;
+const lendToken = networkConfig.lend.lendToken;
 
 const BorrowAndRepay = ({ onUpdate }) => {
   const { t } = useTranslation();
@@ -102,6 +103,7 @@ export default function MyBorrowings() {
       myOverdueAmount,
       maxBorrowDays,
       borrowRate,
+      totalAvaliableBorrowAmount,
     },
   } = useCreditContext();
 
@@ -160,6 +162,10 @@ export default function MyBorrowings() {
     scoreLendContract?.minBorrowCooldownPeriod().then((r) => {
       dispatchCreditEvent({ type: ACTIONS.SET_MIN_BORROW_COOL_DOWN, payload: r.toNumber() });
     });
+    !totalAvaliableBorrowAmount && scoreLendContract?.totalAvailableBorrowAmount().then((r) => {
+      const value = Number(ethers.utils.formatUnits(r, lendToken.decimals));
+      dispatchCreditEvent({ type: ACTIONS.SET_TOTAL_AVAILABLE_BORROW_AMOUNT, payload: value });
+    });
   }, [bondNFTContract, scoreLendContract, account, dispatchCreditEvent]);
 
   useEffect(() => {
@@ -194,11 +200,15 @@ export default function MyBorrowings() {
   return (
     <>
       <CardStyle>
-        <div className="label">{t("Credit.MyBorrowingQuota")}</div>
+        <div className="label">{t("Credit.MyBorrowingQuota", { token: lendToken.symbol })}</div>
         <div className="value">{myAvaliableQuota.format(4, true)}</div>
         <div className="tip">{t("Credit.MyBorrowingTip1", { r: borrowRate })}</div>
-        <div className="tip">{t("Credit.MyBorrowingTip2", { day: maxBorrowDays, r: borrowRate })}</div>
-        <div className="tip">{t("Credit.MaxBorrowAmountTip", { amount: maxAmount?.format(0) })}</div>
+        <div className="tip">
+          {t("Credit.MyBorrowingTip2", { day: maxBorrowDays, r: borrowRate, token: lendToken.symbol })}
+        </div>
+        <div className="tip">
+          {t("Credit.MaxBorrowAmountTip", { amount: maxAmount?.format(0), token: lendToken.symbol })}
+        </div>
         <img src={CreditLogo} alt="" />
       </CardStyle>
       <SubCardStyle>
@@ -217,14 +227,18 @@ export default function MyBorrowings() {
           <img src={CountIcon} alt="" />
           <div>
             <div className="label">{t("Credit.MyInuseCount", { num: myInUseCount })}</div>
-            <div className="value">{myInuseAmount.format(4, true)} USDT</div>
+            <div className="value">
+              {myInuseAmount.format(4, true)} {lendToken.symbol}
+            </div>
           </div>
         </StateLine>
         <StateLine>
           <img src={AmountIcon} alt="" />
           <div>
             <div className="label">{t("Credit.OverdueCount", { num: myOverdueCount })}</div>
-            <div className="value">{myOverdueAmount.format(4, true)} USDT</div>
+            <div className="value">
+              {myOverdueAmount.format(4, true)} {lendToken.symbol}
+            </div>
           </div>
         </StateLine>
         <div className="repay-tip">

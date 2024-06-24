@@ -17,6 +17,7 @@ import { Wallet } from "utils/constant";
 import { formatDeltaDate } from "utils/time";
 
 const networkConfig = getConfig().NETWORK;
+const lendToken = networkConfig.lend.lendToken;
 
 export default function BorrowModal({ handleClose, stepData }) {
   const { t } = useTranslation();
@@ -144,7 +145,12 @@ export default function BorrowModal({ handleClose, stepData }) {
   };
 
   const btnDisabled =
-    calculating || Number(inputNum) < 100 || forfeitNum === 0 || Number(inputNum) > myAvaliableQuota || leftTime;
+    calculating ||
+    Number(inputNum) < 100 ||
+    forfeitNum === 0 ||
+    Number(inputNum) > myAvaliableQuota ||
+    leftTime ||
+    Number(inputNum) > totalAvaliableBorrowAmount;
 
   const steps = [
     {
@@ -276,15 +282,19 @@ export default function BorrowModal({ handleClose, stepData }) {
   const getErrorTip = () => {
     const v = Number(inputNum);
     if (v < 100) {
-      return <NumberCheckLabel>{t("Credit.MinBorrow")}</NumberCheckLabel>;
+      return <NumberCheckLabel>{t("Credit.MinBorrow", { token: lendToken.symbol })}</NumberCheckLabel>;
     }
     if (v > myAvaliableQuota) {
-      return <NumberCheckLabel>{t("Credit.MaxBorrowAmount", { amount: myAvaliableQuota.format(0) })}</NumberCheckLabel>;
+      return (
+        <NumberCheckLabel>
+          {t("Credit.MaxBorrowAmount", { amount: myAvaliableQuota.format(0), token: lendToken.symbol })}
+        </NumberCheckLabel>
+      );
     }
     if (v > totalAvaliableBorrowAmount) {
       return (
         <NumberCheckLabel>
-          {t("Credit.RemainBorrowQuota", { amount: totalAvaliableBorrowAmount.format(0) })}
+          {t("Credit.RemainBorrowQuota", { amount: totalAvaliableBorrowAmount.format(0), token: lendToken.symbol })}
         </NumberCheckLabel>
       );
     }
@@ -296,12 +306,16 @@ export default function BorrowModal({ handleClose, stepData }) {
       <ContentStyle>
         <ModalTitle>{steps[step].title}</ModalTitle>
         {step === 2 ? (
-          <FinishContent>{inputNum} USDT</FinishContent>
+          <FinishContent>
+            {inputNum} {networkConfig.lend.lendToken.symbol}
+          </FinishContent>
         ) : (
           <BorrowContent>
             <LineLabel>
               <span>{t("Credit.BorrowAmount")}</span>
-              <span className="max">{t("Credit.MaxBorrowAmount", { amount: myAvaliableQuota.format(0) })}</span>
+              <span className="max">
+                {t("Credit.MaxBorrowAmount", { amount: myAvaliableQuota.format(0), token: lendToken.symbol })}
+              </span>
             </LineLabel>
             <LineBox>
               <div className="left">
@@ -310,11 +324,13 @@ export default function BorrowModal({ handleClose, stepData }) {
                   {step === 0 && <MaxButton onClick={handleBorrowMax}>{t("Credit.MaxBorrow")}</MaxButton>}
                 </div>
               </div>
-              <span className="right">USDT</span>
+              <span className="right">{lendToken.symbol}</span>
             </LineBox>
             {getErrorTip()}
             <LineTip style={{ marginBottom: 0 }}>{t("Credit.RateAmount", { rate: borrowRate })}</LineTip>
-            <LineTip style={{ marginTop: 0 }}>{t("Credit.RateAmount2", { amount: dayIntrestAmount })}</LineTip>
+            <LineTip style={{ marginTop: 0 }}>
+              {t("Credit.RateAmount2", { amount: dayIntrestAmount, token: lendToken.symbol })}
+            </LineTip>
             <LineLabel>{t("Credit.NeedForfeit")}</LineLabel>
             <LineBox>
               <div className="left">{calculating ? <CalculateLoading style={{ margin: "20px" }} /> : forfeitNum}</div>

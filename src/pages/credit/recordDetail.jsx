@@ -6,7 +6,7 @@ import StateTag from "components/credit/stateTag";
 import publicJs from "utils/publicJs";
 import { CreditRecordStatus } from "constant/credit";
 import { amoy } from "utils/chain";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useQuerySNS from "hooks/useQuerySNS";
 import getConfig from "constant/envCofnig";
 import { ethers } from "ethers";
@@ -18,9 +18,11 @@ import useToast from "hooks/useToast";
 import BondNFTABI from "assets/abi/BondNFT.json";
 
 const lendConfig = getConfig().NETWORK.lend;
+const lendToken = lendConfig.lendToken;
 
 export default function CreditRecordPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const { state: data } = useLocation();
   const { id } = useParams();
@@ -77,14 +79,14 @@ export default function CreditRecordPage() {
   }, [fullData]);
 
   useEffect(() => {
-    if (data) {
+    if (data?.interestDays) {
       handleSNS(data.debtor);
       setFullData(data);
     } else {
       store.dispatch(saveLoading(true));
       getRecordDetail(id)
         .then((r) => {
-          setFullData(r);
+          setFullData({ ...r, tab: data.tab });
           setInterestDays(r.interestDays);
           setInterestAmount(r.interestAmount);
         })
@@ -99,11 +101,18 @@ export default function CreditRecordPage() {
   }, [data, id, bondNFTContract]);
 
   return (
-    <Layout title={t("Credit.Records")} noTab bgColor="#F5F7FA">
+    <Layout
+      title={t("Credit.Records")}
+      noTab
+      bgColor="#F5F7FA"
+      handleBack={() => navigate(`/credit?tab=${data.tab || "all"}`, { state: true })}
+    >
       <LayoutContainer>
         <DetailBox>
           <TotalBox>
-            <div className="amount">{fullData?.borrowAmount?.format(4) || "0.0000"} USDT</div>
+            <div className="amount">
+              {fullData?.borrowAmount?.format(4) || "0.0000"} {lendToken.symbol}
+            </div>
             <StateTag state={fullData?.status} strong />
           </TotalBox>
           <div className="id">
@@ -155,7 +164,7 @@ export default function CreditRecordPage() {
                 {fullData?.status === CreditRecordStatus.OVERDUE ? (
                   <NoData>-</NoData>
                 ) : (
-                  `${interestAmount?.format(4)} USDT`
+                  `${interestAmount?.format(4)} ${lendToken.symbol}`
                 )}
               </dd>
             </Line>
@@ -171,15 +180,21 @@ export default function CreditRecordPage() {
               <DetailLines>
                 <Line>
                   <dt>{t("Credit.TotalRepay")}</dt>
-                  <dd className="total">{(fullData?.borrowAmount + fullData?.interestAmount || 0).format(4)} USDT</dd>
+                  <dd className="total">
+                    {(fullData?.borrowAmount + fullData?.interestAmount || 0).format(4)} {lendToken.symbol}
+                  </dd>
                 </Line>
                 <Line>
                   <dt>{t("Credit.Principal")}</dt>
-                  <dd>{fullData?.borrowAmount?.format(4) || "0.0000"} USDT</dd>
+                  <dd>
+                    {fullData?.borrowAmount?.format(4) || "0.0000"} {lendToken.symbol}
+                  </dd>
                 </Line>
                 <Line>
                   <dt>{t("Credit.Interest")}</dt>
-                  <dd>{fullData?.interestAmount?.format(4) || "0.0000"} USDT</dd>
+                  <dd>
+                    {fullData?.interestAmount?.format(4) || "0.0000"} {lendToken.symbol}
+                  </dd>
                 </Line>
                 <Line>
                   <dt>{t("Credit.ForfeitRepay")}</dt>

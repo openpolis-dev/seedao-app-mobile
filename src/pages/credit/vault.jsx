@@ -11,6 +11,7 @@ import getConfig from "constant/envCofnig";
 import { getVaultData } from "api/credit";
 
 const networkConfig = getConfig().NETWORK;
+const lendToken = networkConfig.lend.lendToken;
 
 const VaultCard = () => {
   const { t } = useTranslation();
@@ -34,7 +35,7 @@ const VaultCard = () => {
 
   const getData = useCallback(() => {
     scoreLendContract?.totalAvailableBorrowAmount().then((r) => {
-      const value = Number(ethers.utils.formatUnits(r, networkConfig.lend.lendToken.decimals));
+      const value = Number(ethers.utils.formatUnits(r, lendToken.decimals));
       setTotal(value.format(4, true));
       dispatchCreditEvent({ type: ACTIONS.SET_TOTAL_AVAILABLE_BORROW_AMOUNT, payload: value });
     });
@@ -63,14 +64,14 @@ const VaultCard = () => {
   return (
     <>
       <CardStyle>
-        <div className="label">{t("Credit.VaultBorrowingsQuota")}</div>
+        <div className="label">{t("Credit.VaultBorrowingsQuota", { token: lendToken.symbol })}</div>
         <div className="value">{total}</div>
         <div
           className="tip"
           style={{ marginTop: "8px" }}
           onClick={() => window.open("https://app.seedao.xyz/proposal/thread/55", "_blank")}
         >
-          {t("Credit.DaoTip")}
+          {t("Credit.DaoTip", { token: lendToken.symbol })}
         </div>
         <div
           className="tip"
@@ -87,28 +88,36 @@ const VaultCard = () => {
           <img src={CountIcon} alt="" />
           <div>
             <div className="label">{t("Credit.BorrowCount", { num: data.totalBorrowed })}</div>
-            <div className="value">{Number(data.totalBorrowedAmount).format(4, true)} USDT</div>
+            <div className="value">
+              {Number(data.totalBorrowedAmount).format(4, true)} {lendToken.symbol}
+            </div>
           </div>
         </StateLine2>
         <StateLine2>
           <img src={CountIcon} alt="" />
           <div>
             <div className="label">{t("Credit.MyInuseCount", { num: data.inUseCount })}</div>
-            <div className="value">{Number(data.inUseAmount).format(4, true)} USDT</div>
+            <div className="value">
+              {Number(data.inUseAmount).format(4, true)} {lendToken.symbol}
+            </div>
           </div>
         </StateLine2>
         <StateLine2>
           <img src={AmountIcon} alt="" />
           <div>
             <div className="label">{t("Credit.ClearCount", { num: data.paybackCount })}</div>
-            <div className="value">{Number(data.paybackAmount).format(4, true)} USDT</div>
+            <div className="value">
+              {Number(data.paybackAmount).format(4, true)} {lendToken.symbol}
+            </div>
           </div>
         </StateLine2>
         <StateLine2>
           <img src={CountIcon} alt="" />
           <div>
             <div className="label">{t("Credit.OverdueCount", { num: data.overdueCount })}</div>
-            <div className="value">{Number(data.overdueAmount).format(4, true)} USDT</div>
+            <div className="value">
+              {Number(data.overdueAmount).format(4, true)} {lendToken.symbol}
+            </div>
           </div>
         </StateLine2>
       </StateBlock>
