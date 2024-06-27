@@ -159,6 +159,12 @@ export default function MyBorrowings() {
     scoreLendContract?.maxTotalBorrowAmount().then((r) => {
       setMaxAmount(Number(ethers.utils.formatUnits(r, decimals)));
     });
+    scoreLendContract?.minBorrowAmount().then((r) =>
+      dispatchCreditEvent({
+        type: ACTIONS.SET_MIN_BORROW_AMOUNT,
+        payload: Number(ethers.utils.formatUnits(r, decimals)),
+      }),
+    );
     scoreLendContract?.minBorrowCooldownPeriod().then((r) => {
       dispatchCreditEvent({ type: ACTIONS.SET_MIN_BORROW_COOL_DOWN, payload: r.toNumber() });
     });

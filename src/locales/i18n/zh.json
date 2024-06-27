@@ -504,7 +504,7 @@
     "InsufficientQuota": "您的借款额度不足",
     "InsufficientBalance": "{{token}} 余额不足",
     "NoDate": "当前暂无借款",
-    "MinBorrow": "至少借款 100 {{token}}！",
+    "MinBorrow": "至少借款 {{amount}} {{token}}！",
     "Approving": "正在授权...",
     "WaitingTx": "等待交易确认...",
     "CheckingNetwork": "正在检查网络...",
@@ -521,6 +521,8 @@
     "GetBalanceFailed": "获取 {{token}} 余额失败",
     "CalculateFailed": "计算质押物数量失败",
     "RemainBorrowQuota": "社区剩余可借资金 {{amount}} {{token}}",
-    "ApproveSuccessful": "授权成功"
+    "ApproveSuccessful": "授权成功",
+    "ApproveFailed": "授权失败",
+    "RemainBorrowQuotaNotEnough": "社区剩余可借资金不足"
   }
 }

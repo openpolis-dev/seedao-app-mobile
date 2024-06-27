@@ -8,8 +8,9 @@ export const ACTIONS = {
   SET_MY_QUOTA: "SET_MY_QUOTA",
   SET_MAX_BORROW_DAYS: "SET_MAX_BORROW_DAYS",
   SET_BORROW_RATE: "SET_BORROW_RATE",
-  SET_MIN_BORROW_COOL_DOWN: 'SET_MIN_BORROW_COOL_DOWN',
+  SET_MIN_BORROW_COOL_DOWN: "SET_MIN_BORROW_COOL_DOWN",
   SET_TOTAL_AVAILABLE_BORROW_AMOUNT: "SET_TOTAL_AVAILABLE_BORROW_AMOUNT",
+  SET_MIN_BORROW_AMOUNT: "SET_MIN_BORROW_AMOUNT",
 };
 
 const INIT_STATE = {
@@ -25,6 +26,7 @@ const INIT_STATE = {
   borrowRate: 0,
   minBorrowCoolDown: 0,
   totalAvaliableBorrowAmount: 0,
+  minBorrowAmount: 0,
 };
 
 const CreditContext = createContext({
@@ -58,6 +60,8 @@ const reducer = (state, action) => {
       return { ...state, minBorrowCoolDown: action.payload };
     case ACTIONS.SET_TOTAL_AVAILABLE_BORROW_AMOUNT:
       return { ...state, totalAvaliableBorrowAmount: action.payload };
+    case ACTIONS.SET_MIN_BORROW_AMOUNT:
+      return { ...state, minBorrowAmount: action.payload };
     default:
       throw new Error(`Unknown type: ${action.type}`);
   }
