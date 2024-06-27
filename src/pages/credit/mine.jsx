@@ -8,7 +8,6 @@ import { BorrowItemsModal, RepayItemsModal } from "components/credit/itemsModal"
 import BorrowModal from "components/credit/borrowModal";
 import RepayModal from "components/credit/repayModal";
 import { useSelector } from "react-redux";
-import { amoy } from "utils/chain";
 import { useCreditContext, ACTIONS } from "./provider";
 import getConfig from "constant/envCofnig";
 import { useEffect, useState, useCallback } from "react";
@@ -20,6 +19,7 @@ import { useLocation } from "react-router-dom";
 
 const networkConfig = getConfig().NETWORK;
 const lendToken = networkConfig.lend.lendToken;
+const lendChain = networkConfig.lend.chain;
 
 const BorrowAndRepay = ({ onUpdate }) => {
   const { t } = useTranslation();
@@ -111,7 +111,7 @@ export default function MyBorrowings() {
   const [maxAmount, setMaxAmount] = useState(0);
 
   const getSCR = () => {
-    const _provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.public.http[0], amoy.id);
+    const _provider = new ethers.providers.StaticJsonRpcProvider(lendChain.rpcUrls.public.http[0], lendChain.id);
     const scoreContract = new ethers.Contract(networkConfig.SCRContract.address, erc20ABI, _provider);
     scoreContract.balanceOf(account).then((r) => {
       dispatchCreditEvent({

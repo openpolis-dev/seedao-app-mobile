@@ -8,7 +8,6 @@ import CreditRecords from "./records";
 import CreditProvider, { useCreditContext, ACTIONS } from "./provider";
 import { ethers } from "ethers";
 import getConfig from "constant/envCofnig";
-import { amoy } from "utils/chain";
 import BondNFTABI from "assets/abi/BondNFT.json";
 import ScoreLendABI from "assets/abi/ScoreLend.json";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -16,6 +15,7 @@ import { checkTokenValid, clearStorage } from "utils/auth";
 import { useSelector } from "react-redux";
 
 const networkConfig = getConfig().NETWORK;
+const lendChain = networkConfig.lend.chain;
 
 const CreditTabs = ({ tab, onChange }) => {
   const { t } = useTranslation();
@@ -53,7 +53,7 @@ const CreditCards = ({ tab }) => {
   const { dispatch: dispatchCreditEvent } = useCreditContext();
 
   useEffect(() => {
-    const _provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.public.http[0], amoy.id);
+    const _provider = new ethers.providers.StaticJsonRpcProvider(lendChain.rpcUrls.public.http[0], lendChain.id);
     const bondNFTContract = new ethers.Contract(networkConfig.lend.bondNFTContract, BondNFTABI, _provider);
     dispatchCreditEvent({ type: ACTIONS.SET_BOND_NFT_CONTRACT, payload: bondNFTContract });
     const scoreLendontract = new ethers.Contract(networkConfig.lend.scoreLendContract, ScoreLendABI, _provider);

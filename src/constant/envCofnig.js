@@ -1,5 +1,7 @@
 import EthereumIcon from "assets/Imgs/network/ethereum.svg";
 import PolygonIcon from "assets/Imgs/network/polygon.svg";
+import { amoy } from "utils/chain";
+import { polygon } from "viem/chains";
 
 const VERSION = "0.5.1";
 
@@ -43,6 +45,7 @@ const LOCAL = {
     whitelistId: 0,
     SCRContract: { address: "0xdC907cd32Bc3D6bb2c63Ede4E28c3fAcdd1d5189", decimals: 18 },
     lend: {
+      chain: amoy,
       bondNFTContract: "0x496EBfDe236617821BAc1A2486993204378eE6C8",
       scoreLendContract: "0xa868415159Dc88506A9A55fe12E98B171491018d",
       lendToken: {
@@ -93,7 +96,18 @@ const PRODUCTION = {
   REACT_APP_ONESIGNAL_ID: "eda76843-e1a4-40a5-aa01-3d860d9cfa5c",
   SENDINGME_ENABLE: false,
   SENTRY_DSN,
-  JOY_ID_URL: 'https://app.joy.id',
+  JOY_ID_URL: "https://app.joy.id",
+  NETWORK: {
+    ...LOCAL.NETWORK,
+    SCRContract: { address: "0xE4825A1a31a76f72befa47f7160B132AA03813E0", decimals: 18 },
+    lend: {
+      ...LOCAL.NETWORK.lend,
+      chain: polygon,
+      bondNFTContract: "",
+      scoreLendContract: "",
+    },
+  },
+  INDEXER_ENDPOINT: "https://spp-indexer.seedao.tech",
 };
 
 export default function getConfig() {

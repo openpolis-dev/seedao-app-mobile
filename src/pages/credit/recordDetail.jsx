@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import StateTag from "components/credit/stateTag";
 import publicJs from "utils/publicJs";
 import { CreditRecordStatus } from "constant/credit";
-import { amoy } from "utils/chain";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useQuerySNS from "hooks/useQuerySNS";
 import getConfig from "constant/envCofnig";
@@ -19,6 +18,7 @@ import BondNFTABI from "assets/abi/BondNFT.json";
 
 const lendConfig = getConfig().NETWORK.lend;
 const lendToken = lendConfig.lendToken;
+const lendChain = lendConfig.chain;
 
 export default function CreditRecordPage() {
   const { t } = useTranslation();
@@ -53,7 +53,7 @@ export default function CreditRecordPage() {
   const getInterest = () => {
     let contract = bondNFTContract;
     if (!contract) {
-      const _provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.public.http[0], amoy.id);
+      const _provider = new ethers.providers.StaticJsonRpcProvider(lendChain.rpcUrls.public.http[0], lendChain.id);
       contract = new ethers.Contract(lendConfig.bondNFTContract, BondNFTABI, _provider);
     }
     store.dispatch(saveLoading(true));
@@ -132,7 +132,7 @@ export default function CreditRecordPage() {
               <dd>
                 <a
                   className="hash"
-                  href={`${amoy?.blockExplorers?.default.url}/tx/${fullData?.borrowTx}`}
+                  href={`${lendChain?.blockExplorers?.default.url}/tx/${fullData?.borrowTx}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -205,7 +205,7 @@ export default function CreditRecordPage() {
                   <dd>
                     <a
                       className="hash"
-                      href={`${amoy?.blockExplorers?.default.url}/tx/${fullData?.paybackTx}`}
+                      href={`${lendChain?.blockExplorers?.default.url}/tx/${fullData?.paybackTx}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
