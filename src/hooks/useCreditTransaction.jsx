@@ -96,7 +96,7 @@ export default function useCreditTransaction(action) {
     });
   };
 
-  const handleTransaction = async (data, contractAddress, action, queryData) => {
+  const handleTransaction = async (data, contractAddress, action, queryData, moreGas = true) => {
     // const contractAddress = CONFIG.NETWORK.lend.scoreLendContract;
     const params = {
       to: contractAddress,
@@ -106,12 +106,16 @@ export default function useCreditTransaction(action) {
     };
     console.log("use wallet:", wallet);
     if (wallet === Wallet.METAMASK) {
-      await prepareSendTransaction({
+      const r = await prepareSendTransaction({
         to: contractAddress,
         account,
         data,
       });
-      const tx = await sendTransactionAsync(params);
+      const gas = moreGas && r.gas ? BigInt(Math.ceil(Number(r.gas) * 1.2)) : undefined;
+      if (gas) {
+        console.log(`estimate gas: ${r.gas}, use more gas: ${gas}`);
+      }
+      const tx = await sendTransactionAsync({ ...params, gas });
       return checkTransaction(tx.hash);
     } else if (wallet === Wallet.JOYID) {
       return handleJoyID(params, action, queryData);
@@ -144,6 +148,7 @@ export default function useCreditTransaction(action) {
         t.address,
         t.action,
         queryData,
+        false,
       );
     }
   };
