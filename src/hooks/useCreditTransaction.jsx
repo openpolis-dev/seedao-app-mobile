@@ -1,3 +1,4 @@
+/* global BigInt */
 import { erc20ABI, useSendTransaction, useSwitchNetwork, useNetwork } from "wagmi";
 import { useSelector } from "react-redux";
 import { Wallet } from "utils/constant";
