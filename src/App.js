@@ -14,6 +14,7 @@ import GlobalStyle from "./utils/GlobalStyle";
 import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi/react";
 import { WagmiConfig } from "wagmi";
 import { mainnet, polygon } from "wagmi/chains";
+import { amoy } from "utils/chain";
 import InstallCheck from "components/thirdInstallPWA";
 import RouterChecker from "./components/routerChecker";
 import useToast from "hooks/useToast";
@@ -23,7 +24,7 @@ import getConfig from "constant/envCofnig";
 import ChooseRPC from "components/chooseRPC";
 import ErrorBoundary from "components/errorBoundary";
 
-const chains = getConfig().NETWORK.chainId === 1 ? [mainnet] : [polygon];
+const chains = getConfig().NETWORK.chainId === 1 ? [mainnet] : [polygon, amoy];
 
 const projectId = "da76ddd6c7d31632ed7fc9b88e28a410";
 

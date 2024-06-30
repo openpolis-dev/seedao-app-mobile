@@ -56,14 +56,18 @@
     "wagmi": "^1.4.13"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "compression-webpack-plugin": "^10.0.0",
     "customize-cra": "^1.0.0",
     "fs": "0.0.1-security",
+    "husky": "^9.0.11",
     "progress-bar-webpack-plugin": "^2.1.0",
     "react-app-rewired": "^2.2.1",
     "webpack-bundle-analyzer": "^4.10.1"
   },
   "scripts": {
+    "test": "echo \"no test specified\"",
     "config": "node ./writeManifest.js",
     "dev": "react-scripts start",
     "start": "npm run dev",
@@ -72,7 +76,8 @@
     "build:dev": "npm run build",
     "build:preview": "REACT_APP_ENV_VERSION=preview npm run build:online",
     "build:prod": "REACT_APP_ENV_VERSION=prod npm run build:online",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org seedao --project seedao-mobile-app ./build && sentry-cli sourcemaps upload --org seedao --project seedao-mobile-app ./build"
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org seedao --project seedao-mobile-app ./build && sentry-cli sourcemaps upload --org seedao --project seedao-mobile-app ./build",
+    "prepare": "husky"
   },
   "eslintConfig": {
     "extends": [

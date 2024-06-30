@@ -52,8 +52,9 @@ export default function Header({ title, bgColor, headColor, rightOperation, hand
   const navigate = useNavigate();
 
   const backTop = () => {
-    if (handleBack) handleBack();
-    if (headerProps?.backPath) {
+    if (handleBack) {
+      handleBack();
+    } else if (headerProps?.backPath) {
       navigate(headerProps?.backPath, { replace: true });
     } else {
       navigate(-1);
