@@ -48,6 +48,7 @@ export default function Layout({
   title,
   noTab,
   customTab,
+  tabHeight,
   headBgColor,
   headStyle,
   bgColor,
@@ -88,7 +89,7 @@ export default function Layout({
         clearStorage();
 
         if (pathname === "/sns/register") {
-          localStorage.setItem("==sns==", `1_${window.location.search}`);
+          localStorage.setItem("before-login", `1_${window.location.search}`);
         }
         navigate("/login");
       }
@@ -124,7 +125,7 @@ export default function Layout({
       <InnerBox
         id="inner"
         ref={innerRef}
-        $notab={noTab ? 0 : "70px"}
+        $notab={noTab ? 0 : tabHeight || "70px"}
         $sticky="true"
         $paddingtop={noHeader || sticky ? "0" : "47px"}
       >

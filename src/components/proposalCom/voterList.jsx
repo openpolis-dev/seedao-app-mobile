@@ -72,7 +72,7 @@ export default function VoterListModal({ optionId, count, onClose }) {
             {list.map((item, index) => (
               <li key={index}>
                 <UserBox name={formatSNS(item.wallet?.toLocaleLowerCase())} avatar={item.os_avatar} />
-                <span>1</span>
+                <span>{item.weight}</span>
               </li>
             ))}
           </InfiniteScroll>

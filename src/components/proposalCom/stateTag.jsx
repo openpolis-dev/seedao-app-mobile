@@ -4,8 +4,8 @@ import { ProposalState } from "constant/proposal";
 import { useSelector } from "react-redux";
 
 export default function ProposalStateTag({ state }) {
-  const { t } = useTranslation();
-  const language = useSelector((state) => state.language);
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
 
   let color;
   let text;

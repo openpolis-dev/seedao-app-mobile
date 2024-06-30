@@ -1,6 +1,9 @@
 export const formatNumber = (num) => {
   if (isNaN(num)) return "0";
-  return (num >= 0 ? "" : "-") + Math.abs(num).toLocaleString("en-US");
+  const prefix = num >= 0 ? "" : "-";
+  const numSplitStr = String(num).split(".");
+  const intNum = Math.abs(Number(numSplitStr[0])).toLocaleString("en-US");
+  return prefix + intNum + (numSplitStr.length > 1 ? `.${numSplitStr[1]}` : "");
 };
 
 export const getShortDisplay = (v, num = 2) => {
@@ -9,18 +12,22 @@ export const getShortDisplay = (v, num = 2) => {
   if (tp === "number") v = String(v);
   const arr = v.split(".");
   let res = arr[0];
-  if (arr[1]) {
+  if (arr[1] && num > 0) {
     const more = `.${arr[1].slice(0, num)}`;
-    res += more;
     if (more.length < num + 1) {
-      res += "0".repeat(num + 1 - more.length);
+      res += more + "0".repeat(num + 1 - more.length);
+    } else if (more.length === num + 1) {
+      res += more;
     }
-  } else {
-    res += ".00";
+  } else if (num > 0) {
+    res += "." + "0".repeat(num);
   }
   return res;
 };
 
-Number.prototype.format = function (n = 2) {
+Number.prototype.format = function (n = 2, zeroClear = false) {
+  if (zeroClear && !this) {
+    return 0;
+  }
   return getShortDisplay(formatNumber(this), n);
 };
