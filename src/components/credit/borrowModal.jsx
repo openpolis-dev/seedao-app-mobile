@@ -21,8 +21,21 @@ const lendToken = networkConfig.lend.lendToken;
 
 export default function BorrowModal({ handleClose, stepData }) {
   const { t } = useTranslation();
+  const {
+    state: {
+      scoreLendContract,
+      myAvaliableQuota,
+      myScore,
+      borrowRate,
+      maxBorrowDays,
+      totalAvaliableBorrowAmount,
+      minBorrowCoolDown,
+      minBorrowAmount,
+    },
+  } = useCreditContext();
+
   const [step, setStep] = useState(stepData?.step || 0);
-  const [inputNum, setInputNum] = useState(stepData?.from || "100");
+  const [inputNum, setInputNum] = useState(stepData?.from || String(minBorrowAmount));
   const [forfeitNum, setForfeitNum] = useState(Number(stepData?.to) || 0);
 
   const [calculating, setCalculating] = useState(false);
@@ -38,17 +51,7 @@ export default function BorrowModal({ handleClose, stepData }) {
     .parseUnits(String(forfeitNum), networkConfig.SCRContract.decimals)
     .lte(allowanceBN);
 
-  const {
-    state: {
-      scoreLendContract,
-      myAvaliableQuota,
-      myScore,
-      borrowRate,
-      maxBorrowDays,
-      totalAvaliableBorrowAmount,
-      minBorrowCoolDown,
-    },
-  } = useCreditContext();
+  
 
   const scrEnough = Number(inputNum) <= myAvaliableQuota;
 
@@ -67,7 +70,7 @@ export default function BorrowModal({ handleClose, stepData }) {
   };
 
   const checkApprove = async () => {
-    if (calculating || Number(inputNum) < 100) {
+    if (calculating || Number(inputNum) < minBorrowAmount) {
       return;
     }
     // check if scr enough
@@ -101,7 +104,7 @@ export default function BorrowModal({ handleClose, stepData }) {
       }
     } catch (error) {
       console.error(error);
-      toast.danger(`Approve failed: ${error}`);
+      toast.danger(`${t("Credit.ApproveFailed")}:${error}`);
     } finally {
       setLoading(false);
     }
@@ -134,6 +137,8 @@ export default function BorrowModal({ handleClose, stepData }) {
       let errorMsg = `${parseError(error)}`;
       if (errorMsg === "BorrowCooldownTimeTooShort") {
         errorMsg = t("Credit.BorrowCooldownMsg");
+      } else if (errorMsg === "RemainBorrowQuotaNotEnough") {
+        errorMsg = t("Credit.RemainBorrowQuotaNotEnough");
       }
       toast.danger(errorMsg);
     } finally {
@@ -146,7 +151,7 @@ export default function BorrowModal({ handleClose, stepData }) {
 
   const btnDisabled =
     calculating ||
-    Number(inputNum) < 100 ||
+    Number(inputNum) < minBorrowAmount ||
     forfeitNum === 0 ||
     Number(inputNum) > myAvaliableQuota ||
     leftTime ||
@@ -267,7 +272,7 @@ export default function BorrowModal({ handleClose, stepData }) {
   useEffect(() => {
     if (!stepData?.from || !stepData?.to) {
       setCalculating(true);
-      onChangeVal(100);
+      onChangeVal(minBorrowAmount);
     }
   }, []);
 
@@ -277,12 +282,16 @@ export default function BorrowModal({ handleClose, stepData }) {
     }
   }, [step, scrEnough, allowanceEnough]);
 
-  const dayIntrestAmount = inputNum ? getShortDisplay((Number(inputNum) * 10000 * Number(0.0001)) / 10000, 4) : 0;
+  const dayIntrestAmount = inputNum ? getShortDisplay((Number(inputNum) * 10000 * borrowRate * 0.01) / 10000, 4) : 0;
 
   const getErrorTip = () => {
     const v = Number(inputNum);
-    if (v < 100) {
-      return <NumberCheckLabel>{t("Credit.MinBorrow", { token: lendToken.symbol })}</NumberCheckLabel>;
+    if (v < minBorrowAmount) {
+      return (
+        <NumberCheckLabel>
+          {t("Credit.MinBorrow", { token: lendToken.symbol, amount: minBorrowAmount })}
+        </NumberCheckLabel>
+      );
     }
     if (v > myAvaliableQuota) {
       return (

@@ -99,7 +99,7 @@ const apps =  [
       name: 'apps.Credit',
       link: '/credit',
       icon: CreditImg,
-      desc: 'Coming Soon',
+      desc: 'apps.CreditDesc',
     },
     // {
     //   id: "module-newcomer",

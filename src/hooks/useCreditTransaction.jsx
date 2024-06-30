@@ -1,15 +1,16 @@
+/* global BigInt */
 import { erc20ABI, useSendTransaction, useSwitchNetwork, useNetwork } from "wagmi";
 import { useSelector } from "react-redux";
 import { Wallet } from "utils/constant";
 import { sendTransactionWithRedirect } from "@joyid/evm";
 import getConfig from "constant/envCofnig";
 import { uniWallet } from "components/login/unipassPopup";
-import { amoy } from "utils/chain";
 import { ethers } from "ethers";
 import { readContract, prepareSendTransaction } from "wagmi/actions";
 import ScoreLendABI from "assets/abi/ScoreLend.json";
 
 const CONFIG = getConfig();
+const lendChain = CONFIG.NETWORK.lend.chain;
 
 const buildApproveTokenData = (contractAddress, decimals, num) => {
   const iface = new ethers.utils.Interface(erc20ABI);
@@ -30,7 +31,7 @@ export const buildRepayData = (ids) => {
 };
 
 const checkTransaction = (hash) => {
-  const provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.default.http[0]);
+  const provider = new ethers.providers.StaticJsonRpcProvider(lendChain.rpcUrls.default.http[0]);
   return new Promise((resolve, reject) => {
     const timer = setInterval(() => {
       provider.getTransactionReceipt?.(hash).then((r) => {
@@ -69,8 +70,8 @@ export default function useCreditTransaction(action) {
   const { switchNetworkAsync } = useSwitchNetwork();
 
   const checkNetwork = async () => {
-    if (chain && switchNetworkAsync && chain?.id !== amoy.id) {
-      await switchNetworkAsync(amoy.id);
+    if (chain && switchNetworkAsync && chain?.id !== lendChain.id) {
+      await switchNetworkAsync(lendChain.id);
       return;
     }
   };
@@ -88,15 +89,15 @@ export default function useCreditTransaction(action) {
     sendTransactionWithRedirect(url, params, account, {
       joyidAppURL: `${CONFIG.JOY_ID_URL}`,
       // rpcURL: rpc || CONFIG.NETWORK.rpcs[0],
-      rpcURL: amoy.rpcUrls.default.http[0],
+      rpcURL: lendChain.rpcUrls.default.http[0],
       network: {
-        name: amoy.name,
-        chainId: amoy.id,
+        name: lendChain.name,
+        chainId: lendChain.id,
       },
     });
   };
 
-  const handleTransaction = async (data, contractAddress, action, queryData) => {
+  const handleTransaction = async (data, contractAddress, action, queryData, moreGas = true) => {
     // const contractAddress = CONFIG.NETWORK.lend.scoreLendContract;
     const params = {
       to: contractAddress,
@@ -106,12 +107,16 @@ export default function useCreditTransaction(action) {
     };
     console.log("use wallet:", wallet);
     if (wallet === Wallet.METAMASK) {
-      await prepareSendTransaction({
+      const r = await prepareSendTransaction({
         to: contractAddress,
         account,
         data,
       });
-      const tx = await sendTransactionAsync(params);
+      const gas = moreGas && r.gas ? BigInt(Math.ceil(Number(r.gas) * 1.2)) : undefined;
+      if (gas) {
+        console.log(`estimate gas: ${r.gas}, use more gas: ${gas}`);
+      }
+      const tx = await sendTransactionAsync({ ...params, gas });
       return checkTransaction(tx.hash);
     } else if (wallet === Wallet.JOYID) {
       return handleJoyID(params, action, queryData);
@@ -133,7 +138,7 @@ export default function useCreditTransaction(action) {
             address: CONFIG.NETWORK.SCRContract.address,
             action: "credit-borrow-approve",
           };
-    const provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.default.http[0]);
+    const provider = new ethers.providers.StaticJsonRpcProvider(lendChain.rpcUrls.default.http[0]);
     const tokenContract = new ethers.Contract(t.address, erc20ABI, provider);
     // check approve balance
     const approve_balance = await tokenContract.allowance(account, CONFIG.NETWORK.lend.scoreLendContract);
@@ -144,26 +149,27 @@ export default function useCreditTransaction(action) {
         t.address,
         t.action,
         queryData,
+        false,
       );
     }
   };
   const checkEnoughBalance = async (account, amount) => {
     const address = CONFIG.NETWORK.lend.lendToken.address;
     const bn = ethers.utils.parseUnits(String(amount), CONFIG.NETWORK.lend.lendToken.decimals);
-    const provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.default.http[0]);
+    const provider = new ethers.providers.StaticJsonRpcProvider(lendChain.rpcUrls.default.http[0]);
     const tokenContract = new ethers.Contract(address, erc20ABI, provider);
     const balance = await tokenContract.balanceOf(account);
     return balance.gte(bn);
   };
   const getTokenBalance = (token) => {
     const t = getTokenData(token);
-    const provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.default.http[0]);
+    const provider = new ethers.providers.StaticJsonRpcProvider(lendChain.rpcUrls.default.http[0]);
     const tokenContract = new ethers.Contract(t.address, erc20ABI, provider);
     return tokenContract.balanceOf(account);
   };
   const getTokenAllowance = async (token) => {
     const t = getTokenData(token);
-    const provider = new ethers.providers.StaticJsonRpcProvider(amoy.rpcUrls.default.http[0]);
+    const provider = new ethers.providers.StaticJsonRpcProvider(lendChain.rpcUrls.default.http[0]);
     const tokenContract = new ethers.Contract(t.address, erc20ABI, provider);
     // check approve balance
     const allowanceResultBN = await tokenContract.allowance(account, CONFIG.NETWORK.lend.scoreLendContract);

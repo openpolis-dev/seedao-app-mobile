@@ -247,7 +247,8 @@
     "Newcomer": "Newcomer",
     "Echo": "Echo",
     "EchoDesc": "Echo is a social network that gives your echos to same habbies, passions or interests.",
-    "Credit": "SCR MBL"
+    "Credit": "SCR Lending",
+    "CreditDesc": "Community Cooperative Finance"
   },
   "roles": {
     "SEED_HOLDER": "SEED Holder",
@@ -489,7 +490,7 @@
     "InsufficientQuota": "Your loan quota is insufficient",
     "InsufficientBalance": "Insufficient {{token}} balance",
     "NoDate": "Currently there are no loans",
-    "MinBorrow": "Mint to borrow 100 {{token}}!",
+    "MinBorrow": "Mint to borrow {{amount}} {{token}}!",
     "Approving": "Approving...",
     "WaitingTx": "Waiting transaction...",
     "CheckingNetwork": "Checking network...",
@@ -506,6 +507,8 @@
     "GetBalanceFailed": "Failed to get {{token}} balance",
     "CalculateFailed": "Failed to get pledges balance",
     "RemainBorrowQuota": "Community remains {{amount}} {{token}}",
-    "ApproveSuccessful": "Approve Successfully"
+    "ApproveSuccessful": "Approve Successfully",
+    "ApproveFailed": "Approve failed",
+    "RemainBorrowQuotaNotEnough": "Community remains not enough"
   }
 }
