@@ -248,7 +248,8 @@
     "Newcomer": "新手村",
     "Echo": "Echo",
     "EchoDesc": "Echo is a social network that gives your echos to same habbies, passions or interests.",
-    "Credit": "积分信用贷"
+    "Credit": "SCR借款",
+    "CreditDesc": "社区积分新玩法"
   },
   "roles": {
     "SEED_HOLDER": "SEED持有者",
