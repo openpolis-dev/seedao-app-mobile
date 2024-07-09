@@ -509,6 +509,7 @@
     "RemainBorrowQuota": "Community remains {{amount}} {{token}}",
     "ApproveSuccessful": "Approve Successfully",
     "ApproveFailed": "Approve failed",
-    "RemainBorrowQuotaNotEnough": "Community remains not enough"
+    "RemainBorrowQuotaNotEnough": "Community remains not enough",
+    "GetRealRepayAmountFailed": "Get real repayment amount failed, please check in the records"
   }
 }
