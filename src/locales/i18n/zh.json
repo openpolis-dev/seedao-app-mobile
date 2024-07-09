@@ -524,6 +524,7 @@
     "RemainBorrowQuota": "社区剩余可借资金 {{amount}} {{token}}",
     "ApproveSuccessful": "授权成功",
     "ApproveFailed": "授权失败",
-    "RemainBorrowQuotaNotEnough": "社区剩余可借资金不足"
+    "RemainBorrowQuotaNotEnough": "社区剩余可借资金不足",
+    "GetRealRepayAmountFailed": "获取实际还款额失败，请到详情中查看"
   }
 }
