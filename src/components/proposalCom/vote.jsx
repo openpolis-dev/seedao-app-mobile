@@ -87,7 +87,6 @@ export default function ProposalVote({
   }, [pollStatus, t, proposalState, showExecutionTip, execution_ts, onlyShowVoteOption]);
 
   const onConfirmVote = async () => {
-    console.log("====onConfirmVote===")
     const canVote = await checkMetaforoLogin();
     if (!canVote) {
       return;
@@ -164,20 +163,26 @@ export default function ProposalVote({
                     {!!option.is_vote && <HasVote>({t("Proposal.HasVote")})</HasVote>}
                   </OptionContent>
                 </td>
-                <td>
-                  <ProgressBar percent={option.percent}>
-                    <div className="inner"></div>
-                  </ProgressBar>
-                </td>
-                <td>
-                  <VoteNumber
-                    className={!!option.is_vote ? "active" : ""}
-                    onClick={() => !!option.voters && setOpenVoteItem({ count: option.voters, optionId: option.id })}
-                  >
-                    <span>{option.weights||option.voters}</span>
-                    <span className="voters"> ({option.percent}%)</span>
-                  </VoteNumber>
-                </td>
+
+
+                {
+                    (poll.show_type === 1 || pollStatus === VoteType.Closed) && <td>
+                      <ProgressBar percent={option.percent}>
+                        <div className="inner"></div>
+                      </ProgressBar>
+                    </td>
+                }
+                {
+                    (poll.show_type === 1 || pollStatus === VoteType.Closed) && <td>
+                      <VoteNumber
+                          onClick={() => !!option.voters && setOpenVoteItem({ count: option.voters, optionId: option.id })}
+                      >
+                        <span >{option.weights||option.voters}</span>
+                        <span className="voters"> ({option.percent}%)</span>
+                      </VoteNumber>
+                    </td>
+                }
+                
               </tr>
             ))}
           </tbody>
