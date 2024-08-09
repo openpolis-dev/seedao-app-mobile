@@ -149,7 +149,7 @@ export default function ProposalVote({
                     className={!!option.is_vote ? "active" : ""}
                     onClick={() => !!option.voters && setOpenVoteItem({ count: option.voters, optionId: option.id })}
                   >
-                    <span>{option.voters}</span>
+                    <span>{option.weights||option.voters}</span>
                     <span className="voters"> ({option.percent}%)</span>
                   </VoteNumber>
                 </td>
