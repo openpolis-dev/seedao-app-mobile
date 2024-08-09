@@ -40,6 +40,7 @@ export default function ProposalVote({
   voteGate,
   updateStatus,
   voteOptionType,
+   showMultiple
 }) {
   const { t } = useTranslation();
   const [selectOption, setSelectOption] = useState();
@@ -48,7 +49,7 @@ export default function ProposalVote({
   const [hasPermission, setHasPermission] = useState(false);
   const [showVoteRules, setShowVoteRules] = useState(false);
   const [showExecutionTip, setShowExecutionTip] = useState(false);
-
+  const [multiArr,setMultiArr,] = useState([]);
   const { checkMetaforoLogin, LoginMetafoModal } = useMetaforoLogin();
   const { toast, Toast } = useToast();
 
@@ -86,14 +87,23 @@ export default function ProposalVote({
   }, [pollStatus, t, proposalState, showExecutionTip, execution_ts, onlyShowVoteOption]);
 
   const onConfirmVote = async () => {
+    console.log("====onConfirmVote===")
     const canVote = await checkMetaforoLogin();
     if (!canVote) {
       return;
     }
+    let selectArr=[];
+    if(showMultiple){
+      selectArr=[...multiArr]
+    }else{
+      selectArr=[selectOption?.id]
+    }
+
+
     store.dispatch(saveLoading(true));
     setShowConfirmVote(false);
 
-    castVote(id, poll.id, selectOption?.id)
+    castVote(id, poll.id,selectArr)
       .then(() => {
         updateStatus();
         toast.success(t("Msg.CastVoteSuccess"));
@@ -125,6 +135,21 @@ export default function ProposalVote({
       getVotePermission();
     }
   }, [poll, pollStatus, onlyShowVoteOption]);
+
+  const handleMultiSelect = (e) =>{
+
+    const {value} = e.target ;
+
+    let arr = [...multiArr];
+
+    const findIndex = arr.findIndex((item) => item === Number(value))
+    if(findIndex === -1) {
+      arr.push(Number(value));
+    }else{
+      arr.splice(findIndex,1)
+    }
+    setMultiArr([...arr])
+  }
 
   const showVoteContent = () => {
     if (!onlyShowVoteOption && ((pollStatus === VoteType.Open && !!poll.is_vote) || pollStatus === VoteType.Closed)) {
@@ -163,18 +188,33 @@ export default function ProposalVote({
         <>
           {poll.options.map((option, index) => (
             <VoteOptionSelect key={index}>
-              <input
-                type="radio"
-                checked={selectOption?.id === option.id}
-                onChange={(e) => setSelectOption(e.target.checked ? option : undefined)}
-                disabled={!hasPermission}
-                id={`select_${index}`}
-              />
+
+              {
+                  !showMultiple && <input
+                      type="radio"
+                      checked={selectOption?.id === option.id}
+                      onChange={(e) => setSelectOption(e.target.checked ? option : undefined)}
+                      disabled={!hasPermission}
+                      id={`select_${index}`}
+                  />
+              }
+
+              {
+                  showMultiple && <input
+                      type="checkbox"
+                      value={option.id}
+                      // checked={selectOption?.id === option.id}
+                      onChange={(e) => handleMultiSelect(e)}
+                      disabled={!hasPermission}
+                      id={`select_${index}`}
+                  />
+              }
+
               <OptionContentPure htmlFor={`select_${index}`}>{option.html}</OptionContentPure>
             </VoteOptionSelect>
           ))}
           {hasPermission && (
-            <VoteButton onClick={goVote} disabled={selectOption === void 0}>
+              <VoteButton onClick={goVote} disabled={selectOption === void 0 && multiArr.length === 0}>
               {t("Proposal.Vote")}
             </VoteButton>
           )}
