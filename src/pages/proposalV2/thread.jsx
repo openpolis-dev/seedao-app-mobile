@@ -380,6 +380,7 @@ export default function ProposalThread() {
           poll={data.votes[0]}
           id={Number(id)}
           updateStatus={getProposal}
+          showMultiple={data.is_multiple_vote}
           proposalState={data?.state}
           execution_ts={data?.execution_ts}
           voteOptionType={data?.vote_type}
