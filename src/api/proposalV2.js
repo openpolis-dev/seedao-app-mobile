@@ -61,7 +61,7 @@ export const checkCanVote = (id) => {
 export const castVote = (id, vote_id, option) => {
   return request.post(`${PATH_PREFIX}vote/${id}`, {
     vote_id,
-    options: [option],
+    options: option,
     metaforo_access_token: getMetaforoData(),
   });
 };

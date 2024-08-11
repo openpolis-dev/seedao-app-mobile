@@ -102,6 +102,7 @@ export default function  Metamask(){
           localStorage.removeItem(`before-login`);
           navigate(`/sns/register${beforePath?.split("_")[1] || ""}`);
         } else if (beforePath?.startsWith("/")) {
+          localStorage.removeItem(`before-login`);
           navigate(beforePath);
         } else {
           navigate("/home");
