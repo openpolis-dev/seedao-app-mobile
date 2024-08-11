@@ -406,7 +406,7 @@
     "FinalExamination": "毕业考试"
   },
   "Credit": {
-    "Title": "积分信用贷",
+    "Title": "SCR借款",
     "MyBorrowings": "我的借款",
     "VaultBorrowings": "社区借款",
     "MyBorrowingQuota": "可借额度（{{token}}）",
@@ -422,7 +422,7 @@
     "LatestRepayDate": "你有借款需在 {{date}} 前还款",
     "RepayTip": "逾期未还，SCR 将被罚没至社区金库！",
     "Details": "详情 >>",
-    "VaultBorrowingsQuota": "社区信用贷当前剩余资金（{{token}}）",
+    "VaultBorrowingsQuota": "社区SCR借款项目当前剩余资金（{{token}}）",
     "DaoTip": "计划总资金 180,000 {{token}}，每月补充资金",
     "ClearCount": "已结清 {{num}} 笔",
     "BorrowCount": "已借出 {{num}} 笔",
@@ -524,6 +524,7 @@
     "RemainBorrowQuota": "社区剩余可借资金 {{amount}} {{token}}",
     "ApproveSuccessful": "授权成功",
     "ApproveFailed": "授权失败",
-    "RemainBorrowQuotaNotEnough": "社区剩余可借资金不足"
+    "RemainBorrowQuotaNotEnough": "社区剩余可借资金不足",
+    "GetRealRepayAmountFailed": "获取实际还款额失败，请到详情中查看"
   }
 }

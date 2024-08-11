@@ -391,7 +391,7 @@
     "InviteLinkCopied": "The invite link has been copied to your clipboard!"
   },
   "Credit": {
-    "Title": "SCR MBL",
+    "Title": "SCR Lending",
     "MyBorrowings": "My Borrowings",
     "VaultBorrowings": "Community Borrowings",
     "MyBorrowingQuota": "Loan quota ({{token}})",
@@ -407,7 +407,7 @@
     "LatestRepayDate": "You have a loan that needs to be repaid before {{date}}",
     "RepayTip": "If you are overdue, your SCR will be forfeited to the community treasury!",
     "Details": "Detail >>",
-    "VaultBorrowingsQuota": "Total community borrowing ({{token}})",
+    "VaultBorrowingsQuota": "Total SCR Lending quota ({{token}})",
     "DaoTip": "Total program funding 180,000 {{token}} with monthly replenishment",
     "ClearCount": "Cleared {{num}} pen(s)",
     "BorrowCount": "Loaned {{num}} pen(s)",
@@ -509,6 +509,7 @@
     "RemainBorrowQuota": "Community remains {{amount}} {{token}}",
     "ApproveSuccessful": "Approve Successfully",
     "ApproveFailed": "Approve failed",
-    "RemainBorrowQuotaNotEnough": "Community remains not enough"
+    "RemainBorrowQuotaNotEnough": "Community remains not enough",
+    "GetRealRepayAmountFailed": "Get real repayment amount failed, please check in the records"
   }
 }

@@ -38,7 +38,7 @@ export default function RepayModal({ handleClose, stepData }) {
   const wallet = useSelector((state) => state.walletType);
 
   const {
-    state: { bondNFTContract },
+    state: { bondNFTContract, scoreLendContract },
   } = useCreditContext();
 
   const [loading, setLoading] = useState(false);
@@ -197,11 +197,18 @@ export default function RepayModal({ handleClose, stepData }) {
 
     setLoading(t("Credit.WaitingTx"));
     try {
+      const totalPrincipal = ethers.utils.formatUnits(
+        selectedList.reduce(
+          (acc, item) => acc.add(ethers.utils.parseUnits(String(item.data.borrowAmount), lendToken.decimals)),
+          ethers.constants.Zero,
+        ),
+        lendToken.decimals,
+      );
       await handleTransaction(
         buildRepayData(selectedList.map((item) => Number(item.id))),
         networkConfig.lend.scoreLendContract,
         "credit-repay",
-        { ids: selectedList.map((item) => item.id).join(","), total: selectedTotalAmount },
+        { ids: selectedList.map((item) => item.id).join(","), total: totalPrincipal },
       );
       if (wallet === Wallet.METAMASK) {
         setStep(3);
@@ -296,38 +303,34 @@ export default function RepayModal({ handleClose, stepData }) {
     }
   }, [stepData, totalApproveBN]);
 
-  const getRepayAmount = async (ids, totalPrincipal) => {
+  const getRepayAmountByEvent = async (ids, totalPrincipal) => {
     setGetting(true);
-    bondNFTContract
-      ?.calculateLendsInterest(ids)
-      .then((result) => {
-        const total = result.interestAmounts
-          .reduce((acc, item) => acc.add(item), ethers.constants.Zero)
-          .add(totalPrincipal);
-        setTotalRepayAmount(ethers.utils.formatUnits(total, lendToken.decimals));
-      })
-      .catch((r) => {
-        console.error(r);
-        toast.danger("获取实际还款额失败，请到详情中查看");
-      })
-      .finally(() => {
-        setGetting(false);
-      });
+    try {
+      const r = await scoreLendContract.queryFilter("Payback");
+      const events = r.filter((item) => ids.includes(item.args.id.toNumber()));
+      const interestAmount = events.reduce((acc, item) => acc.add(item.args.interestAmount), ethers.constants.Zero);
+      const total = totalPrincipal.add(interestAmount);
+      setTotalRepayAmount(ethers.utils.formatUnits(total, lendToken.decimals));
+    } catch (error) {
+      console.error(error);
+      toast.danger(t("Credit.GetRealRepayAmountFailed"));
+    } finally {
+      setGetting(false);
+    }
   };
-
   useEffect(() => {
     if (bondNFTContract && step === 3) {
       if (stepData?.ids && stepData?.total) {
         // joyid
         const idsFromStepData = stepData?.ids?.split(",") || [];
         const ids = idsFromStepData.map((d) => Number(d));
-        getRepayAmount(ids, ethers.utils.parseUnits(stepData.total, lendToken.decimals));
+        getRepayAmountByEvent(ids, ethers.utils.parseUnits(stepData.total, lendToken.decimals));
       } else if (selectedList.length) {
         const totalPrincipal = selectedList.reduce(
-          (acc, item) => acc.add(ethers.utils.parseUnits(String(item.total), lendToken.decimals)),
+          (acc, item) => acc.add(ethers.utils.parseUnits(String(item.data.borrowAmount), lendToken.decimals)),
           ethers.constants.Zero,
         );
-        getRepayAmount(
+        getRepayAmountByEvent(
           selectedList.map((item) => Number(item.id)),
           totalPrincipal,
         );
