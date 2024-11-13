@@ -36,6 +36,7 @@ const MemberAvatar = ({ user, onSelect }) => {
 
 const GroupItem = ({ name, members }) => {
   const [user, setUser] = useState();
+
   return (
     <GroupItemStyle>
       {user && <UserModal user={user} handleClose={() => setUser(undefined)} />}
@@ -81,6 +82,8 @@ export default function CityhallMembers() {
       handleMembers(cityhallMembers.G_TECH || []),
     ];
   }, [cityhallMembers, userMap, snsMap]);
+
+  console.log(techMembers);
 
   const getUsersInfo = async (wallets) => {
     try {

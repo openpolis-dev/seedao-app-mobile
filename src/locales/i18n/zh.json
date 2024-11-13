@@ -50,7 +50,9 @@
     "CityhallPure": "市政厅",
     "CityhallGovernance": "内部治理小组",
     "CityhallBranding": "品牌小组",
-    "CityhallTech": "技术小组"
+    "CityhallTech": "技术小组",
+    "nodeMembers": "当季SeeDAO社区治理节点名单",
+    "GovernanceNodeResult": "节点资质试算"
   },
   "Resources": {
     "Calendar": "社区日历申请",
@@ -199,6 +201,7 @@
     "TotalVoteCount": "共{{count}}票",
     "proposalComponents": "提案执行组件",
     "HasVote": "已投",
+    "notVote": "未投",
     "LoginTip": "使用完整功能，请先登录Metaforo",
     "LoginButton": "登录 Metaforo",
     "WriteReplyHint": "留下你的评论吧！",
@@ -215,6 +218,7 @@
     "ConfirmToCloseVote": "确认提前结束投票吗",
     "ExecutionTip": "当前投票已结束，进入 24 小时等待期，在此期间市政厅可对提案结果进行否决，如市政厅未否决，则提案按照投票结果结束。",
     "Veto": "市政厅一票否决"
+
   },
   "My": {
     "MyProfile": "我的信息",
@@ -244,6 +248,12 @@
   },
   "apps": {
     "SeeU": "SeeU Network",
+    "assistant": "贡献者手册",
+    "assistantDes": "根据贡献者等级在指引手册中看到不同的帮助信息",
+    "snsQuery": "SNS检索",
+    "SNSQueryDesc": "通过SNS查询社区成员在社区里的公开信息",
+    "podcastTitle": "SeeTalk播客",
+    "podcastDesc": "SeeTalk是一档由SeeDAO社区成员共创Web3节目，传递着社区成员的共创涌现和SeeDAO当前正在做的重要工作与规划",
     "SNS": "SNS",
     "Newcomer": "新手村",
     "Echo": "Echo",
@@ -389,7 +399,8 @@
     "CloseLoading": "关闭",
     "NotEnoughBalance": "{{token}} 余额不足",
     "ShareInviteLink": "分享我的邀请链接",
-    "InviteLinkCopied": "邀请链接已复制"
+    "InviteLinkCopied": "邀请链接已复制",
+    "search": "检索"
   },
   "Onboarding": {
     "UnlockTip": "获取SNS后即可解锁",

@@ -50,7 +50,9 @@
     "CityhallPure": "City Hall",
     "CityhallGovernance": "Governance",
     "CityhallBranding": "Branding",
-    "CityhallTech": "Tech"
+    "CityhallTech": "Tech",
+    "nodeMembers": "Current season announcement",
+    "GovernanceNodeResult": "SeeDAO Node Qualification"
   },
   "Resources": {
     "Calendar": "Calendar",
@@ -198,6 +200,7 @@
     "TotalVoteCount": "{{count}} voted",
     "proposalComponents": "Proposal Components",
     "HasVote": "Voted",
+    "notVote": "Not voted",
     "LoginTip": "Login to Metaforo to use the full functionality.",
     "LoginButton": "Login to Metaforo",
     "WriteReplyHint": "write a reply",
@@ -243,6 +246,12 @@
   },
   "apps": {
     "SeeU": "SeeU Network",
+    "assistant": "Contributor Handbook",
+    "assistantDes": "View different help information in the guide manual based on contributor levels.",
+    "snsQuery": "SNS Search",
+    "SNSQueryDesc": "Query personal information by SNS.",
+    "podcastTitle": "SeeTalk Podcast",
+    "podcastDesc": "SeeTalk is a Web3 podcast collaboratively created by members of the SeeDAO community, showcasing the emerging collaborations within the community and highlighting SeeDAO's ongoing important work and plans.",
     "SNS": "SNS",
     "Newcomer": "Newcomer",
     "Echo": "Echo",
@@ -388,7 +397,8 @@
     "CloseLoading": "Close",
     "NotEnoughBalance": "{{token}} Not Enough",
     "ShareInviteLink": "Share invite link",
-    "InviteLinkCopied": "The invite link has been copied to your clipboard!"
+    "InviteLinkCopied": "The invite link has been copied to your clipboard!",
+    "search": "Search"
   },
   "Credit": {
     "Title": "SCR Lending",
