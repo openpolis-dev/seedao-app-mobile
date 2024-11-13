@@ -5,7 +5,6 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import ProposalComment from "pages/proposalV2/comments";
 import Assistant from "../pages/assistant";
 import Node from "../pages/node";
-import SnsQuery from "../pages/snsQuery";
 import SearchProfile from "../pages/searchprofile";
 
 const Home = lazy(() => import("../pages/home"));
@@ -129,7 +128,6 @@ function RouterLink() {
 
         <Route path="/assistant" element={<Assistant />} />
         <Route path="/node" element={<Node />} />
-        <Route path="/sns-query" element={<SnsQuery />} />
         <Route path="/search-profile" element={<SearchProfile />} />
 
         {/* redirect */}

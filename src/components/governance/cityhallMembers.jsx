@@ -83,7 +83,6 @@ export default function CityhallMembers() {
     ];
   }, [cityhallMembers, userMap, snsMap]);
 
-  console.log(techMembers);
 
   const getUsersInfo = async (wallets) => {
     try {

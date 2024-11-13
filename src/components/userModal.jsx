@@ -77,17 +77,11 @@ export default function UserModal({ user, handleClose }) {
         <NameBox>{user.name || user.sp?.nickname}</NameBox>
         <BioBox>{user.bio || user.sp?.bio}</BioBox>
         <SocialBox>
-
           {(user?.social_accounts || user?.sp?.social_accounts).map((item, index) =>
               returnSocial(item.network, item.identity) ? (
-
-
-                  <a href={item.identity} target="_blank" rel="noopener noreferrer" key={`sbtInner_${index}`}>
                     <span className="iconLft">{returnSocial(item.network, item.identity)}</span>
-                  </a>
               ) : null,
           )}
-
 
           {(user.email || user.sp?.email) && (
               <a href={`mailto:${user.email || user.sp?.email}`} target="_blank" rel="noopener noreferrer">
