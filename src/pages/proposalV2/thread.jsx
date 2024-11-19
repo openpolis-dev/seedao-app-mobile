@@ -25,6 +25,7 @@ import useProposalCategories from "hooks/useProposalCategories";
 import { formatDeltaDate } from "utils/time";
 import { getProposalSIPSlug } from "utils";
 import { Link } from "react-router-dom";
+import getConfig from "../../constant/envCofnig";
 
 export default function ProposalThread() {
   const { id } = useParams();
@@ -352,6 +353,7 @@ export default function ProposalThread() {
               <div className="title">{previewTitle}</div>
             </ComponnentBox>
             <PreviewMobie
+                rpc={getConfig().NETWORK.rpcs[0]}
               DataSource={JSON.parse(JSON.stringify(preview || []))}
               language={i18n.language}
               initialItems={components}
