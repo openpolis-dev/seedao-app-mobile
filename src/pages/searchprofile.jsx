@@ -4,11 +4,13 @@ import {useTranslation} from "react-i18next";
 import styled from "styled-components";
 import {useEffect, useState} from "react";
 import sns from "@seedao/sns-js";
+
 import LoadingImg from "../assets/Imgs/loading.png";
 import ClearIcon from "../assets/Imgs/sns/clear.svg";
 import useQuerySNS from "../hooks/useQuerySNS";
 import {getUsers} from "../api/user";
 import UserModal from "../components/userModal";
+import getConfig from "../constant/envCofnig";
 
 const StepContainer = styled.div`
   display: flex;
@@ -175,7 +177,7 @@ export default function SearchProfile(){
 
 
     const handleSubmit = async () =>{
-        const address = await sns.resolve(`${snsName}.seedao`)
+        const address = await sns.resolve(`${snsName}.seedao`,getConfig().NETWORK.rpcs[0])
         if(address === AddressZero){
             // showToast(t('SNS.snsError'), ToastType.Danger);
         }else{
