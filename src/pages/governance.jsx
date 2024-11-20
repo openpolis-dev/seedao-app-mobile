@@ -72,6 +72,17 @@ export default function Governance() {
             </GovernanceBoxTopLeft>
           </GovernanceBoxTop>
           <GovernanceContent>
+
+            <BookItem>
+              <div>
+                <img src={BookIcon} alt="" />
+                <BookName>{t('Governance.nodeMembers')}</BookName>
+              </div>
+              <CheckButton href="/node" >
+                {t("Buttons.Check")}
+              </CheckButton>
+            </BookItem>
+
             {books.map((item, index) => (
               <BookRow key={index} name={item.name} link={item.link} />
             ))}
@@ -141,7 +152,6 @@ const FirstLineDesc = styled.div`
 
 const GovernanceBox = styled.div`
   width: 100%;
-  height: 247px;
   background: var(--background-color-1);
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.02);
   border-radius: 16px;

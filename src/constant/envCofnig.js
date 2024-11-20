@@ -4,7 +4,7 @@ import { amoy } from "utils/chain";
 import { polygon } from "viem/chains";
 
 
-const VERSION = "0.6.0";
+const VERSION = "0.7.0";
 
 
 const SENTRY_DSN = "https://54ec7357966342699d508a552ec1927c@o4505590144106496.ingest.sentry.io/4505590153805824";
@@ -31,9 +31,9 @@ const LOCAL = {
     //   "https://endpoints.omniatech.io/v1/eth/goerli/public",
     // ],
     rpcs: [
-      "https://polygon-mainnet.g.alchemy.com/v2/-MLinGy2l91vLVZWXmRfNYf9DavMxaEA",
+      // "https://polygon-mainnet.g.alchemy.com/v2/YuNeXto27ejHnOIGOwxl2N_cHCfyLyLE",
       "https://polygon-pokt.nodies.app",
-      "https://polygon.llamarpc.com",
+      // "https://polygon.llamarpc.com",
     ],
     icon: PolygonIcon,
     tokens: [

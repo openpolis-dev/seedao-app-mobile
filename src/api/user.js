@@ -16,6 +16,11 @@ export const getUser = () => {
   return request.get(`${PATH_PREFIX}/me`);
 };
 
+
+export const getUserLevel = () => {
+  return request.get(`${PATH_PREFIX}/level`);
+};
+
 export const updateUser = data => {
   return request.put(`${PATH_PREFIX}/me`, data);
 };

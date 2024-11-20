@@ -3,6 +3,9 @@ import React from "react";
 import { lazy } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import ProposalComment from "pages/proposalV2/comments";
+import Assistant from "../pages/assistant";
+import Node from "../pages/node";
+import SearchProfile from "../pages/searchprofile";
 
 const Home = lazy(() => import("../pages/home"));
 const Login = lazy(() => import("../pages/login"));
@@ -122,6 +125,11 @@ function RouterLink() {
         <Route path="/sns" element={<SNSEntrancePage />} />
         <Route path="/sns/register" element={<RegisterSNS />} />
         {/* <Route path="/sns/user" element={<UserSNS />} /> */}
+
+        <Route path="/assistant" element={<Assistant />} />
+        <Route path="/node" element={<Node />} />
+        <Route path="/search-profile" element={<SearchProfile />} />
+
         {/* redirect */}
         <Route path="/redirect" element={<JoyIDRedirect />} />
         <Route path="*" element={<Navigate to="/home" />} />

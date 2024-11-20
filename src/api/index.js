@@ -19,7 +19,9 @@ instance.interceptors.request.use(function (config) {
     !["post", "put", "delete"].includes(method) &&
     !config.url.includes("my") &&
     !config.url.includes("me") &&
+    !config.url.includes("level") &&
     !config.url.includes("push") &&
+      !config.url.includes('proposals/list')&&
     !config.url.includes("app_bundles")
   ) {
     return config;

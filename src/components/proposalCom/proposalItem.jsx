@@ -5,11 +5,15 @@ import ProposalStateTag from "components/proposalCom/stateTag";
 import Avatar from "components/common/avatar";
 import { MultiLineStyle } from "assets/styles/common";
 import { getProposalSIPSlug } from "utils";
+import {useTranslation} from "react-i18next";
+import {useSelector} from "react-redux";
 
 const CardBody = styled.div``;
 
 export default function ProposalItem({ data, sns }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const userToken = useSelector((state) => state.userToken);
 
   const openProposal = () => {
     navigate(`/proposal/thread/${data.id}`, { state: data });
@@ -25,6 +29,12 @@ export default function ProposalItem({ data, sns }) {
           </Title>
         </CardHeaderStyled>
         <Flexlft>
+          {
+              !!userToken && data.is_voted && data.state === "voting" &&  <VotedBox>{t('Proposal.HasVote')}</VotedBox>
+          }
+          {
+            !!userToken && !data.is_voted && data.state === "voting" &&  <VotedBox2>{t('Proposal.notVote')}</VotedBox2>
+          }
           <ProposalStateTag state={data.state} />
           <CatBox>{data.category_name}</CatBox>
         </Flexlft>
@@ -122,3 +132,24 @@ const CatBox = styled.div`
   padding: 0 6px;
   line-height: 18px;
 `;
+
+
+
+const VotedBox = styled.div`
+    display: inline-block;
+    border-radius: 4px;
+    border: 1px solid #08D0EA30;
+    color: #08b0c5;
+    font-size: 12px;
+    background: #08D0EA30;
+    padding: 0 5px;
+    text-align: center;
+    height: 18px;
+`
+
+const VotedBox2 = styled(VotedBox)`
+    border: 1px solid rgba(255, 81, 209,0.2);
+    color: rgba(255, 81, 209,1);
+    background: rgba(255, 81, 209,0.2);
+
+`

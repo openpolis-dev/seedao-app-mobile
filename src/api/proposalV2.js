@@ -38,14 +38,14 @@ export const getProposalDetail = (id, startPostId) => {
     `${PATH_PREFIX}show/${id}`,
     {
       start_post_id: startPostId,
-      access_token: getMetaforoData(),
+      access_token: getMetaforoData()?.token,
     },
     {},
   );
 };
 
 export const prepareMetaforo = (userId) => {
-  const token = getMetaforoData();
+  const token = getMetaforoData()?.token;
   return request.post("/user/prepare_metaforo", {
     api_token: token,
     user: { id: userId },
@@ -62,7 +62,7 @@ export const castVote = (id, vote_id, option) => {
   return request.post(`${PATH_PREFIX}vote/${id}`, {
     vote_id,
     options: option,
-    metaforo_access_token: getMetaforoData(),
+    metaforo_access_token: getMetaforoData()?.token,
   });
 };
 
@@ -80,7 +80,7 @@ export const addComment = (id, content, reply_id) => {
     content,
     reply_id,
     editor_type: 1,
-    metaforo_access_token: getMetaforoData(),
+    metaforo_access_token: getMetaforoData()?.token,
   });
 };
 
@@ -89,14 +89,14 @@ export const editCommet = (id, content, cid) => {
     post_id: cid,
     content,
     editor_type: 1,
-    metaforo_access_token: getMetaforoData(),
+    metaforo_access_token: getMetaforoData()?.token,
   });
 };
 
 export const deleteCommet = (id, cid) => {
   return request.post(`${PATH_PREFIX}delete_comment/${id}`, {
     post_id: cid,
-    metaforo_access_token: getMetaforoData(),
+    metaforo_access_token: getMetaforoData()?.token,
   });
 };
 
