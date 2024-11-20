@@ -3,11 +3,13 @@ import LearnDashboard from "components/newcomer/learn";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import sns from "@seedao/sns-js";
+
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import store from "store";
 import { saveLoading } from "store/reducer";
 import Layout from "components/layout/layout";
+import getConfig from "../../constant/envCofnig";
 
 export default function Newcomer() {
   const { t } = useTranslation();
@@ -23,7 +25,7 @@ export default function Newcomer() {
 
       account &&
         sns
-          ?.name(account)
+          ?.name(account,getConfig().NETWORK.rpcs[0])
           .then((r) => {
             if (r) {
               setUserSNS(r);

@@ -1,12 +1,14 @@
 import sns from "@seedao/sns-js";
+
 import { useEffect, useState } from "react";
+import getConfig from "../constant/envCofnig";
 
 export default function useParseSNS(wallet) {
   const [name, setName] = useState();
 
   useEffect(() => {
     if (wallet) {
-      sns.name(wallet).then((res) => {
+      sns.name(wallet,getConfig().NETWORK.rpcs[0]).then((res) => {
         setName(res);
       });
     }
@@ -19,7 +21,7 @@ export function useParseSNSList(wallets = []) {
 
   useEffect(() => {
     if (wallets.length) {
-      sns.names(wallets).then((res) => {
+      sns.names(wallets,getConfig().NETWORK.rpcs[0]).then((res) => {
         const _name_map = {};
         res.forEach((r, idx) => {
           _name_map[wallets[idx]] = r;

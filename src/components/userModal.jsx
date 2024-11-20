@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import CopyBox from "./common/copy";
-import TwitterIcon from "assets/Imgs/social/twitter.svg";
+import TwitterIcon from "assets/Imgs/social/x.png";
 import MirrorIcon from "assets/Imgs/social/mirror.svg";
 import EmailIcon from "assets/Imgs/social/email.svg";
 import GithubIcon from "assets/Imgs/social/github1.svg";
@@ -24,6 +24,43 @@ export default function UserModal({ user, handleClose }) {
     }
   }
 
+  const returnSocial = (str, val) => {
+    switch (str) {
+      case 'twitter':
+        return (
+            <a href={val} target="_blank">
+              <img src={TwitterIcon} alt="" />
+            </a>
+        );
+
+      case 'email':
+        return (
+            <a href={`mailto:${val}`} target="_blank">
+              <img src={EmailIcon} alt="" />
+            </a>
+        );
+
+      case 'mirror':
+        return (
+            <a href={val} target="_blank">
+              <img src={MirrorIcon} alt="" />
+            </a>
+        );
+      case 'github':
+        return (
+            <a href={val} target="_blank">
+              <img src={GithubIcon} alt="" />
+            </a>
+        );
+      case 'discord':
+        // return <img src={DiscordIcon} alt="" />;
+
+      case 'wechat':
+        return '';
+        // return (<img src={WechatIcon} alt="" />);
+    }
+  };
+
 
   return (
     <UserModalModal>
@@ -40,37 +77,17 @@ export default function UserModal({ user, handleClose }) {
         <NameBox>{user.name || user.sp?.nickname}</NameBox>
         <BioBox>{user.bio || user.sp?.bio}</BioBox>
         <SocialBox>
+          {(user?.social_accounts || user?.sp?.social_accounts).map((item, index) =>
+              returnSocial(item.network, item.identity) ? (
+                    <span className="iconLft">{returnSocial(item.network, item.identity)}</span>
+              ) : null,
+          )}
 
-          {
-            user.sp?.social_accounts?.map((item,index)=>(
-                <>
-                  {item.network === "twitter" && (
-                      <a href={item.identity} target="_blank" rel="noopener noreferrer">
-                        <img src={TwitterIcon} alt="" />
-                      </a>
-                  )}
-                  {user.network === "mirror" && (
-                      <a href={item.identity} target="_blank" rel="noopener noreferrer">
-                        <img src={MirrorIcon} alt="" />
-                      </a>
-                  )}
-
-
-
-                  {user.network === "github" && (
-                      <a href={item.identity} target="_blank" rel="noopener noreferrer">
-                        <img src={GithubIcon} alt="" />
-                      </a>
-                  )}
-                </>
-            ))
-          }
           {(user.email || user.sp?.email) && (
-              <a href={`mailto:${user.email|| user.sp?.email}`} target="_blank" rel="noopener noreferrer">
+              <a href={`mailto:${user.email || user.sp?.email}`} target="_blank" rel="noopener noreferrer">
                 <img src={EmailIcon} alt="" />
               </a>
           )}
-
 
 
         </SocialBox>
@@ -161,4 +178,8 @@ const SocialBox = styled.div`
   gap: 16px;
   margin-top: 30px;
   margin-bottom: 50px;
+  img{
+    width: 32px;
+    height: 32px;
+  }
 `;
