@@ -10,7 +10,7 @@
     "@khmyznikov/pwa-install": "^0.2.7",
     "@metamask/sdk": "^0.7.1",
     "@reduxjs/toolkit": "^1.9.6",
-    "@seedao/sns-js": "^0.7.0",
+    "@seedao/sns-js": "^0.8.0",
     "@sentry/cli": "^2.23.1",
     "@sentry/react": "^7.91.0",
     "@taoist-labs/components": "^0.2.20",
