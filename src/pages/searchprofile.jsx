@@ -26,6 +26,10 @@ const Box = styled.div`
     border-radius: 16px;
     text-align: center;
     position: relative;
+.rhtIpt{
+    text-align: right;
+    padding-right: 10px;
+}
 `;
 
 const StepTitle = styled.div`
