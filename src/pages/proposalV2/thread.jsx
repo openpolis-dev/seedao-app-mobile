@@ -25,6 +25,7 @@ import useProposalCategories from "hooks/useProposalCategories";
 import { formatDeltaDate } from "utils/time";
 import { getProposalSIPSlug } from "utils";
 import { Link } from "react-router-dom";
+import getConfig from "../../constant/envCofnig";
 
 export default function ProposalThread() {
   const { id } = useParams();
@@ -32,6 +33,7 @@ export default function ProposalThread() {
   const navigate = useNavigate();
   const metaforoToken = useSelector((state) => state.metaforoToken);
   const proposalCategories = useProposalCategories();
+  const userToken = useSelector((state) => state.userToken);
 
   const { t, i18n } = useTranslation();
   const [data, setData] = useState();
@@ -262,6 +264,25 @@ export default function ProposalThread() {
   };
   const currentCategory = getCurrentCategory();
 
+
+  const showVotedTag = (currentState) =>{
+    if (!data?.votes?.[0]) {
+      return false;
+    }
+    const votedItem = data?.votes?.[0].options.filter((item)=>item.is_vote);
+
+    return ( !!userToken && !!votedItem?.length &&  currentState === "voting")
+  }
+
+  const showVotedNot = (currentState) =>{
+    if (!data?.votes?.[0]) {
+      return false;
+    }
+    const votedItem = data?.votes?.[0].options.filter((item)=>item.is_vote);
+
+    return ( !!userToken && !votedItem?.length &&  currentState === "voting")
+  }
+
   // useEffect(() => {
   //   checkMetaforoLogin();
   // }, []);
@@ -296,6 +317,8 @@ export default function ProposalThread() {
           )}
         </div>
         <FlexLine>
+          {showVotedTag(data?.state) &&  <VotedBox>{t('Proposal.HasVote')}</VotedBox>}
+          {showVotedNot(data?.state) &&  <VotedBox2>{t('Proposal.notVote')}</VotedBox2>}
           {data?.state && <ProposalStateTag state={data.state} />}
           {currentCategory && <CategoryTag>{currentCategory}</CategoryTag>}
           {data?.template_name && <TemplateTag>{data?.template_name}</TemplateTag>}
@@ -330,6 +353,7 @@ export default function ProposalThread() {
               <div className="title">{previewTitle}</div>
             </ComponnentBox>
             <PreviewMobie
+                rpc={getConfig().NETWORK.rpcs[0]}
               DataSource={JSON.parse(JSON.stringify(preview || []))}
               language={i18n.language}
               initialItems={components}
@@ -549,3 +573,23 @@ const TimeTag = styled.div`
   font-size: 12px;
   margin-bottom: 4px;
 `;
+
+const VotedBox = styled.div`
+    display: inline-block;
+    border-radius: 4px;
+    border: 1px solid #08D0EA30;
+    color: #08b0c5;
+    font-size: 12px;
+    background: #08D0EA30;
+    padding: 0 5px;
+    text-align: center;
+    height: 18px;
+`
+
+const VotedBox2 = styled(VotedBox)`
+    border: 1px solid rgba(255, 81, 209,0.2);
+    color: rgba(255, 81, 209,1);
+    background: rgba(255, 81, 209,0.2);
+
+`
+

@@ -19,12 +19,14 @@ import "react-swipeable-list/dist/styles.css";
 import ApplicationStatusTag from "components/applicationStatusTag";
 import publicJs from "utils/publicJs";
 import sns from "@seedao/sns-js";
+
 import store from "store";
 import {saveCache, saveLoading} from "store/reducer";
 import useToast from "hooks/useToast";
 import Avatar from "components/common/avatar";
 import useCurrentPath from "../../hooks/useCurrentPath";
 import {useSelector} from "react-redux";
+import getConfig from "../../constant/envCofnig";
 
 export default function ApplicationsSection({ handleBg }) {
   const { t } = useTranslation();
@@ -158,7 +160,7 @@ export default function ApplicationsSection({ handleBg }) {
     if (keyword.endsWith(".seedao")) {
       // sns
       store.dispatch(saveLoading(true));
-      const w = await sns.resolve(keyword);
+      const w = await sns.resolve(keyword,getConfig().NETWORK.rpcs[0]);
       if (w && w !== ethers.constants.AddressZero) {
         setSearchVal(w?.toLocaleLowerCase());
       } else {

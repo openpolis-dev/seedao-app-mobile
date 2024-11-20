@@ -8,8 +8,46 @@ import SeeUImg from '../assets/Imgs/home/seeuNetwork.png';
 import SNSImg from "../assets/Imgs/home/SNS.jpg";
 import EchoImg from "../assets/Imgs/home/echo.svg";
 import CreditImg from "../assets/Imgs/home/credit.jpg";
+import PodcastImg from '../assets/Imgs/home/podcast.jpeg';
+import SNSQueryImg from "../assets/Imgs/home/snsquery.png"
+import AssistantImg from "../assets/Imgs/home/assistant.png";
 
 const apps =  [
+    {
+        id: 'podcast',
+        name: 'apps.podcastTitle',
+        link: 'https://www.xiaoyuzhoufm.com/podcast/64a27b216d90c5786108abbc',
+        icon: PodcastImg,
+        desc: 'apps.podcastDesc',
+    },
+    {
+        id: 'module-sns',
+        name: 'apps.snsQuery',
+        link: '/search-profile',
+        icon: SNSQueryImg,
+        desc: 'apps.SNSQueryDesc',
+    },
+    {
+        id: 'module-assistant',
+        name: 'apps.assistant',
+        link: '/assistant',
+        icon: AssistantImg,
+        desc: 'apps.assistantDes',
+    },
+    {
+        id: "module-sns",
+        name: "apps.SNS",
+        link: "/sns/register",
+        icon: SNSImg,
+        desc: "apps.SNSDesc",
+    },
+    {
+        id: 'module-credit',
+        name: 'apps.Credit',
+        link: '/credit',
+        icon: CreditImg,
+        desc: 'apps.CreditDesc',
+    },
     {
         id: 'Deschool',
         name: 'DeSchool',
@@ -74,13 +112,6 @@ const apps =  [
         desc: 'apps.SeeUDesc',
     },
     {
-      id: "module-sns",
-      name: "apps.SNS",
-      link: "/sns/register",
-      icon: SNSImg,
-      desc: "apps.SNSDesc",
-    },
-    {
       id: 'echo',
       name: 'apps.Echo',
       link: 'https://echo3.world/',
@@ -93,13 +124,6 @@ const apps =  [
       link: '',
       icon: 'https://avatars.githubusercontent.com/u/36115574?s=200&v=4',
       desc: 'Coming Soon',
-    },
-    {
-      id: 'module-credit',
-      name: 'apps.Credit',
-      link: '/credit',
-      icon: CreditImg,
-      desc: 'apps.CreditDesc',
     },
     // {
     //   id: "module-newcomer",

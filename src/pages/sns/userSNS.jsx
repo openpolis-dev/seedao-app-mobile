@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import store from "store";
 import { saveLoading } from "store/reducer";
+import getConfig from "../../constant/envCofnig";
 
 export default function UserSNS() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ export default function UserSNS() {
     if (account) {
       showLoading && setLoadingName(true);
       sns
-        .name(account)
+        .name(account,getConfig().NETWORK.rpcs[0])
         .then((r) => {
           setUserSNS(r);
         })
