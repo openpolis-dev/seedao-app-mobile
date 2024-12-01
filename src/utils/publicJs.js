@@ -4,6 +4,8 @@ import axios from 'axios';
 import store from "../store";
 import { saveCache } from "../store/reducer";
 import { ethers } from 'ethers';
+import sns from "@seedao/sns-js";
+import {getConfig} from "@joyid/evm";
 
 const AddressToShow = (address, num = 4) => {
   if (!address) {
@@ -191,6 +193,25 @@ function typedData(address, chainId) {
   };
 }
 
+const splitWallets = async(wallets,chooseRPC) =>{
+  const chunkSize = 300;
+  const result = [];
+  const resultArr = [];
+
+  for (let i = 0; i < wallets.length; i += chunkSize) {
+    const chunk = wallets.slice(i, i + chunkSize);
+    result.push(chunk);
+  }
+
+  for await (const chunk of result) {
+
+    const data = await sns.names(chunk, chooseRPC);
+    resultArr.push(...data);
+  }
+
+  return resultArr;
+}
+
 export default {
   AddressToShow,
   createSiweMessage,
@@ -200,4 +221,5 @@ export default {
   filterTags,
   checkRPCavailable,
   typedData,
+  splitWallets
 };

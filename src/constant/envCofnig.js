@@ -32,7 +32,8 @@ const LOCAL = {
     // ],
     rpcs: [
       // "https://polygon-mainnet.g.alchemy.com/v2/YuNeXto27ejHnOIGOwxl2N_cHCfyLyLE",
-      "https://polygon-pokt.nodies.app",
+      'https://polygon-mainnet.g.alchemy.com/v2/YuNeXto27ejHnOIGOwxl2N_cHCfyLyLE',
+      // "https://polygon-pokt.nodies.app",
       // "https://polygon.llamarpc.com",
     ],
     icon: PolygonIcon,
