@@ -26,11 +26,15 @@ instance.interceptors.request.use(function (config) {
   ) {
     return config;
   }
-  if (["/user/login", "/user/refresh_nonce", "/seeauth/login"].includes(config.url)) {
+
+  let urls = ['/user/login', '/user/refresh_nonce', '/seeauth/login',"/user/users","/proposals/list"];
+
+  const isValid = urls.some(prefix => config.url.startsWith(prefix));
+
+  if (isValid) {
     return config;
   }
   const tokenstr = store.getState().userToken;
-  console.log(tokenstr);
   if (!tokenstr) {
     return config;
   }
