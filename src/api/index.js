@@ -27,7 +27,7 @@ instance.interceptors.request.use(function (config) {
     return config;
   }
 
-  let urls = ['/user/login', '/user/refresh_nonce', '/seeauth/login',"/user/users","/proposals/list"];
+  let urls = ['/user/login', '/user/refresh_nonce', '/seeauth/login',"/user/users"];
 
   const isValid = urls.some(prefix => config.url.startsWith(prefix));
 
