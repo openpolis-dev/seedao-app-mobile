@@ -79,7 +79,8 @@ export default function RankingPage() {
   }, [allList, rankCurrent, rankTotal]);
 
   const formatSNS = (wallet) => {
-    const sns = dataMap[wallet] || wallet;
+
+    const sns = dataMap[wallet.toLowerCase()] || wallet;
     return sns.endsWith(".seedao") ? sns : publicJs.AddressToShow(sns);
   };
   useEffect(() => {
@@ -172,7 +173,7 @@ export default function RankingPage() {
         ],
       );
     });
-   
+
   };
 
   return (
