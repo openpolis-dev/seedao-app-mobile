@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import store from "store";
 import getConfig from "constant/envCofnig";
 import { ethers } from "ethers";
+import PublicJs from "../utils/publicJs";
 
 export default function useQuerySNS() {
   const snsMap = useSelector((state) => state.snsMap);
@@ -43,7 +44,8 @@ export default function useQuerySNS() {
     const _snsMap = { ...snsMap };
     if (_to_be_queried.length) {
       try {
-        const data = await sns.names(_to_be_queried, chooseRPC);
+        // const data = await sns.names(_to_be_queried, chooseRPC);
+        const data = await PublicJs.splitWallets(_to_be_queried,chooseRPC);
         data.forEach((d, idx) => {
           _snsMap[_to_be_queried[idx]] = d || ethers.utils.getAddress(_to_be_queried[idx]);
         });
