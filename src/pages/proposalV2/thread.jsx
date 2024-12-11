@@ -271,7 +271,7 @@ export default function ProposalThread() {
     }
     const votedItem = data?.votes?.[0].options.filter((item)=>item.is_vote);
 
-    return ( !!userToken && !!votedItem?.length &&  currentState === "voting")
+    return ( !!userToken && !!votedItem?.length &&  currentState === "voting" && !!userToken)
   }
 
   const showVotedNot = (currentState) =>{
@@ -280,7 +280,7 @@ export default function ProposalThread() {
     }
     const votedItem = data?.votes?.[0].options.filter((item)=>item.is_vote);
 
-    return ( !!userToken && !votedItem?.length &&  currentState === "voting")
+    return ( !!userToken && !votedItem?.length &&  currentState === "voting" && !!userToken)
   }
 
   // useEffect(() => {
