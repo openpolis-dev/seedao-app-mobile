@@ -23,7 +23,7 @@ const LOCAL = {
   JOY_ID_URL: "https://testnet.joyid.dev",
   NETWORK: {
     name: "Polygon",
-    nativeToken: "Matic",
+    nativeToken: "POL",
     chainId: 137,
     // rpcs: [
     //   "https://eth-goerli.g.alchemy.com/v2/MATWeLJN1bEGTjSmtyLedn0i34o1ISLD",
