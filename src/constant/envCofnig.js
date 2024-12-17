@@ -4,7 +4,7 @@ import { amoy } from "utils/chain";
 import { polygon } from "viem/chains";
 
 
-const VERSION = "0.7.2";
+const VERSION = "0.7.3";
 
 
 const SENTRY_DSN = "https://54ec7357966342699d508a552ec1927c@o4505590144106496.ingest.sentry.io/4505590153805824";
@@ -23,7 +23,7 @@ const LOCAL = {
   JOY_ID_URL: "https://testnet.joyid.dev",
   NETWORK: {
     name: "Polygon",
-    nativeToken: "Matic",
+    nativeToken: "POL",
     chainId: 137,
     // rpcs: [
     //   "https://eth-goerli.g.alchemy.com/v2/MATWeLJN1bEGTjSmtyLedn0i34o1ISLD",
