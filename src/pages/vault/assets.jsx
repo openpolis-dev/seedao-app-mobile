@@ -24,7 +24,7 @@ const SAFE_CHAIN = {
     name: "Ethereum",
   },
   137: {
-    short: "matic",
+    short: "POL",
     name: "Polygon",
   },
 };
