@@ -52,7 +52,8 @@
     "CityhallBranding": "品牌小组",
     "CityhallTech": "技术小组",
     "nodeMembers": "当季SeeDAO社区治理节点名单",
-    "GovernanceNodeResult": "节点资质试算"
+    "GovernanceNodeResult": "节点资质试算",
+    "whitePaper": "白皮书"
   },
   "Resources": {
     "Calendar": "社区日历申请",
@@ -383,7 +384,8 @@
     "NotEnoughBalance": "{{token}} 余额不足",
     "ShareInviteLink": "分享我的邀请链接",
     "InviteLinkCopied": "邀请链接已复制",
-    "search": "检索"
+    "search": "检索",
+    "view": "查看SNS获取记录"
   },
   "Onboarding": {
     "UnlockTip": "获取SNS后即可解锁",
