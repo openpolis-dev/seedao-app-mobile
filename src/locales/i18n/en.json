@@ -506,5 +506,9 @@
     "ApproveFailed": "Approve failed",
     "RemainBorrowQuotaNotEnough": "Community remains not enough",
     "GetRealRepayAmountFailed": "Get real repayment amount failed, please check in the records"
+  },
+  "publicity": {
+    "title": "Bulletin Board",
+    "detail": "Bulletin Board Detail"
   }
 }

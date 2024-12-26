@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 import {getCalenderEvents} from "../../api/calendar";
 
 const Box = styled.div`
-    margin: 24px 20px 0;
+    margin: 15px 20px 0;
   background: #FFFFFF linear-gradient(180deg, #5200FF 0%, #5100FF 100%);
   border-radius: 16px;
   padding: 16px;
