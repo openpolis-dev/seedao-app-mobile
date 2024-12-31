@@ -4,7 +4,7 @@ const PATH_PREFIX = '/publicity/';
 
 
 export const getPublicity = (page,size) =>{
-  return request.get(`${PATH_PREFIX}list?page=${page}&size=${size}`);
+  return request.get(`${PATH_PREFIX}list?page=${page}&size=${size}&type=list`);
 }
 
 

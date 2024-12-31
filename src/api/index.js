@@ -60,6 +60,9 @@ instance.interceptors.request.use(function (config) {
 
 instance.interceptors.response.use(
   (response) => {
+    if(response.data.code !== 200){
+      return Promise.reject(response.data);
+    }
     return response;
   },
   (error) => {

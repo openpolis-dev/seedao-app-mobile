@@ -222,6 +222,7 @@ export default function ThreadCommentsPage() {
       // refresh
     } catch (error) {
       logError("send comment error:", type, error);
+      toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
     } finally {
       store.dispatch(saveLoading(false));
     }

@@ -4,6 +4,8 @@ import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
 import {getPublicity} from "../../api/publicity";
 import { formatTime } from "utils/time";
+import useToast from "../../hooks/useToast";
+import {useTranslation} from "react-i18next";
 
 
 const Box = styled.div`
@@ -51,9 +53,12 @@ const Rht = styled.div`
 const NewsTicker = () =>{
     const navigate = useNavigate();
     const [list,setList] = useState([]);
+    const { Toast, toast } = useToast();
+    const { t } = useTranslation();
 
     useEffect(() => {
         getList()
+
     }, []);
 
     const getList = async() =>{
@@ -63,6 +68,7 @@ const NewsTicker = () =>{
             setList(rows)
         }catch(error){
             console.error(error)
+            toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
         }
     }
 
@@ -77,16 +83,16 @@ const NewsTicker = () =>{
                     list.map((item, index) => (
                         <div key={index} onClick={()=>handleNav("/publicity/detail/"+item?.id)} className="inner">
                             <span>{item?.title}</span>
-                            <span className="time">{formatTime(item?.createAt * 1000)}</span>
+                            <span className="time">{formatTime(item?.updateAt * 1000)}</span>
                         </div>))
                 }
 
             </Marquee>
         </Lft>
         <Rht onClick={()=>handleNav("/publicity")}>
-            查看 &gt;
+            {t("publicity.view")} &gt;
         </Rht>
-
+        {Toast}
     </Box>
 }
 

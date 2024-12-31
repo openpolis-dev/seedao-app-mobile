@@ -10,6 +10,7 @@ import {getCityHallNode} from "../api/cityhall";
 import useQuerySNS from "../hooks/useQuerySNS";
 import {getUsers} from "../api/user";
 import {useSelector} from "react-redux";
+import useToast from "../hooks/useToast";
 
 const LayoutContainer = styled.div`
   padding-inline: 20px;
@@ -141,6 +142,7 @@ export default function Node(){
     const { getMultiSNS } = useQuerySNS();
     const [userMap, setUserMap] = useState(null);
     const [techMembers, setTechMembers] = useState([]);
+    const { Toast, toast } = useToast();
     const snsMap = useSelector((state) => state.snsMap);
 
     const getDetail = async () => {
@@ -153,6 +155,7 @@ export default function Node(){
 
         } catch (error) {
             logError(error);
+            toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
         }
     };
 
@@ -167,6 +170,7 @@ export default function Node(){
             setUserMap(userData);
         } catch (error) {
             logError('getUsersInfo error:', error);
+            toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
         }
     };
 
@@ -220,6 +224,6 @@ export default function Node(){
         <LayoutContainer>
             <GroupItem name={t("Governance.CityhallTech")} members={techMembers} />
         </LayoutContainer>
-
+        {Toast}
     </Layout>
 }

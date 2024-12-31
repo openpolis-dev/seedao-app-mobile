@@ -53,7 +53,7 @@
     "CityhallTech": "技术小组",
     "nodeMembers": "当季SeeDAO社区治理节点名单",
     "GovernanceNodeResult": "节点资质试算",
-    "whitePaper": "白皮书"
+    "whitePaper": "SeeDAO白皮书"
   },
   "Resources": {
     "Calendar": "社区日历申请",
@@ -525,6 +525,7 @@
   },
   "publicity": {
     "title": "社区公示信息",
-    "detail": "社区公示信息详情"
+    "detail": "社区公示信息详情",
+    "view": "查看"
   }
 }

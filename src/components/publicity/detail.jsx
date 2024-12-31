@@ -10,6 +10,8 @@ import {formatTime} from "../../utils/time";
 import {MdPreview} from "md-editor-rt";
 import store from "../../store";
 import {saveLoading} from "../../store/reducer";
+import DefaultAvatarIcon from "../../assets/Imgs/avatar.svg";
+import useToast from "../../hooks/useToast";
 
 const ThreadHead = styled.div`
   padding: 16px 0;
@@ -43,10 +45,11 @@ const InfoBox = styled.div`
 const UserBox = styled.div`
   display: flex;
   gap: 8px;
+    margin-top: 10px;
   align-items: center;
   img {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     object-fit: cover;
     object-position: center;
@@ -85,6 +88,7 @@ export default function PublicityDetail(){
     const [detail, setDetail] = useState({});
     const [snsName,setSnsName] = useState();
     const { id } = useParams();
+    const { Toast, toast } = useToast();
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
@@ -93,8 +97,13 @@ export default function PublicityDetail(){
     }, [id]);
 
     const getSnS = async(account) =>{
-        let rt = await sns.name(account,getConfig().NETWORK.rpcs[0])
-        setSnsName(rt)
+        try{
+            let rt = await sns.name(account,getConfig().NETWORK.rpcs[0])
+            setSnsName(rt)
+        }catch(error){
+            toast.danger(`${error?.data?.msg || error?.code || error}`);
+        }
+
     }
 
 
@@ -102,8 +111,8 @@ export default function PublicityDetail(){
         store.dispatch(saveLoading(true));
         try{
             let rt = await getPublicityDetail(id);
-            setDetail(rt.data)
-            getSnS(rt.data.creator.toLowerCase())
+            setDetail(rt.data.Detail)
+            getSnS(rt.data.Detail.creator.toLowerCase())
         }catch(error){
             console.error(error)
         }finally {
@@ -129,9 +138,10 @@ export default function PublicityDetail(){
             </div>
             <InfoBox>
                 <UserBox onClick={() => handleProfile()}>
+                    <img src={detail?.avatar || DefaultAvatarIcon} alt=""/>
                     <span className="name">{snsName}</span>
                 </UserBox>
-                {detail?.createAt && <div className="date">{formatTime(detail?.createAt * 1000)}</div>}
+                {detail?.updateAt && <div className="date">{formatTime(detail?.updateAt * 1000)}</div>}
             </InfoBox>
         </ThreadHead>
 
@@ -140,5 +150,6 @@ export default function PublicityDetail(){
                 <MdPreview theme="light" modelValue={detail.content || ''} />
             </PushItemContent>
         </ContentOuter>
+        {Toast}
     </Layout>
 }

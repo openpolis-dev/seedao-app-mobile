@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import Loading from "components/common/loading";
 import { useNavigate } from "react-router-dom";
 import useCurrentPath from "../../hooks/useCurrentPath";
+import useToast from "../../hooks/useToast";
 
 const PageSize = 20;
 
@@ -23,7 +24,7 @@ export default function EventListPage() {
   const [list, setList] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-
+  const { Toast, toast } = useToast();
   const prevPath = useCurrentPath();
   const cache = useSelector(state => state.cache);
 
@@ -64,10 +65,11 @@ export default function EventListPage() {
       setTotal(res.data.total);
       setPage(page + 1);
     } catch (error) {
-      //  TODO toast
       logError(error);
+      toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
     } finally {
       store.dispatch(saveLoading(false));
+
     }
   };
 
@@ -123,6 +125,7 @@ export default function EventListPage() {
           )}
         </EventList>
       </InfiniteScroll>
+      {Toast}
     </Layout>
   );
 }

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { publicList } from '../../api/publicData';
+import useToast from "../../hooks/useToast";
 
 
 const Box = styled.div`
@@ -137,7 +138,7 @@ export default function Hub() {
     const navigate = useNavigate();
     const [list, setList] = useState([]);
     const { t } = useTranslation();
-
+    const { Toast, toast } = useToast();
     const [pageCur, setPageCur] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [loading, setLoading] = useState(true);
@@ -159,8 +160,9 @@ export default function Hub() {
             setList(rt.slice(0,2));
             setPageSize(size);
             setPageCur(page);
-        } catch (e) {
-            logError(e);
+        } catch (error) {
+            logError(error);
+            toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
         } finally {
             setLoading(false);
         }

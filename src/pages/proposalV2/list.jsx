@@ -18,12 +18,14 @@ import useQuerySNS from "hooks/useQuerySNS";
 import publicJs from "utils/publicJs";
 import { useSelector } from "react-redux";
 import SearchRhtImg from "../../assets/Imgs/searchRht.svg";
+import useToast from "../../hooks/useToast";
 
 const PAGE_SIZE = 10;
 
 export default function ProposalList() {
   const { t } = useTranslation();
   const snsMap = useSelector((state) => state.snsMap);
+  const { Toast, toast } = useToast();
 
   const proposalCategories = useProposalCategories();
   // filter category
@@ -104,6 +106,7 @@ export default function ProposalList() {
       setPage(_page + 1);
     } catch (error) {
       logError("getAllProposals failed", error);
+      toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
     } finally {
       store.dispatch(saveLoading(false));
     }
@@ -284,6 +287,7 @@ export default function ProposalList() {
           ))}
         </InfiniteScroll>
       </ProposalBox>
+      {Toast}
     </Layout>
   );
 }

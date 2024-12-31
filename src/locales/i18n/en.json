@@ -53,7 +53,7 @@
     "CityhallTech": "Tech",
     "nodeMembers": "Current Nodes",
     "GovernanceNodeResult": "SeeDAO Node Qualification",
-    "whitePaper": "WhitePaper"
+    "whitePaper": "SeeDAO WhitePaper"
   },
   "Resources": {
     "Calendar": "Calendar",
@@ -509,6 +509,7 @@
   },
   "publicity": {
     "title": "Bulletin Board",
-    "detail": "Bulletin Board Detail"
+    "detail": "Bulletin Board Detail",
+    "view": "View"
   }
 }

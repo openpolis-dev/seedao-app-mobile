@@ -26,6 +26,7 @@ import { formatDeltaDate } from "utils/time";
 import { getProposalSIPSlug } from "utils";
 import { Link } from "react-router-dom";
 import getConfig from "../../constant/envCofnig";
+import useToast from "../../hooks/useToast";
 
 export default function ProposalThread() {
   const { id } = useParams();
@@ -53,7 +54,7 @@ export default function ProposalThread() {
   const [previewTitle, setPreviewTitle] = useState("");
 
   const [contentBlocks, setContentBlocks] = useState([]);
-
+  const { Toast, toast } = useToast();
   const { getMultiSNS } = useQuerySNS();
   const { checkMetaforoLogin, LoginMetafoModal } = useMetaforoLogin();
 
@@ -154,6 +155,7 @@ export default function ProposalThread() {
       }
     } catch (error) {
       logError("get proposal detail error:", error);
+      toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
       //   showToast(error?.data?.msg || error?.code || error, ToastType.Danger, { autoClose: false });
     } finally {
       store.dispatch(saveLoading(false));
@@ -411,6 +413,7 @@ export default function ProposalThread() {
         />
       )}
       {LoginMetafoModal}
+      {Toast}
     </Layout>
   );
 }

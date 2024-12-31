@@ -15,11 +15,12 @@ import UserIcon from "assets/Imgs/sns/user.svg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import whiteList from "constant/whitelist.json";
 import HelperIcon from "assets/Imgs/sns/helper.svg";
+import useToast from "../../hooks/useToast";
 
 const RegisterSNSWrapper = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-
+  const { Toast, toast } = useToast();
   const account = useSelector((state) => state.account);
   const rpc = useSelector((state) => state.rpc);
 
@@ -34,6 +35,7 @@ const RegisterSNSWrapper = () => {
       dispatchSNS({ type: ACTIONS.SET_HAS_REACHED, payload: hasReached });
     } catch (error) {
       logError("query maxOwnedNumberReached failed", error);
+      toast.danger(`${error?.data?.msg || error?.code || error}`);
     }
   };
 
@@ -48,6 +50,7 @@ const RegisterSNSWrapper = () => {
         }
       } catch (error) {
         logError("checkUserInwhitelist failed", error);
+        toast.danger(`${error?.data?.msg || error?.code || error}`);
       }
     };
     const checkMaxOwnedNumber = () => {
@@ -58,6 +61,7 @@ const RegisterSNSWrapper = () => {
         })
         .catch((error) => {
           logError("checkMaxOwnedNumber failed", error);
+          toast.danger(`${error?.data?.msg || error?.code || error}`);
         });
     };
     if (account && controllerContract) {
@@ -77,6 +81,8 @@ const RegisterSNSWrapper = () => {
         .catch((error) => {
           dispatchSNS({ type: ACTIONS.SET_WHITELIST_IS_OPEN, payload: true });
           logError('checkWhitelistOpen failed', error);
+          toast.danger(`${error?.data?.msg || error?.code || error}`);
+
         });
     };
     const checkHadMintByWhitelist = async () => {
@@ -87,6 +93,7 @@ const RegisterSNSWrapper = () => {
         })
         .catch((error) => {
           logError('checkWhitelistOpen failed', error);
+          toast.danger(`${error?.data?.msg || error?.code || error}`);
         });
     };
     if (account && minterContract) {
@@ -194,6 +201,7 @@ const RegisterSNSWrapper = () => {
         </HelperBox>
         {loading && <StepLoading />}
       </Container>
+      {Toast}
     </Layout>
   );
 };

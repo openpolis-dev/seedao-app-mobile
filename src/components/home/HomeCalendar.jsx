@@ -5,6 +5,7 @@ import 'dayjs/locale/zh';
 import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {getCalenderEvents} from "../../api/calendar";
+import useToast from "../../hooks/useToast";
 
 const Box = styled.div`
     margin: 15px 20px 0;
@@ -75,6 +76,7 @@ const ListBox = styled.ul`
 `
 export default function HomeCalendar(){
     const { t,i18n } = useTranslation();
+    const { Toast, toast } = useToast();
 
     const navigate = useNavigate();
     const [list,setList] = useState([])
@@ -88,8 +90,9 @@ export default function HomeCalendar(){
             let arr = rt.data.items.filter(item=>item.summary);
             let lArr = arr.slice(0,2);
             setList(lArr);
-        }catch (e) {
-            console.log(e)
+        }catch (error) {
+            console.log(error)
+            toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
         }
     }
 
@@ -134,5 +137,6 @@ export default function HomeCalendar(){
                 </li>))
             }
         </ListBox>
+        {Toast}
     </Box>
 }

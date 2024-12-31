@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { formatTime } from "../../utils/time";
+import DefaultAvatarIcon from "assets/Imgs/avatar.svg";
 
 import { useTranslation } from "react-i18next";
 import { getPublicity } from "../../api/publicity";
@@ -111,8 +112,8 @@ const CardBody = styled.div`
 `;
 
 const UserAvatar = styled.img`
-  width: 44px;
-  height: 44px;
+  width: 24px;
+  height: 24px;
   object-fit: cover;
   object-position: center;
   border-radius: 50%;
@@ -122,6 +123,9 @@ const AvaBox = styled.div`
   display: flex;
   align-items: center;
   .left {
+      display: flex;
+      align-items: center;
+      justify-items: center;
     margin-right: 10px;
   }
 
@@ -195,7 +199,8 @@ export default function PublicityList(){
 
         }catch(error){
             console.error(error)
-            toast.danger(`${"Credit.CalculateFailed"}: ${error}`);
+            toast.danger(`${error?.data?.msg || error?.code || error}`);
+            // toast.danger(`${"Credit.CalculateFailed"}: ${error}`);
         }finally {
             store.dispatch(saveLoading(false));
         }
@@ -212,7 +217,6 @@ export default function PublicityList(){
     const formatSNS = (wl) => {
         const wallet = wl.toLowerCase();
         const name = snsMap[wallet] ? snsMap[wallet]:wallet;
-        console.log(snsMap[wallet])
         return name?.endsWith('.seedao') ? name : publicJs.AddressToShow(name, 4);
     };
 
@@ -220,7 +224,7 @@ export default function PublicityList(){
         title={t("publicity.title")}
         headBgColor={`var(--background-color)`}
         bgColor="var(--background-color)"
-        headerProps={{ backPath: "/governance" }}
+        headerProps={{ backPath: "/" }}
     >
         <Box>
 
@@ -243,12 +247,12 @@ export default function PublicityList(){
                         </CardHeaderStyled>
                         <CardBody>
                             <AvaBox>
-                                {/*<div className="left">*/}
-                                {/*  <UserAvatar src={DefaultAvatarIcon} alt="" />*/}
-                                {/*</div>*/}
+                                <div className="left">
+                                  <UserAvatar src={item.avatar || DefaultAvatarIcon} alt="" />
+                                </div>
                                 <div className="right">
                                     <div className="name">{formatSNS(item.creator)}</div>
-                                    <div className="date">{formatTime(item?.createAt * 1000)}</div>
+                                    <div className="date">{formatTime(item?.updateAt * 1000)}</div>
                                 </div>
                             </AvaBox>
                         </CardBody>
@@ -266,5 +270,6 @@ export default function PublicityList(){
         {/*}*/}
 
         </Box>
+        {Toast}
     </Layout>
 }

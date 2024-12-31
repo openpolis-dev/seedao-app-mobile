@@ -109,7 +109,8 @@ export default function ProposalVote({
       })
       .catch((error) => {
         logError("cast error failed", error);
-        toast.danger(`cast error failed: ${error?.data?.msg || error?.code || error}`);
+        toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
+        // toast.danger(`cast error failed: ${error?.data?.msg || error?.code || error}`);
       })
       .finally(() => {
         store.dispatch(saveLoading(false));
@@ -182,7 +183,7 @@ export default function ProposalVote({
                       </VoteNumber>
                     </td>
                 }
-                
+
               </tr>
             ))}
           </tbody>
