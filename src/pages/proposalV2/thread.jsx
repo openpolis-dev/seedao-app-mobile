@@ -9,7 +9,7 @@ import TemplateTag from "components/proposalCom/templateTag";
 import Avatar from "components/common/avatar";
 import store from "store";
 import { saveLoading } from "store/reducer";
-import { getProposalDetail, getComponents } from "api/proposalV2";
+import {getProposalDetail, getComponents, checkCanVote} from "api/proposalV2";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import publicJs from "utils/publicJs";
 import useQuerySNS from "hooks/useQuerySNS";
@@ -57,6 +57,8 @@ export default function ProposalThread() {
   const { Toast, toast } = useToast();
   const { getMultiSNS } = useQuerySNS();
   const { checkMetaforoLogin, LoginMetafoModal } = useMetaforoLogin();
+
+  const [hasPermission, setHasPermission] = useState(false);
 
   const getProposal = async (refreshIdx) => {
     store.dispatch(saveLoading(true));
@@ -273,7 +275,7 @@ export default function ProposalThread() {
     }
     const votedItem = data?.votes?.[0].options.filter((item)=>item.is_vote);
 
-    return ( !!userToken && !!votedItem?.length &&  currentState === "voting" && !!userToken)
+    return ( !!userToken && !!votedItem?.length &&  currentState === "voting" && !!userToken) && hasPermission
   }
 
   const showVotedNot = (currentState) =>{
@@ -282,8 +284,19 @@ export default function ProposalThread() {
     }
     const votedItem = data?.votes?.[0].options.filter((item)=>item.is_vote);
 
-    return ( !!userToken && !votedItem?.length &&  currentState === "voting" && !!userToken)
+    return ( !!userToken && !votedItem?.length &&  currentState === "voting" && !!userToken) && hasPermission
   }
+
+
+  useEffect(() => {
+    if(!id ||!showVote() )return;
+    const getVotePermission = () => {
+      checkCanVote(Number(id)).then((r) => {
+        setHasPermission(r.data);
+      });
+    };
+    getVotePermission()
+  }, [id,data]);
 
   // useEffect(() => {
   //   checkMetaforoLogin();
@@ -405,6 +418,7 @@ export default function ProposalThread() {
           voteGate={data?.vote_gate}
           poll={data.votes[0]}
           id={Number(id)}
+          hasPermission={hasPermission}
           updateStatus={getProposal}
           showMultiple={data.is_multiple_vote}
           proposalState={data?.state}
