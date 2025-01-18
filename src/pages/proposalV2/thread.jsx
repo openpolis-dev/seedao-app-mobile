@@ -52,7 +52,7 @@ export default function ProposalThread() {
   const [beforeList, setBeforeList] = useState([]);
   const [preview, setPreview] = useState([]);
   const [previewTitle, setPreviewTitle] = useState("");
-
+  const [errorTips,setErrorTips] = useState("");
   const [contentBlocks, setContentBlocks] = useState([]);
   const { Toast, toast } = useToast();
   const { getMultiSNS } = useQuerySNS();
@@ -157,7 +157,8 @@ export default function ProposalThread() {
       }
     } catch (error) {
       logError("get proposal detail error:", error);
-      toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
+      toast.danger(`${error?.data?.code || error?.response?.data?.code}:${error.response?.data?.msg||error?.data?.msg || error?.code || error}`);
+      setErrorTips(error.response?.data?.msg|| error?.data?.msg || error?.code || error)
       //   showToast(error?.data?.msg || error?.code || error, ToastType.Danger, { autoClose: false });
     } finally {
       store.dispatch(saveLoading(false));
@@ -307,12 +308,15 @@ export default function ProposalThread() {
       title={t("Proposal.ProposalDetail")}
       headStyle={{ style: { borderBottom: "1px solid var(--border-color-1)" } }}
       customTab={
-        <ThreadTabbar
-          id={id}
-          showVote={showVote()}
-          openComment={() => navigate(`/proposal/thread/${id}/comments`)}
-          openHistory={() => navigate(`/proposal/thread/${id}/history`, { state: data.histories?.lists ?? [] })}
-        />
+
+          !!errorTips ?<div>&nbsp;</div>: <ThreadTabbar
+              id={id}
+              showVote={showVote()}
+              openComment={() => navigate(`/proposal/thread/${id}/comments`)}
+              openHistory={() => navigate(`/proposal/thread/${id}/history`, { state: data.histories?.lists ?? [] })}
+          />
+
+
       }
       headerProps={{ backPath: "/proposal" }}
     >
@@ -362,6 +366,8 @@ export default function ProposalThread() {
         </RejectOuter>
       )}
       <ContentOuter>
+        {!!errorTips &&<ErrorBox>{errorTips}</ErrorBox>
+        }
         {!!preview?.length && (
           <>
             <ComponnentBox>
@@ -431,6 +437,8 @@ export default function ProposalThread() {
     </Layout>
   );
 }
+
+
 const ViewMore = styled.div`
   display: flex;
   align-items: center;
@@ -443,6 +451,14 @@ const ViewMore = styled.div`
   a{
     color: var(--primary-color);
   }
+`
+
+const ErrorBox = styled.div`
+padding: 30px;
+color: #dc3545;
+text-align: center;
+font-size: 20px;
+font-weight: bold;
 `
 
 const RejectBlock = styled.div`
