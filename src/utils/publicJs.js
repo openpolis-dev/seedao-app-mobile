@@ -205,8 +205,15 @@ const splitWallets = async(wallets,chooseRPC) =>{
 
   for await (const chunk of result) {
 
-    const data = await sns.names(chunk, chooseRPC);
-    resultArr.push(...data);
+    try{
+      const data = await sns.names(chunk, chooseRPC);
+      resultArr.push(...data);
+    }catch(error){
+      console.error(error)
+    }
+    //
+    // const data = await sns.names(chunk, chooseRPC);
+    // resultArr.push(...data);
   }
 
   return resultArr;
