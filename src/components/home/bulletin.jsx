@@ -13,13 +13,14 @@ const Box = styled.div`
     padding: 16px;
     color: #fff;
     background:url(${BgImg}) no-repeat right top;
+    background-size:100%;
 `
 
 const TitleBox = styled.div`
   font-size: 20px;
   font-family: Poppins-SemiBold;
   font-weight: 600;
-  color: #333;
+  color: #fff;
   margin-bottom: 8px;
   line-height: 1em;
 `
@@ -28,7 +29,7 @@ const TipsBox = styled.div`
   font-size: 14px;
   font-weight: 400;
   //color: rgba(255,255,255,0.8);
-    color: #333;
+    color: #fff;
   line-height: 22px;
 `
 
@@ -38,7 +39,7 @@ const ListBox = styled.ul`
       font-size: 14px;
       font-family: Poppins-SemiBold;
       font-weight: 600;
-      color: #333;
+      color: #fff;
         display: flex;
         align-items: center;
         
