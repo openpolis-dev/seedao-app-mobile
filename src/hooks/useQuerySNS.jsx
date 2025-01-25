@@ -47,6 +47,7 @@ export default function useQuerySNS() {
         // const data = await sns.names(_to_be_queried, chooseRPC);
         const data = await PublicJs.splitWallets(_to_be_queried,chooseRPC);
         data.forEach((d, idx) => {
+          if(!d)return;
           _snsMap[_to_be_queried[idx]] = d || ethers.utils.getAddress(_to_be_queried[idx]);
         });
       } catch (error) {

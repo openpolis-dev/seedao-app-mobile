@@ -7,6 +7,8 @@ import HomeCalendar from "../components/home/HomeCalendar";
 import AppList from "../components/home/appList";
 import Event from "../components/home/event";
 import Hub from "../components/home/pub";
+import NewsTicker from "../components/home/marquee";
+import Bulletin from "../components/home/bulletin";
 
 const BoxInner = styled.div`
   display: flex;
@@ -22,8 +24,10 @@ export default function Home() {
   return (
     <Layout sticky title={t("Menus.Square")} bgColor="var(--background-color)">
       <BoxInner>
-        <Adv />
+        {/*<Adv />*/}
+        {/*<NewsTicker />*/}
         <HomeCalendar />
+        <Bulletin />
         <AppList />
         <Event />
         <Hub />

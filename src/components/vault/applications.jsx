@@ -37,7 +37,7 @@ export default function ApplicationsSection({ handleBg }) {
   const [total, setTotal] = useState(0);
   const [list, setList] = useState([]);
 
-  const { Toast, showToast } = useToast();
+  const { Toast, showToast, toast } = useToast();
 
   // status
   const statusList = useApplicationStatus();
@@ -157,22 +157,29 @@ export default function ApplicationsSection({ handleBg }) {
     navigate("/assets/application", { state: item });
   };
   const handleSearch = async () => {
-    if (keyword.endsWith(".seedao")) {
-      // sns
-      store.dispatch(saveLoading(true));
-      const w = await sns.resolve(keyword,getConfig().NETWORK.rpcs[0]);
-      if (w && w !== ethers.constants.AddressZero) {
-        setSearchVal(w?.toLocaleLowerCase());
+    try{
+      if (keyword.endsWith(".seedao")) {
+        // sns
+        store.dispatch(saveLoading(true));
+        const w = await sns.resolve(keyword,getConfig().NETWORK.rpcs[0]);
+        if (w && w !== ethers.constants.AddressZero) {
+          setSearchVal(w?.toLocaleLowerCase());
+        } else {
+          showToast(t("Msg.SnsNotFound"));
+        }
+        store.dispatch(saveLoading(false));
+      } else if (ethers.utils.isAddress(keyword)) {
+        // address
+        setSearchVal(keyword?.toLocaleLowerCase());
       } else {
-        showToast(t("Msg.SnsNotFound"));
+        showToast(t("Msg.InvalidAddress"));
       }
-      store.dispatch(saveLoading(false));
-    } else if (ethers.utils.isAddress(keyword)) {
-      // address
-      setSearchVal(keyword?.toLocaleLowerCase());
-    } else {
-      showToast(t("Msg.InvalidAddress"));
+    }catch(error){
+      toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
     }
+
+
+
   };
   const onKeyUp = (e) => {
     console.log(e.keyCode);

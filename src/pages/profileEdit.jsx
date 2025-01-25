@@ -195,7 +195,7 @@ export default function ProfileEdit() {
       toast.danger(t("My.IncorrectMirror"));
       return;
     }
-    if (twitter && !twitter.startsWith("https://twitter.com/")) {
+    if (twitter && !twitter.startsWith("https://x.com/")) {
       toast.danger(t("My.IncorrectLink", { media: "Twitter" }));
       return;
     }
@@ -294,9 +294,9 @@ export default function ProfileEdit() {
               </InputBox>
             </li>
             <li>
-              <div className="title">{t("My.Twitter")}</div>
+              <div className="title">X</div>
               <InputBox>
-                <input type="text" placeholder="" value={twitter} onChange={(e) => handleInput(e, "twitter")} />
+                <input type="text" placeholder="https://x.com/home" value={twitter} onChange={(e) => handleInput(e, "twitter")} />
               </InputBox>
             </li>
             <li>

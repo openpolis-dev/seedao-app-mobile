@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import styled from "styled-components";
+import useToast from "../hooks/useToast";
 
 const Box = styled.div`
     margin: 0 20px;
@@ -113,7 +114,7 @@ export default function Hub(){
     const navigate = useNavigate();
     const [list, setList] = useState([]);
     const { t } = useTranslation();
-
+    const { Toast, toast } = useToast();
 
     useEffect(() => {
         getList();
@@ -123,8 +124,9 @@ export default function Hub(){
         try {
             let result = await axios.get(`https://notion-api.splitbee.io/v1/table/73d83a0a-258d-4ac5-afa5-7a997114755a`);
             setList(result.data);
-        } catch (e) {
-            logError(e);
+        } catch (error) {
+            logError(error);
+            toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
         } finally {
             // dispatch({ type: AppActionType.SET_LOADING, payload: false });
         }
@@ -219,6 +221,7 @@ export default function Hub(){
                 ))}
         </Row>
         </Box>
+        {Toast}
     </Layout>
 
 }

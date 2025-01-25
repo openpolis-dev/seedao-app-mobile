@@ -10,6 +10,7 @@ import {saveCache} from "../../store/reducer";
 import useCurrentPath from "../../hooks/useCurrentPath";
 import {useSelector} from "react-redux";
 import PublicJs from "../../utils/publicJs";
+import useToast from "../../hooks/useToast";
 
 export default function ExploreGuildSection() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export default function ExploreGuildSection() {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
+  const { Toast, toast } = useToast();
 
   const prevPath = useCurrentPath();
   const cache = useSelector(state => state.cache);
@@ -54,7 +56,7 @@ export default function ExploreGuildSection() {
       setList(res.data.rows);
       setLoading(false);
     } catch (error) {
-      //  TODO toast
+      toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
       logError(error);
     }
   };
@@ -73,6 +75,7 @@ export default function ExploreGuildSection() {
           </div>)
         )}
       </List>
+      {Toast}
     </ExploreSection>
   );
 }

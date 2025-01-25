@@ -311,11 +311,20 @@ export default function RegisterSNSStep1({ sns: _sns }) {
       </MintButton>
     );
   };
+
+  const getLink = () =>{
+    const  {NETWORK} = getConfig();
+    console.error( builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR);
+    // return `${NETWORK.explorer}/address/${builtin.SEEDAO_REGISTRAR_CONTROLLER_ADDR}`
+    return `${NETWORK.explorer}/token/0x5f3bd0ce4445e96f2d7dcc4bba883378ead8e10f`
+  }
   return (
     <Container>
+
       <ContainerWrapper>
         <StepTitle>{t("SNS.Step1Title")}</StepTitle>
         <StepDesc>{t("SNS.Step1Desc")}</StepDesc>
+        <HistoryBox href={getLink()} target="_blank" rel="noreferrer">{t('SNS.view')}</HistoryBox>
         <SearchBox>
           <InputBox>
             <InputStyled autoFocus value={val} onChange={(e) => handleInput(e.target.value)} />
@@ -344,6 +353,16 @@ const Container = styled.div`
   position: relative;
 `;
 
+
+const HistoryBox = styled.a`
+        display: inline-block;
+    color: var(--primary-color);
+    cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 43px;
+`
+
+
 const ContainerWrapper = styled.div`
   width: 100%;
   display: inline-block;
@@ -363,7 +382,7 @@ const StepDesc = styled.div`
   font-weight: 400;
   line-height: 24px;
   margin-top: 10px;
-  margin-bottom: 43px;
+
   color: var(--sns-font-color);
 `;
 
