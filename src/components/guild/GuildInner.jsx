@@ -12,6 +12,7 @@ import ProjectMember from "../../pages/project/info/member";
 import {Link} from "react-router-dom";
 import LinkImg from "../../assets/Imgs/linkHome.svg";
 import {useTranslation} from "react-i18next";
+import useToast from "../../hooks/useToast";
 
 const FlexBox = styled.div`
   display: flex;
@@ -212,6 +213,7 @@ const FlexBoxBg = styled.div`
 export default function GuildInner({id}){
     const [data,setData] = useState();
     const { t } = useTranslation();
+    const { Toast, toast } = useToast();
 
     const returnSNS = (str) =>{
 
@@ -228,6 +230,7 @@ export default function GuildInner({id}){
                 // dispatch({ type: GUILD_ACTIONS.SET_DATA, payload: data.data });
             } catch (error) {
                 logError(error);
+                toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
             } finally {
                 store.dispatch(saveLoading(false));
             }
@@ -252,11 +255,12 @@ export default function GuildInner({id}){
               <Abox>{t('Guild.viewMore')} &gt;&gt;</Abox>
             </a>
         )}
-           
+
             <ProjectMember data={data}/>
 
 
         </MainBox>
+        {Toast}
         {/*<ProposalsBox>*/}
         {/*    {data?.proposals?.map((item, index) => (*/}
         {/*        <SipTag key={`proposal_${index}`} slug={item} />*/}

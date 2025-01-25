@@ -6,6 +6,7 @@ import {getUserLevel} from "../api/user";
 import Notion from "./notion/notion";
 import axios from "axios";
 import styled from "styled-components";
+import useToast from "../hooks/useToast";
 
 const Box = styled.div`
     .notion-header{
@@ -19,6 +20,7 @@ export default function Assistant(){
     const { t } = useTranslation();
     const [list, setList] = useState(null);
     const [level, setLevel] = useState("0");
+    const { Toast, toast } = useToast();
 
     useEffect(() => {
         getLevel()
@@ -69,8 +71,9 @@ export default function Assistant(){
         try {
             let result = await axios.get(`https://kind-emu-97.deno.dev/page/${articleId}`);
             setList(result.data);
-        } catch (e) {
-            console.log(e);
+        } catch (error) {
+            console.log(error);
+            toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
         }
         // finally {
         //     dispatch({ type: AppActionType.SET_LOADING, payload: false });
@@ -87,5 +90,6 @@ export default function Assistant(){
 
             {list && <Notion recordMap={list} />}
         </Box>
+        {Toast}
     </Layout>
 }

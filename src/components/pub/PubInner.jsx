@@ -5,6 +5,7 @@ import store from "../../store";
 import {saveLoading} from "../../store/reducer";
 import {pubDetail} from "../../api/publicData";
 import styled from 'styled-components';
+import useToast from "../../hooks/useToast";
 
 
 const Col = styled.div`
@@ -139,7 +140,7 @@ const TitleBox = styled.div`
 export default function PubInner({id}){
 
     const { t } = useTranslation();
-
+    const { Toast, toast } = useToast();
     const [title, setTitle] = useState('');
     const [status, setStatus] = useState('');
     const [imgUrl, setImgUrl] = useState('');
@@ -204,7 +205,7 @@ export default function PubInner({id}){
 
             let contactArr = detail?.['👫 对接人']?.rich_text;
             let arr = [];
-            contactArr.map(async (item) => {
+            contactArr?.map(async (item) => {
                 let idStr = item.mention?.page?.id;
                 if(!idStr)return;
                 let rt = await getInfo(idStr);
@@ -216,8 +217,9 @@ export default function PubInner({id}){
                 setContact([...arr]);
 
             });
-        } catch (e) {
-            logError(e);
+        } catch (error) {
+            logError(error);
+            toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
         } finally {
             store.dispatch(saveLoading(false));
         }
@@ -344,5 +346,6 @@ export default function PubInner({id}){
                 </li>
             </ContentBox>
         </FlexBox>
+        {Toast}
     </Box>
 }

@@ -10,6 +10,7 @@ import { formatNumber, getShortDisplay } from "utils/number";
 import publicJs from "utils/publicJs";
 import SortDownSvg from "components/svgs/sortDown";
 import SortUpSvg from "components/svgs/sortUp";
+import useToast from "../hooks/useToast";
 
 const RankDirection = {
   default: 0,
@@ -33,7 +34,7 @@ export default function RankingPage() {
   const [dataMap, setDataMap] = useState({});
 
   const { getMultiSNS } = useQuerySNS();
-
+  const { Toast, toast } = useToast();
   const [rankCurrent, setRankCurrent] = useState(RankDirection.default);
   const [rankTotal, setRankTotal] = useState(RankDirection.down);
 
@@ -106,8 +107,9 @@ export default function RankingPage() {
             setDataMap(_dataMap);
           });
         })
-        .catch((err) => {
-          logError(err);
+        .catch((error) => {
+          logError(error);
+          toast.danger(`${error?.data?.msg || error?.code || error}`);
         })
         .finally(() => {
           store.dispatch(saveLoading(false));
@@ -215,6 +217,7 @@ export default function RankingPage() {
           </li>
         ))}
       </ListBox>
+      {Toast}
     </Layout>
   );
 }

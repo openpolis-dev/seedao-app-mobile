@@ -18,7 +18,7 @@ const BookRow = ({ name, link }) => {
         <img src={BookIcon} alt="" />
         <BookName>{name}</BookName>
       </div>
-      <CheckButton href={link} target="_blank">
+      <CheckButton href={link} target={link.indexOf("http")>-1?"_blank":""}>
         {t("Buttons.Check")}
       </CheckButton>
     </BookItem>
@@ -31,6 +31,14 @@ export default function Governance() {
   const books = useMemo(() => {
     return [
       {
+        name: t("Governance.whitePaper"),
+        link: "https://seedao.xyz/SeeDAO-WhitePaper.pdf",
+      },
+      {
+        name: t('Governance.nodeMembers'),
+        link: "/node",
+      },
+      {
         name: t("Governance.MetaRule"),
         link: "https://seedao.notion.site/SeeDAO-SIP-2-a4720f18c068455785a7a9ee5fd626ee",
       },
@@ -42,6 +50,7 @@ export default function Governance() {
         name: t("Governance.NodesConferenceRule"),
         link: "https://seedao.notion.site/SIP-20-720aa499e0124838974dfcb44d4bcb44",
       },
+
     ];
   }, [t]);
   return (
@@ -73,15 +82,6 @@ export default function Governance() {
           </GovernanceBoxTop>
           <GovernanceContent>
 
-            <BookItem>
-              <div>
-                <img src={BookIcon} alt="" />
-                <BookName>{t('Governance.nodeMembers')}</BookName>
-              </div>
-              <CheckButton href="/node" >
-                {t("Buttons.Check")}
-              </CheckButton>
-            </BookItem>
 
             {books.map((item, index) => (
               <BookRow key={index} name={item.name} link={item.link} />

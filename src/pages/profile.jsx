@@ -139,8 +139,8 @@ const FstLine = styled.div`
     align-items: center;
   }
   .rht{
-    display: flex;
-    align-items: center;
+    //display: flex;
+    //align-items: center;
     color: #9a9a9a;
     font-size: 11px;
     &>div:last-child{
@@ -156,6 +156,7 @@ const LevelBox = styled.div`
   font-family: Poppins-SemiBold;
   font-weight: normal;
   font-style: italic;
+  flex-shrink: 0;
 `;
 
 const SCRBox = styled.div`

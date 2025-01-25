@@ -4,7 +4,7 @@ import { amoy } from "utils/chain";
 import { polygon } from "viem/chains";
 
 
-const VERSION = "0.7.3";
+const VERSION = "0.8.0";
 
 
 const SENTRY_DSN = "https://54ec7357966342699d508a552ec1927c@o4505590144106496.ingest.sentry.io/4505590153805824";
@@ -37,6 +37,7 @@ const LOCAL = {
       // "https://polygon.llamarpc.com",
     ],
     icon: PolygonIcon,
+    explorer:"https://polygonscan.com",
     tokens: [
       {
         address: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",

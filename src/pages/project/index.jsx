@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import useQuerySNS from "hooks/useQuerySNS";
 import { ethers } from "ethers";
 import { getUsers } from "../../api/user";
+import useToast from "../../hooks/useToast";
 
 export default function Project() {
   const { t } = useTranslation();
@@ -28,6 +29,8 @@ export default function Project() {
   const prevPath = useCurrentPath();
   const cache = useSelector((state) => state.cache);
   const userToken = useSelector(state=> state.userToken);
+
+  const { Toast, toast } = useToast();
 
   const { getMultiSNS } = useQuerySNS();
   // const [snsMap, setSnsMap] = useState({});
@@ -78,23 +81,28 @@ export default function Project() {
   }, [prevPath]);
 
   const getUsersDetail = async (dt) => {
-    const _wallets = [];
-    dt?.forEach((key) => {
-      if (key.sponsors?.length) {
-        let w = key.sponsors[0];
-        if (ethers.utils.isAddress(w)) {
-          _wallets.push(w);
+    try {
+      const _wallets = [];
+      dt?.forEach((key) => {
+        if (key.sponsors?.length) {
+          let w = key.sponsors[0];
+          if (ethers.utils.isAddress(w)) {
+            _wallets.push(w);
+          }
         }
-      }
-    });
-    const wallets = Array.from(new Set(_wallets));
-    let rt = await getUsersInfo(wallets);
-    let userSns = await getMultiSNS(wallets);
+      });
+      const wallets = Array.from(new Set(_wallets));
+      let rt = await getUsersInfo(wallets);
+      let userSns = await getMultiSNS(wallets);
 
-    return {
-      userMap: rt,
-      userSns,
-    };
+      return {
+        userMap: rt,
+        userSns,
+      };
+    }catch (error) {
+      toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
+    }
+
     // setSnsMap(userSns);
   };
 
@@ -236,6 +244,7 @@ export default function Project() {
           </ProjectList>
         </InfiniteScroll>
       </LayoutContainer>
+      {Toast}
     </Layout>
   );
 }

@@ -17,6 +17,7 @@ import getConfig from "constant/envCofnig";
 import { getVaultBalance } from "api/publicData";
 import EthereumIcon from "assets/Imgs/network/ethereum.webp";
 import PolygonIcon from "assets/Imgs/network/polygon.webp";
+import useToast from "../../hooks/useToast";
 
 const SAFE_CHAIN = {
   1: {
@@ -72,6 +73,7 @@ export default function Assets() {
   const [totalSCR, setTotalSCR] = useState("0.00");
   const { SCR_CONTRACT } = AppConfig;
   const [wallets, setWallets] = useState([]);
+  const { Toast, toast } = useToast();
 
   const getVaultData = async () => {
     try {
@@ -83,6 +85,7 @@ export default function Assets() {
       setTotalBalance(v.format());
     } catch (error) {
       logError(error);
+      toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
     } finally {
       setStatus1(false);
     }
@@ -111,6 +114,7 @@ export default function Assets() {
         });
     } catch (error) {
       logError("getFloorPrice error", error);
+      toast.danger(`${error?.data?.msg || error?.code || error}`);
     } finally {
       setStatus3(false);
     }
@@ -144,6 +148,7 @@ export default function Assets() {
       setTotalSCR(Number(ethers.utils.formatEther(supply)).format());
     } catch (error) {
       logError("getSCR error", error);
+      toast.danger(`${error?.data?.msg || error?.code || error}`);
     } finally {
       setStatus2(false);
       // store.dispatch(saveLoading(false));
@@ -204,6 +209,7 @@ export default function Assets() {
         </FlexBox>
         <ApplicantsSection handleBg={handleBg} />
       </BottomBox>
+      {Toast}
     </Layout>
   );
 }

@@ -6,6 +6,8 @@ import ProposalComment from "pages/proposalV2/comments";
 import Assistant from "../pages/assistant";
 import Node from "../pages/node";
 import SearchProfile from "../pages/searchprofile";
+import PublicityList from "../components/publicity/list";
+import PublicityDetail from "../components/publicity/detail";
 
 const Home = lazy(() => import("../pages/home"));
 const Login = lazy(() => import("../pages/login"));
@@ -129,6 +131,10 @@ function RouterLink() {
         <Route path="/assistant" element={<Assistant />} />
         <Route path="/node" element={<Node />} />
         <Route path="/search-profile" element={<SearchProfile />} />
+
+
+        <Route path="/publicity" element={<PublicityList />} />
+        <Route path="/publicity/detail/:id" element={<PublicityDetail />} />
 
         {/* redirect */}
         <Route path="/redirect" element={<JoyIDRedirect />} />

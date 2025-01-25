@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import store from "../../store";
 import {saveLoading} from "../../store/reducer";
 import {getSeeuEventDetail} from "../../api/event";
+import useToast from "../../hooks/useToast";
 
 const EventContent = styled.div`
   padding-inline: 20px;
@@ -50,6 +51,7 @@ const EventContent = styled.div`
 export default function EventInner({id}){
 
     const [data, setData] = useState();
+    const { Toast, toast } = useToast();
 
     useEffect(() => {
         const getDetail = async () => {
@@ -62,7 +64,7 @@ export default function EventInner({id}){
                 setData(resp.data);
             } catch (error) {
                 logError(error);
-                // TODO toast
+                toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
             } finally {
                 store.dispatch(saveLoading(false));
             }
@@ -70,6 +72,6 @@ export default function EventInner({id}){
         getDetail();
     }, [id]);
     return <>
-        <EventContent>{data && <EventDetail item={data} />}</EventContent>
+        <EventContent>{data && <EventDetail item={data} />}      {Toast}</EventContent>
     </>
 }

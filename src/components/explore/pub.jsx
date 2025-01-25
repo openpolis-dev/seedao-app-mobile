@@ -10,6 +10,7 @@ import useCurrentPath from "../../hooks/useCurrentPath";
 import {useSelector} from "react-redux";
 import store from "../../store";
 import {saveCache} from "../../store/reducer";
+import useToast from "../../hooks/useToast";
 
 const Box = styled.div`
     padding-top: 20px;
@@ -124,7 +125,7 @@ export default function Hub() {
     const [list, setList] = useState([]);
     const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
-
+    const { Toast, toast } = useToast();
     const prevPath = useCurrentPath();
     const cache = useSelector(state => state.cache);
 
@@ -166,8 +167,9 @@ export default function Hub() {
             const { rows } = result.data;
 
             setList(rows);
-        } catch (e) {
-            logError(e);
+        } catch (error) {
+            logError(error);
+            toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
         } finally {
             setLoading(false);
         }
@@ -234,6 +236,7 @@ export default function Hub() {
                     }
             </UlBox>
             </ExploreSection>
+            {Toast}
         </Box>
 );
 }

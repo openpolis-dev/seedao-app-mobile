@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import ReactQuill from "react-quill";
 import { formatCategory } from "components/proposalCom/categoryTag";
+import useToast from "../../hooks/useToast";
 
 const FlexBox = styled.div`
   display: flex;
@@ -306,6 +307,7 @@ const LineBox = styled.div`
 export default function ProjectInner({ id }) {
   const { t } = useTranslation();
   const [data, setData] = useState();
+  const { Toast, toast } = useToast();
 
   useEffect(() => {
     const getProjectData = async () => {
@@ -343,6 +345,7 @@ export default function ProjectInner({ id }) {
         setData(data.data);
       } catch (error) {
         logError(error);
+        toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
       } finally {
         store.dispatch(saveLoading(false));
       }
@@ -502,7 +505,7 @@ export default function ProjectInner({ id }) {
           )}
           ~</div>
       </LineBox>
-
+      {Toast}
 
       {/*<DescBox>{data?.desc}</DescBox>*/}
 
