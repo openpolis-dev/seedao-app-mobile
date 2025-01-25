@@ -17,6 +17,7 @@ import {saveCache} from "store/reducer";
 import {ethers} from "ethers";
 import {getUsers} from "../../api/user";
 import useQuerySNS from "../../hooks/useQuerySNS";
+import useToast from "../../hooks/useToast";
 
 export default function Guild() {
   const { t } = useTranslation();
@@ -30,7 +31,7 @@ export default function Guild() {
   const prevPath = useCurrentPath();
   const cache = useSelector(state => state.cache);
   const userToken = useSelector(state=> state.userToken);
-
+  const { Toast, toast } = useToast();
   const { getMultiSNS } = useQuerySNS();
 
   useEffect(() => {
@@ -123,6 +124,7 @@ export default function Guild() {
       setPageCur(page+1);
     } catch (error) {
       logError(error);
+      toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
     } finally {
       useGlobalLoading && store.dispatch(saveLoading(false));
     }
@@ -158,6 +160,7 @@ export default function Guild() {
       setPageCur(page + 1);
     } catch (error) {
       logError(error);
+      toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
     } finally {
       useGlobalLoading && store.dispatch(saveLoading(false));
     }
@@ -260,6 +263,7 @@ export default function Guild() {
           </ProjectList>
         </InfiniteScroll>
       </LayoutContainer>
+      {Toast}
     </Layout>
   );
 }

@@ -52,7 +52,8 @@
     "CityhallBranding": "Branding",
     "CityhallTech": "Tech",
     "nodeMembers": "Current Nodes",
-    "GovernanceNodeResult": "SeeDAO Node Qualification"
+    "GovernanceNodeResult": "SeeDAO Node Qualification",
+    "whitePaper": "SeeDAO WhitePaper"
   },
   "Resources": {
     "Calendar": "Calendar",
@@ -381,7 +382,8 @@
     "NotEnoughBalance": "{{token}} Not Enough",
     "ShareInviteLink": "Share invite link",
     "InviteLinkCopied": "The invite link has been copied to your clipboard!",
-    "search": "Search"
+    "search": "Search",
+    "view": "View SNS Records"
   },
   "Credit": {
     "Title": "SCR Lending",
@@ -504,5 +506,10 @@
     "ApproveFailed": "Approve failed",
     "RemainBorrowQuotaNotEnough": "Community remains not enough",
     "GetRealRepayAmountFailed": "Get real repayment amount failed, please check in the records"
+  },
+  "publicity": {
+    "title": "Bulletin Board",
+    "detail": "Bulletin Board Detail",
+    "view": "View"
   }
 }

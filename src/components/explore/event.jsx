@@ -10,13 +10,14 @@ import useCurrentPath from "../../hooks/useCurrentPath";
 import {useSelector} from "react-redux";
 import store from "../../store";
 import {saveCache} from "../../store/reducer";
+import useToast from "../../hooks/useToast";
 
 export default function ExploreEventSection() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
-
+  const { Toast, toast } = useToast();
   const prevPath = useCurrentPath();
   const cache = useSelector(state => state.cache);
 
@@ -49,7 +50,7 @@ export default function ExploreEventSection() {
       setList(res.data.data);
       setLoading(false);
     } catch (error) {
-      //  TODO toast
+      toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
       logError(error);
     }
   };
@@ -77,6 +78,7 @@ export default function ExploreEventSection() {
           ))
         )}
       </List>
+      {Toast}
     </ExploreSection>
   );
 }

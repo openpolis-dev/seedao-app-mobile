@@ -10,6 +10,7 @@ import utc from "dayjs/plugin/utc"
 import duration from "dayjs/plugin/duration"
 import store from "../../store";
 import {saveLoading} from "../../store/reducer";
+import useToast from "../../hooks/useToast";
 dayjs.extend(utc);
 dayjs.extend(duration)
 
@@ -63,6 +64,7 @@ export default function NewCalendar(){
     const [list,setList] = useState([]);
     const [eventArr,setEventArr] = useState([]);
 
+    const { Toast, toast } = useToast();
 
     useEffect(() => {
         getMonth()
@@ -238,8 +240,9 @@ export default function NewCalendar(){
                 }
             });
             setEventList(eventArr)
-        }catch (e) {
-            console.log(e)
+        }catch (error) {
+            console.log(error)
+            toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
         }finally {
             store.dispatch(saveLoading(false));
         }
@@ -295,5 +298,6 @@ export default function NewCalendar(){
                 eventArr.map((item,index)=>( <Element  key={`calendar_${index}}`} name={`${item.day}`} ><CalendarItem detail={item} /></Element>))
             }
         </CList>
+        {Toast}
     </Box>
 }

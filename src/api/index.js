@@ -35,6 +35,20 @@ instance.interceptors.request.use(function (config) {
     return config;
   }
   const tokenstr = store.getState().userToken;
+
+
+
+  if(config.url.indexOf("proposals/list") > -1) {
+    if (tokenstr && tokenstr !== "null" ){
+      config.headers.Authorization = `Bearer ${tokenstr?.token || ""}`;
+      return config;
+    }else{
+      return config;
+    }
+  }
+
+
+
   if (!tokenstr) {
     return config;
   }
@@ -60,6 +74,9 @@ instance.interceptors.request.use(function (config) {
 
 instance.interceptors.response.use(
   (response) => {
+    if(response.data.code !== 200){
+      return Promise.reject(response.data);
+    }
     return response;
   },
   (error) => {

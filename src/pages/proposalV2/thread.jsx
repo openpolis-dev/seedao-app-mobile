@@ -9,7 +9,7 @@ import TemplateTag from "components/proposalCom/templateTag";
 import Avatar from "components/common/avatar";
 import store from "store";
 import { saveLoading } from "store/reducer";
-import { getProposalDetail, getComponents } from "api/proposalV2";
+import {getProposalDetail, getComponents, checkCanVote} from "api/proposalV2";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import publicJs from "utils/publicJs";
 import useQuerySNS from "hooks/useQuerySNS";
@@ -26,6 +26,7 @@ import { formatDeltaDate } from "utils/time";
 import { getProposalSIPSlug } from "utils";
 import { Link } from "react-router-dom";
 import getConfig from "../../constant/envCofnig";
+import useToast from "../../hooks/useToast";
 
 export default function ProposalThread() {
   const { id } = useParams();
@@ -51,11 +52,13 @@ export default function ProposalThread() {
   const [beforeList, setBeforeList] = useState([]);
   const [preview, setPreview] = useState([]);
   const [previewTitle, setPreviewTitle] = useState("");
-
+  const [errorTips,setErrorTips] = useState("");
   const [contentBlocks, setContentBlocks] = useState([]);
-
+  const { Toast, toast } = useToast();
   const { getMultiSNS } = useQuerySNS();
   const { checkMetaforoLogin, LoginMetafoModal } = useMetaforoLogin();
+
+  const [hasPermission, setHasPermission] = useState(false);
 
   const getProposal = async (refreshIdx) => {
     store.dispatch(saveLoading(true));
@@ -154,6 +157,8 @@ export default function ProposalThread() {
       }
     } catch (error) {
       logError("get proposal detail error:", error);
+      toast.danger(`${error?.data?.code || error?.response?.data?.code}:${error.response?.data?.msg||error?.data?.msg || error?.code || error}`);
+      setErrorTips(error.response?.data?.msg|| error?.data?.msg || error?.code || error)
       //   showToast(error?.data?.msg || error?.code || error, ToastType.Danger, { autoClose: false });
     } finally {
       store.dispatch(saveLoading(false));
@@ -271,7 +276,7 @@ export default function ProposalThread() {
     }
     const votedItem = data?.votes?.[0].options.filter((item)=>item.is_vote);
 
-    return ( !!userToken && !!votedItem?.length &&  currentState === "voting" && !!userToken)
+    return ( !!userToken && !!votedItem?.length &&  currentState === "voting" && !!userToken) && hasPermission
   }
 
   const showVotedNot = (currentState) =>{
@@ -280,8 +285,19 @@ export default function ProposalThread() {
     }
     const votedItem = data?.votes?.[0].options.filter((item)=>item.is_vote);
 
-    return ( !!userToken && !votedItem?.length &&  currentState === "voting" && !!userToken)
+    return ( !!userToken && !votedItem?.length &&  currentState === "voting" && !!userToken) && hasPermission
   }
+
+
+  useEffect(() => {
+    if(!id ||!showVote() )return;
+    const getVotePermission = () => {
+      checkCanVote(Number(id)).then((r) => {
+        setHasPermission(r.data);
+      });
+    };
+    getVotePermission()
+  }, [id,data]);
 
   // useEffect(() => {
   //   checkMetaforoLogin();
@@ -292,12 +308,15 @@ export default function ProposalThread() {
       title={t("Proposal.ProposalDetail")}
       headStyle={{ style: { borderBottom: "1px solid var(--border-color-1)" } }}
       customTab={
-        <ThreadTabbar
-          id={id}
-          showVote={showVote()}
-          openComment={() => navigate(`/proposal/thread/${id}/comments`)}
-          openHistory={() => navigate(`/proposal/thread/${id}/history`, { state: data.histories?.lists ?? [] })}
-        />
+
+          !!errorTips ?<div>&nbsp;</div>: <ThreadTabbar
+              id={id}
+              showVote={showVote()}
+              openComment={() => navigate(`/proposal/thread/${id}/comments`)}
+              openHistory={() => navigate(`/proposal/thread/${id}/history`, { state: data.histories?.lists ?? [] })}
+          />
+
+
       }
       headerProps={{ backPath: "/proposal" }}
     >
@@ -347,6 +366,8 @@ export default function ProposalThread() {
         </RejectOuter>
       )}
       <ContentOuter>
+        {!!errorTips &&<ErrorBox>{errorTips}</ErrorBox>
+        }
         {!!preview?.length && (
           <>
             <ComponnentBox>
@@ -403,6 +424,7 @@ export default function ProposalThread() {
           voteGate={data?.vote_gate}
           poll={data.votes[0]}
           id={Number(id)}
+          hasPermission={hasPermission}
           updateStatus={getProposal}
           showMultiple={data.is_multiple_vote}
           proposalState={data?.state}
@@ -411,9 +433,12 @@ export default function ProposalThread() {
         />
       )}
       {LoginMetafoModal}
+      {Toast}
     </Layout>
   );
 }
+
+
 const ViewMore = styled.div`
   display: flex;
   align-items: center;
@@ -426,6 +451,14 @@ const ViewMore = styled.div`
   a{
     color: var(--primary-color);
   }
+`
+
+const ErrorBox = styled.div`
+padding: 30px;
+color: #dc3545;
+text-align: center;
+font-size: 20px;
+font-weight: bold;
 `
 
 const RejectBlock = styled.div`

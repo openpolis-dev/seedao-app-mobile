@@ -24,7 +24,6 @@ export default function ThreadEditHistoryPage() {
   };
 
   useEffect(() => {
-    console.log("====data", data);
     if (data) {
       setList(
         data.map((item, idx) => {
@@ -42,7 +41,7 @@ export default function ThreadEditHistoryPage() {
       // TODO: request
     }
   }, [data]);
-  console.log("====list", list);
+
   return (
     <Layout
       title={t("Proposal.History")}

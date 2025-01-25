@@ -30,10 +30,10 @@ export default function ProposalItem({ data, sns }) {
         </CardHeaderStyled>
         <Flexlft>
           {
-              !!userToken && data.is_voted && data.state === "voting" &&  <VotedBox>{t('Proposal.HasVote')}</VotedBox>
+              !!userToken && data.is_voted && data.state === "voting" && data.can_vote &&  <VotedBox>{t('Proposal.HasVote')}</VotedBox>
           }
           {
-            !!userToken && !data.is_voted && data.state === "voting" &&  <VotedBox2>{t('Proposal.notVote')}</VotedBox2>
+            !!userToken && !data.is_voted && data.state === "voting" && data.can_vote &&  <VotedBox2>{t('Proposal.notVote')}</VotedBox2>
           }
           <ProposalStateTag state={data.state} />
           <CatBox>{data.category_name}</CatBox>

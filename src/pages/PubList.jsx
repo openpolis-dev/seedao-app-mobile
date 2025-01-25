@@ -12,6 +12,7 @@ import styled from "styled-components";
 import {EventCardSkeleton} from "../components/event/eventCard";
 import store from "../store";
 import useCurrentPath from "../hooks/useCurrentPath";
+import useToast from "../hooks/useToast";
 
 
 const UlBox = styled.div`
@@ -102,7 +103,7 @@ export default function PubList(){
     const [pageSize, setPageSize] = useState(12);
     const prevPath = useCurrentPath();
     const cache = useSelector(state => state.cache);
-
+    const { Toast, toast } = useToast();
 
     useEffect(()=>{
 
@@ -147,8 +148,9 @@ export default function PubList(){
             setList([...list, ...rows]);
             setPageSize(size);
             setPageCur(page +1);
-        } catch (e) {
-            logError(e);
+        } catch (error) {
+            logError(error);
+            toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
         } finally {
             store.dispatch(saveLoading(false));
         }
@@ -249,5 +251,6 @@ export default function PubList(){
                 }
             </UlBox>
         </InfiniteScroll>
+        {Toast}
     </Layout>
 }

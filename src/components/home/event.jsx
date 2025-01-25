@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getSeeuEventList } from "api/event";
 import EventCard, { EventCardSkeleton } from "./eventCard";
 import { useNavigate } from "react-router-dom";
+import useToast from "../../hooks/useToast";
 
 const Box = styled.div`
   padding: 0 24px 20px;
@@ -34,6 +35,7 @@ export default function Event() {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
+  const { Toast, toast } = useToast();
 
   useEffect(() => {
     const getList = async () => {
@@ -44,8 +46,9 @@ export default function Event() {
         setList(rt.slice(0,2));
         setLoading(false);
       } catch (error) {
-        //  TODO toast
         logError(error);
+        toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
+
       }
     };
     getList();
@@ -70,7 +73,7 @@ export default function Event() {
               </List>
             </Box>
         }
-
+        {Toast}
       </>
 
 
