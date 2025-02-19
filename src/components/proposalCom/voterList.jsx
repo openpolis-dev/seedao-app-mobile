@@ -126,6 +126,7 @@ const Title = styled.div`
 
 const List = styled.ul`
   height: 30vh;
+  overflow-y: auto;
   li {
     display: flex;
     justify-content: space-between;
