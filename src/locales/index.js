@@ -21,9 +21,9 @@ function saveStoreLang(lang) {
 
 i18n.use(initReactI18next).init({
   resources: {
-    en: {
-      translation: en,
-    },
+    // en: {
+    //   translation: en,
+    // },
     zh: {
       translation: zh,
     },
@@ -38,7 +38,7 @@ i18n.use(initReactI18next).init({
     escapeValue: false,
   },
 });
-getStoreLang();
+// getStoreLang();
 i18n.on('languageChanged', lang => {
   saveStoreLang(lang);
 });
