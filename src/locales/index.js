@@ -38,7 +38,7 @@ i18n.use(initReactI18next).init({
     escapeValue: false,
   },
 });
-getStoreLang();
+// getStoreLang();
 i18n.on('languageChanged', lang => {
   saveStoreLang(lang);
 });
