@@ -258,7 +258,9 @@
     "Echo": "Echo",
     "EchoDesc": "Echo is a social network that gives your echos to same habbies, passions or interests.",
     "Credit": "SCR Lending",
-    "CreditDesc": "Community Cooperative Finance"
+    "CreditDesc": "Community Cooperative Finance",
+    "chatAI": "SeeChat",
+    "chatAITips": "Web version of SeeChat (DeepSeek + SeeDAO Knowledge Base), we can chat with AI now!"
   },
   "roles": {
     "SEED_HOLDER": "SEED Holder",
@@ -511,5 +513,7 @@
     "title": "Bulletin Board",
     "detail": "Bulletin Board Detail",
     "view": "View"
-  }
+  },
+  "aiTips": "Send message to AI",
+  "clearTips": "Clear Chat"
 }
