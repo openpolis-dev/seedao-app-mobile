@@ -42,6 +42,7 @@ const Newcomer = lazy(() => import("pages/newcomer"));
 const NewcomerCourse = lazy(() => import("pages/newcomer/course"));
 const CreditLending = lazy(() => import("pages/credit/index"));
 const CreditRecordDetail = lazy(() => import("pages/credit/recordDetail"));
+const SeeChat =lazy(() => import("pages/seechat"))
 
 // import Home from "../pages/home";
 // import Login from "../pages/login";
@@ -135,6 +136,7 @@ function RouterLink() {
 
         <Route path="/publicity" element={<PublicityList />} />
         <Route path="/publicity/detail/:id" element={<PublicityDetail />} />
+        <Route path="/ai" element={<SeeChat />} />
 
         {/* redirect */}
         <Route path="/redirect" element={<JoyIDRedirect />} />
