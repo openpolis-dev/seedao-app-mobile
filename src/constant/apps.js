@@ -11,8 +11,16 @@ import CreditImg from "../assets/Imgs/home/credit.jpg";
 import PodcastImg from '../assets/Imgs/home/podcast.jpeg';
 import SNSQueryImg from "../assets/Imgs/home/snsquery.png"
 import AssistantImg from "../assets/Imgs/home/assistant.png";
+import AiImg from "../assets/Imgs/home/ai.jpeg";
 
 const apps =  [
+    {
+        id: 'module-ai',
+        name: 'apps.chatAI',
+        link: '/ai',
+        icon: AiImg,
+        desc: 'apps.chatAITips',
+    },
     {
         id: 'podcast',
         name: 'apps.podcastTitle',

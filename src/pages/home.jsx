@@ -13,7 +13,7 @@ import Bulletin from "../components/home/bulletin";
 const BoxInner = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+x
   box-sizing: border-box;
   background: var(--background-color);
 `;

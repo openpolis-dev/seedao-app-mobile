@@ -260,7 +260,9 @@
     "Echo": "Echo",
     "EchoDesc": "Echo is a social network that gives your echos to same habbies, passions or interests.",
     "Credit": "SCR借款",
-    "CreditDesc": "社区积分新玩法"
+    "CreditDesc": "社区积分新玩法",
+    "chatAI": "SeeChat",
+    "chatAITips": "网页版的 SeeChat (DeepSeek + SeeDAO 知识库)，大家可以跟 AI 聊天了"
   },
   "roles": {
     "SEED_HOLDER": "SEED持有者",
@@ -527,5 +529,7 @@
     "title": "社区公示信息",
     "detail": "社区公示信息详情",
     "view": "查看"
-  }
+  },
+  "aiTips": "给AI发消息",
+  "clearTips": "清除聊天"
 }
