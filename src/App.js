@@ -23,6 +23,10 @@ import EventHandler from "components/event/eventHandler";
 import getConfig from "constant/envCofnig";
 import ChooseRPC from "components/chooseRPC";
 import ErrorBoundary from "components/errorBoundary";
+import { initDB } from "react-indexed-db-hook";
+
+import { DBConfig } from "./utils/DBconfig";
+initDB(DBConfig);
 
 const chains = getConfig().NETWORK.chainId === 1 ? [mainnet] : [polygon, amoy];
 

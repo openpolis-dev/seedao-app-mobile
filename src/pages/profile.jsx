@@ -21,6 +21,9 @@ import {useDisconnect} from "wagmi";
 import { clearStorage } from "utils/auth";
 import getConfig from "constant/envCofnig";
 import VersionBox from "components/version";
+import {DEEPSEEK_API_URL, getNewToken} from "../api/chatAI";
+import {RefreshCcw,Copy} from "lucide-react";
+import useToast from "../hooks/useToast";
 
 const Box = styled.div`
   padding: 20px;
@@ -103,6 +106,10 @@ const FlexLine = styled.div`
   font-weight: 400;
   color: #9A9A9A;
   line-height: 22px;
+  gap: 5px;
+  .iconBtm{
+    margin-bottom: -3px;
+  }
 `
 
 const ProgressBox = styled.div`
@@ -305,6 +312,39 @@ const TagBox = styled.ul`
   }
 `;
 
+const ApiBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  //margin-bottom: 20px;
+  background: #fff;
+  border-radius: 16px;
+  padding:14px;
+  margin-top: 15px;
+  .title{
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .content{
+    font-size: 12px;
+  }
+  .flexLine{
+    display: flex;
+    align-items: center;
+    gap:10px;
+
+  }
+  .iconBtm{
+    margin-bottom: -3px;
+  }
+
+  .btm{
+    color:var(--primary-color);
+    margin-top: 10px;
+  }
+  
+`
+
 export default function Profile() {
   const { t } = useTranslation();
   const navigate = useNavigate()
@@ -325,6 +365,9 @@ export default function Profile() {
   const [list, setList] = useState([]);
   const [sbt, setSbt] = useState([]);
   const [sbtList,setSbtList] =useState([]);
+  const [apiKey, setApiKey] = useState("");
+
+  const { Toast, toast } = useToast();
 
   // useEffect(() => {
   //   toGA();
@@ -364,6 +407,7 @@ export default function Profile() {
       );
       setDetail(rt.data);
       setRoles(rt.data.roles);
+      setApiKey(rt.data.ds_api_key);
       let mapArr = new Map();
 
       rt.data.social_accounts?.map((item) => {
@@ -474,6 +518,21 @@ export default function Profile() {
     navigate("/");
   };
 
+  const refreshToken = async() => {
+    try {
+
+      let rt = await getNewToken()
+      setApiKey(rt.data.apiKey)
+
+    }catch(error) {
+      console.error(error);
+      toast.danger(`${error.response?.data?.msg||error?.data?.msg || error?.code || error}`);
+
+    }
+
+
+  }
+
   return (
     <OuterBox>
       <Layout
@@ -493,6 +552,11 @@ export default function Profile() {
               <FlexLine>
                 <CopyBox text={detail?.wallet}>
                   <div>{publicJs.AddressToShow(detail?.wallet)}</div>
+
+                </CopyBox>
+                <CopyBox text={detail?.wallet}>
+                  <Copy size={16} className="iconBtm"></Copy>
+
                 </CopyBox>
 
                 {/*<RhtBox>*/}
@@ -525,6 +589,55 @@ export default function Profile() {
               <div className="inner" />
             </ProgressBox>
           </ProgressOuter>
+          <ApiBox>
+
+              <div className="title">SeeChat Api Key</div>
+            <div className="content">
+              <div className="flexLine">
+                <CopyBox text={apiKey}>
+                  <div>{apiKey}</div>
+                </CopyBox>
+                <CopyBox text={apiKey}>
+                  <Copy size={16} className="iconBtm"></Copy>
+                </CopyBox>
+                <div onClick={()=>refreshToken()} className="iconBtm">
+                  <RefreshCcw size={16} />
+                </div>
+
+              </div>
+              <div className="flexLine btm">
+                <div className="lft">
+                  API Endpoint
+                </div>
+
+                <CopyBox text={DEEPSEEK_API_URL}>
+                  <div>{DEEPSEEK_API_URL}</div>
+                </CopyBox>
+                <CopyBox text={DEEPSEEK_API_URL}>
+                  <Copy size={16} className="iconBtm"></Copy>
+                </CopyBox>
+              </div>
+            </div>
+
+            {/*<RhtBox2>*/}
+            {/*  <div className="tp">*/}
+            {/*    {apiKey}*/}
+            {/*    <CopyBox text={apiKey || ''} dir="left">*/}
+            {/*      <img src={CopyIconSVG} alt="" />*/}
+            {/*    </CopyBox>*/}
+            {/*    <RefreshCcw size={16} className="refresh" onClick={()=>refreshToken()} />*/}
+            {/*  </div>*/}
+            {/*  <div className="tp btm">*/}
+
+            {/*    <div>*/}
+            {/*      {DEEPSEEK_API_URL}*/}
+            {/*    </div>*/}
+            {/*    <CopyBox text={DEEPSEEK_API_URL || ''} dir="left">*/}
+            {/*      <img src={CopyIconSVG} alt="" />*/}
+            {/*    </CopyBox>*/}
+            {/*  </div>*/}
+            {/*</RhtBox2>*/}
+          </ApiBox>
         </Box>
         {!!list.length && (
           <NftBox>
