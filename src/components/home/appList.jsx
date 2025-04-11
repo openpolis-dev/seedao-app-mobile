@@ -7,6 +7,9 @@ import { Wallet } from "utils/constant";
 import useToast from "hooks/useToast";
 import { useSelector } from "react-redux";
 import getConfig from "constant/envCofnig";
+import store from "../../store";
+import {saveLoading} from "../../store/reducer";
+import {loginChat} from "../../api/chatAI";
 
 const Box = styled.div`
   background: #fff;
@@ -97,13 +100,39 @@ export default function AppList() {
     return apps.map((item) => ({ ...item, name: t(item.name) }));
   }, [t]);
 
-  const handleClickEvent = (data) => {
-    const { link } = data;
-    if (data.id === "coming-soon") {
+  const getApiKey = async (link) => {
+
+    if (!userToken) {
+      navigate("/login");
+      return;
+    }
+    console.log(userToken);
+
+    store.dispatch(saveLoading(true));
+    try{
+      let rt = await loginChat();
+      console.log(rt.data.apiKey)
+      navigate(link)
+    }catch(error){
+      const err = error.response
+
+      toast.danger(`${err?.data?.msg || err?.code || err}`);
+    }finally{
+      store.dispatch(saveLoading(false));
+    }
+  }
+
+  const handleClickEvent = async(data) => {
+    const { link,id } = data;
+    if (id === "coming-soon") {
       showToast("Coming Soon");
       return;
-    } else if (data.id.startsWith("module-")) {
-      navigate(link);
+    } else if (id.startsWith("module-")) {
+      if(id === "module-ai"){
+        await getApiKey(link)
+      }else{
+        navigate(link);
+      }
     } else if (link) {
       window.open(link, "_blank");
     }
