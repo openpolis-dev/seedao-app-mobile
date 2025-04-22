@@ -1,5 +1,5 @@
 
-const estimateTokenCount = (text)=> {
+export const estimateTokenCount = (text)=> {
 
   const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
   const englishWords = text.match(/\b\w+\b/g) || [];

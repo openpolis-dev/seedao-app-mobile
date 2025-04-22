@@ -1,25 +1,13 @@
-import axios from "axios";
 import request from "./index";
 
 
-export const DEEPSEEK_API_URL ="https://dschat.seedao.tech/v1"
+export const DEEPSEEK_API_URL ="https://ds.seedao.tech/v1"
 const PATH_PREFIX = '/user';
-
-export const getAllModels = async (apikey) => {
-  const response = await axios.get(`${DEEPSEEK_API_URL}/api/models`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'X-API-Key': apikey
-    }
-  });
-
-  return response.data.data;
-}
 
 
 export const chatCompletions = async (obj,abortController,apiKey) => {
 
-  const response = await fetch(`${DEEPSEEK_API_URL}/api/chat/completions`, {
+  const response = await fetch(`${DEEPSEEK_API_URL}/chat/completions`, {
     "headers": {
       "content-type": "application/json",
       'X-API-Key': apiKey
