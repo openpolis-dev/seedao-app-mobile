@@ -316,17 +316,27 @@ const ApiBox = styled.div`
   display: flex;
   flex-direction: column;
   //margin-bottom: 20px;
-  background: #fff;
-  border-radius: 16px;
-  padding:14px;
+
+
   margin-top: 15px;
-  .title{
-    font-weight: bold;
-    font-size: 14px;
+  dt{
     margin-bottom: 10px;
+
+    
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    color: #000000;
+    font-size: 16px;
+    font-family: Poppins-SemiBold!important;
+    font-weight: 600;
   }
-  .content{
+  dd{
+    background: #fff;
+
+    padding:14px;
     font-size: 12px;
+    border-radius: 16px;
   }
   .flexLine{
     display: flex;
@@ -339,7 +349,6 @@ const ApiBox = styled.div`
   }
 
   .btm{
-    color:var(--primary-color);
     margin-top: 10px;
   }
   
@@ -590,12 +599,14 @@ export default function Profile() {
             </ProgressBox>
           </ProgressOuter>
           <ApiBox>
-
-              <div className="title">SeeChat Api Key</div>
-            <div className="content">
+            <dt>SeeChat</dt>
+            <dd>
               <div className="flexLine">
+                <div className="lft">
+                 API Key
+                </div>
                 <CopyBox text={apiKey}>
-                  <div>{apiKey}</div>
+                  <div>{publicJs.AddressToShow(apiKey)}</div>
                 </CopyBox>
                 <CopyBox text={apiKey}>
                   <Copy size={16} className="iconBtm"></Copy>
@@ -607,7 +618,7 @@ export default function Profile() {
               </div>
               <div className="flexLine btm">
                 <div className="lft">
-                  API Endpoint
+                  Endpoint
                 </div>
 
                 <CopyBox text={DEEPSEEK_API_URL}>
@@ -617,26 +628,7 @@ export default function Profile() {
                   <Copy size={16} className="iconBtm"></Copy>
                 </CopyBox>
               </div>
-            </div>
-
-            {/*<RhtBox2>*/}
-            {/*  <div className="tp">*/}
-            {/*    {apiKey}*/}
-            {/*    <CopyBox text={apiKey || ''} dir="left">*/}
-            {/*      <img src={CopyIconSVG} alt="" />*/}
-            {/*    </CopyBox>*/}
-            {/*    <RefreshCcw size={16} className="refresh" onClick={()=>refreshToken()} />*/}
-            {/*  </div>*/}
-            {/*  <div className="tp btm">*/}
-
-            {/*    <div>*/}
-            {/*      {DEEPSEEK_API_URL}*/}
-            {/*    </div>*/}
-            {/*    <CopyBox text={DEEPSEEK_API_URL || ''} dir="left">*/}
-            {/*      <img src={CopyIconSVG} alt="" />*/}
-            {/*    </CopyBox>*/}
-            {/*  </div>*/}
-            {/*</RhtBox2>*/}
+            </dd>
           </ApiBox>
         </Box>
         {!!list.length && (
