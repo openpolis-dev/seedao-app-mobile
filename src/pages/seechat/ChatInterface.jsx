@@ -13,7 +13,7 @@ import LogoImg from '../../assets/Imgs/creditLogo2.svg';
 import {Copy,CopyCheck,Trash2,RefreshCcw,ArrowUp,Square,Eraser} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {chatCompletions, loginChat} from "../../api/chatAI";
-import {  truncateContext } from "../../utils/chatTool";
+import {estimateTokenCount, truncateContext} from "../../utils/chatTool";
 import useToast from "../../hooks/useToast";
 import {useSelector} from "react-redux";
 import Avatar from "../../components/common/avatar";
@@ -121,7 +121,7 @@ export const ChatInterface = () => {
     try {
 
       const newMsg = [...newMessages].filter((item)=> !!item.content && item.type!=="thinking").map(({role, content})=>({role,content}));
-      const truncatedMessages = truncateContext(newMsg, 8000-500);
+      const truncatedMessages = truncateContext(newMsg, 40*1024);
 
       let obj = JSON.stringify({
         model:"deepseek-reasoner",
@@ -471,7 +471,7 @@ export const ChatInterface = () => {
           {
             !isLoading &&<button
             onClick={handleUserMsg}
-            disabled={isLoading || !inputMessage.trim()}
+            disabled={isLoading || !inputMessage.trim()|| estimateTokenCount(inputMessage)>8000}
             >
             <ArrowUp size={18} />
             </button>
