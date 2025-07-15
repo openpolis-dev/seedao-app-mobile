@@ -1,10 +1,14 @@
-import {EventDetail} from "seeucomp";
+// import {EventDetail} from "seeucomp";
 import styled from "styled-components";
 import {useEffect, useState} from "react";
 import store from "../../store";
 import {saveLoading} from "../../store/reducer";
 import {getSeeuEventDetail} from "../../api/event";
 import useToast from "../../hooks/useToast";
+import NewDetail from "./newDetail";
+
+const EventDetail= styled.div`
+`
 
 const EventContent = styled.div`
   padding-inline: 20px;
@@ -60,8 +64,13 @@ export default function EventInner({id}){
             }
             try {
                 store.dispatch(saveLoading(true));
-                const resp = await getSeeuEventDetail(id);
-                setData(resp.data);
+                // const resp = await getSeeuEventDetail(id);
+                const resp = await fetch("/data/eventList.json");
+                let rt = await resp.json();
+
+                const list = rt.data.items;
+                const detail = list.find((item) => item.record_id === id);
+                setData(detail);
             } catch (error) {
                 logError(error);
                 toast.danger(`${error?.data?.code}:${error?.data?.msg || error?.code || error}`);
@@ -72,6 +81,6 @@ export default function EventInner({id}){
         getDetail();
     }, [id]);
     return <>
-        <EventContent>{data && <EventDetail item={data} />}      {Toast}</EventContent>
+        <EventContent>{data && <NewDetail item={data} isAspect={true} />}      {Toast}</EventContent>
     </>
 }
