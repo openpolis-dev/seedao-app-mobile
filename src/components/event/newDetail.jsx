@@ -39,7 +39,6 @@ const Box = styled.div`
 export default function NewDetail({item,isAspect=false}) {
 
   if(!item)return null;
-
   return <Box className="eventDetail" isaspect={isAspect.toString()}>
     <div  className="lftTop">
       <div className="imgBox">
