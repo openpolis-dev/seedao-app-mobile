@@ -13,6 +13,8 @@ import Loading from "components/common/loading";
 import { useNavigate } from "react-router-dom";
 import useCurrentPath from "../../hooks/useCurrentPath";
 import useToast from "../../hooks/useToast";
+import dayjs from "dayjs";
+import NewEvent from "../../components/home/newEvent";
 
 const PageSize = 20;
 
@@ -60,9 +62,32 @@ export default function EventListPage() {
   const getList = async () => {
     store.dispatch(saveLoading(true));
     try {
-      const res = await getSeeuEventList({ currentPage: page, pageSize: PageSize });
-      setList([...list, ...res.data.data]);
-      setTotal(res.data.total);
+      // const res = await getSeeuEventList({ currentPage: page, pageSize: PageSize });
+      // setList([...list, ...res.data.data]);
+
+      const resp = await fetch("/data/eventList.json");
+      let rt = await resp.json();
+
+      const list = rt.data.items;
+
+
+      let arr = [];
+      list.map((item) => {
+        let startDay = dayjs(item.fields['活动日期']).format(`YYYY-MM-DD`);
+        arr.push({
+          startDay,
+          startTime:item.fields['活动时间'] ? item.fields['活动时间'][0].text :"",
+          poster: item.fields['活动照片/海报'] ? item.fields['活动照片/海报'][0].name :"",
+          subject:item.fields['活动名称'] ? item.fields['活动名称'][0]?.text:"",
+          activeTime:item.fields['活动时长'] ? item.fields['活动时长'][0].text :"",
+          city:item.fields['活动地点'] ? item.fields['活动地点'][0].text :"",
+          fee:item.fields['活动费用'] ?item.fields["活动费用"][0].text:"",
+          type:item?.fields["活动类型"] ?? "",
+          id:item?.record_id
+        });
+      })
+      setList(arr);
+      // setTotal(res.data.total);
       setPage(page + 1);
     } catch (error) {
       logError(error);
@@ -118,7 +143,8 @@ export default function EventListPage() {
           ) : (
             list.map((p) => (
               <EventItem key={p.id} id={`event_${p.id}`}>
-                <EventCard event={p} handleClick={openEvent} />
+                {/*<EventCard event={p} handleClick={openEvent} />*/}
+                <NewEvent item={p}  imgRadius={true}  />
               </EventItem>
 
             ))
