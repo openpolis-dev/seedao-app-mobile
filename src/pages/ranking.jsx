@@ -156,7 +156,7 @@ export default function RankingPage() {
             name: t("GovernanceNodeResult.SCRSeasonRankFilename", { season: currentSeason }),
             from: {
               array: [
-                ["SNS", ...allSeasons.map((s) => `S${s}(SCR)`), t("GovernanceNodeResult.Total") + "(SCR)"],
+                ["SNS", ...allSeasons.map((s) => `S${s}(SCR)`), t("GovernanceNodeResult.Total") + "(WANG)"],
                 ...displayList.map((item) => [
                   dataMap[item.wallet] || item.wallet,
                   item.seasons_credit?.find((s) => s.season_idx === 0)?.total || 0,
@@ -186,20 +186,20 @@ export default function RankingPage() {
       <SortBox>
         <NumberBox />
         <HeaderItemBox style={{ flex: 3, width: 0 }} />
-        <HeaderItemBox style={{ flex: 2 }}>
+        <HeaderItemBox style={{ flex: 3 }}>
           <SortCurrentSeason onClick={onClickCurrentRank}>
             <span>
               {currentSeason}
-              {"(SCR)"}
+              {"(WANG)"}
             </span>
             <SortIcons direction={rankCurrent} />
           </SortCurrentSeason>
         </HeaderItemBox>
-        <HeaderItemBox style={{ flex: 2 }}>
+        <HeaderItemBox style={{ flex: 3 }}>
           <SortTotalScr onClick={onClicktotalRank}>
             <span>
               {t("Vault.Total")}
-              {"(SCR)"}
+              {"(WANG)"}
             </span>
             <SortIcons direction={rankTotal} />
           </SortTotalScr>

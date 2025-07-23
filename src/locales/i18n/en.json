@@ -257,7 +257,7 @@
     "Newcomer": "Newbie",
     "Echo": "Echo",
     "EchoDesc": "Echo is a social network that gives your echos to same habbies, passions or interests.",
-    "Credit": "SCR Lending",
+    "Credit": "Lending",
     "CreditDesc": "Community Cooperative Finance",
     "chatAI": "SeeChat",
     "chatAITips": "Web version of SeeChat (DeepSeek + SeeDAO Knowledge Base), we can chat with AI now!"
@@ -294,10 +294,10 @@
     "CommunityVault": "Community Vault",
     "CityHallVault": "CityHall Vault",
     "IncubatorVault": "Incubator Vault",
-    "SupplySCR": "Sent SCR",
+    "SupplySCR": "Sent SEE",
     "SupplySeed": "Sent SEED",
     "SendRecordTitle": "Send Record",
-    "ScrRanking": "SCR Ranking",
+    "ScrRanking": "SEE Ranking",
     "Total": "Total",
     "Export": "Export"
   },
@@ -348,7 +348,7 @@
     "CommentSuccess": "Comment successfully"
   },
   "GovernanceNodeResult": {
-    "SCRSeasonRankFilename": "{{season}} SCR Ranking"
+    "SCRSeasonRankFilename": "{{season}} SEE Ranking"
   },
   "SNS": {
     "EntranceTitle": "INVOLVED IN SEEDAO IN YOUR NAME",
@@ -388,13 +388,13 @@
     "view": "View SNS Records"
   },
   "Credit": {
-    "Title": "SCR Lending",
+    "Title": "SEE Lending",
     "MyBorrowings": "My Borrowings",
     "VaultBorrowings": "Community Borrowings",
     "MyBorrowingQuota": "Loan quota ({{token}})",
     "MyBorrowingTip1": "Daily interest rate (simple interest){{r}}%",
-    "MyBorrowingTip2": "1 SCR can borrow {{r}} {{token}}, up to borrow {{day}} days",
-    "MySCR": "My SCR",
+    "MyBorrowingTip2": "1 SEE can borrow {{r}} {{token}}, up to borrow {{day}} days",
+    "MySCR": "My SEE",
     "MaxBorrowAmountTip": "Max to borrow {{amount}} {{token}}",
     "GoToBorrow": "Borrow",
     "GoToRepay": "Repay",
@@ -402,9 +402,9 @@
     "MyInuseCount": "Loaned {{num}} pen(s)",
     "OverdueCount": "Overdued {{num}} pen(s)",
     "LatestRepayDate": "You have a loan that needs to be repaid before {{date}}",
-    "RepayTip": "If you are overdue, your SCR will be forfeited to the community treasury!",
+    "RepayTip": "If you are overdue, your SEE will be forfeited to the community treasury!",
     "Details": "Detail >>",
-    "VaultBorrowingsQuota": "Total SCR Lending quota ({{token}})",
+    "VaultBorrowingsQuota": "Total SEE Lending quota ({{token}})",
     "DaoTip": "Total program funding 180,000 {{token}} with monthly replenishment",
     "ClearCount": "Cleared {{num}} pen(s)",
     "BorrowCount": "Loaned {{num}} pen(s)",
@@ -428,10 +428,10 @@
     "FilterAll": "All",
     "BorrowStepTitle": "You need to perform the following actions to complete the loan",
     "BorrowStep1": "Enter the loan amount",
-    "BorrowStep2": "Approve the contract to use your SCR",
+    "BorrowStep2": "Approve the contract to use your SEE",
     "BorrowStep3": "Sign to confirm the loan",
     "BorrowStepConfirmButton": "I understand, go to borrow",
-    "BorrowStepTitle1": "Approve the contract to use your SCR",
+    "BorrowStepTitle1": "Approve the contract to use your SEE",
     "BorrowStepTitle2": "Confirm the loan",
     "BorrowStepTitle3": "Loan completed!",
     "BorrowStepButton1": "Approve to continue",
@@ -453,10 +453,10 @@
     "RateAmount": "Daily interest rate (simple interest) {{rate}}%",
     "RateAmount2": "expected daily interest generated {{amount}} {{token}}",
     "RateAmount3": "rate",
-    "ForfeitTip": "The pledged SCR will be deducted from your wallet",
-    "BorrowTip1": "The maximum loan term is 30 days, and you can repay at any time within 30 days. If you are overdue, your SCR will be forfeited to the community treasury!",
+    "ForfeitTip": "The pledged SEE will be deducted from your wallet",
+    "BorrowTip1": "The maximum loan term is 30 days, and you can repay at any time within 30 days. If you are overdue, your SEE will be forfeited to the community treasury!",
     "BorrowTip2": "*Interest and loan term are calculated based on Beijing time (UTC+8) natural days",
-    "BorrowTip3": "Before signing, you need to authorize the contract to use your SCR",
+    "BorrowTip3": "Before signing, you need to authorize the contract to use your SEE",
     "BorrowAmount": "Loan amount",
     "MaxBorrow": "Max",
     "ShouldRepay": "Total repayable",
@@ -515,5 +515,12 @@
     "view": "View"
   },
   "aiTips": "Send message to AI",
-  "clearTips": "Clear Chat"
+  "clearTips": "Clear Chat",
+  "see": {
+    "transfer": "Transfer",
+    "receive": "Receive",
+    "send": "Send",
+    "sendTo": "Send To",
+    "amount": "Amount"
+  }
 }
