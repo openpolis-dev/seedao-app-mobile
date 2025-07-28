@@ -51,7 +51,7 @@ export default function BorrowModal({ handleClose, stepData }) {
     .parseUnits(String(forfeitNum), networkConfig.SCRContract.decimals)
     .lte(allowanceBN);
 
-  
+
 
   const scrEnough = Number(inputNum) <= myAvaliableQuota;
 
@@ -343,7 +343,7 @@ export default function BorrowModal({ handleClose, stepData }) {
             <LineLabel>{t("Credit.NeedForfeit")}</LineLabel>
             <LineBox>
               <div className="left">{calculating ? <CalculateLoading style={{ margin: "20px" }} /> : forfeitNum}</div>
-              <span className="right">SCR</span>
+              <span className="right">SEE</span>
             </LineBox>
             <LineTip>{t("Credit.ForfeitTip")}</LineTip>
             <BorrowTips>
