@@ -5,6 +5,8 @@ import {CopyToClipboard} from "react-copy-to-clipboard";
 import { Copy, CopyCheck } from "lucide-react";
 import React, { useState } from "react";
 import {useSelector} from "react-redux";
+import useParseSNS from "../../hooks/useParseSNS";
+import {QRCodeSVG} from 'qrcode.react';
 
 const Box = styled(BasicModal)`
   width: 100%;
@@ -36,8 +38,9 @@ const BtmLine = styled.div`
 `
 export default function Receive({handleClose}){
   const { t } = useTranslation();
-  const account = useSelector((state) => state.account);
 
+  const account = useSelector((state) => state.account);
+  const sns = useParseSNS(account);
   const [codeCopied,setCodeCopied] = useState(false);
 
   const handleCodeCopy = ()=>{
@@ -48,16 +51,25 @@ export default function Receive({handleClose}){
   }
 
   return <Box  handleClose={handleClose} title={t('see.transfer')}>
-      <div className="inner">
-        <img src="" alt="" />
-      </div>
+    <div className="inner">
+      {
+          sns && <QRCodeSVG
+              id="qr-code-canvas"
+              value={sns}
+              bgColor="#FFF"
+              fgColor="#000"
+              level="H"
+              includeMargin={true}
+          />
+      }
 
+    </div>
     <BtmLine>
-      <span> {account}</span>
+      <span> {sns}</span>
 
 
       {
-        !codeCopied &&   <CopyToClipboard text={account} onCopy={handleCodeCopy}>
+        !codeCopied &&   <CopyToClipboard text={sns} onCopy={handleCodeCopy}>
           <Copy size={18} />
         </CopyToClipboard>
       }

@@ -3,7 +3,12 @@ import BasicModal from "./basicModal";
 
 import styled from "styled-components";
 import { useState } from "react";
-
+import {ScanLine,X} from "lucide-react";
+import QrScanner from "./scan";
+import {getConfig} from "@joyid/evm";
+import sns from "@seedao/sns-js";
+import {transferSEE} from "../../api/see";
+import useToast from "../../hooks/useToast";
 
 
 const Button = styled.button`
@@ -53,32 +58,70 @@ export default function SendModal({handleClose}){
   const { t } = useTranslation();
   const [amount, setAmount] = useState(0);
   const [address, setAddress] = useState("");
+  const [comment, setComment] = useState("");
+  const [isScanning, setIsScanning] = useState(false);
+  const { Toast, toast, showToast } = useToast();
 
   const handleInput = (e) => {
-    const { value,name } = e.targe;
+    const { value,name } = e.target;
     if(name === "sendTo"){
       setAddress(value);
+    }else if(name === "comment"){
+      setComment(value)
     }else{
       setAmount(value)
     }
   }
 
-  const handleSend = () => {
+  const handleSend = async() => {
 
-    let obj= {
-      address,
-      amount
+    try {
+      const rpc  = getConfig()?.NETWORK?.rpcs[0];
+      let snsAddress = await sns.resolve(address,rpc);
+      console.log(snsAddress);
+
+      let obj= {
+        to:snsAddress,
+        amount,
+        asset_name:"SEE",
+        comment
+      }
+
+
+      await transferSEE(obj)
+
+      toast.success(t("see.transferSuccess"));
+
+      // window.location.reload();
+    } catch(error) {
+
+      console.error(error)
+      toast.danger(`${error?.data?.msg || error?.code || error}`);
+    }finally{
+      setTimeout(()=>{
+        handleClose()
+      },500)
+
     }
-    console.log(obj)
-
   }
+
+  const handleScanResult = (result) => {
+    setAddress(result ?? "")
+    if (result) setIsScanning(false);
+  };
 
 
   return <Box handleClose={handleClose} title={t('see.transfer')}>
+    <QrScanner
+        isScanning={isScanning}
+        onScanResult={handleScanResult}
+    />
+    {Toast}
       <dl>
         <dt>{t('see.sendTo')}</dt>
         <dd>
-          <textarea name="sendTo" onChange={handleInput} value={address}  />
+          <input type="text" name="sendTo" onChange={handleInput} value={address}  />
+          <span onClick={() => setIsScanning(!isScanning)}>{isScanning?<X />:<ScanLine />}</span>
         </dd>
       </dl>
     <dl>
@@ -86,6 +129,13 @@ export default function SendModal({handleClose}){
       <dd>
         <input type="number" name="amount" onChange={handleInput} value={amount} />
         <span>SEE</span>
+      </dd>
+    </dl>
+
+    <dl>
+      <dt>{t('see.comment')}</dt>
+      <dd>
+        <textarea name="comment" onChange={handleInput} value={comment}  />
       </dd>
     </dl>
     <div>

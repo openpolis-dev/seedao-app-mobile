@@ -22,7 +22,7 @@ import { clearStorage } from "utils/auth";
 import getConfig from "constant/envCofnig";
 import VersionBox from "components/version";
 import {DEEPSEEK_API_URL, getNewToken} from "../api/chatAI";
-import {RefreshCcw,Copy,Send,Download} from "lucide-react";
+import {RefreshCcw,Copy,Send,Download,ChevronRight} from "lucide-react";
 import useToast from "../hooks/useToast";
 import SendModal from "./profile/send";
 import Receive from "./profile/receive";
@@ -357,6 +357,15 @@ const ApiBox = styled.div`
     align-items: center;
     gap:10px;
   }
+  .gap0{
+    gap:0;
+    cursor: pointer;
+  }
+  .flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   .gap20{
     gap: 20px;
   }
@@ -626,10 +635,16 @@ export default function Profile() {
           <ApiBox>
             <dt>SEE</dt>
             <dd>
-              <div className="flexLine gap20">
-                <span>1334 SEE</span>
-                <Button onClick={()=>setShowTransfer(true)} ><Send size={16} />{t('see.transfer')}</Button>
-                <Button onClick={()=>setShowReceive(true)}><Download size={16} />{t('see.receive')}</Button>
+              <div className="flex">
+                <div className="flexLine gap20">
+                  <span>{detail?.see?.amount} SEE</span>
+                  <Button onClick={()=>setShowTransfer(true)} ><Send size={16} />{t('see.transfer')}</Button>
+                  <Button onClick={()=>setShowReceive(true)}><Download size={16} />{t('see.receive')}</Button>
+                </div>
+                <div className="flexLine gap0" onClick={()=>navigate("/user/record")} >
+                  {t('see.record')} <ChevronRight size={16} />
+                </div>
+
               </div>
             </dd>
           </ApiBox>
