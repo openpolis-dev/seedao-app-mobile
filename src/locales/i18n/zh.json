@@ -542,6 +542,7 @@
     "record": "交易记录",
     "from": "发送方",
     "to": "接收方",
-    "time": "交易时间"
+    "time": "交易时间",
+    "SeasonUsedSEE": "已发放SEE"
   }
 }

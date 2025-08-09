@@ -307,6 +307,7 @@ const BoxList = styled.div`
 
 const ApplicantsSectionBlock = styled.section`
   min-height: 300px;
+  padding: 0 20px;
 
 `;
 const SectionTitle = styled.div`

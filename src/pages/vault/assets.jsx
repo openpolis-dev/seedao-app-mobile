@@ -18,6 +18,7 @@ import { getVaultBalance } from "api/publicData";
 import EthereumIcon from "assets/Imgs/network/ethereum.webp";
 import PolygonIcon from "assets/Imgs/network/polygon.webp";
 import useToast from "../../hooks/useToast";
+import {getTreasury} from "../../api/treasury";
 
 const SAFE_CHAIN = {
   1: {
@@ -69,6 +70,7 @@ export default function Assets() {
   const [status1, setStatus1] = useState(false);
   const [status2, setStatus2] = useState(false);
   const [status3, setStatus3] = useState(false);
+  const [seeUsed, setSeeUsed] = useState(0);
 
   const [totalSCR, setTotalSCR] = useState("0.00");
   const { SCR_CONTRACT } = AppConfig;
@@ -163,6 +165,18 @@ export default function Assets() {
     document.querySelector("body").style.background = "var(--primary-color)";
   };
 
+  const getAssets = async () => {
+    try {
+      const res = await getTreasury();
+      setSeeUsed(res.data.see_used_amount ??0);
+    } catch (error) {
+      console.error('getTreasury error', error);
+    }
+  };
+  useEffect(() => {
+    getAssets();
+  }, []);
+
   return (
     <Layout
       title={t("Menus.Vault")}
@@ -205,6 +219,11 @@ export default function Assets() {
             <img src={CardIcon2} alt="" />
             <Num>{nftData.totalSupply}</Num>
             <Tit>{t("Vault.SupplySeed")}</Tit>
+          </CardItem>
+          <CardItem>
+            <img src={CardIcon2} alt="" />
+            <Num>{seeUsed}</Num>
+            <Tit>{t("see.SeasonUsedSEE")}</Tit>
           </CardItem>
         </FlexBox>
         <ApplicantsSection handleBg={handleBg} />
@@ -281,7 +300,7 @@ const WalletItemValue = styled.div`
 `;
 
 const BottomBox = styled.div`
-  padding: 20px;
+  padding: 20px 0;
   background-color: var(--background-color);
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
@@ -305,6 +324,8 @@ const FlexBox = styled.div`
   display: flex;
   gap: 14px;
   margin-bottom: 22px;
+  overflow-x: auto;
+  padding:0 20px;
 `;
 
 const CardItem = styled.div`
@@ -312,6 +333,8 @@ const CardItem = styled.div`
   border-radius: 16px;
   padding: 16px;
   flex: 1;
+  flex-shrink: 0;
+  min-width: 150px;
 `;
 
 const WalletBox = styled.ul`

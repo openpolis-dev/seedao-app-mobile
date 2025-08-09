@@ -526,6 +526,7 @@
     "record": "Record",
     "from": "From",
     "to": "To",
-    "time": "Time"
+    "time": "Time",
+    "SeasonUsedSEE": "Sent SEE"
   }
 }
