@@ -257,7 +257,7 @@
     "Newcomer": "Newbie",
     "Echo": "Echo",
     "EchoDesc": "Echo is a social network that gives your echos to same habbies, passions or interests.",
-    "Credit": "SCR Lending",
+    "Credit": "Lending",
     "CreditDesc": "Community Cooperative Finance",
     "chatAI": "SeeChat",
     "chatAITips": "Web version of SeeChat (DeepSeek + SeeDAO Knowledge Base), we can chat with AI now!"
@@ -294,10 +294,10 @@
     "CommunityVault": "Community Vault",
     "CityHallVault": "CityHall Vault",
     "IncubatorVault": "Incubator Vault",
-    "SupplySCR": "Sent SCR",
+    "SupplySCR": "Sent WANG",
     "SupplySeed": "Sent SEED",
     "SendRecordTitle": "Send Record",
-    "ScrRanking": "SCR Ranking",
+    "ScrRanking": "SEE Ranking",
     "Total": "Total",
     "Export": "Export"
   },
@@ -348,7 +348,7 @@
     "CommentSuccess": "Comment successfully"
   },
   "GovernanceNodeResult": {
-    "SCRSeasonRankFilename": "{{season}} SCR Ranking"
+    "SCRSeasonRankFilename": "{{season}} SEE Ranking"
   },
   "SNS": {
     "EntranceTitle": "INVOLVED IN SEEDAO IN YOUR NAME",
@@ -388,7 +388,7 @@
     "view": "View SNS Records"
   },
   "Credit": {
-    "Title": "SCR Lending",
+    "Title": "Lending",
     "MyBorrowings": "My Borrowings",
     "VaultBorrowings": "Community Borrowings",
     "MyBorrowingQuota": "Loan quota ({{token}})",
@@ -515,5 +515,18 @@
     "view": "View"
   },
   "aiTips": "Send message to AI",
-  "clearTips": "Clear Chat"
+  "clearTips": "Clear Chat",
+  "see": {
+    "transfer": "Transfer",
+    "receive": "Receive",
+    "send": "Send",
+    "comment": "Comment",
+    "sendTo": "Send To",
+    "amount": "Amount",
+    "record": "Record",
+    "from": "From",
+    "to": "To",
+    "time": "Time",
+    "SeasonUsedSEE": "Sent SEE"
+  }
 }

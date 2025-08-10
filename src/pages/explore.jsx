@@ -14,8 +14,8 @@ export default function Explore() {
     <Layout sticky title={t("Explore.Head")} bgColor="var(--background-color-1)">
       <LayoutContainer>
         <ExploreProjectSection />
-        <ExploreGuildSection />
-        <ExploreResourceSection />
+        {/*<ExploreGuildSection />*/}
+        {/*<ExploreResourceSection />*/}
         <ExploreEventSection />
         <Hub />
       </LayoutContainer>

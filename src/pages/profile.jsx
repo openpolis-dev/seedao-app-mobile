@@ -22,8 +22,22 @@ import { clearStorage } from "utils/auth";
 import getConfig from "constant/envCofnig";
 import VersionBox from "components/version";
 import {DEEPSEEK_API_URL, getNewToken} from "../api/chatAI";
-import {RefreshCcw,Copy} from "lucide-react";
+import {RefreshCcw,Copy,Send,Download,ChevronRight} from "lucide-react";
 import useToast from "../hooks/useToast";
+import SendModal from "./profile/send";
+import Receive from "./profile/receive";
+
+const Button = styled.button`
+  color: var(--primary-color);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap:2px;
+  border: 0;
+  cursor: pointer;
+`;
+
 
 const Box = styled.div`
   padding: 20px;
@@ -342,7 +356,18 @@ const ApiBox = styled.div`
     display: flex;
     align-items: center;
     gap:10px;
-
+  }
+  .gap0{
+    gap:0;
+    cursor: pointer;
+  }
+  .flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .gap20{
+    gap: 20px;
   }
   .iconBtm{
     margin-bottom: -3px;
@@ -375,6 +400,8 @@ export default function Profile() {
   const [sbt, setSbt] = useState([]);
   const [sbtList,setSbtList] =useState([]);
   const [apiKey, setApiKey] = useState("");
+  const[showTransfer, setShowTransfer] = useState(false);
+  const[showReceive, setShowReceive] = useState(false);
 
   const { Toast, toast } = useToast();
 
@@ -586,18 +613,41 @@ export default function Profile() {
               <div className="lft">
                 <LevelBox>LV {detail?.level?.current_lv}</LevelBox>
                 <SCRBox>
-                  {t("My.current")} {Number(detail?.scr?.amount).toFixed(2)} SCR
+                  {t("My.current")} {Number(detail?.scr?.amount).toFixed(2)} WANG
                 </SCRBox>
               </div>
               <div className="rht">
                 <div>{t("My.levelTips", { level: Number(detail?.level?.current_lv) + 1 })}</div>
-                <div>{formatNumber(detail?.level?.scr_to_next_lv)} SCR</div>
+                <div>{formatNumber(detail?.level?.scr_to_next_lv)} WANG</div>
               </div>
             </FstLine>
             <ProgressBox width={detail?.level?.upgrade_percent}>
               <div className="inner" />
             </ProgressBox>
           </ProgressOuter>
+          {
+              showTransfer &&<SendModal handleClose={()=>setShowTransfer(false)} />
+          }
+          {
+              showReceive &&  <Receive handleClose={()=>setShowReceive(false)} />
+          }
+
+          <ApiBox>
+            <dt>SEE</dt>
+            <dd>
+              <div className="flex">
+                <div className="flexLine gap20">
+                  <span>{detail?.see?.amount} SEE</span>
+                  <Button onClick={()=>setShowTransfer(true)} ><Send size={16} />{t('see.transfer')}</Button>
+                  <Button onClick={()=>setShowReceive(true)}><Download size={16} />{t('see.receive')}</Button>
+                </div>
+                <div className="flexLine gap0" onClick={()=>navigate("/user/record")} >
+                  {t('see.record')} <ChevronRight size={16} />
+                </div>
+
+              </div>
+            </dd>
+          </ApiBox>
           <ApiBox>
             <dt>SeeChat</dt>
             <dd>
@@ -637,7 +687,7 @@ export default function Profile() {
               <dt>
                 <span>SEED</span>
                 {!!sns && (
-                  <a href={`https://${sns}.id`} target="_blank" className="more">
+                  <a href={`https://${sns}.id`} target="_blank" className="more" rel="noopener noreferrer">
                     {t("My.more")}
                   </a>
                 )}
@@ -663,7 +713,7 @@ export default function Profile() {
               <dt>
                 <span>SBT</span>
                 {!!sns && (
-                  <a href={`https://${sns}.id`} target="_blank" className="more">
+                  <a href={`https://${sns}.id`} target="_blank" className="more" rel="noopener noreferrer">
                     {t("My.more")}
                   </a>
                 )}

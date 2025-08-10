@@ -51,7 +51,7 @@ export default function BorrowModal({ handleClose, stepData }) {
     .parseUnits(String(forfeitNum), networkConfig.SCRContract.decimals)
     .lte(allowanceBN);
 
-  
+
 
   const scrEnough = Number(inputNum) <= myAvaliableQuota;
 

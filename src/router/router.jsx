@@ -43,6 +43,7 @@ const NewcomerCourse = lazy(() => import("pages/newcomer/course"));
 const CreditLending = lazy(() => import("pages/credit/index"));
 const CreditRecordDetail = lazy(() => import("pages/credit/recordDetail"));
 const SeeChat =lazy(() => import("pages/seechat"))
+const SeeRecord =lazy(() => import("pages/profile/record"))
 
 // import Home from "../pages/home";
 // import Login from "../pages/login";
@@ -88,6 +89,7 @@ function RouterLink() {
         <Route path="/project" element={<Project />} />
         <Route path="/project/info/:id" element={<ProjectInfoRoot />} />
 
+
         <Route path="/guild" element={<Guild />} />
         <Route path="/guild/info/:id" element={<GuildInfoRoot />} />
         <Route path="/proposal" element={<Proposal />} />
@@ -114,6 +116,7 @@ function RouterLink() {
         <Route path="/setting" element={<Setting />} />
         {/* <Route path="/board" element={<Board />} /> */}
         <Route path="/user/profile" element={<Profile />} />
+        <Route path="/user/record" element={<SeeRecord />} />
         {/* <Route path="/user/vault" element={<Vault />} /> */}
         {/* <Route path="/privacy" element={<Privacy />} /> */}
 
