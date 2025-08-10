@@ -22,6 +22,13 @@ const apps =  [
         desc: 'apps.chatAITips',
     },
     {
+        id: "module-sns",
+        name: "apps.SNS",
+        link: "/sns/register",
+        icon: SNSImg,
+        desc: "apps.SNSDesc",
+    },
+    {
         id: 'podcast',
         name: 'apps.podcastTitle',
         link: 'https://www.xiaoyuzhoufm.com/podcast/64a27b216d90c5786108abbc',
@@ -42,54 +49,13 @@ const apps =  [
         icon: AssistantImg,
         desc: 'apps.assistantDes',
     },
-    {
-        id: "module-sns",
-        name: "apps.SNS",
-        link: "/sns/register",
-        icon: SNSImg,
-        desc: "apps.SNSDesc",
-    },
+
     {
         id: 'module-credit',
         name: 'apps.Credit',
         link: '/credit',
         icon: CreditImg,
         desc: 'apps.CreditDesc',
-    },
-    {
-        id: 'Deschool',
-        name: 'DeSchool',
-        link: 'https://deschool.app/origin/plaza',
-        icon: DeschoolIcon,
-        desc: 'apps.DeschoolDesc',
-    },
-    {
-        id: 'AAAny',
-        name: 'AAAny',
-        link: 'https://apps.apple.com/ca/app/aaany-ask-anyone-anything/id6450619356',
-        icon: AaanyIcon,
-        desc: 'apps.AAAnyDesc',
-    },
-    {
-        id: 'Cascad3',
-        name: 'Cascad3',
-        link: 'https://www.cascad3.com/',
-        icon: Cascad3Icon,
-        desc: 'apps.Cascad3Desc',
-    },
-    {
-        id: 'DAOLink',
-        name: 'DAOLink',
-        link: 'https://app.daolink.space',
-        icon: DaolinkIcon,
-        desc: 'apps.DAOLinkDesc',
-    },
-    {
-        id: 'Wormhole3',
-        name: 'Wormhole3',
-        link: 'https://alpha.wormhole3.io',
-        icon: Wormhole3Icon,
-        desc: 'apps.Wormhole3Desc',
     },
     {
         id: 'Metaforo',
@@ -119,13 +85,7 @@ const apps =  [
         icon: SeeUImg,
         desc: 'apps.SeeUDesc',
     },
-    {
-      id: 'echo',
-      name: 'apps.Echo',
-      link: 'https://echo3.world/',
-      icon: EchoImg,
-      desc: 'apps.EchoDesc',
-    },
+
     {
       id: 'coming-soon',
       name: 'See Swap',

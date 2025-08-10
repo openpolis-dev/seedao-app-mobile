@@ -259,7 +259,7 @@
     "Newcomer": "新手村",
     "Echo": "Echo",
     "EchoDesc": "Echo is a social network that gives your echos to same habbies, passions or interests.",
-    "Credit": "SCR借款",
+    "Credit": "社区互助借款",
     "CreditDesc": "社区积分新玩法",
     "chatAI": "SeeChat",
     "chatAITips": "网页版的 SeeChat (DeepSeek + SeeDAO 知识库)，大家可以跟 AI 聊天了"
@@ -296,7 +296,7 @@
     "CommunityVault": "社区金库",
     "CityHallVault": "市政厅金库",
     "IncubatorVault": "孵化器金库",
-    "SupplySCR": "已发放SCR",
+    "SupplySCR": "已发放WANG",
     "SupplySeed": "已发放SEED",
     "SendRecordTitle": "发放记录",
     "ScrRanking": "积分总榜",
@@ -404,7 +404,7 @@
     "FinalExamination": "毕业考试"
   },
   "Credit": {
-    "Title": "SCR借款",
+    "Title": "借款",
     "MyBorrowings": "我的借款",
     "VaultBorrowings": "社区借款",
     "MyBorrowingQuota": "可借额度（{{token}}）",
@@ -420,7 +420,7 @@
     "LatestRepayDate": "你有借款需在 {{date}} 前还款",
     "RepayTip": "逾期未还，SCR 将被罚没至社区金库！",
     "Details": "详情 >>",
-    "VaultBorrowingsQuota": "社区SCR借款项目当前剩余资金（{{token}}）",
+    "VaultBorrowingsQuota": "社区借款项目当前剩余资金（{{token}}）",
     "DaoTip": "计划总资金 180,000 {{token}}，每月补充资金",
     "ClearCount": "已结清 {{num}} 笔",
     "BorrowCount": "已借出 {{num}} 笔",
@@ -531,5 +531,18 @@
     "view": "查看"
   },
   "aiTips": "给AI发消息",
-  "clearTips": "清除聊天"
+  "clearTips": "清除聊天",
+  "see": {
+    "transfer": "转账",
+    "receive": "收款",
+    "send": "发送",
+    "comment": "备注",
+    "sendTo": "发送至",
+    "amount": "数量",
+    "record": "交易记录",
+    "from": "发送方",
+    "to": "接收方",
+    "time": "交易时间",
+    "SeasonUsedSEE": "已发放SEE"
+  }
 }
