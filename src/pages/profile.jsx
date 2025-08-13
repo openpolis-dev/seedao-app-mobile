@@ -637,7 +637,7 @@ export default function Profile() {
             <dd>
               <div className="flex">
                 <div className="flexLine gap20">
-                  <span>{detail?.see?.amount} SEE</span>
+                  <span>{Number(detail?.see?.amount ??0 ).toFixed(2)} SEE</span>
                   <Button onClick={()=>setShowTransfer(true)} ><Send size={16} />{t('see.transfer')}</Button>
                   <Button onClick={()=>setShowReceive(true)}><Download size={16} />{t('see.receive')}</Button>
                 </div>
