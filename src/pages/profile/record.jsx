@@ -144,7 +144,7 @@ export default function Record() {
                 {
                     list.map((item,index) =>( <UlBox key={index}>
                         <div className="flex">
-                            <div className="amount">{fromSns(item.amount)} SEE</div>
+                            <div className="amount">{item.amount} SEE</div>
                             <div>{dayjs(item.transaction_ts * 1000).format(`YYYY-MM-DD HH:mm:ss`)}</div>
                         </div>
                             <dl>
