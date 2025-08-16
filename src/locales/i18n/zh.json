@@ -545,6 +545,7 @@
     "time": "交易时间",
     "SeasonUsedSEE": "已发放SEE",
     "claim": "领取",
-    "timeBefore": "{{time}} 前有效"
+    "timeBefore": "{{time}} 前有效",
+    "transferSuccess": "转账成功"
   }
 }

@@ -529,6 +529,7 @@
     "time": "Time",
     "SeasonUsedSEE": "Sent SEE",
     "claim": "Claim",
-    "timeBefore": "Valid until {{time}}"
+    "timeBefore": "Valid until {{time}}",
+    "transferSuccess": "Transfer Success"
   }
 }

@@ -5,7 +5,7 @@ const PATH_PREFIX = '/asset_trade/';
 
 
 export const transferSEE = (data) => {
-  return request.post(`${PATH_PREFIX}`,data);
+  return request.post(`${PATH_PREFIX}/new`,data);
 };
 
 

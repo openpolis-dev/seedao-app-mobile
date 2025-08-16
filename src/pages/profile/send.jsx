@@ -52,6 +52,21 @@ const Box = styled(BasicModal)`
             color: var(--bs-body-color_active);
         }
     }
+
+
+  /* HTML: <div class="loader"></div> */
+  .loader {
+    width: 20px;
+    aspect-ratio: 4;
+    background: radial-gradient(circle closest-side,#fff 90%,#fff0) 0/calc(100%/3) 100% space;
+    clip-path: inset(0 100% 0 0);
+    animation: l1 1s steps(4) infinite;
+    margin-left: 10px;
+  }
+  @keyframes l1 {to{clip-path: inset(0 -34% 0 0)}}
+  button:disabled{
+    opacity: 0.6;
+  }
 `
 
 export default function SendModal({handleClose}){
@@ -61,6 +76,7 @@ export default function SendModal({handleClose}){
   const [comment, setComment] = useState("");
   const [isScanning, setIsScanning] = useState(false);
   const { Toast, toast, showToast } = useToast();
+  const [loading, setLoading] = useState(false);
 
   const handleInput = (e) => {
     const { value,name } = e.target;
@@ -74,8 +90,9 @@ export default function SendModal({handleClose}){
   }
 
   const handleSend = async() => {
-
+    setLoading(true)
     try {
+
       const rpc  = getConfig()?.NETWORK?.rpcs[0];
       let snsAddress = await sns.resolve(address,rpc);
       console.log(snsAddress);
@@ -91,13 +108,14 @@ export default function SendModal({handleClose}){
       await transferSEE(obj)
 
       toast.success(t("see.transferSuccess"));
-
-      // window.location.reload();
+      handleClose()
+      window.location.reload();
     } catch(error) {
 
       console.error(error)
       toast.danger(`${error?.data?.msg || error?.code || error}`);
     }finally{
+      setLoading(false);
       setTimeout(()=>{
         handleClose()
       },500)
@@ -139,7 +157,13 @@ export default function SendModal({handleClose}){
       </dd>
     </dl>
     <div>
-      <Button variant="primary" onClick={()=>handleSend()}>{t('see.send')}</Button>
+      <Button variant="primary" onClick={() => handleSend()} disabled={loading}>{t('see.send')}
+
+        {
+          loading && <div className="loader"></div>
+        }
+
+      </Button>
     </div>
   </Box>
 }
