@@ -527,6 +527,9 @@
     "from": "From",
     "to": "To",
     "time": "Time",
-    "SeasonUsedSEE": "Sent SEE"
+    "SeasonUsedSEE": "Sent SEE",
+    "claim": "Claim",
+    "timeBefore": "Valid until {{time}}",
+    "transferSuccess": "Transfer Success"
   }
 }
