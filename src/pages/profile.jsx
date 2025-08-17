@@ -385,6 +385,10 @@ const ApiBox = styled.div`
     border-radius: 6px;
     margin-bottom: 5px;
     width: 100%;
+    &:disabled{
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
   .btmCenter{
     width: 100%;
@@ -671,7 +675,7 @@ export default function Profile() {
 
             {
                 !claimed &&   <dd>
-                  <Button onClick={()=>handleClaim()} className="claimBtn" >
+                  <Button onClick={()=>handleClaim()} className="claimBtn" disabled={!Number(claimAmount)} >
                     <DollarSign size={16} /> <span>{t('see.claim')} {claimAmount} SEE</span></Button>
                   <div className="btmCenter" > {t('see.timeBefore',{time:dayjs('2026.1.11 00:00:00 UTC+8').format("YYYY-MM-DD HH:mm:ss")})}</div>
                 </dd>
