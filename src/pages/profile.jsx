@@ -22,10 +22,12 @@ import { clearStorage } from "utils/auth";
 import getConfig from "constant/envCofnig";
 import VersionBox from "components/version";
 import {DEEPSEEK_API_URL, getNewToken} from "../api/chatAI";
-import {RefreshCcw,Copy,Send,Download,ChevronRight} from "lucide-react";
+import {RefreshCcw,Copy,Send,Download,ChevronRight,DollarSign} from "lucide-react";
 import useToast from "../hooks/useToast";
 import SendModal from "./profile/send";
 import Receive from "./profile/receive";
+import dayjs from "dayjs";
+import {claimSee} from "../api/see";
 
 const Button = styled.button`
   color: var(--primary-color);
@@ -376,6 +378,22 @@ const ApiBox = styled.div`
   .btm{
     margin-top: 10px;
   }
+  .claimBtn{
+    background: var(--primary-color);
+    padding: 5px 8px;
+    color: #fff;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    width: 100%;
+    &:disabled{
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+  .btmCenter{
+    width: 100%;
+    text-align: center;
+  }
   
 `
 
@@ -402,6 +420,9 @@ export default function Profile() {
   const [apiKey, setApiKey] = useState("");
   const[showTransfer, setShowTransfer] = useState(false);
   const[showReceive, setShowReceive] = useState(false);
+
+  const [claimed, setClaimed] = useState(false);
+  const[claimAmount, setClaimAmount] = useState("");
 
   const { Toast, toast } = useToast();
 
@@ -445,6 +466,10 @@ export default function Profile() {
       setRoles(rt.data.roles);
       setApiKey(rt.data.ds_api_key);
       let mapArr = new Map();
+
+
+      setClaimAmount(Number(rt.data?.see?.amount_can_be_claimed).toFixed(2) ?? "0");
+      setClaimed(rt.data?.see?.claimed ?? false);
 
       rt.data.social_accounts?.map((item) => {
         mapArr.set(item.network, item.identity);
@@ -569,8 +594,20 @@ export default function Profile() {
 
   }
 
+  const handleClaim = async() =>{
+    try {
+      await claimSee()
+      toast.success(`领取成功`);
+      await getMyDetail()
+    } catch(error) {
+      console.error(error)
+      toast.danger(`${error?.data?.msg ||  error?.response?.data?.msg || error}`);
+    }
+  }
+
   return (
     <OuterBox>
+      {Toast}
       <Layout
         headBgColor="transparent"
         bgColor="#EBE8FE"
@@ -634,19 +671,31 @@ export default function Profile() {
 
           <ApiBox>
             <dt>SEE</dt>
-            <dd>
-              <div className="flex">
-                <div className="flexLine gap20">
-                  <span>{detail?.see?.amount} SEE</span>
-                  <Button onClick={()=>setShowTransfer(true)} ><Send size={16} />{t('see.transfer')}</Button>
-                  <Button onClick={()=>setShowReceive(true)}><Download size={16} />{t('see.receive')}</Button>
-                </div>
-                <div className="flexLine gap0" onClick={()=>navigate("/user/record")} >
-                  {t('see.record')} <ChevronRight size={16} />
-                </div>
 
-              </div>
-            </dd>
+
+            {
+                !claimed &&   <dd>
+                  <Button onClick={()=>handleClaim()} className="claimBtn" disabled={!Number(claimAmount)} >
+                    <DollarSign size={16} /> <span>{t('see.claim')} {claimAmount} SEE</span></Button>
+                  <div className="btmCenter" > {t('see.timeBefore',{time:dayjs('2026.1.11 00:00:00 UTC+8').format("YYYY-MM-DD HH:mm:ss")})}</div>
+                </dd>
+            }
+
+            {
+                claimed &&   <dd>
+                  <div className="flex">
+                    <div className="flexLine gap20">
+                      <span>{Number(detail?.see?.amount ??0 ).toFixed(2)} SEE</span>
+                      <Button onClick={()=>setShowTransfer(true)} ><Send size={16} />{t('see.transfer')}</Button>
+                      <Button onClick={()=>setShowReceive(true)}><Download size={16} />{t('see.receive')}</Button>
+                    </div>
+                    <div className="flexLine gap0" onClick={()=>navigate("/user/record")} >
+                      {t('see.record')} <ChevronRight size={16} />
+                    </div>
+
+                  </div>
+                </dd>
+            }
           </ApiBox>
           <ApiBox>
             <dt>SeeChat</dt>

@@ -5,12 +5,19 @@ const PATH_PREFIX = '/asset_trade/';
 
 
 export const transferSEE = (data) => {
-  return request.post(`${PATH_PREFIX}`,data);
+  return request.post(`${PATH_PREFIX}/new`,data);
 };
 
 
 export const getSeeList = (data)=> {
 
-  const {from_user,to_user,page,size} = data;
-  return request.get(`${PATH_PREFIX}?from_user=${from_user??""}&to_user=${to_user??""}&page=${page}&size=${size}`);
+  const {page,size} = data;
+  return request.get(`${PATH_PREFIX}/my?page=${page}&size=${size}`);
+};
+
+
+
+export const claimSee = ()=> {
+
+  return request.post(`${PATH_PREFIX}claim_see`);
 };
