@@ -530,6 +530,7 @@
     "SeasonUsedSEE": "Sent SEE",
     "claim": "Claim",
     "timeBefore": "Valid until {{time}}",
-    "transferSuccess": "Transfer Success"
+    "transferSuccess": "Transfer Success",
+    "RequiredWallet": "Required SNS/address"
   }
 }
