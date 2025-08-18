@@ -5,7 +5,7 @@ import { polygon } from "viem/chains";
 
 
 
-const VERSION = "0.8.6";
+const VERSION = "0.8.7";
 
 
 
