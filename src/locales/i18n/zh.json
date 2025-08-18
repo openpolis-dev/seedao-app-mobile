@@ -546,6 +546,7 @@
     "SeasonUsedSEE": "已发放SEE",
     "claim": "领取",
     "timeBefore": "{{time}} 前有效",
-    "transferSuccess": "转账成功"
+    "transferSuccess": "转账成功",
+    "RequiredWallet": "SNS/地址错误"
   }
 }
