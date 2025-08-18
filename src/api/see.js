@@ -1,6 +1,6 @@
 import request from "./index";
 
-const PATH_PREFIX = '/asset_trade/';
+const PATH_PREFIX = '/asset_trade';
 
 
 
@@ -19,5 +19,5 @@ export const getSeeList = (data)=> {
 
 export const claimSee = ()=> {
 
-  return request.post(`${PATH_PREFIX}claim_see`);
+  return request.post(`${PATH_PREFIX}/claim_see`);
 };
