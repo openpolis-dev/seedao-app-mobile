@@ -81,7 +81,16 @@ export default function Assets() {
     try {
       setStatus1(true);
       const res = await getVaultBalance();
-      setWallets(res.data.wallets);
+      console.error(res);
+
+      let arr =[]
+      res.data.wallets.map(item => {
+        if(item.wallet !== "0x70F97Ad9dd7E1bFf40c3374A497a7583B0fAdd25"  && item.wallet !== "0x444C1Cf57b65C011abA9BaBEd05C6b13C11b03b5"){
+          arr.push(item);
+        }
+      })
+
+      setWallets(arr);
       let v = 0;
       res.data.wallets.forEach((w) => (v += Number(w.fiatTotal)));
       setTotalBalance(v.format());
