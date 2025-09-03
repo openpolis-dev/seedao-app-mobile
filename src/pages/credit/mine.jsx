@@ -70,9 +70,9 @@ const BorrowAndRepay = ({ onUpdate }) => {
 
   return (
     <OperateBox>
-      <OperateItem className="borrow" onClick={openBorrow}>
-        {t("Credit.GoToBorrow")}
-      </OperateItem>
+      {/*<OperateItem className="borrow" onClick={openBorrow}>*/}
+      {/*  {t("Credit.GoToBorrow")}*/}
+      {/*</OperateItem>*/}
       <OperateItem onClick={() => setShowItemsModal("repay")}>{t("Credit.GoToRepay")}</OperateItem>
       {showModal === "borrow" && <BorrowModal handleClose={handleCloseModal} stepData={stepData} />}
       {showModal === "repay" && <RepayModal handleClose={handleCloseModal} stepData={stepData} />}
