@@ -673,25 +673,25 @@ export default function Profile() {
             <dt>SEE</dt>
 
 
-            {
-                !claimed &&   <dd>
-                  <Button onClick={()=>handleClaim()} className="claimBtn" disabled={!Number(claimAmount)} >
-                    <DollarSign size={16} /> <span>{t('see.claim')} {claimAmount} SEE</span></Button>
-                  <div className="btmCenter" > {t('see.timeBefore',{time:dayjs('2026.1.11 00:00:00 UTC+8').format("YYYY-MM-DD HH:mm:ss")})}</div>
-                </dd>
-            }
+            {/*{*/}
+            {/*    !claimed &&   <dd>*/}
+            {/*      <Button onClick={()=>handleClaim()} className="claimBtn" disabled={!Number(claimAmount)} >*/}
+            {/*        <DollarSign size={16} /> <span>{t('see.claim')} {claimAmount} SEE</span></Button>*/}
+            {/*      <div className="btmCenter" > {t('see.timeBefore',{time:dayjs('2026.1.11 00:00:00 UTC+8').format("YYYY-MM-DD HH:mm:ss")})}</div>*/}
+            {/*    </dd>*/}
+            {/*}*/}
 
             {
                 claimed &&   <dd>
                   <div className="flex">
                     <div className="flexLine gap20">
                       <span>{Number(detail?.see?.amount ??0 ).toFixed(2)} SEE</span>
-                      <Button onClick={()=>setShowTransfer(true)} ><Send size={16} />{t('see.transfer')}</Button>
-                      <Button onClick={()=>setShowReceive(true)}><Download size={16} />{t('see.receive')}</Button>
+                      {/*<Button onClick={()=>setShowTransfer(true)} ><Send size={16} />{t('see.transfer')}</Button>*/}
+                      {/*<Button onClick={()=>setShowReceive(true)}><Download size={16} />{t('see.receive')}</Button>*/}
                     </div>
-                    <div className="flexLine gap0" onClick={()=>navigate("/user/record")} >
-                      {t('see.record')} <ChevronRight size={16} />
-                    </div>
+                    {/*<div className="flexLine gap0" onClick={()=>navigate("/user/record")} >*/}
+                    {/*  {t('see.record')} <ChevronRight size={16} />*/}
+                    {/*</div>*/}
 
                   </div>
                 </dd>
